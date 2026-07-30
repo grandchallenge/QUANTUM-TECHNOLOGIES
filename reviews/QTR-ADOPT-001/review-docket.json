@@ -1,0 +1,58 @@
+{
+  "docket_version": "0.1.0",
+  "docket_id": "QTR-ADOPT-001",
+  "programme_id": "QTR",
+  "status": "intake_open",
+  "source_repository": "grandchallenge/.github",
+  "source_commit": "33b87f2f15f3af6c6e3b9e38ed3d0d3ba6244835",
+  "source_payload_identity_sha256": "5c8bfd314a1bb99004fc96a6b0b02242f22975afa20ac04debb22d5f958c1bd8",
+  "target_repository": "grandchallenge/QUANTUM-TECHNOLOGIES",
+  "target_payload_commit": "d2cc2f550471986a2e095b9647d69328939d5b24",
+  "adoption_pull_request": null,
+  "adoption_head": null,
+  "claim_boundary": "Repository creation, migration, workflow success, and review intake do not adopt QTR-CHARTER-00, promote QTR-SIG-WP00, certify mathematics, establish quantum advantage, or validate hardware claims.",
+  "entry_conditions": {
+    "target_repository_created": true,
+    "ten_file_payload_migrated": true,
+    "byte_and_sha256_equality": "workflow_pending",
+    "qtr_validation": "workflow_pending",
+    "gcl_conformance": "workflow_pending",
+    "repository_public": false,
+    "protected_main": "unverified"
+  },
+  "offices": {
+    "Axiomatist": {
+      "status": "intake_open",
+      "obligation": "Lock programme domain, evidence classes, promise and oracle semantics, norms, errors, and adoption boundary."
+    },
+    "Cartographer": {
+      "status": "intake_open",
+      "obligation": "Map QTR against GCL authority surfaces, QSP and QSVT lanes, adversary and span-program methodology, and mathematical certification dependencies."
+    },
+    "Grammarian": {
+      "status": "intake_open",
+      "obligation": "Check identifiers, definitions, symbols, schema vocabulary, state names, claim language, and cross-document consistency."
+    },
+    "Verifier": {
+      "status": "intake_open",
+      "obligation": "Replay identity comparison, packet validation, tests, baseline evidence, QTR validation, and GCL conformance on exact commits."
+    },
+    "Adversary": {
+      "status": "intake_open",
+      "obligation": "Search for hidden preprocessing, oracle leakage, vanishing gaps, inaccessible encodings, concealed polynomial degree, weak baselines, and authority ambiguity."
+    },
+    "Formalist": {
+      "status": "intake_open",
+      "obligation": "Separate definitions, executable assertions, finite evidence, theorem obligations, and future formalization boundaries."
+    },
+    "Amanuensis": {
+      "status": "intake_open",
+      "obligation": "Verify source, transport, target, workflow, manifest, migration, provenance, and stable-record identities."
+    },
+    "Referee": {
+      "status": "blocked_pending_other_offices",
+      "obligation": "Review the exact final adoption head after all other office records and issue promote, revise, reject, or terminate."
+    }
+  },
+  "downstream_gate": "QTR-SIG-WP01, QTR-SIG-WP02, and finite-instance QTR-SIG-WP03 remain unauthorized until Referee promotion."
+}
