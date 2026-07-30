@@ -23,9 +23,11 @@ jobs:
         with:
           python-version: "3.12.8"
       - name: Verify source and target payload identities
+        env:
+          TARGET_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           python ci/verify_migration.py \
-            --target-commit "$GITHUB_SHA" \
+            --target-commit "$TARGET_COMMIT" \
             --output /tmp/QTR-BOOT-001-target-identity.json
       - name: Validate governed packet
         run: python ci/validate.py
