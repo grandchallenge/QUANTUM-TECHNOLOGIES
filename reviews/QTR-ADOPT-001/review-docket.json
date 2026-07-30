@@ -7,9 +7,9 @@
   "source_commit": "33b87f2f15f3af6c6e3b9e38ed3d0d3ba6244835",
   "source_payload_identity_sha256": "5c8bfd314a1bb99004fc96a6b0b02242f22975afa20ac04debb22d5f958c1bd8",
   "target_repository": "grandchallenge/QUANTUM-TECHNOLOGIES",
-  "target_payload_commit": "d2cc2f550471986a2e095b9647d69328939d5b24",
-  "adoption_pull_request": null,
-  "adoption_head": null,
+  "target_payload_commit": "871da6e9c1953b7dcbbf84a20121995b98d6c366",
+  "adoption_pull_request": 1,
+  "adoption_head": "resolve_from_pull_request",
   "claim_boundary": "Repository creation, migration, workflow success, and review intake do not adopt QTR-CHARTER-00, promote QTR-SIG-WP00, certify mathematics, establish quantum advantage, or validate hardware claims.",
   "entry_conditions": {
     "target_repository_created": true,
