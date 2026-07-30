@@ -41,7 +41,7 @@ A predicate instance is
 \mathfrak P=(n,D,f,\mathcal O),
 \]
 
-where `n` is input width, `D` is a finite promise domain, `f` is the Boolean label, and `O` is the ecact access model.
+where `n` is input width, `D` is a finite promise domain, `f` is the Boolean label, and `O` is the exact access model.
 
 The WP00 reference suite uses the bit-query oracle
 
