@@ -1,7 +1,8 @@
 {
   "record_version": "0.2.0",
   "record_id": "QTR-SIG-NEXT-001",
-  "status": "completed_referee_promoted",
+  "status": "candidate_implementation_ready",
+  "review_cycle_status": "completed_referee_promoted",
   "authority": {
     "charter_adoption_merge": "0743ac9947cc835de817d50d92cf3df444132449",
     "adoption_pin_merge": "468f22e694c569969602ec68812c57b9109dc8ad",
