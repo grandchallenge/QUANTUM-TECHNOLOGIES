@@ -1,17 +1,23 @@
 {
-  "record_version": "0.1.0",
+  "record_version": "0.2.0",
   "record_id": "QTR-SIG-NEXT-001",
   "status": "candidate_implementation_ready",
+  "review_cycle_status": "completed_referee_promoted",
   "authority": {
     "charter_adoption_merge": "0743ac9947cc835de817d50d92cf3df444132449",
     "adoption_pin_merge": "468f22e694c569969602ec68812c57b9109dc8ad",
     "wp00_status": "referee_promoted"
   },
   "work_packages": {
-    "QTR-SIG-WP01": {"issue": 7, "execution": "parallel"},
-    "QTR-SIG-WP02": {"issue": 8, "execution": "parallel"},
-    "QTR-SIG-WP03": {"issue": 9, "execution": "finite_instance_after_shared_interfaces"}
+    "QTR-SIG-WP01": {"issue": 7, "execution": "parallel", "status": "referee_promoted"},
+    "QTR-SIG-WP02": {"issue": 8, "execution": "parallel", "status": "referee_promoted"},
+    "QTR-SIG-WP03": {"issue": 9, "execution": "finite_instance_after_shared_interfaces", "status": "referee_promoted_bounded"}
   },
+  "reviewed_head": "c6d3c460804bcc414226cac3700a864773ba2fdf",
+  "scientific_merge_commit": "f96452e3eeb1688bf8eb60c7b22e3adf500bae39",
+  "review_issue": 11,
+  "referee_record": 5141826042,
+  "promotion_record": "reviews/QTR-SIG-NEXT-001/promotion-record.json",
   "promotion_scope": [
     "finite symmetry quotient atlas",
     "finite linearization atlas",
