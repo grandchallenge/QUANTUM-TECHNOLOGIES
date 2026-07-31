@@ -194,12 +194,12 @@
       },
       "cost": {
         "declared_queries_per_signal_call": 4,
-        "construction": "A simple clean construction queries all four bits, computes their XOR into workspace, applies the parity-controlled phase, and uncomputes the workspace.",
+        "construction": "Apply four controlled indexed phase queries, one for each fixed input index, with phase kickback so their phases multiply to (-1)^w(x); no XOR workspace is retained.",
         "construction_scope": "declared_signal_implementation",
         "optimality_status": "not_claimed",
         "decision_query_note": "This four-query clean phase construction is not claimed optimal. Exact parity decision for n=4 requires and admits 2 quantum queries; that decision result does not by itself prove a 2-query clean phase-oracle implementation.",
         "assumptions": [
-          "The fixture records one explicit, possibly nonoptimal, clean phase construction.",
+          "The fixture records one explicit, possibly nonoptimal, four-query controlled phase-kickback construction.",
           "The exact decision-query statement is sourced to arXiv:2112.14682.",
           "The constant-dimensional signal is retained as an access-cost and semantics control."
         ]

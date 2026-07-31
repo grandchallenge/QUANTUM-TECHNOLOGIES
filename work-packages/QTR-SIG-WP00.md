@@ -180,7 +180,7 @@ Define the diagnostic signature
 s_{\oplus}(x)=(-1)^{w(x)}.
 \]
 
-This signature has two points and a constant label gap. The admitted WP00 fixture uses one explicit clean construction: query all `n` bits, compute their XOR into workspace, apply a parity-controlled phase, and uncompute the workspace. Its recorded query count is therefore `n`.
+This signature has two points and a constant label gap. The admitted WP00 fixture uses one explicit controlled phase-kickback construction: apply one indexed phase query at each fixed input index so the `n` phases multiply to `(-1)^{w(x)}`. No XOR workspace is retained. Its recorded query count is therefore `n`.
 
 This construction is not claimed optimal. Exact parity *decision* has quantum query complexity `ceil(n/2)`; for the `n=4` fixture, the exact decision optimum is two queries. That decision result does not by itself establish a two-query clean implementation of the phase map on arbitrary superpositions. Any phase-implementation necessity or optimality claim requires a separate proof and route.
 
