@@ -17,7 +17,7 @@ jobs:
   policy:
     name: policy
     runs-on: ubuntu-24.04
-    timeout-minutes: 6
+    timeout-minutes: 8
     env:
       SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
@@ -35,7 +35,6 @@ jobs:
           python - <<'PY'
           import re
           from pathlib import Path
-
           violations = []
           for path in sorted(Path('.github/workflows').glob('*.y*ml')):
               for number, line in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
@@ -50,25 +49,30 @@ jobs:
           if violations:
               raise SystemExit('mutable or unpinned action references:\n' + '\n'.join(violations))
           PY
-      - name: Validate adopted programme records
+      - name: Validate adopted programme and candidate downstream records
         run: |
           python ci/validate.py
+          python ci/validate_downstream.py
           python - <<'PY'
           import json
           from pathlib import Path
-
           charter = Path('QTR-CHARTER-00.md').read_text(encoding='utf-8')
           wp00 = Path('work-packages/QTR-SIG-WP00.md').read_text(encoding='utf-8')
           adoption = json.loads(Path('reviews/QTR-ADOPT-001/adoption-record.json').read_text(encoding='utf-8'))
-
+          intake = json.loads(Path('reviews/QTR-SIG-NEXT-001/intake.json').read_text(encoding='utf-8'))
           if 'Status: `adopted`' not in charter:
               raise SystemExit('charter adoption status missing')
           if 'Status: `referee_promoted`' not in wp00:
               raise SystemExit('WP00 promotion status missing')
+          for wp in ('QTR-SIG-WP01.md','QTR-SIG-WP02.md','QTR-SIG-WP03.md'):
+              if 'Status: `candidate`' not in Path('work-packages',wp).read_text(encoding='utf-8'):
+                  raise SystemExit(f'{wp}: candidate boundary missing')
           if adoption['adoption_merge_commit'] != '0743ac9947cc835de817d50d92cf3df444132449':
               raise SystemExit('adoption merge commit not pinned')
-          if adoption['referee']['disposition'] != 'promote_for_adoption_merge':
-              raise SystemExit('Referee promotion record missing')
+          if intake['status'] != 'candidate_implementation_ready':
+              raise SystemExit('downstream intake status is stale')
+          if 'QTR-SIG-WP04' not in intake['excluded_scope']:
+              raise SystemExit('WP04 gate is not explicit')
           PY
       - name: Write conformance receipt
         run: |
@@ -76,30 +80,27 @@ jobs:
           import json
           import subprocess
           from pathlib import Path
-
           subject = '${{ env.SUBJECT_SHA }}'
           runtime = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
           receipt = {
-              'receipt_version': '0.3.0',
-              'docket_id': 'QTR-ADOPT-PIN-001',
+              'receipt_version': '0.1.0',
+              'docket_id': 'QTR-SIG-NEXT-001',
               'evaluated_commit': subject,
               'runtime_head': runtime,
               'exact_head_equal': subject == runtime,
-              'manifest_status': 'adopted',
-              'review_status': 'completed',
-              'claim_status': 'referee_promoted',
-              'adoption_merge_commit': '0743ac9947cc835de817d50d92cf3df444132449'
+              'charter_status': 'adopted',
+              'WP00_status': 'referee_promoted',
+              'WP01_WP03_status': 'candidate',
+              'WP04_status': 'gated'
           }
-          Path('/tmp/QTR-ADOPT-PIN-001-gcl-conformance.json').write_text(
-              json.dumps(receipt, indent=2, sort_keys=True) + '\n', encoding='utf-8'
-          )
+          Path('/tmp/QTR-SIG-NEXT-001-gcl-conformance.json').write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n')
           if not receipt['exact_head_equal']:
               raise SystemExit('conformance receipt head mismatch')
           PY
       - name: Preserve conformance receipt
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: QTR-ADOPT-PIN-001-gcl-conformance
-          path: /tmp/QTR-ADOPT-PIN-001-gcl-conformance.json
+          name: QTR-SIG-NEXT-001-gcl-conformance
+          path: /tmp/QTR-SIG-NEXT-001-gcl-conformance.json
           if-no-files-found: error
           retention-days: 90
