@@ -75,8 +75,10 @@ jobs:
                   raise SystemExit(f'{wp}: promotion merge missing')
           if adoption['adoption_merge_commit'] != '0743ac9947cc835de817d50d92cf3df444132449':
               raise SystemExit('adoption merge commit not pinned')
-          if intake['status'] != 'completed_referee_promoted':
-              raise SystemExit('downstream intake status is stale')
+          if intake['status'] != 'candidate_implementation_ready':
+              raise SystemExit('reviewed snapshot status changed')
+          if intake['review_cycle_status'] != 'completed_referee_promoted':
+              raise SystemExit('review cycle status is stale')
           if promotion['status'] != 'referee_promoted':
               raise SystemExit('downstream promotion record is stale')
           if promotion['referee']['disposition'] != 'promote_for_bounded_merge':
