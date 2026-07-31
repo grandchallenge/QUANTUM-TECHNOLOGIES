@@ -37,71 +37,38 @@ jobs:
           from pathlib import Path
 
           violations = []
-          for path in sorted(Path(".github/workflows").glob("*.y*ml")):
-              for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-                  match = re.search(r"\buses:\s*([^\s#]+)", line)
+          for path in sorted(Path('.github/workflows').glob('*.y*ml')):
+              for number, line in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
+                  match = re.search(r'\buses:\s*([^\s#]+)', line)
                   if not match:
                       continue
                   reference = match.group(1)
-                  if reference.startswith("./"):
+                  if reference.startswith('./'):
                       continue
-                  if "@" not in reference or not re.search(r"@[0-9a-f]{40}$", reference):
-                      violations.append(f"{path}:{number}: {reference}")
+                  if '@' not in reference or not re.search(r'@[0-9a-f]{40}$', reference):
+                      violations.append(f'{path}:{number}: {reference}')
           if violations:
-              raise SystemExit("mutable or unpinned action references:\n" + "\n".join(violations))
+              raise SystemExit('mutable or unpinned action references:\n' + '\n'.join(violations))
           PY
-      - name: Validate programme authority and current governance records
+      - name: Validate adopted programme records
         run: |
+          python ci/validate.py
           python - <<'PY'
           import json
-          import subprocess
           from pathlib import Path
 
-          subject = "${{ env.SUBJECT_SHA }}"
-          runtime = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
-          if runtime != subject:
-              raise SystemExit(f"evaluated commit mismatch: expected {subject}, observed {runtime}")
+          charter = Path('QTR-CHARTER-00.md').read_text(encoding='utf-8')
+          wp00 = Path('work-packages/QTR-SIG-WP00.md').read_text(encoding='utf-8')
+          adoption = json.loads(Path('reviews/QTR-ADOPT-001/adoption-record.json').read_text(encoding='utf-8'))
 
-          charter = Path("QTR-CHARTER-00.md").read_text(encoding="utf-8")
-          work_package = Path("work-packages/QTR-SIG-WP00.md").read_text(encoding="utf-8")
-          manifest = json.loads(Path("MIGRATION_MANIFEST.json").read_text(encoding="utf-8"))
-          docket = json.loads(Path("reviews/QTR-ADOPT-001/review-docket.json").read_text(encoding="utf-8"))
-
-          for phrase, text in (
-              ("Status: `candidate`", charter),
-              ("Target repository: `grandchallenge/QUANTUM-TECHNOLOGIES`", charter),
-              ("Status: `candidate`", work_package),
-          ):
-              if phrase not in text:
-                  raise SystemExit(f"missing authority boundary: {phrase}")
-
-          if manifest["target_repository"] != "grandchallenge/QUANTUM-TECHNOLOGIES":
-              raise SystemExit("wrong migration target")
-          if manifest["status"] != "migrated_candidate":
-              raise SystemExit("operational migration status is stale")
-          historical = manifest["historical_migration"]
-          if historical["source_commit"] != "33b87f2f15f3af6c6e3b9e38ed3d0d3ba6244835":
-              raise SystemExit("unexpected source commit")
-          if historical["target_payload_commit"] != "871da6e9c1953b7dcbbf84a20121995b98d6c366":
-              raise SystemExit("unexpected historical target payload commit")
-
-          entry = docket["entry_conditions"]
-          if entry["repository_public"] is not True:
-              raise SystemExit("repository visibility record is stale")
-          if entry["protected_main"]["status"] != "owner_attested":
-              raise SystemExit("protected-main record is stale")
-          if docket["previous_cycle"]["referee"]["disposition"] != "revise":
-              raise SystemExit("previous Referee disposition missing")
-          if docket["current_cycle"]["status"] != "corrective_head_pending_replay":
-              raise SystemExit("unexpected corrective review status")
-          PY
-      - name: Confirm adoption remains review-gated
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          charter = Path("QTR-CHARTER-00.md").read_text(encoding="utf-8")
-          if "Until then, its status remains `candidate`." not in charter:
-              raise SystemExit("candidate adoption boundary missing")
+          if 'Status: `adopted`' not in charter:
+              raise SystemExit('charter adoption status missing')
+          if 'Status: `referee_promoted`' not in wp00:
+              raise SystemExit('WP00 promotion status missing')
+          if adoption['adoption_merge_commit'] != '0743ac9947cc835de817d50d92cf3df444132449':
+              raise SystemExit('adoption merge commit not pinned')
+          if adoption['referee']['disposition'] != 'promote_for_adoption_merge':
+              raise SystemExit('Referee promotion record missing')
           PY
       - name: Write conformance receipt
         run: |
@@ -110,29 +77,29 @@ jobs:
           import subprocess
           from pathlib import Path
 
-          subject = "${{ env.SUBJECT_SHA }}"
-          runtime = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+          subject = '${{ env.SUBJECT_SHA }}'
+          runtime = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
           receipt = {
-              "receipt_version": "0.2.0",
-              "docket_id": "QTR-ADOPT-CORR-001",
-              "evaluated_commit": subject,
-              "runtime_head": runtime,
-              "exact_head_equal": subject == runtime,
-              "manifest_status": "migrated_candidate",
-              "review_status": "corrective_head_pending_replay",
-              "claim_status": "candidate"
+              'receipt_version': '0.3.0',
+              'docket_id': 'QTR-ADOPT-PIN-001',
+              'evaluated_commit': subject,
+              'runtime_head': runtime,
+              'exact_head_equal': subject == runtime,
+              'manifest_status': 'adopted',
+              'review_status': 'completed',
+              'claim_status': 'referee_promoted',
+              'adoption_merge_commit': '0743ac9947cc835de817d50d92cf3df444132449'
           }
-          Path("/tmp/QTR-ADOPT-CORR-001-gcl-conformance.json").write_text(
-              json.dumps(receipt, indent=2, sort_keys=True) + "\n",
-              encoding="utf-8"
+          Path('/tmp/QTR-ADOPT-PIN-001-gcl-conformance.json').write_text(
+              json.dumps(receipt, indent=2, sort_keys=True) + '\n', encoding='utf-8'
           )
-          if not receipt["exact_head_equal"]:
-              raise SystemExit("conformance receipt head mismatch")
+          if not receipt['exact_head_equal']:
+              raise SystemExit('conformance receipt head mismatch')
           PY
       - name: Preserve conformance receipt
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: QTR-ADOPT-CORR-001-gcl-conformance
-          path: /tmp/QTR-ADOPT-CORR-001-gcl-conformance.json
+          name: QTR-ADOPT-PIN-001-gcl-conformance
+          path: /tmp/QTR-ADOPT-PIN-001-gcl-conformance.json
           if-no-files-found: error
           retention-days: 90
