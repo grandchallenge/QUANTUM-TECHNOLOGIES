@@ -43,8 +43,10 @@ class SignalDiscoveryTests(unittest.TestCase):
                 report["alternation_degree_lower_bound"],
                 expected["alternation_degree_lower_bound"],
             )
+            self.assertEqual(report["numerical_conventions"], candidate["numerics"])
 
-    def test_parity_phase_exposes_access_cost(self):
+    def test_parity_phase_exposes_nonoptimal_construction_cost(self):
+        phase_candidate = self.candidates["parity_phase_n4"]
         phase = self.report("parity_phase_n4")
         majority = self.report("majority_hamming_n5")
         self.assertEqual(phase["dimension"], majority["dimension"])
@@ -53,6 +55,11 @@ class SignalDiscoveryTests(unittest.TestCase):
             phase["declared_queries_per_signal_call"],
             majority["declared_queries_per_signal_call"],
         )
+        self.assertEqual(
+            phase_candidate["cost"]["optimality_status"],
+            "not_claimed",
+        )
+        self.assertIn("2 quantum queries", phase_candidate["cost"]["decision_query_note"])
 
     def test_parity_hamming_exposes_oscillation(self):
         report = self.report("parity_hamming_n4")
@@ -67,6 +74,19 @@ class SignalDiscoveryTests(unittest.TestCase):
         self.assertFalse(report["semantic_sufficient_on_domain"])
         self.assertGreater(report["cross_label_collisions"], 0)
         self.assertTrue(report["collision_witnesses"])
+
+    def test_declared_rounding_policy_is_consumed(self):
+        candidate = copy.deepcopy(self.candidates["or_marked_amplitude_n4"])
+        candidate["numerics"]["equivalence_policy"]["digits"] = 2
+        candidate["numerics"]["equivalence_policy"]["absolute_tolerance"] = 0.01
+        report = sd.evaluate_candidate(candidate)
+        emitted = report["numerical_conventions"]["equivalence_policy"]
+        self.assertEqual(emitted["digits"], 2)
+        signals = [
+            row["signal"]
+            for row in report["ordered_scalar_labels"]
+        ]
+        self.assertIn(0.71, signals)
 
     def test_registry_digest_is_deterministic(self):
         first = sd.evaluate_registry(self.registry)

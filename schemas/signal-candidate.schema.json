@@ -17,14 +17,26 @@
     "signal",
     "readout",
     "cost",
+    "numerics",
     "expected_metrics",
     "provenance",
     "limitations"
   ],
   "properties": {
-    "schema_version": {"const": "0.1.0"},
-    "candidate_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]+$"},
-    "predicate_id": {"enum": ["or", "majority", "parity"]},
+    "schema_version": {
+      "const": "0.2.0"
+    },
+    "candidate_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]+$"
+    },
+    "predicate_id": {
+      "enum": [
+        "or",
+        "majority",
+        "parity"
+      ]
+    },
     "family": {
       "enum": [
         "symmetric_statistic",
@@ -62,64 +74,273 @@
         "negative_result"
       ]
     },
-    "input_width": {"type": "integer", "minimum": 1},
+    "input_width": {
+      "type": "integer",
+      "minimum": 1
+    },
     "promise_domain": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["kind", "description"],
+      "required": [
+        "kind",
+        "description"
+      ],
       "properties": {
-        "kind": {"enum": ["all_inputs", "hamming_weights"]},
+        "kind": {
+          "enum": [
+            "all_inputs",
+            "hamming_weights"
+          ]
+        },
         "weights": {
           "type": "array",
-          "items": {"type": "integer", "minimum": 0},
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
           "uniqueItems": true
         },
-        "description": {"type": "string", "minLength": 1}
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "oracle_model": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "query_unit", "description"],
+      "required": [
+        "id",
+        "query_unit",
+        "description"
+      ],
       "properties": {
-        "id": {"const": "bit_query"},
-        "query_unit": {"const": "controlled_bit_or_phase_query"},
-        "description": {"type": "string", "minLength": 1}
+        "id": {
+          "const": "bit_query"
+        },
+        "query_unit": {
+          "const": "controlled_bit_or_phase_query"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "signal": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type", "implementation", "definition", "dimension", "normalization"],
+      "required": [
+        "type",
+        "implementation",
+        "definition",
+        "dimension",
+        "normalization"
+      ],
       "properties": {
-        "type": {"enum": ["scalar", "amplitude", "phase", "singular_value_signature"]},
-        "implementation": {
-          "enum": ["hamming_normalized", "marked_amplitude", "parity_phase"]
+        "type": {
+          "enum": [
+            "scalar",
+            "amplitude",
+            "phase",
+            "singular_value_signature"
+          ]
         },
-        "definition": {"type": "string", "minLength": 1},
-        "dimension": {"type": "integer", "minimum": 1},
-        "normalization": {"type": "string", "minLength": 1}
+        "implementation": {
+          "enum": [
+            "hamming_normalized",
+            "marked_amplitude",
+            "parity_phase"
+          ]
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dimension": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "normalization": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "readout": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["metric", "rule", "zero_region", "one_region"],
+      "required": [
+        "metric",
+        "rule",
+        "zero_region",
+        "one_region"
+      ],
       "properties": {
-        "metric": {"enum": ["absolute", "euclidean"]},
-        "rule": {"type": "string", "minLength": 1},
-        "zero_region": {"type": "string", "minLength": 1},
-        "one_region": {"type": "string", "minLength": 1}
+        "metric": {
+          "enum": [
+            "absolute",
+            "euclidean"
+          ]
+        },
+        "rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "zero_region": {
+          "type": "string",
+          "minLength": 1
+        },
+        "one_region": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "cost": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["declared_queries_per_signal_call", "construction", "assumptions"],
+      "required": [
+        "declared_queries_per_signal_call",
+        "construction",
+        "construction_scope",
+        "optimality_status",
+        "decision_query_note",
+        "assumptions"
+      ],
       "properties": {
-        "declared_queries_per_signal_call": {"type": "integer", "minimum": 0},
-        "construction": {"type": "string", "minLength": 1},
-        "assumptions": {"type": "array", "items": {"type": "string", "minLength": 1}}
+        "declared_queries_per_signal_call": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "construction": {
+          "type": "string",
+          "minLength": 1
+        },
+        "construction_scope": {
+          "const": "declared_signal_implementation"
+        },
+        "optimality_status": {
+          "enum": [
+            "not_claimed",
+            "certified_optimal"
+          ]
+        },
+        "decision_query_note": {
+          "type": "string",
+          "minLength": 1
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "numerics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "signature_representation",
+        "equivalence_policy",
+        "implementation_error",
+        "decision_error"
+      ],
+      "properties": {
+        "signature_representation": {
+          "const": "ieee754_binary64"
+        },
+        "equivalence_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "digits",
+            "absolute_tolerance",
+            "description"
+          ],
+          "properties": {
+            "kind": {
+              "const": "round_decimal_places"
+            },
+            "digits": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "absolute_tolerance": {
+              "type": "number",
+              "minimum": 0
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "implementation_error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "applicability",
+            "bound",
+            "metric",
+            "description"
+          ],
+          "properties": {
+            "applicability": {
+              "enum": [
+                "not_applicable",
+                "declared_bound",
+                "unknown"
+              ]
+            },
+            "bound": {
+              "type": "number",
+              "minimum": 0
+            },
+            "metric": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "decision_error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "applicability",
+            "bound",
+            "metric",
+            "description"
+          ],
+          "properties": {
+            "applicability": {
+              "enum": [
+                "not_applicable",
+                "declared_bound",
+                "unknown"
+              ]
+            },
+            "bound": {
+              "type": "number",
+              "minimum": 0
+            },
+            "metric": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
       }
     },
     "expected_metrics": {
@@ -132,21 +353,50 @@
         "alternation_degree_lower_bound"
       ],
       "properties": {
-        "semantic_sufficient_on_domain": {"type": "boolean"},
-        "cross_label_collisions": {"type": "integer", "minimum": 0},
-        "empirical_gap": {"type": "number", "minimum": 0},
-        "alternation_degree_lower_bound": {"type": "integer", "minimum": 0}
+        "semantic_sufficient_on_domain": {
+          "type": "boolean"
+        },
+        "cross_label_collisions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "empirical_gap": {
+          "type": "number",
+          "minimum": 0
+        },
+        "alternation_degree_lower_bound": {
+          "type": "integer",
+          "minimum": 0
+        }
       }
     },
     "provenance": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["sources", "replay_command"],
+      "required": [
+        "sources",
+        "replay_command"
+      ],
       "properties": {
-        "sources": {"type": "array", "items": {"type": "string", "minLength": 1}},
-        "replay_command": {"type": "string", "minLength": 1}
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "replay_command": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
-    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}}
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
   }
 }

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Reference evaluator for QTR-SIG-WP00 signal candidates.
 
-This program performs exact finite-domain enumeration and diagnostic metric
-calculation. It does not prove asymptotic complexity, QSP admissibility, or
-quantum advantage.
+This program performs exhaustive finite-domain enumeration and diagnostic
+metric calculation. It does not prove asymptotic complexity, QSP admissibility,
+a clean phase-oracle construction, or quantum advantage.
 """
 
 from __future__ import annotations
@@ -16,8 +16,7 @@ import math
 from pathlib import Path
 from typing import Any, Callable, Iterable
 
-EVALUATOR_VERSION = "0.1.0"
-ROUND_DIGITS = 12
+EVALUATOR_VERSION = "0.2.0"
 
 
 def hamming_weight(bits: tuple[int, ...]) -> int:
@@ -44,8 +43,7 @@ PREDICATES: dict[str, Callable[[tuple[int, ...]], int]] = {
 
 
 def signal_hamming_normalized(bits: tuple[int, ...]) -> tuple[float, ...]:
-    n = len(bits)
-    return (2.0 * hamming_weight(bits) / n - 1.0,)
+    return (2.0 * hamming_weight(bits) / len(bits) - 1.0,)
 
 
 def signal_marked_amplitude(bits: tuple[int, ...]) -> tuple[float, ...]:
@@ -75,8 +73,18 @@ def enumerate_domain(candidate: dict[str, Any]) -> list[tuple[int, ...]]:
     raise ValueError(f"Unknown promise kind: {promise['kind']}")
 
 
-def signature_key(signature: tuple[float, ...]) -> tuple[float, ...]:
-    return tuple(round(value, ROUND_DIGITS) for value in signature)
+def equivalence_digits(candidate: dict[str, Any]) -> int:
+    policy = candidate["numerics"]["equivalence_policy"]
+    if policy["kind"] != "round_decimal_places":
+        raise ValueError(f"Unsupported equivalence policy: {policy['kind']}")
+    return policy["digits"]
+
+
+def normalize_signature(
+    candidate: dict[str, Any], signature: tuple[float, ...]
+) -> tuple[float, ...]:
+    digits = equivalence_digits(candidate)
+    return tuple(round(value, digits) for value in signature)
 
 
 def euclidean(left: tuple[float, ...], right: tuple[float, ...]) -> float:
@@ -106,20 +114,21 @@ def evaluate_candidate(candidate: dict[str, Any]) -> dict[str, Any]:
     rows: list[dict[str, Any]] = []
     grouped: dict[tuple[float, ...], list[dict[str, Any]]] = {}
     for bits in domain:
-        signature = signal(bits)
-        if len(signature) != candidate["signal"]["dimension"]:
+        raw_signature = signal(bits)
+        if len(raw_signature) != candidate["signal"]["dimension"]:
             raise ValueError(
                 f"Dimension mismatch for {candidate['candidate_id']}: "
-                f"declared {candidate['signal']['dimension']}, observed {len(signature)}"
+                f"declared {candidate['signal']['dimension']}, observed {len(raw_signature)}"
             )
+        signature = normalize_signature(candidate, raw_signature)
         row = {
             "input": "".join(str(bit) for bit in bits),
             "hamming_weight": hamming_weight(bits),
             "label": predicate(bits),
-            "signature": [round(value, ROUND_DIGITS) for value in signature],
+            "signature": list(signature),
         }
         rows.append(row)
-        grouped.setdefault(signature_key(signature), []).append(row)
+        grouped.setdefault(signature, []).append(row)
 
     collision_witnesses: list[dict[str, Any]] = []
     collision_pairs = 0
@@ -175,6 +184,7 @@ def evaluate_candidate(candidate: dict[str, Any]) -> dict[str, Any]:
         * (1.0 + alternations)
         * (1.0 + math.log2(1.0 + dimension))
     )
+    digits = equivalence_digits(candidate)
 
     report: dict[str, Any] = {
         "candidate_id": candidate["candidate_id"],
@@ -185,10 +195,12 @@ def evaluate_candidate(candidate: dict[str, Any]) -> dict[str, Any]:
         "semantic_sufficient_on_domain": collision_pairs == 0,
         "cross_label_collisions": collision_pairs,
         "collision_witnesses": collision_witnesses,
-        "empirical_gap": round(empirical_gap, ROUND_DIGITS),
+        "empirical_gap": round(empirical_gap, digits),
         "alternation_degree_lower_bound": alternations,
         "declared_queries_per_signal_call": declared_queries,
-        "utility_index": round(utility_index, ROUND_DIGITS),
+        "construction_optimality_status": candidate["cost"]["optimality_status"],
+        "numerical_conventions": candidate["numerics"],
+        "utility_index": round(utility_index, digits),
         "ordered_scalar_labels": ordered_scalar_labels,
     }
     report["report_sha256"] = canonical_digest(report)
