@@ -1,0 +1,111 @@
+{
+  "registry_version": "0.1.0",
+  "status": "candidate",
+  "authority": {
+    "charter_adoption_merge": "0743ac9947cc835de817d50d92cf3df444132449",
+    "adoption_pin_merge": "468f22e694c569969602ec68812c57b9109dc8ad",
+    "wp00_status": "referee_promoted"
+  },
+  "WP01": [
+    {
+      "record_id": "sym_or_n4",
+      "predicate_id": "or",
+      "predicate_parameters": {},
+      "input_width": 4,
+      "group_action": "S_n_coordinate_permutations",
+      "invariant_coordinates": ["hamming_weight"],
+      "source_candidates": ["or_marked_amplitude_n4"],
+      "claim_status": "finite_exhaustive_evidence",
+      "expected": {"orbit_count": 5, "orbit_sizes": [1,4,6,4,1], "labels_by_orbit": [[0],[1],[1],[1],[1]], "boundary_count": 1}
+    },
+    {
+      "record_id": "sym_majority_n5",
+      "predicate_id": "majority",
+      "predicate_parameters": {},
+      "input_width": 5,
+      "group_action": "S_n_coordinate_permutations",
+      "invariant_coordinates": ["hamming_weight"],
+      "source_candidates": ["majority_hamming_n5"],
+      "claim_status": "finite_exhaustive_evidence",
+      "expected": {"orbit_count": 6, "orbit_sizes": [1,5,10,10,5,1], "labels_by_orbit": [[0],[0],[0],[1],[1],[1]], "boundary_count": 1}
+    },
+    {
+      "record_id": "sym_parity_n4",
+      "predicate_id": "parity",
+      "predicate_parameters": {},
+      "input_width": 4,
+      "group_action": "S_n_coordinate_permutations",
+      "invariant_coordinates": ["hamming_weight"],
+      "source_candidates": ["parity_phase_n4","parity_hamming_n4"],
+      "claim_status": "finite_exhaustive_evidence",
+      "expected": {"orbit_count": 5, "orbit_sizes": [1,4,6,4,1], "labels_by_orbit": [[0],[1],[0],[1],[0]], "boundary_count": 4}
+    },
+    {
+      "record_id": "sym_exact_weight_2_n4",
+      "predicate_id": "exact_weight",
+      "predicate_parameters": {"target_weight": 2},
+      "input_width": 4,
+      "group_action": "S_n_coordinate_permutations",
+      "invariant_coordinates": ["hamming_weight"],
+      "source_candidates": [],
+      "claim_status": "finite_exhaustive_evidence",
+      "expected": {"orbit_count": 5, "orbit_sizes": [1,4,6,4,1], "labels_by_orbit": [[0],[0],[1],[0],[0]], "boundary_count": 2}
+    }
+  ],
+  "WP02": [
+    {
+      "record_id": "lin_or_marked_row_n4",
+      "predicate_id": "or",
+      "predicate_parameters": {},
+      "input_width": 4,
+      "source_invariant_record": "sym_or_n4",
+      "construction": {"kind": "marked_row", "operator_shape": [1,4], "definition": "A_x = [x_1,x_2,x_3,x_4]/2; its nonzero singular value is sqrt(w(x)/4)."},
+      "claim_status": "finite_exhaustive_evidence",
+      "expected": {"signed_collision_pairs": 0, "singular_collision_pairs": 0, "singular_semantically_sufficient": true}
+    },
+    {
+      "record_id": "lin_majority_signed_scalar_n5",
+      "predicate_id": "majority",
+      "predicate_parameters": {},
+      "input_width": 5,
+      "source_invariant_record": "sym_majority_n5",
+      "construction": {"kind": "signed_hamming_scalar", "operator_shape": [1,1], "definition": "A_x = 2w(x)/5 - 1 as a signed scalar block. Singular-value-only readout discards the sign."},
+      "claim_status": "finite_negative_result",
+      "expected": {"signed_collision_pairs": 0, "singular_collision_pairs": 126, "singular_semantically_sufficient": false}
+    },
+    {
+      "record_id": "lin_parity_signed_scalar_n4",
+      "predicate_id": "parity",
+      "predicate_parameters": {},
+      "input_width": 4,
+      "source_invariant_record": "sym_parity_n4",
+      "construction": {"kind": "signed_hamming_scalar", "operator_shape": [1,1], "definition": "A_x = 2w(x)/4 - 1. The absolute singular value retains parity on this finite even-width instance but still has an oscillatory label profile."},
+      "claim_status": "finite_exhaustive_evidence",
+      "expected": {"signed_collision_pairs": 0, "singular_collision_pairs": 0, "singular_semantically_sufficient": true}
+    },
+    {
+      "record_id": "lin_exact_weight_2_centered_n4",
+      "predicate_id": "exact_weight",
+      "predicate_parameters": {"target_weight": 2},
+      "input_width": 4,
+      "source_invariant_record": "sym_exact_weight_2_n4",
+      "construction": {"kind": "centered_weight_scalar", "operator_shape": [1,1], "target_weight": 2, "scale": 2, "definition": "A_x = (w(x)-2)/2. The target class is the singular-value-zero subspace."},
+      "claim_status": "finite_exhaustive_evidence",
+      "expected": {"signed_collision_pairs": 0, "singular_collision_pairs": 0, "singular_semantically_sufficient": true}
+    }
+  ],
+  "WP03": [
+    {
+      "record_id": "or_n4_star_span",
+      "predicate_id": "or",
+      "input_width": 4,
+      "certificate_family": "or_star_and_unit_span_program",
+      "source_linearization_record": "lin_or_marked_row_n4",
+      "adversary_certificate": {"zero_input": "0000", "one_inputs": ["1000","0100","0010","0001"], "definition": "The adversary matrix is the unweighted star between the all-zero input and the four Hamming-weight-one inputs."},
+      "span_program": {"vector_space_dimension": 1, "target": [1.0], "input_vectors": [[1.0],[1.0],[1.0],[1.0]], "availability_rule": "Vector i is available exactly when x_i=1."},
+      "claim_status": "finite_certificate",
+      "limitations": ["The executable record verifies one finite feasible adversary matrix and one finite span program.","It does not solve a general SDP, certify asymptotic optimality, or establish an end-to-end algorithmic advantage.","Compilation into a quantum circuit and time-efficient implementation remain outside WP03."],
+      "sources": ["arXiv:1011.3020","arXiv:2005.01323"]
+    }
+  ]
+}
