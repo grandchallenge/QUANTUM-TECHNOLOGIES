@@ -1,58 +1,67 @@
 {
-  "docket_version": "0.1.0",
+  "docket_version": "0.2.0",
   "docket_id": "QTR-ADOPT-001",
+  "correction_id": "QTR-ADOPT-CORR-001",
   "programme_id": "QTR",
-  "status": "intake_open",
+  "status": "correction_implemented",
   "source_repository": "grandchallenge/.github",
   "source_commit": "33b87f2f15f3af6c6e3b9e38ed3d0d3ba6244835",
   "source_payload_identity_sha256": "5c8bfd314a1bb99004fc96a6b0b02242f22975afa20ac04debb22d5f958c1bd8",
   "target_repository": "grandchallenge/QUANTUM-TECHNOLOGIES",
   "target_payload_commit": "871da6e9c1953b7dcbbf84a20121995b98d6c366",
   "adoption_pull_request": 1,
-  "adoption_head": "resolve_from_pull_request",
-  "claim_boundary": "Repository creation, migration, workflow success, and review intake do not adopt QTR-CHARTER-00, promote QTR-SIG-WP00, certify mathematics, establish quantum advantage, or validate hardware claims.",
+  "corrective_head": null,
+  "corrective_head_resolution": "Resolve from pull request #1 after the corrective commit; workflows assert the runtime checkout equals github.event.pull_request.head.sha.",
   "entry_conditions": {
     "target_repository_created": true,
     "ten_file_payload_migrated": true,
-    "byte_and_sha256_equality": "workflow_pending",
-    "qtr_validation": "workflow_pending",
-    "gcl_conformance": "workflow_pending",
-    "repository_public": false,
-    "protected_main": "unverified"
+    "historical_byte_and_sha256_equality": true,
+    "repository_public": true,
+    "protected_main": {
+      "status": "owner_attested",
+      "ruleset_name": "branch_protect",
+      "connector_verification_limit": "The connected GitHub interface cannot read ruleset internals."
+    },
+    "qtr_validation": "pending_corrective_head",
+    "gcl_conformance": "pending_corrective_head"
   },
-  "offices": {
-    "Axiomatist": {
-      "status": "intake_open",
-      "obligation": "Lock programme domain, evidence classes, promise and oracle semantics, norms, errors, and adoption boundary."
-    },
-    "Cartographer": {
-      "status": "intake_open",
-      "obligation": "Map QTR against GCL authority surfaces, QSP and QSVT lanes, adversary and span-program methodology, and mathematical certification dependencies."
-    },
-    "Grammarian": {
-      "status": "intake_open",
-      "obligation": "Check identifiers, definitions, symbols, schema vocabulary, state names, claim language, and cross-document consistency."
-    },
-    "Verifier": {
-      "status": "intake_open",
-      "obligation": "Replay identity comparison, packet validation, tests, baseline evidence, QTR validation, and GCL conformance on exact commits."
-    },
-    "Adversary": {
-      "status": "intake_open",
-      "obligation": "Search for hidden preprocessing, oracle leakage, vanishing gaps, inaccessible encodings, concealed polynomial degree, weak baselines, and authority ambiguity."
-    },
-    "Formalist": {
-      "status": "intake_open",
-      "obligation": "Separate definitions, executable assertions, finite evidence, theorem obligations, and future formalization boundaries."
-    },
-    "Amanuensis": {
-      "status": "intake_open",
-      "obligation": "Verify source, transport, target, workflow, manifest, migration, provenance, and stable-record identities."
-    },
-    "Referee": {
-      "status": "blocked_pending_other_offices",
-      "obligation": "Review the exact final adoption head after all other office records and issue promote, revise, reject, or terminate."
+  "previous_cycle": {
+    "head": "aec7d45c90289315d56a77573d726ecb3d81f281",
+    "offices_completed": [
+      "Axiomatist",
+      "Cartographer",
+      "Grammarian",
+      "Verifier",
+      "Adversary",
+      "Formalist",
+      "Amanuensis"
+    ],
+    "referee": {
+      "disposition": "revise",
+      "issue_comment_id": 5140824930,
+      "blocking_findings": [
+        "workflows evaluated a synthetic merge checkout rather than explicitly checking out the subject head",
+        "the validator enforced only a subset of the published nested JSON Schema",
+        "numerical equivalence and error conventions were not machine-readable",
+        "parity phase construction and parity decision complexity were conflated",
+        "machine-readable migration and review records were stale"
+      ]
     }
   },
+  "current_cycle": {
+    "status": "corrective_head_pending_replay",
+    "office_findings_record_location": "QTR-ADOPT-001 issue #2 as machine-readable JSON comments after the exact corrective head is frozen",
+    "offices": {
+      "Axiomatist": {"status": "pending_corrective_head"},
+      "Cartographer": {"status": "pending_corrective_head"},
+      "Grammarian": {"status": "pending_corrective_head"},
+      "Verifier": {"status": "pending_corrective_head"},
+      "Adversary": {"status": "pending_corrective_head"},
+      "Formalist": {"status": "pending_corrective_head"},
+      "Amanuensis": {"status": "pending_corrective_head"},
+      "Referee": {"status": "pending_corrective_head"}
+    }
+  },
+  "claim_boundary": "The charter and work package remain candidates until the corrected exact head passes both workflows and receives all eight office dispositions.",
   "downstream_gate": "QTR-SIG-WP01, QTR-SIG-WP02, and finite-instance QTR-SIG-WP03 remain unauthorized until Referee promotion."
 }

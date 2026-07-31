@@ -20,6 +20,7 @@ In scope:
 - readout-gap calculation;
 - ordered-sign alternation lower bounds for scalar separators;
 - declared oracle-query and construction costs;
+- machine-readable numerical and error conventions;
 - machine-readable candidate records;
 - baseline positive and negative fixtures.
 
@@ -68,14 +69,28 @@ A cross-label semantic collision occurs when
 \[
 f(x)\neq f(y)
 \quad\text{and}\quad
-s(x)=s(y)
+s(x)\equiv s(y)
 \]
 
-under the declared numerical equivalence rule.
+under the candidate's declared numerical-equivalence policy. Exact representations shall use exact equality. Approximate representations shall declare their representation, equivalence operation, precision, and tolerance.
 
 Zero cross-label collisions are necessary for exact finite-domain sufficiency. They are not sufficient for an efficient quantum algorithm.
 
-### 3.4 Readout gap
+### 3.4 Numerical and error convention
+
+Every candidate shall declare:
+
+- the signature representation;
+- the numerical-equivalence policy used for grouping signatures;
+- an implementation or block-encoding error field;
+- a readout or decision error field;
+- an applicability state and metric for each error field.
+
+The WP00 version `0.2.0` evaluator uses IEEE-754 binary64 values and a candidate-declared decimal-rounding policy. The evaluator consumes the declared number of digits and emits the complete convention in each report. A global hidden rounding constant is prohibited.
+
+`not_applicable` means that the reference evaluator is computing a classical diagnostic formula and is not claiming a physical implementation or probabilistic readout. It does not mean that a future quantum implementation has zero error.
+
+### 3.5 Readout gap
 
 For scalar signatures, the empirical finite-domain gap is
 
@@ -89,17 +104,17 @@ For vector signatures, WP00 uses Euclidean distance unless another metric is dec
 
 An empirical finite-domain gap is not a theorem about an asymptotic family.
 
-### 3.5 Alternation lower bound
+### 3.6 Alternation lower bound
 
 For scalar signatures, sort the distinct signal values and attach their labels. If labels alternate `a` times, any real polynomial whose sign realizes those labels at the sampled values has degree at least `a`.
 
 This is a diagnostic lower bound. It does not equal approximate degree in general, and it does not include boundedness or approximation error.
 
-### 3.6 Declared coherent-access cost
+### 3.7 Declared coherent-access cost
 
-Each candidate shall declare a query-cost expression and a cost class. WP00 fixtures use exact integer query counts for fixed `n`.
+Each candidate shall declare a query-cost expression, construction scope, and optimality status. WP00 fixtures use exact integer query counts for one specified finite construction.
 
-A declared cost is an assertion until supported by a circuit or reduction.
+A declared cost is an assertion until supported by a circuit or reduction. A signal-construction query count shall not be presented as exact decision-query complexity unless the equivalence is proved.
 
 ## 4. Candidate acceptance contract
 
@@ -111,7 +126,8 @@ A registry record is structurally admissible only if it contains:
 - signal type and mathematical definition;
 - readout signature definition;
 - normalization and error conventions;
-- declared construction/query cost;
+- numerical-equivalence policy;
+- declared construction/query cost and optimality status;
 - expected yes/no regions or readout rule;
 - evidence class and claim status;
 - source and replay provenance;
@@ -121,11 +137,12 @@ A candidate is WP00-executable when the reference evaluator can instantiate it a
 
 A candidate is WP00-verified when:
 
-1. the schema and registry validation pass;
-2. all tests pass;
-3. the report is reproduced from a clean checkout;
-4. declared expected collisions and gaps match the executable result;
-5. an independent Verifier signs the replay record.
+1. the complete nested schema and registry validation pass;
+2. all positive and adversarial tests pass;
+3. the report is reproduced from an exact subject-head checkout;
+4. declared expected collisions, gaps, and conventions match the executable result;
+5. the historical migration pair is replayed directly;
+6. an independent Verifier signs the replay record.
 
 ## 5. Baseline fixtures
 
@@ -157,13 +174,17 @@ On an explicit margin promise `|s| >= Delta`, majority becomes a sign classifier
 
 ### 5.3 Parity phase control
 
-Define
+Define the diagnostic signature
 
 \[
 s_{\oplus}(x)=(-1)^{w(x)}.
 \]
 
-This signal has two points and a constant label gap. However, under the bit-query oracle its exact construction requires all `n` bits in the worst case. It is admitted as a negative-control fixture:
+This signature has two points and a constant label gap. The admitted WP00 fixture uses one explicit clean construction: query all `n` bits, compute their XOR into workspace, apply a parity-controlled phase, and uncompute the workspace. Its recorded query count is therefore `n`.
+
+This construction is not claimed optimal. Exact parity *decision* has quantum query complexity `ceil(n/2)`; for the `n=4` fixture, the exact decision optimum is two queries. That decision result does not by itself establish a two-query clean implementation of the phase map on arbitrary superpositions. Any phase-implementation necessity or optimality claim requires a separate proof and route.
+
+The fixture remains a negative control:
 
 \[
 \text{low signal dimension}\not\Rightarrow\text{low coherent-access cost}.
@@ -182,8 +203,10 @@ WP00 reports, but does not canonize, the following quantities:
 - `empirical_gap`;
 - `distinct_signal_count`;
 - `alternation_degree_lower_bound` for scalar signatures;
-- `declared_query_cost`;
+- `declared_queries_per_signal_call`;
+- `construction_optimality_status`;
 - `dimension`;
+- `numerical_conventions`;
 - `utility_index`.
 
 The provisional utility index is
@@ -204,6 +227,7 @@ The reference evaluator shall emit a deterministic JSON report containing:
 - predicate and candidate identifiers;
 - enumerated domain size;
 - all scorecard quantities;
+- the complete numerical and error convention;
 - collision witnesses, if any;
 - ordered scalar labels, when applicable;
 - evaluator version;
@@ -211,19 +235,21 @@ The reference evaluator shall emit a deterministic JSON report containing:
 
 The validator shall fail closed for:
 
-- missing required registry fields;
+- missing top-level or nested registry fields;
+- unknown top-level or nested fields;
+- const, enum, pattern, type, minimum, item, and uniqueness violations;
 - duplicate identifiers;
 - unknown predicate or implementation names;
-- invalid evidence classes;
-- nonpositive input width;
 - inconsistent expected metrics;
-- absent migration metadata.
+- inconsistent precision and tolerance;
+- stale migration or review metadata;
+- exact-head receipt mismatch.
 
 ## 8. Review obligations
 
 ### Axiomatist
 
-Confirm that each predicate, promise, oracle model, norm, equality tolerance, and cost unit is explicit.
+Confirm that each predicate, promise, oracle model, norm, equality tolerance, error convention, and cost unit is explicit.
 
 ### Cartographer
 
@@ -231,15 +257,15 @@ Map each candidate to the appropriate family: symmetric statistic, amplitude enc
 
 ### Grammarian
 
-Check that “signal,” “encoding,” “signature,” “gap,” “degree,” “query,” “simulation,” and “advantage” are not used interchangeably.
+Check that “signal,” “encoding,” “signature,” “gap,” “degree,” “query,” “phase construction,” “decision complexity,” “simulation,” and “advantage” are not used interchangeably.
 
 ### Verifier
 
-Replay the validator, unit tests, and reference reports. Confirm deterministic digests.
+Replay the exact-head assertion, historical migration comparison, complete schema validator, adversarial tests, reference reports, and deterministic digests.
 
 ### Adversary
 
-Attempt to break each candidate through cross-label collisions, vanishing margins, hidden classical preprocessing, low-overlap states, normalization inflation, numerical tolerance, and incompatible oracle comparisons.
+Attempt to break each candidate through cross-label collisions, vanishing margins, hidden classical preprocessing, low-overlap states, normalization inflation, numerical-equivalence boundaries, nested schema escapes, and incompatible oracle comparisons.
 
 ### Formalist
 
@@ -247,7 +273,7 @@ Separate finite enumeration claims from asymptotic theorem obligations. Identify
 
 ### Amanuensis
 
-Record file identities, source revisions, environment, commands, outputs, and migration identities.
+Record source and target historical revisions, exact operational head, environment, commands, outputs, artifacts, ruleset attestation, and review identities.
 
 ### Referee
 
@@ -258,11 +284,12 @@ Promote WP00 only if the package establishes a trustworthy substrate and makes n
 WP00 may be Referee-promoted when all conditions hold:
 
 - [ ] charter and scope are accepted;
-- [ ] schema and registry are valid;
+- [ ] complete nested schema and registry validation pass;
 - [ ] OR, majority, parity phase, and parity-on-Hamming fixtures execute;
-- [ ] positive and negative tests pass;
+- [ ] positive and adversarial tests pass;
 - [ ] deterministic report digests are recorded;
-- [ ] all eight role reviews are present;
+- [ ] exact subject checkout and historical migration replay are recorded;
+- [ ] all eight role reviews are present on one frozen corrective head;
 - [ ] migration to the target repository is complete and identity-checked;
 - [ ] no claim exceeds `reference_implementation` or `negative_result` without a separate route.
 
