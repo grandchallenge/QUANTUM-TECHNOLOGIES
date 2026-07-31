@@ -63,8 +63,10 @@ def validate_semantic_constraints(candidate: dict[str, Any]) -> None:
 
     if candidate["cost"]["optimality_status"] == "certified_optimal":
         require(
-            any("arXiv:" in source or "doi:" in source.lower()
-                for source in candidate["provenance"]["sources"]),
+            any(
+                "arXiv:" in source or "doi:" in source.lower()
+                for source in candidate["provenance"]["sources"]
+            ),
             f"{candidate_id}: optimality claim lacks an identified source",
         )
 
@@ -102,7 +104,7 @@ def validate_migration_manifest(manifest: dict[str, Any]) -> None:
         manifest["target_repository"] == "grandchallenge/QUANTUM-TECHNOLOGIES",
         "Migration manifest has wrong target repository",
     )
-    require(manifest["status"] == "migrated_candidate", "Migration status must be current")
+    require(manifest["status"] == "adopted", "Migration status must be adopted")
     historical = manifest["historical_migration"]
     require(
         historical["source_commit"] == "33b87f2f15f3af6c6e3b9e38ed3d0d3ba6244835",
@@ -117,7 +119,7 @@ def validate_migration_manifest(manifest: dict[str, Any]) -> None:
 
 
 def validate_review_docket(docket: dict[str, Any]) -> None:
-    require(docket["status"] == "correction_implemented", "Review docket status is stale")
+    require(docket["status"] == "completed", "Review docket status is stale")
     require(docket["entry_conditions"]["repository_public"] is True, "Public status is stale")
     protection = docket["entry_conditions"]["protected_main"]
     require(protection["status"] == "owner_attested", "Protected-main status is stale")
@@ -127,8 +129,33 @@ def validate_review_docket(docket: dict[str, Any]) -> None:
         "Previous Referee disposition is missing",
     )
     require(
-        docket["current_cycle"]["status"] == "corrective_head_pending_replay",
-        "Current review cycle status is not replay-gated",
+        docket["current_cycle"]["status"] == "completed",
+        "Current review cycle status is not complete",
+    )
+    require(
+        docket["current_cycle"]["adoption_merge_commit"]
+        == "0743ac9947cc835de817d50d92cf3df444132449",
+        "Adoption merge commit is not pinned",
+    )
+
+
+def validate_adoption_record(record: dict[str, Any]) -> None:
+    require(record["status"] == "adopted", "Adoption record status is stale")
+    require(
+        record["reviewed_head"] == "6f12872aa8468b15f7d9e51ec939e115a40eb14b",
+        "Reviewed head is not pinned",
+    )
+    require(
+        record["adoption_merge_commit"] == "0743ac9947cc835de817d50d92cf3df444132449",
+        "Adoption merge commit is not pinned",
+    )
+    require(
+        record["referee"]["disposition"] == "promote_for_adoption_merge",
+        "Referee disposition is not promoted",
+    )
+    require(
+        record["downstream_disposition"]["QTR-SIG-WP04_and_later"] == "remain_gated",
+        "Downstream gate is not preserved",
     )
 
 
@@ -138,6 +165,7 @@ def main() -> int:
     manifest = load_json(ROOT / "MIGRATION_MANIFEST.json")
     baseline = load_json(ROOT / "evidence" / "baseline-report.json")
     docket = load_json(ROOT / "reviews" / "QTR-ADOPT-001" / "review-docket.json")
+    adoption = load_json(ROOT / "reviews" / "QTR-ADOPT-001" / "adoption-record.json")
 
     require(schema.get("additionalProperties") is False, "Schema must fail closed")
     require(registry.get("registry_version") == "0.2.0", "Unexpected registry version")
@@ -161,6 +189,7 @@ def main() -> int:
     require(replay == baseline, "Baseline report does not match deterministic replay")
     validate_migration_manifest(manifest)
     validate_review_docket(docket)
+    validate_adoption_record(adoption)
 
     print(
         f"QTR-SIG-WP00 validation passed: {len(candidates)} candidates, "

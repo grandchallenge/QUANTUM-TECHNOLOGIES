@@ -1,8 +1,12 @@
 # QTR-CHARTER-00 — Quantum Technologies Research Charter
 
-Status: `candidate`
+Status: `adopted`
 
 Version: `0.1.0`
+
+Adopted revision: `0743ac9947cc835de817d50d92cf3df444132449`
+
+Reviewed head: `6f12872aa8468b15f7d9e51ec939e115a40eb14b`
 
 Programme: `GCL Quantum Technologies Research (QTR)`
 
@@ -229,7 +233,7 @@ The suite is diagnostic, not a leaderboard. It is designed to expose whether a m
 
 ## 12. Adoption and migration
 
-This charter becomes binding only after:
+This charter became binding after:
 
 1. creation of `grandchallenge/QUANTUM-TECHNOLOGIES`;
 2. migration with byte and SHA-256 identities;
@@ -237,4 +241,4 @@ This charter becomes binding only after:
 4. programme adoption through the applicable GCL authority process;
 5. pinning of the adopted charter revision.
 
-Until then, its status remains `candidate`.
+Adoption completed through squash merge `0743ac9947cc835de817d50d92cf3df444132449` after Referee promotion of reviewed head `6f12872aa8468b15f7d9e51ec939e115a40eb14b`. This adopted charter does not itself certify mathematics, establish quantum advantage, or validate hardware claims.

@@ -1,8 +1,14 @@
 # QTR-SIG-WP00 — Governed Signal-Discovery Substrate
 
-Status: `candidate`
+Status: `referee_promoted`
 
 Parent charter: `QTR-CHARTER-00`
+
+Promoted revision: `0743ac9947cc835de817d50d92cf3df444132449`
+
+Reviewed head: `6f12872aa8468b15f7d9e51ec939e115a40eb14b`
+
+Referee record: `QTR-ADOPT-001#5141388524`
 
 ## 1. Question
 
@@ -283,15 +289,15 @@ Promote WP00 only if the package establishes a trustworthy substrate and makes n
 
 WP00 may be Referee-promoted when all conditions hold:
 
-- [ ] charter and scope are accepted;
-- [ ] complete nested schema and registry validation pass;
-- [ ] OR, majority, parity phase, and parity-on-Hamming fixtures execute;
-- [ ] positive and adversarial tests pass;
-- [ ] deterministic report digests are recorded;
-- [ ] exact subject checkout and historical migration replay are recorded;
-- [ ] all eight role reviews are present on one frozen corrective head;
-- [ ] migration to the target repository is complete and identity-checked;
-- [ ] no claim exceeds `reference_implementation` or `negative_result` without a separate route.
+- [x] charter and scope are accepted;
+- [x] complete nested schema and registry validation pass;
+- [x] OR, majority, parity phase, and parity-on-Hamming fixtures execute;
+- [x] positive and adversarial tests pass;
+- [x] deterministic report digests are recorded;
+- [x] exact subject checkout and historical migration replay are recorded;
+- [x] all eight role reviews are present on one frozen corrective head;
+- [x] migration to the target repository is complete and identity-checked;
+- [x] no claim exceeds `reference_implementation` or `negative_result` without a separate route.
 
 ## 10. Authorized next work
 

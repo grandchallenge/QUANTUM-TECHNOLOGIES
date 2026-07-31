@@ -1,0 +1,60 @@
+{
+  "adopted_artifacts": {
+    "charter": "QTR-CHARTER-00",
+    "work_package": "QTR-SIG-WP00"
+  },
+  "adoption_merge_commit": "0743ac9947cc835de817d50d92cf3df444132449",
+  "downstream_disposition": {
+    "QTR-SIG-WP01": "eligible",
+    "QTR-SIG-WP02": "eligible",
+    "QTR-SIG-WP04_and_later": "remain_gated",
+    "finite-instance QTR-SIG-WP03": "eligible"
+  },
+  "excluded_claims": [
+    "certified mathematics",
+    "new quantum algorithm",
+    "quantum advantage",
+    "phase-construction optimality",
+    "physical block-encoding validation",
+    "practical resource superiority",
+    "hardware validation"
+  ],
+  "historical_migration": {
+    "byte_and_sha256_equal": true,
+    "file_count": 10,
+    "projection_sha256": "05ef05c76da971f800c97f6a5ed4f5cad6aa7b94fa84adc3491ca2df09bce934",
+    "source_commit": "33b87f2f15f3af6c6e3b9e38ed3d0d3ba6244835",
+    "target_payload_commit": "871da6e9c1953b7dcbbf84a20121995b98d6c366"
+  },
+  "merge_method": "squash",
+  "merged_at": "2026-07-31T09:26:35Z",
+  "office_records": {
+    "Adversary": 5141369746,
+    "Amanuensis": 5141376013,
+    "Axiomatist": 5141358528,
+    "Cartographer": 5141361269,
+    "Formalist": 5141372802,
+    "Grammarian": 5141364064,
+    "Verifier": 5141367005
+  },
+  "programme_id": "QTR",
+  "promotion_scope": "governing charter and finite-domain reference substrate",
+  "record_id": "QTR-ADOPT-001-FINAL",
+  "record_version": "0.1.0",
+  "referee": {
+    "disposition": "promote_for_adoption_merge",
+    "issue_comment_id": 5141388524
+  },
+  "reviewed_head": "6f12872aa8468b15f7d9e51ec939e115a40eb14b",
+  "status": "adopted",
+  "workflow_evidence": {
+    "baseline_payload_sha256": "b17a69cc7b82270b7b2c4550dc01747d4dbb4ec39eb351a0ecb57e1cf2b17c16",
+    "conformance_artifact": 8788735803,
+    "conformance_artifact_digest": "sha256:4538a065f41cb6ddc043acd4a0f1c10caac5e7235dfa4eded64e670edec5469e",
+    "exact_head_artifact": 8788735799,
+    "exact_head_artifact_digest": "sha256:6cbc025097b2431c6ec61b5b97fe696329bf836152840ea5b4532de4fff4317a",
+    "gcl_conformance_run": 30619472108,
+    "qtr_validation_run": 30619472100,
+    "tests_passed": 14
+  }
+}

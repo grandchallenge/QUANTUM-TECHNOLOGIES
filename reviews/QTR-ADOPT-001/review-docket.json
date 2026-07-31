@@ -1,67 +1,73 @@
 {
-  "docket_version": "0.2.0",
-  "docket_id": "QTR-ADOPT-001",
-  "correction_id": "QTR-ADOPT-CORR-001",
-  "programme_id": "QTR",
-  "status": "correction_implemented",
-  "source_repository": "grandchallenge/.github",
-  "source_commit": "33b87f2f15f3af6c6e3b9e38ed3d0d3ba6244835",
-  "source_payload_identity_sha256": "5c8bfd314a1bb99004fc96a6b0b02242f22975afa20ac04debb22d5f958c1bd8",
-  "target_repository": "grandchallenge/QUANTUM-TECHNOLOGIES",
-  "target_payload_commit": "871da6e9c1953b7dcbbf84a20121995b98d6c366",
   "adoption_pull_request": 1,
-  "corrective_head": null,
-  "corrective_head_resolution": "Resolve from pull request #1 after the corrective commit; workflows assert the runtime checkout equals github.event.pull_request.head.sha.",
-  "entry_conditions": {
-    "target_repository_created": true,
-    "ten_file_payload_migrated": true,
-    "historical_byte_and_sha256_equality": true,
-    "repository_public": true,
-    "protected_main": {
-      "status": "owner_attested",
-      "ruleset_name": "branch_protect",
-      "connector_verification_limit": "The connected GitHub interface cannot read ruleset internals."
+  "adoption_record": "reviews/QTR-ADOPT-001/adoption-record.json",
+  "claim_boundary": "The adopted charter and promoted WP00 govern a finite-domain reference substrate only. No theorem, quantum-advantage, optimality, physical implementation, resource-superiority, or hardware claim is promoted.",
+  "correction_id": "QTR-ADOPT-CORR-001",
+  "corrective_head": "6f12872aa8468b15f7d9e51ec939e115a40eb14b",
+  "current_cycle": {
+    "Referee": {
+      "issue_comment_id": 5141388524,
+      "status": "promote_for_adoption_merge"
     },
-    "qtr_validation": "pending_corrective_head",
-    "gcl_conformance": "pending_corrective_head"
+    "adoption_merge_commit": "0743ac9947cc835de817d50d92cf3df444132449",
+    "offices": {
+      "Adversary": {"issue_comment_id": 5141369746, "status": "accept"},
+      "Amanuensis": {"issue_comment_id": 5141376013, "status": "accept"},
+      "Axiomatist": {"issue_comment_id": 5141358528, "status": "accept"},
+      "Cartographer": {"issue_comment_id": 5141361269, "status": "accept"},
+      "Formalist": {"issue_comment_id": 5141372802, "status": "accept"},
+      "Grammarian": {"issue_comment_id": 5141364064, "status": "accept"},
+      "Verifier": {"issue_comment_id": 5141367005, "status": "accept"}
+    },
+    "status": "completed",
+    "subject_commit": "6f12872aa8468b15f7d9e51ec939e115a40eb14b"
+  },
+  "docket_id": "QTR-ADOPT-001",
+  "docket_version": "0.3.0",
+  "downstream_gate": "QTR-SIG-WP01, QTR-SIG-WP02, and finite-instance QTR-SIG-WP03 are eligible. QTR-SIG-WP04 and later remain gated.",
+  "entry_conditions": {
+    "gcl_conformance": {
+      "artifact_digest": "sha256:4538a065f41cb6ddc043acd4a0f1c10caac5e7235dfa4eded64e670edec5469e",
+      "artifact_id": 8788735803,
+      "run_id": 30619472108,
+      "status": "success"
+    },
+    "historical_byte_and_sha256_equality": true,
+    "protected_main": {
+      "connector_verification_limit": "The connected GitHub interface cannot read ruleset internals.",
+      "ruleset_name": "branch_protect",
+      "status": "owner_attested"
+    },
+    "qtr_validation": {
+      "artifact_digest": "sha256:6cbc025097b2431c6ec61b5b97fe696329bf836152840ea5b4532de4fff4317a",
+      "artifact_id": 8788735799,
+      "run_id": 30619472100,
+      "status": "success"
+    },
+    "repository_public": true,
+    "target_repository_created": true,
+    "ten_file_payload_migrated": true
   },
   "previous_cycle": {
     "head": "aec7d45c90289315d56a77573d726ecb3d81f281",
-    "offices_completed": [
-      "Axiomatist",
-      "Cartographer",
-      "Grammarian",
-      "Verifier",
-      "Adversary",
-      "Formalist",
-      "Amanuensis"
-    ],
+    "offices_completed": ["Axiomatist", "Cartographer", "Grammarian", "Verifier", "Adversary", "Formalist", "Amanuensis"],
     "referee": {
-      "disposition": "revise",
-      "issue_comment_id": 5140824930,
       "blocking_findings": [
         "workflows evaluated a synthetic merge checkout rather than explicitly checking out the subject head",
         "the validator enforced only a subset of the published nested JSON Schema",
         "numerical equivalence and error conventions were not machine-readable",
         "parity phase construction and parity decision complexity were conflated",
         "machine-readable migration and review records were stale"
-      ]
+      ],
+      "disposition": "revise",
+      "issue_comment_id": 5140824930
     }
   },
-  "current_cycle": {
-    "status": "corrective_head_pending_replay",
-    "office_findings_record_location": "QTR-ADOPT-001 issue #2 as machine-readable JSON comments after the exact corrective head is frozen",
-    "offices": {
-      "Axiomatist": {"status": "pending_corrective_head"},
-      "Cartographer": {"status": "pending_corrective_head"},
-      "Grammarian": {"status": "pending_corrective_head"},
-      "Verifier": {"status": "pending_corrective_head"},
-      "Adversary": {"status": "pending_corrective_head"},
-      "Formalist": {"status": "pending_corrective_head"},
-      "Amanuensis": {"status": "pending_corrective_head"},
-      "Referee": {"status": "pending_corrective_head"}
-    }
-  },
-  "claim_boundary": "The charter and work package remain candidates until the corrected exact head passes both workflows and receives all eight office dispositions.",
-  "downstream_gate": "QTR-SIG-WP01, QTR-SIG-WP02, and finite-instance QTR-SIG-WP03 remain unauthorized until Referee promotion."
+  "programme_id": "QTR",
+  "source_commit": "33b87f2f15f3af6c6e3b9e38ed3d0d3ba6244835",
+  "source_payload_identity_sha256": "5c8bfd314a1bb99004fc96a6b0b02242f22975afa20ac04debb22d5f958c1bd8",
+  "source_repository": "grandchallenge/.github",
+  "status": "completed",
+  "target_payload_commit": "871da6e9c1953b7dcbbf84a20121995b98d6c366",
+  "target_repository": "grandchallenge/QUANTUM-TECHNOLOGIES"
 }

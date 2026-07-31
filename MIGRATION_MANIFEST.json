@@ -1,29 +1,39 @@
 {
-  "manifest_version": "0.2.0",
+  "claim_boundary": "Migration and corrective workflow success do not adopt the charter, certify mathematics, establish quantum advantage, or validate hardware claims.",
+  "historical_migration": {
+    "byte_and_sha256_equal": true,
+    "failed_first_replay_retained": true,
+    "file_count": 10,
+    "source_commit": "33b87f2f15f3af6c6e3b9e38ed3d0d3ba6244835",
+    "source_payload_identity_sha256": "5c8bfd314a1bb99004fc96a6b0b02242f22975afa20ac04debb22d5f958c1bd8",
+    "target_payload_commit": "871da6e9c1953b7dcbbf84a20121995b98d6c366",
+    "target_projection_identity_sha256": "05ef05c76da971f800c97f6a5ed4f5cad6aa7b94fa84adc3491ca2df09bce934"
+  },
+  "manifest_version": "0.3.0",
+  "operational_adoption": {
+    "adoption_issue": 2,
+    "adoption_merge_commit": "0743ac9947cc835de817d50d92cf3df444132449",
+    "correction_issue": 4,
+    "corrective_head": "6f12872aa8468b15f7d9e51ec939e115a40eb14b",
+    "documentary_pin_issue": 5,
+    "previous_referee_disposition": "revise",
+    "previous_review_head": "aec7d45c90289315d56a77573d726ecb3d81f281",
+    "pull_request": 1,
+    "referee_disposition": "promote_for_adoption_merge",
+    "referee_record": "QTR-ADOPT-001#5141388524",
+    "status": "adopted"
+  },
+  "operational_control_files": [
+    ".github/workflows/gcl-conformance.yml",
+    ".github/workflows/qtr-validation.yml",
+    "ci/schema_validation.py",
+    "ci/verify_migration.py",
+    "reviews/QTR-ADOPT-001/adoption-record.json",
+    "reviews/QTR-ADOPT-001/review-docket.json",
+    "tests/test_schema_validation.py"
+  ],
   "programme_id": "QTR",
   "programme_name": "GCL Quantum Technologies Research",
-  "source_repository": "grandchallenge/.github",
-  "source_path": "incubation/quantum-technologies-research",
-  "target_repository": "grandchallenge/QUANTUM-TECHNOLOGIES",
-  "target_path": ".",
-  "status": "migrated_candidate",
-  "historical_migration": {
-    "source_commit": "33b87f2f15f3af6c6e3b9e38ed3d0d3ba6244835",
-    "target_payload_commit": "871da6e9c1953b7dcbbf84a20121995b98d6c366",
-    "source_payload_identity_sha256": "5c8bfd314a1bb99004fc96a6b0b02242f22975afa20ac04debb22d5f958c1bd8",
-    "target_projection_identity_sha256": "05ef05c76da971f800c97f6a5ed4f5cad6aa7b94fa84adc3491ca2df09bce934",
-    "file_count": 10,
-    "byte_and_sha256_equal": true,
-    "failed_first_replay_retained": true
-  },
-  "operational_adoption": {
-    "pull_request": 1,
-    "correction_issue": 4,
-    "previous_review_head": "aec7d45c90289315d56a77573d726ecb3d81f281",
-    "previous_referee_disposition": "revise",
-    "corrective_head_resolution": "github.event.pull_request.head.sha",
-    "status": "correction_implemented_pending_exact_head_replay"
-  },
   "required_files": [
     "README.md",
     "QTR-CHARTER-00.md",
@@ -36,13 +46,9 @@
     "evidence/baseline-report.json",
     "MIGRATION_MANIFEST.json"
   ],
-  "operational_control_files": [
-    "ci/schema_validation.py",
-    "ci/verify_migration.py",
-    "tests/test_schema_validation.py",
-    ".github/workflows/qtr-validation.yml",
-    ".github/workflows/gcl-conformance.yml",
-    "reviews/QTR-ADOPT-001/review-docket.json"
-  ],
-  "claim_boundary": "Migration and corrective workflow success do not adopt the charter, certify mathematics, establish quantum advantage, or validate hardware claims."
+  "source_path": "incubation/quantum-technologies-research",
+  "source_repository": "grandchallenge/.github",
+  "status": "adopted",
+  "target_path": ".",
+  "target_repository": "grandchallenge/QUANTUM-TECHNOLOGIES"
 }
