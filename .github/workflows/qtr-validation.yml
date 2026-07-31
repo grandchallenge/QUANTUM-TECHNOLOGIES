@@ -17,7 +17,7 @@ jobs:
   validate:
     name: validate
     runs-on: ubuntu-24.04
-    timeout-minutes: 8
+    timeout-minutes: 10
     env:
       SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
@@ -36,11 +36,13 @@ jobs:
             --verify-history \
             --evaluated-commit "$SUBJECT_SHA" \
             --output /tmp/QTR-ADOPT-CORR-001-exact-head-receipt.json
-      - name: Validate governed packet and complete schema
+      - name: Validate adopted WP00 substrate
         run: python ci/validate.py
+      - name: Validate WP01 through finite WP03 package
+        run: python ci/validate_downstream.py
       - name: Run reference and adversarial tests
         run: python -m unittest discover -s tests -p "test_*.py" -v
-      - name: Replay baseline report
+      - name: Replay WP00 baseline report
         run: |
           python reference/signal_discovery.py --output /tmp/qtr-baseline.json
           python - <<'PY'
@@ -52,10 +54,35 @@ jobs:
               raise SystemExit("baseline replay mismatch")
           print(observed["payload_sha256"])
           PY
-      - name: Preserve exact-head receipt
+      - name: Write downstream exact-head receipt
+        run: |
+          python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+          subject = "${{ env.SUBJECT_SHA }}"
+          runtime = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+          downstream = json.loads(Path("evidence/downstream-atlas-report.json").read_text())
+          receipt = {
+              "receipt_version": "0.1.0",
+              "docket_id": "QTR-SIG-NEXT-001",
+              "evaluated_commit": subject,
+              "runtime_head": runtime,
+              "exact_head_equal": subject == runtime,
+              "work_package_status": "candidate",
+              "downstream_payload_sha256": downstream["payload_sha256"],
+              "WP04_status": "gated"
+          }
+          Path("/tmp/QTR-SIG-NEXT-001-exact-head.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+          if not receipt["exact_head_equal"]:
+              raise SystemExit("downstream receipt head mismatch")
+          PY
+      - name: Preserve exact-head receipts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: QTR-ADOPT-CORR-001-exact-head-receipt
-          path: /tmp/QTR-ADOPT-CORR-001-exact-head-receipt.json
+          name: QTR-SIG-NEXT-001-exact-head
+          path: |
+            /tmp/QTR-ADOPT-CORR-001-exact-head-receipt.json
+            /tmp/QTR-SIG-NEXT-001-exact-head.json
           if-no-files-found: error
           retention-days: 90

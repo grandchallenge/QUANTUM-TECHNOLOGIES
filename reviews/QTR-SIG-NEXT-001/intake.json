@@ -1,0 +1,29 @@
+{
+  "record_version": "0.1.0",
+  "record_id": "QTR-SIG-NEXT-001",
+  "status": "candidate_implementation_ready",
+  "authority": {
+    "charter_adoption_merge": "0743ac9947cc835de817d50d92cf3df444132449",
+    "adoption_pin_merge": "468f22e694c569969602ec68812c57b9109dc8ad",
+    "wp00_status": "referee_promoted"
+  },
+  "work_packages": {
+    "QTR-SIG-WP01": {"issue": 7, "execution": "parallel"},
+    "QTR-SIG-WP02": {"issue": 8, "execution": "parallel"},
+    "QTR-SIG-WP03": {"issue": 9, "execution": "finite_instance_after_shared_interfaces"}
+  },
+  "promotion_scope": [
+    "finite symmetry quotient atlas",
+    "finite linearization atlas",
+    "one finite OR adversary/span-program certificate pair"
+  ],
+  "excluded_scope": [
+    "QTR-SIG-WP04",
+    "general adversary SDP solver",
+    "QSP phase synthesis",
+    "physical block encoding",
+    "quantum advantage",
+    "hardware evidence"
+  ],
+  "required_offices": ["Axiomatist", "Cartographer", "Grammarian", "Verifier", "Adversary", "Formalist", "Amanuensis", "Referee"]
+}

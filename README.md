@@ -1,8 +1,8 @@
 # GCL Quantum Technologies Research
 
-Status: `incubation`
+Status: `adopted`
 
-Target authority repository: `grandchallenge/QUANTUM-TECHNOLOGIES`
+Authority repository: `grandchallenge/QUANTUM-TECHNOLOGIES`
 
 Programme identifier: `QTR`
 
@@ -10,7 +10,7 @@ Programme identifier: `QTR`
 
 GCL Quantum Technologies Research develops auditable quantum algorithms, operator encodings, resource estimates, simulations, and experimental protocols. The programme separates mathematical validity, algorithmic correctness, resource claims, simulation evidence, and hardware evidence.
 
-The first research lane formalizes the chain
+The first research lane studies the governed chain
 
 \[
 \text{Boolean predicate}
@@ -24,63 +24,56 @@ The first research lane formalizes the chain
 \text{QSVT execution}.
 \]
 
-The central problem is not merely to approximate a Boolean function by a polynomial. It is to discover a scalar or operator-valued signal that is:
+A smaller signal is useful only when semantic sufficiency, access cost, spectral separation, polynomial degree, and end-to-end resources are all controlled.
 
-1. semantically sufficient for the predicate;
-2. coherently accessible in the locked oracle model;
-3. separated by a usable spectral or singular-value gap;
-4. compatible with a bounded low-degree polynomial transformation;
-5. cheaper end-to-end than competing encodings.
+## Authority state
 
-## Authority boundary
+- `QTR-CHARTER-00`: adopted.
+- `QTR-SIG-WP00`: Referee-promoted finite-domain substrate.
+- `QTR-SIG-WP01`: candidate symmetry-quotient atlas.
+- `QTR-SIG-WP02`: candidate linearization atlas.
+- `QTR-SIG-WP03`: candidate finite adversary/span-program certificate package.
+- `QTR-SIG-WP04` and later: gated.
 
-This incubation packet is an organizational bootstrap artifact. It does not establish a new constitutional authority by itself. Until the target repository is created and the charter is adopted:
+The adoption and promotion records do not certify mathematics, establish a new quantum algorithm, prove quantum advantage, validate a physical block encoding, establish practical resource superiority, or validate hardware evidence.
 
-- `grandchallenge/.github` holds this packet only as an organization-level staging surface;
-- mathematical statements remain subject to the applicable GCL mathematical certification route;
-- algorithmic and resource claims remain candidate claims;
-- simulations are evidence about implementations, not evidence of asymptotic quantum advantage;
-- hardware claims require device, calibration, compiler, shot, and uncertainty records.
+## Current executable package
 
-## Initial work package
+WP01 and WP02 proceed in parallel. Finite-instance WP03 consumes their governed record identities.
 
-`QTR-SIG-WP00` establishes the governed signal-discovery substrate. It includes:
+WP01 exhaustively groups Boolean strings by permutation orbits and checks whether the predicate is constant on each orbit. WP02 exposes signed-operator, singular-value, rank, range, and kernel semantics. WP03 verifies one explicit four-bit OR adversary matrix and one matching span program.
 
-- a formal signal-candidate contract;
-- oracle, encoding, separation, polynomial, and readout gates;
-- a machine-readable registry and schema;
-- an executable reference evaluator;
-- baseline fixtures for OR, majority, and parity;
-- a staged programme from symmetry reduction through QSVT resource audit;
-- role-specific review obligations.
+The package deliberately retains negative evidence. In particular, the signed Hamming scalar separates five-bit majority, while its singular value erases the sign and creates opposite-label collisions.
 
-The package deliberately includes parity. Its one-dimensional phase perfectly separates labels, but constructing that phase from a bit-query oracle costs all input bits. This fixture prevents the false inference that low signal dimension implies low coherent-access complexity.
+## Key files
 
-## Files
-
-- `QTR-CHARTER-00.md`: programme charter and authority model.
-- `work-packages/QTR-SIG-WP00.md`: first governed research package.
-- `schemas/signal-candidate.schema.json`: machine-readable candidate contract.
-- `registry/signal-candidates.json`: admitted baseline candidate records.
-- `reference/signal_discovery.py`: dependency-free evaluator.
-- `tests/test_signal_discovery.py`: executable acceptance and failure fixtures.
-- `ci/validate.py`: packet and registry validation.
-- `MIGRATION_MANIFEST.json`: target repository migration contract.
+- `QTR-CHARTER-00.md`: adopted programme charter.
+- `work-packages/QTR-SIG-WP00.md`: promoted signal-discovery substrate.
+- `work-packages/QTR-SIG-WP01.md`: symmetry quotient contract.
+- `work-packages/QTR-SIG-WP02.md`: linearization contract.
+- `work-packages/QTR-SIG-WP03.md`: finite adversary/span-program contract.
+- `registry/`: governed candidate and downstream atlas records.
+- `schemas/`: fail-closed record schemas.
+- `reference/`: dependency-free deterministic evaluators.
+- `evidence/`: committed replay reports.
+- `tests/`: acceptance and adversarial fixtures.
+- `ci/validate.py`: adopted WP00 validation.
+- `ci/validate_downstream.py`: WP01–WP03 validation.
 
 ## Validation
 
-From this directory:
-
 ```bash
 python ci/validate.py
-python -m unittest discover -s tests -p "test_*.py"
-python reference/signal_discovery.py
+python ci/validate_downstream.py
+python -m unittest discover -s tests -p "test_*.py" -v
+python reference/downstream_atlas.py
 ```
 
 ## Foundational sources
 
 - Low and Chuang, *Optimal Hamiltonian Simulation by Quantum Signal Processing*, arXiv:1606.02685.
 - Gilyén, Su, Low, and Wiebe, *Quantum Singular Value Transformation and Beyond*, arXiv:1806.01838.
-- Reichardt, *Span Programs and Quantum Query Complexity*, arXiv:0904.2759.
+- Lee, Mittal, Reichardt, Špalek, and Szegedy, *Quantum Query Complexity of State Conversion*, arXiv:1011.3020.
+- Cornelissen, Jeffery, Ozols, and Piedrafita, *Span Programs and Quantum Time Complexity*, arXiv:2005.01323.
 
-These sources motivate the QSP/QSVT and adversary/span-program lanes. Their presence does not discharge theorem-level source comparison or novelty review for future GCL claims.
+These sources motivate the programme lanes. They do not discharge theorem-level source comparison, certification, or novelty review for future claims.

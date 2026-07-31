@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grandchallenge.ai/qtr/schemas/downstream-atlas.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["registry_version", "status", "authority", "WP01", "WP02", "WP03"],
+  "properties": {
+    "registry_version": {"type": "string", "const": "0.1.0"},
+    "status": {"type": "string", "const": "candidate"},
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["charter_adoption_merge", "adoption_pin_merge", "wp00_status"],
+      "properties": {
+        "charter_adoption_merge": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "adoption_pin_merge": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "wp00_status": {"type": "string", "const": "referee_promoted"}
+      }
+    },
+    "WP01": {"type": "array", "items": {"type": "object"}},
+    "WP02": {"type": "array", "items": {"type": "object"}},
+    "WP03": {"type": "array", "items": {"type": "object"}}
+  }
+}
