@@ -57,8 +57,10 @@ jobs:
               raise SystemExit("reviewed evidence identity mismatch")
           if promotion["reviewed_snapshot"]["snapshot_preserved_byte_for_byte"] is not True:
               raise SystemExit("reviewed snapshot preservation missing")
-          if intake["status"] != "completed_referee_promoted":
-              raise SystemExit("review intake is not closed")
+          if intake["status"] != "candidate_implementation_ready":
+              raise SystemExit("reviewed snapshot status changed")
+          if intake["review_cycle_status"] != "completed_referee_promoted":
+              raise SystemExit("review cycle is not closed")
           PY
       - name: Run reference and adversarial tests
         run: python -m unittest discover -s tests -p "test_*.py" -v
