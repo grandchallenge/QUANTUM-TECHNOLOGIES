@@ -38,8 +38,28 @@ jobs:
             --output /tmp/QTR-ADOPT-CORR-001-exact-head-receipt.json
       - name: Validate adopted WP00 substrate
         run: python ci/validate.py
-      - name: Validate WP01 through finite WP03 package
+      - name: Validate promoted WP01 through bounded WP03 substrate
         run: python ci/validate_downstream.py
+      - name: Validate promotion overlay
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          promotion = json.loads(Path("reviews/QTR-SIG-NEXT-001/promotion-record.json").read_text())
+          intake = json.loads(Path("reviews/QTR-SIG-NEXT-001/intake.json").read_text())
+          if promotion["status"] != "referee_promoted":
+              raise SystemExit("promotion record status missing")
+          if promotion["reviewed_head"] != "c6d3c460804bcc414226cac3700a864773ba2fdf":
+              raise SystemExit("reviewed head mismatch")
+          if promotion["scientific_merge_commit"] != "f96452e3eeb1688bf8eb60c7b22e3adf500bae39":
+              raise SystemExit("scientific merge mismatch")
+          if promotion["workflow_evidence"]["downstream_payload_sha256"] != "157351b5dc7fc907027ad4ef70ae56cd9af739fd87f9f744c346a795a59b21f6":
+              raise SystemExit("reviewed evidence identity mismatch")
+          if promotion["reviewed_snapshot"]["snapshot_preserved_byte_for_byte"] is not True:
+              raise SystemExit("reviewed snapshot preservation missing")
+          if intake["status"] != "completed_referee_promoted":
+              raise SystemExit("review intake is not closed")
+          PY
       - name: Run reference and adversarial tests
         run: python -m unittest discover -s tests -p "test_*.py" -v
       - name: Replay WP00 baseline report
@@ -54,7 +74,7 @@ jobs:
               raise SystemExit("baseline replay mismatch")
           print(observed["payload_sha256"])
           PY
-      - name: Write downstream exact-head receipt
+      - name: Write promoted exact-head receipt
         run: |
           python - <<'PY'
           import json
@@ -64,25 +84,27 @@ jobs:
           runtime = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
           downstream = json.loads(Path("evidence/downstream-atlas-report.json").read_text())
           receipt = {
-              "receipt_version": "0.1.0",
-              "docket_id": "QTR-SIG-NEXT-001",
+              "receipt_version": "0.2.0",
+              "docket_id": "QTR-SIG-PIN-001",
               "evaluated_commit": subject,
               "runtime_head": runtime,
               "exact_head_equal": subject == runtime,
-              "work_package_status": "candidate",
+              "work_package_status": "referee_promoted",
+              "reviewed_head": "c6d3c460804bcc414226cac3700a864773ba2fdf",
+              "scientific_merge_commit": "f96452e3eeb1688bf8eb60c7b22e3adf500bae39",
               "downstream_payload_sha256": downstream["payload_sha256"],
               "WP04_status": "gated"
           }
-          Path("/tmp/QTR-SIG-NEXT-001-exact-head.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+          Path("/tmp/QTR-SIG-PIN-001-exact-head.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
           if not receipt["exact_head_equal"]:
-              raise SystemExit("downstream receipt head mismatch")
+              raise SystemExit("promotion pin receipt head mismatch")
           PY
       - name: Preserve exact-head receipts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: QTR-SIG-NEXT-001-exact-head
+          name: QTR-SIG-PIN-001-exact-head
           path: |
             /tmp/QTR-ADOPT-CORR-001-exact-head-receipt.json
-            /tmp/QTR-SIG-NEXT-001-exact-head.json
+            /tmp/QTR-SIG-PIN-001-exact-head.json
           if-no-files-found: error
           retention-days: 90
