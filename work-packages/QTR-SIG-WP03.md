@@ -1,12 +1,18 @@
 # QTR-SIG-WP03 — Finite Adversary and Span-Program Extraction
 
-Status: `candidate`
+Status: `referee_promoted`
+
+Promotion scope: `finite_instance_only`
+
+Reviewed head: `c6d3c460804bcc414226cac3700a864773ba2fdf`
+
+Promotion merge: `f96452e3eeb1688bf8eb60c7b22e3adf500bae39`
+
+Referee record: `QTR-SIG-NEXT-001 issue #11 comment 5141826042`
 
 Parent: `QTR-SIG-WP00` (`referee_promoted`)
 
-Issues: `#9`
-
-Scope: `finite_instance_only`
+Issue: `#9`
 
 ## 1. Objective
 
