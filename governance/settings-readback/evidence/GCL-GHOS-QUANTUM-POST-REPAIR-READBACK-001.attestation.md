@@ -8,7 +8,7 @@
 - recorded at: `2026-08-04T07:20:26.7913380Z`;
 - authenticated actor: `fyremael` (`17925951`), repository admin;
 - canonical receipt SHA-256: `83109c5c7f7461480bc5f0119c96295716a194a71dce3fdebe3552d8602efe37`;
-- admitted source-bundle SHA-256: `2bae1813706334f7571c144fa647da3ce2b9c9e791d5653246d34cc180179cae`;
+- admitted source-bundle SHA-256: `3d17fbc44356c614a0b96c9f0aa3973fc4653f7fa85ebd8bc576cf4f7cf48080`;
 - source projections: `16`;
 - readback gaps: `0`.
 
