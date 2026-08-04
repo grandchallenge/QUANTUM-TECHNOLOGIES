@@ -39,6 +39,11 @@ def collect(
         SHA40.fullmatch(owner_controls_evidence_merge) is not None,
         "owner-controls evidence merge must be an exact 40-character commit",
     )
+    require(
+        owner_controls_evidence_merge
+        == contract["authority"]["owner_controls_evidence_merge"],
+        "owner-controls evidence merge identity drift",
+    )
     repository = contract["repository"]
     base = repo_path(repository)
 
@@ -57,7 +62,7 @@ def collect(
 
     ancestry: dict[str, Any] = {}
     commits = {
-        "owner_controls_evidence_merge": owner_controls_evidence_merge,
+        "owner_controls_evidence_merge": contract["authority"]["owner_controls_evidence_merge"],
         "profile_merge": contract["authority"]["profile_merge"],
         "surfaces_merge": contract["authority"]["surfaces_merge"],
         "action_policy_merge": contract["authority"]["action_policy_merge"],
