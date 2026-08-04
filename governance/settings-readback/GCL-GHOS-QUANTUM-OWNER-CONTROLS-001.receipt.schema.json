@@ -1,0 +1,419 @@
+{
+  "$id": "https://grandchallenge.ai/schemas/GCL-GHOS-QUANTUM-OWNER-CONTROLS-001.receipt.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "actor": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "const": 17925951
+        },
+        "login": {
+          "const": "fyremael"
+        },
+        "repository_admin": {
+          "const": true
+        }
+      },
+      "required": [
+        "id",
+        "login",
+        "repository_admin"
+      ],
+      "type": "object"
+    },
+    "api_version": {
+      "const": "2026-03-10"
+    },
+    "assembled_at_utc": {
+      "minLength": 20,
+      "type": "string"
+    },
+    "authority": {
+      "additionalProperties": false,
+      "properties": {
+        "campaign_issue": {
+          "const": "grandchallenge/gcl-standards#22"
+        },
+        "evidence_issue": {
+          "const": "grandchallenge/QUANTUM-TECHNOLOGIES#22"
+        },
+        "owner_controls_issue": {
+          "const": "grandchallenge/QUANTUM-TECHNOLOGIES#21"
+        },
+        "profile_merge": {
+          "const": "5ec22de5d18e02ba91b47f74f23c7acde6bc3ddc"
+        },
+        "remediation_issue": {
+          "const": "grandchallenge/QUANTUM-TECHNOLOGIES#14"
+        },
+        "surfaces_merge": {
+          "const": "cc89ec99493e5ecc2fa54cd5a4698dae0aa2e606"
+        },
+        "workflow_merge": {
+          "const": "260f469ba7349350c2b192a0e066a24aa670d611"
+        }
+      },
+      "required": [
+        "campaign_issue",
+        "evidence_issue",
+        "owner_controls_issue",
+        "profile_merge",
+        "remediation_issue",
+        "surfaces_merge",
+        "workflow_merge"
+      ],
+      "type": "object"
+    },
+    "boundaries": {
+      "additionalProperties": false,
+      "properties": {
+        "deployment_manufacturing_product_or_commercial_authority": {
+          "const": false
+        },
+        "deviation_disposition_changed": {
+          "const": false
+        },
+        "hardware_validated": {
+          "const": false
+        },
+        "mathematics_certified": {
+          "const": false
+        },
+        "quantum_advantage_proved": {
+          "const": false
+        },
+        "repository_or_organization_conformance_claimed": {
+          "const": false
+        }
+      },
+      "required": [
+        "deployment_manufacturing_product_or_commercial_authority",
+        "deviation_disposition_changed",
+        "hardware_validated",
+        "mathematics_certified",
+        "quantum_advantage_proved",
+        "repository_or_organization_conformance_claimed"
+      ],
+      "type": "object"
+    },
+    "evidence_operation_id": {
+      "const": "GCL-GHOS-QUANTUM-OWNER-CONTROLS-EVIDENCE-001"
+    },
+    "execution_record_model": {
+      "const": "owner_timeline_plus_subreceipts_plus_fresh_readback"
+    },
+    "execution_timeline": {
+      "additionalProperties": false,
+      "properties": {
+        "immutable_release_tags_comment": {
+          "const": 5175275055
+        },
+        "protected_main_ruleset_comment": {
+          "const": 5175015034
+        },
+        "repository_merge_settings_comment": {
+          "const": 5174919919
+        },
+        "security_controls_comment": {
+          "const": 5175342427
+        }
+      },
+      "required": [
+        "immutable_release_tags_comment",
+        "protected_main_ruleset_comment",
+        "repository_merge_settings_comment",
+        "security_controls_comment"
+      ],
+      "type": "object"
+    },
+    "operation_id": {
+      "const": "GCL-GHOS-QUANTUM-OWNER-CONTROLS-001"
+    },
+    "repository": {
+      "const": "grandchallenge/QUANTUM-TECHNOLOGIES"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "source_evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "immutable_release_tags": {
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "const": "governance/settings-readback/evidence/source/GCL-GHOS-QUANTUM-OWNER-CONTROLS-001.immutable-release-tags.receipt.json"
+            },
+            "recorded_at_utc": {
+              "const": "2026-08-04T06:08:43.5893609Z"
+            },
+            "ruleset_id": {
+              "const": 20355165
+            },
+            "sha256": {
+              "const": "abb9380aa64387ae45c1078d9bc7612814c51a40968d7d204fc56ada50719067"
+            }
+          },
+          "required": [
+            "path",
+            "recorded_at_utc",
+            "ruleset_id",
+            "sha256"
+          ],
+          "type": "object"
+        },
+        "protected_main_readback": {
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "const": "governance/settings-readback/evidence/source/GCL-GHOS-QUANTUM-OWNER-CONTROLS-001.protected-main-readback.json"
+            },
+            "protected_main": {
+              "const": "260f469ba7349350c2b192a0e066a24aa670d611"
+            },
+            "recorded_at_utc": {
+              "const": "2026-08-04T06:36:29.2997592Z"
+            },
+            "ruleset_id": {
+              "const": 20106953
+            },
+            "sha256": {
+              "const": "eb7894acb4de2e63134d8c5684c7073a3e5670b0fa21194f4bd3bd6ae15dbba4"
+            }
+          },
+          "required": [
+            "path",
+            "protected_main",
+            "recorded_at_utc",
+            "ruleset_id",
+            "sha256"
+          ],
+          "type": "object"
+        },
+        "security_controls": {
+          "additionalProperties": false,
+          "properties": {
+            "codeql_run_id": {
+              "const": 30883403446
+            },
+            "path": {
+              "const": "governance/settings-readback/evidence/source/GCL-GHOS-QUANTUM-OWNER-CONTROLS-001.security-controls.receipt.json"
+            },
+            "recorded_at_utc": {
+              "const": "2026-08-04T06:17:01.7964860Z"
+            },
+            "sha256": {
+              "const": "318f527bfae3826f4b37cc7b50b1e28dbb89aaa43aead40ec40512a6606e7272"
+            }
+          },
+          "required": [
+            "codeql_run_id",
+            "path",
+            "recorded_at_utc",
+            "sha256"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "immutable_release_tags",
+        "protected_main_readback",
+        "security_controls"
+      ],
+      "type": "object"
+    },
+    "target_state": {
+      "additionalProperties": false,
+      "properties": {
+        "codeql_validation": {
+          "additionalProperties": false,
+          "properties": {
+            "conclusion": {
+              "const": "success"
+            },
+            "head_sha": {
+              "const": "260f469ba7349350c2b192a0e066a24aa670d611"
+            },
+            "jobs": {
+              "const": [
+                {
+                  "conclusion": "success",
+                  "id": 91909321755,
+                  "name": "Analyze (actions)"
+                },
+                {
+                  "conclusion": "success",
+                  "id": 91909321786,
+                  "name": "Analyze (python)"
+                }
+              ]
+            },
+            "run_id": {
+              "const": 30883403446
+            },
+            "status": {
+              "const": "completed"
+            }
+          },
+          "required": [
+            "conclusion",
+            "head_sha",
+            "jobs",
+            "run_id",
+            "status"
+          ],
+          "type": "object"
+        },
+        "immutable_release_tag_ruleset": {
+          "const": {
+            "bypass_actor_count": 0,
+            "enforcement": "active",
+            "id": 20355165,
+            "name": "Immutable release tags",
+            "ref_exclude": [],
+            "ref_include": [
+              "refs/tags/*"
+            ],
+            "rule_types": [
+              "deletion",
+              "non_fast_forward"
+            ],
+            "target": "tag"
+          }
+        },
+        "protected_main": {
+          "const": "260f469ba7349350c2b192a0e066a24aa670d611"
+        },
+        "protected_main_ruleset": {
+          "const": {
+            "allowed_merge_methods": [
+              "merge",
+              "squash"
+            ],
+            "bypass_actor_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "enforcement": "active",
+            "id": 20106953,
+            "name": "branch_protect",
+            "ref_exclude": [],
+            "ref_include": [
+              "~DEFAULT_BRANCH"
+            ],
+            "require_code_owner_review": false,
+            "require_last_push_approval": false,
+            "required_approving_review_count": 0,
+            "required_review_thread_resolution": true,
+            "required_status_checks": [
+              "policy",
+              "security / action-policy",
+              "validate"
+            ],
+            "rule_types": [
+              "deletion",
+              "non_fast_forward",
+              "pull_request",
+              "required_status_checks"
+            ],
+            "strict_required_status_checks_policy": true,
+            "target": "branch"
+          }
+        },
+        "repository_settings": {
+          "const": {
+            "allow_auto_merge": true,
+            "allow_merge_commit": true,
+            "allow_rebase_merge": false,
+            "allow_squash_merge": true,
+            "allow_update_branch": false,
+            "delete_branch_on_merge": true
+          }
+        },
+        "security_controls": {
+          "const": {
+            "codeql_languages": [
+              "actions",
+              "python"
+            ],
+            "codeql_query_suite": "extended",
+            "codeql_runner_type": "standard",
+            "codeql_schedule": "weekly",
+            "codeql_state": "configured",
+            "codeql_threat_model": "remote",
+            "dependabot_security_updates_enabled": true,
+            "dependabot_security_updates_paused": false,
+            "private_vulnerability_reporting_enabled": true,
+            "vulnerability_alerts_and_dependency_graph_enabled": true
+          }
+        }
+      },
+      "required": [
+        "codeql_validation",
+        "immutable_release_tag_ruleset",
+        "protected_main",
+        "protected_main_ruleset",
+        "repository_settings",
+        "security_controls"
+      ],
+      "type": "object"
+    },
+    "validation": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_boundaries_closed": {
+          "const": true
+        },
+        "codeql_validation_run": {
+          "const": true
+        },
+        "credential_scan": {
+          "const": true
+        },
+        "immutable_release_tags": {
+          "const": true
+        },
+        "protected_main_ruleset": {
+          "const": true
+        },
+        "repository_merge_settings": {
+          "const": true
+        },
+        "security_controls": {
+          "const": true
+        },
+        "source_evidence_digests": {
+          "const": true
+        }
+      },
+      "required": [
+        "claim_boundaries_closed",
+        "codeql_validation_run",
+        "credential_scan",
+        "immutable_release_tags",
+        "protected_main_ruleset",
+        "repository_merge_settings",
+        "security_controls",
+        "source_evidence_digests"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "actor",
+    "api_version",
+    "assembled_at_utc",
+    "authority",
+    "boundaries",
+    "evidence_operation_id",
+    "execution_record_model",
+    "execution_timeline",
+    "operation_id",
+    "repository",
+    "schema_version",
+    "source_evidence",
+    "target_state",
+    "validation"
+  ],
+  "type": "object"
+}
