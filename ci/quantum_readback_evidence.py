@@ -33,6 +33,11 @@ def validate_documents(
             row.get("git_blob_sha1") == requirement["git_blob_sha1"],
             f"{kind} blob identity drift: {path}",
         )
+        if "sha256" in requirement:
+            require(
+                row.get("sha256") == requirement["sha256"],
+                f"{kind} byte digest drift: {path}",
+            )
         text = row["text"]
         for fragment in requirement["required_fragments"]:
             require(fragment in text, f"{kind} content drift: {path}: {fragment}")
