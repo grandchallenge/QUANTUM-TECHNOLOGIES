@@ -88,7 +88,7 @@ def validate_contract(contract: dict[str, Any]) -> None:
     )
     require(contract["schema_version"] == "1.0.0", "contract version drift")
     require(
-        contract["operation_id"] == "GCL-GHOS-QUANTUM-FULL-READBACK-001",
+        contract["operation_id"] == "GCL-GHOS-QUANTUM-POST-REPAIR-READBACK-001",
         "operation identity drift",
     )
     require(
@@ -107,6 +107,7 @@ def validate_contract(contract: dict[str, Any]) -> None:
         "surfaces_merge": "cc89ec99493e5ecc2fa54cd5a4698dae0aa2e606",
         "action_policy_merge": "260f469ba7349350c2b192a0e066a24aa670d611",
         "owner_controls_evidence_merge": "a8f2441cd75e717ff30f05d32c0f5e90a7dd7394",
+        "post_repair_readback_issue": "https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES/issues/25",
     }
     exact_keys(authority, set(expected_authority), path="authority")
     require(authority == expected_authority, "authority identity drift")
@@ -146,6 +147,7 @@ def validate_contract(contract: dict[str, Any]) -> None:
             "required_workflows",
             "governed_surfaces",
             "required_check_runs",
+            "admitted_execution_evidence",
         },
         path="expected",
     )
@@ -178,6 +180,11 @@ def validate_contract(contract: dict[str, Any]) -> None:
         isinstance(expected["governed_surfaces"], list)
         and len(expected["governed_surfaces"]) == 3,
         "governed surface inventory drift",
+    )
+    require(
+        isinstance(expected["admitted_execution_evidence"], list)
+        and len(expected["admitted_execution_evidence"]) == 2,
+        "admitted execution-evidence inventory drift",
     )
 
     boundaries = contract["claim_boundaries"]
