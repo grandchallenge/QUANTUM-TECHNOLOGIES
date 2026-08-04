@@ -1,0 +1,170 @@
+{
+  "$schema": "../schemas/quantum_full_readback_contract.schema.json",
+  "schema_version": "1.0.0",
+  "operation_id": "GCL-GHOS-QUANTUM-FULL-READBACK-001",
+  "repository": "grandchallenge/QUANTUM-TECHNOLOGIES",
+  "branch": "main",
+  "api_version": "2026-03-10",
+  "authority": {
+    "owner_controls_issue": "https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES/issues/21",
+    "parent_remediation_issue": "https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES/issues/14",
+    "standards_campaign_issue": "https://github.com/grandchallenge/gcl-standards/issues/22",
+    "profile_merge": "5ec22de5d18e02ba91b47f74f23c7acde6bc3ddc",
+    "surfaces_merge": "cc89ec99493e5ecc2fa54cd5a4698dae0aa2e606",
+    "action_policy_merge": "260f469ba7349350c2b192a0e066a24aa670d611"
+  },
+  "execution": {
+    "owner_controls_evidence_merge_required": true,
+    "transport": "authenticated_github_rest_get_only",
+    "wait_seconds_default": 180
+  },
+  "expected": {
+    "repository_settings": {
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "public",
+      "allow_merge_commit": true,
+      "allow_squash_merge": true,
+      "allow_rebase_merge": false,
+      "allow_auto_merge": true,
+      "allow_update_branch": false,
+      "delete_branch_on_merge": true
+    },
+    "protected_main_ruleset": {
+      "name": "branch_protect",
+      "target": "branch",
+      "enforcement": "active",
+      "allowed_ref_includes": [
+        "~DEFAULT_BRANCH",
+        "refs/heads/main"
+      ],
+      "exact_rule_types": [
+        "deletion",
+        "non_fast_forward",
+        "pull_request",
+        "required_status_checks"
+      ],
+      "required_approving_review_count": 0,
+      "dismiss_stale_reviews_on_push": true,
+      "require_code_owner_review": false,
+      "require_last_push_approval": false,
+      "required_review_thread_resolution": true,
+      "allowed_merge_methods": [
+        "merge",
+        "squash"
+      ],
+      "strict_required_status_checks_policy": true,
+      "required_status_checks": [
+        "policy",
+        "security / action-policy",
+        "validate"
+      ],
+      "zero_bypass": true
+    },
+    "immutable_release_tag_ruleset": {
+      "id": 20355165,
+      "name": "Immutable release tags",
+      "target": "tag",
+      "enforcement": "active",
+      "ref_include": [
+        "refs/tags/*"
+      ],
+      "exact_rule_types": [
+        "deletion",
+        "non_fast_forward"
+      ],
+      "zero_bypass": true
+    },
+    "security": {
+      "vulnerability_alerts": true,
+      "dependabot_security_updates_enabled": true,
+      "dependabot_security_updates_paused": false,
+      "private_vulnerability_reporting": true,
+      "codeql_state": "configured",
+      "codeql_languages": [
+        "actions",
+        "python"
+      ],
+      "codeql_query_suite": "extended",
+      "codeql_threat_model": "remote",
+      "codeql_runner": "standard",
+      "validation_run": 30883403446,
+      "validation_jobs": [
+        "Analyze (actions)",
+        "Analyze (python)"
+      ]
+    },
+    "required_workflows": [
+      {
+        "path": ".github/workflows/qtr-validation.yml",
+        "state": "active",
+        "required_fragments": [
+          "name: QTR validation",
+          "name: validate"
+        ],
+        "git_blob_sha1": "003e8869245bd124e77e097962dec820be011f44"
+      },
+      {
+        "path": ".github/workflows/gcl-conformance.yml",
+        "state": "active",
+        "required_fragments": [
+          "name: GCL conformance",
+          "name: policy",
+          "security:",
+          "grandchallenge/.github/.github/workflows/gcl-security.yml@f98003ef7f8a28ea774e82bf21ce0fe0323d1c28"
+        ],
+        "git_blob_sha1": "a1592c66288b5ad58393b3be2b13fdbc10293a36"
+      }
+    ],
+    "governed_surfaces": [
+      {
+        "path": ".github/CODEOWNERS",
+        "required_fragments": [
+          "* @fyremael",
+          "/governance/ @fyremael @jimsteeg",
+          "/.github/ @fyremael @jimsteeg",
+          "/SECURITY.md @fyremael @jimsteeg"
+        ],
+        "git_blob_sha1": "1c122ca0825355c54ef438f89ca381c40c80c6fb"
+      },
+      {
+        "path": ".github/dependabot.yml",
+        "required_fragments": [
+          "version: 2",
+          "package-ecosystem: github-actions",
+          "package-ecosystem: pip"
+        ],
+        "git_blob_sha1": "919daff81f50ac43788db82431de67a3d36258d8"
+      },
+      {
+        "path": "SECURITY.md",
+        "required_fragments": [
+          "# Security Policy",
+          "Use GitHub private vulnerability reporting",
+          "does not certify mathematics"
+        ],
+        "git_blob_sha1": "49cec62e970cd0f12b6b003a3f63426585a79e3a"
+      }
+    ],
+    "required_check_runs": [
+      "policy",
+      "security / action-policy",
+      "validate"
+    ]
+  },
+  "claim_boundaries": {
+    "settings_or_rulesets_mutated": false,
+    "source_or_workflow_mutated": false,
+    "deviation_disposition_changed": false,
+    "repository_conformance_claimed": false,
+    "organization_wide_conformance_claimed": false,
+    "mathematics_certified": false,
+    "quantum_advantage_proved": false,
+    "hardware_validated": false,
+    "deployment_manufacturing_product_or_commercial_authority": false
+  },
+  "output": {
+    "receipt": "GCL-GHOS-QUANTUM-FULL-READBACK-001.json",
+    "digest": "GCL-GHOS-QUANTUM-FULL-READBACK-001.json.sha256"
+  }
+}
