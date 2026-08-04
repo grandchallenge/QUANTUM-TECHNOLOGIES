@@ -67,6 +67,7 @@ def validate_main_ruleset(
     detail: dict[str, Any], expected: dict[str, Any]
 ) -> dict[str, Any]:
     current = normalize_ruleset(detail)
+    require(current["id"] == expected["id"], "main ruleset ID drift")
     require(current["name"] == expected["name"], "main ruleset name drift")
     require(current["target"] == expected["target"], "main ruleset target drift")
     require(
