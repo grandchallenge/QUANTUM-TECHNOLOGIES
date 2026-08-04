@@ -25,7 +25,7 @@
       "const": "1.0.0"
     },
     "operation_id": {
-      "const": "GCL-GHOS-QUANTUM-FULL-READBACK-001"
+      "const": "GCL-GHOS-QUANTUM-POST-REPAIR-READBACK-001"
     },
     "repository": {
       "const": "grandchallenge/QUANTUM-TECHNOLOGIES"
@@ -44,7 +44,8 @@
         "profile_merge": "5ec22de5d18e02ba91b47f74f23c7acde6bc3ddc",
         "surfaces_merge": "cc89ec99493e5ecc2fa54cd5a4698dae0aa2e606",
         "action_policy_merge": "260f469ba7349350c2b192a0e066a24aa670d611",
-        "owner_controls_evidence_merge": "a8f2441cd75e717ff30f05d32c0f5e90a7dd7394"
+        "owner_controls_evidence_merge": "a8f2441cd75e717ff30f05d32c0f5e90a7dd7394",
+        "post_repair_readback_issue": "https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES/issues/25"
       }
     },
     "execution": {
@@ -96,7 +97,8 @@
             "security / action-policy",
             "validate"
           ],
-          "zero_bypass": true
+          "zero_bypass": true,
+          "id": 20106953
         },
         "immutable_release_tag_ruleset": {
           "id": 20355165,
@@ -187,6 +189,28 @@
           "policy",
           "security / action-policy",
           "validate"
+        ],
+        "admitted_execution_evidence": [
+          {
+            "path": "governance/settings-readback/evidence/GCL-GHOS-QUANTUM-OWNER-CONTROLS-001.receipt.json",
+            "required_fragments": [
+              "\"evidence_operation_id\": \"GCL-GHOS-QUANTUM-OWNER-CONTROLS-EVIDENCE-001\"",
+              "\"operation_id\": \"GCL-GHOS-QUANTUM-OWNER-CONTROLS-001\"",
+              "\"ruleset_id\": 20106953",
+              "\"run_id\": 30883403446"
+            ],
+            "git_blob_sha1": "22ec63fa14acf118cd44d641c49b269102614224",
+            "sha256": "9eb34868b7f47759bf4210b4fc433c0942e602988a0b4bcd40745396bca6af04"
+          },
+          {
+            "path": "governance/settings-readback/evidence/GCL-GHOS-QUANTUM-OWNER-CONTROLS-001.receipt.json.sha256",
+            "required_fragments": [
+              "9eb34868b7f47759bf4210b4fc433c0942e602988a0b4bcd40745396bca6af04",
+              "GCL-GHOS-QUANTUM-OWNER-CONTROLS-001.receipt.json"
+            ],
+            "git_blob_sha1": "56dbcca7bc3998c88872aa12323ad1a6cd6bee6d",
+            "sha256": "054055897aa2cfc9bc5605ef41f3a0b9149d7f7d95220ed8a3a0e9a5bca17871"
+          }
         ]
       }
     },
@@ -205,8 +229,8 @@
     },
     "output": {
       "const": {
-        "receipt": "GCL-GHOS-QUANTUM-FULL-READBACK-001.json",
-        "digest": "GCL-GHOS-QUANTUM-FULL-READBACK-001.json.sha256"
+        "receipt": "GCL-GHOS-QUANTUM-POST-REPAIR-READBACK-001.json",
+        "digest": "GCL-GHOS-QUANTUM-POST-REPAIR-READBACK-001.json.sha256"
       }
     }
   }
