@@ -8,7 +8,7 @@
 - recorded at: `2026-08-04T07:20:26.7913380Z`;
 - authenticated actor: `fyremael` (`17925951`), repository admin;
 - canonical receipt SHA-256: `83109c5c7f7461480bc5f0119c96295716a194a71dce3fdebe3552d8602efe37`;
-- exact-byte source bundle SHA-256: `f550ec163299dbb4438d950399893cae188642eee561327305df338ecfe9ba6a`;
+- admitted source-bundle SHA-256: `2bae1813706334f7571c144fa647da3ce2b9c9e791d5653246d34cc180179cae`;
 - source projections: `16`;
 - readback gaps: `0`.
 
@@ -27,13 +27,13 @@ base64 form and binds each entry by byte count and SHA-256.
 ## Validation
 
 The repository-discovered unittest validates the closed schema, exact receipt
-digest, exact source-bundle reconstruction, source ledger concordance, settings
-and ruleset semantics, security controls, workflow and governed-surface
-identities, admitted execution evidence, zero readback gaps, credential
-absence, and claim boundaries. Adversarial mutations reject omission, authority
-drift, settings drift, ruleset drift, security drift, workflow/surface drift,
-source corruption, unsupported inference, credential material, and claim
-promotion.
+digest, admitted source-bundle identity and exact projection reconstruction,
+source ledger concordance, settings and ruleset semantics, security controls,
+workflow and governed-surface identities, admitted execution evidence, zero
+readback gaps, credential absence, and claim boundaries. Adversarial mutations
+reject omission, authority drift, settings drift, ruleset drift, security drift,
+workflow/surface drift, source corruption, unsupported inference, credential
+material, and claim promotion.
 
 ## Boundary
 
