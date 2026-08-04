@@ -1,0 +1,275 @@
+{
+  "$id": "https://grandchallenge.ai/schemas/GCL-GHOS-QUANTUM-POST-REPAIR-READBACK-001.receipt.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "const": {
+    "actor": {
+      "id": 17925951,
+      "login": "fyremael",
+      "repository_admin": true
+    },
+    "admitted_execution_evidence": {
+      "companion_git_blob_sha": "56dbcca7bc3998c88872aa12323ad1a6cd6bee6d",
+      "companion_path": "governance/settings-readback/evidence/GCL-GHOS-QUANTUM-OWNER-CONTROLS-001.receipt.json.sha256",
+      "companion_text": "9eb34868b7f47759bf4210b4fc433c0942e602988a0b4bcd40745396bca6af04  GCL-GHOS-QUANTUM-OWNER-CONTROLS-001.receipt.json",
+      "receipt_git_blob_sha": "22ec63fa14acf118cd44d641c49b269102614224",
+      "receipt_path": "governance/settings-readback/evidence/GCL-GHOS-QUANTUM-OWNER-CONTROLS-001.receipt.json",
+      "receipt_sha256": "9eb34868b7f47759bf4210b4fc433c0942e602988a0b4bcd40745396bca6af04"
+    },
+    "api_version": "2026-03-10",
+    "authority": {
+      "campaign_issue": "grandchallenge/gcl-standards#22",
+      "execution_evidence_merge": "a8f2441cd75e717ff30f05d32c0f5e90a7dd7394",
+      "execution_evidence_pull_request": 23,
+      "execution_receipt_sha256": "9eb34868b7f47759bf4210b4fc433c0942e602988a0b4bcd40745396bca6af04",
+      "owner_controls_issue": "grandchallenge/QUANTUM-TECHNOLOGIES#21",
+      "post_repair_readback_issue": "grandchallenge/QUANTUM-TECHNOLOGIES#25",
+      "remediation_issue": "grandchallenge/QUANTUM-TECHNOLOGIES#14"
+    },
+    "boundaries": {
+      "deployment_manufacturing_product_or_commercial_authority": false,
+      "deviation_disposition_changed": false,
+      "hardware_validated": false,
+      "mathematics_certified": false,
+      "quantum_advantage_proved": false,
+      "repository_or_organization_conformance_claimed": false,
+      "settings_or_ruleset_mutation_performed": false
+    },
+    "operation_id": "GCL-GHOS-QUANTUM-POST-REPAIR-READBACK-001",
+    "protected_files": [
+      {
+        "git_blob_sha": "003e8869245bd124e77e097962dec820be011f44",
+        "path": ".github/workflows/qtr-validation.yml",
+        "size": 4974
+      },
+      {
+        "git_blob_sha": "a1592c66288b5ad58393b3be2b13fdbc10293a36",
+        "path": ".github/workflows/gcl-conformance.yml",
+        "size": 5882
+      },
+      {
+        "git_blob_sha": "1c122ca0825355c54ef438f89ca381c40c80c6fb",
+        "path": ".github/CODEOWNERS",
+        "size": 266
+      },
+      {
+        "git_blob_sha": "919daff81f50ac43788db82431de67a3d36258d8",
+        "path": ".github/dependabot.yml",
+        "size": 329
+      },
+      {
+        "git_blob_sha": "49cec62e970cd0f12b6b003a3f63426585a79e3a",
+        "path": "SECURITY.md",
+        "size": 2043
+      },
+      {
+        "git_blob_sha": "22ec63fa14acf118cd44d641c49b269102614224",
+        "path": "governance/settings-readback/evidence/GCL-GHOS-QUANTUM-OWNER-CONTROLS-001.receipt.json",
+        "size": 5424
+      },
+      {
+        "git_blob_sha": "56dbcca7bc3998c88872aa12323ad1a6cd6bee6d",
+        "path": "governance/settings-readback/evidence/GCL-GHOS-QUANTUM-OWNER-CONTROLS-001.receipt.json.sha256",
+        "size": 115
+      }
+    ],
+    "protected_main": {
+      "object_type": "commit",
+      "protected_main": "a8f2441cd75e717ff30f05d32c0f5e90a7dd7394",
+      "ref": "refs/heads/main"
+    },
+    "readback_gaps": [],
+    "recorded_at_utc": "2026-08-04T07:20:26.7913380Z",
+    "repository": "grandchallenge/QUANTUM-TECHNOLOGIES",
+    "repository_record": {
+      "archived": false,
+      "default_branch": "main",
+      "full_name": "grandchallenge/QUANTUM-TECHNOLOGIES",
+      "id": 1317238218,
+      "node_id": "R_kgDOToN1yg",
+      "permissions": {
+        "id": 17925951,
+        "login": "fyremael",
+        "repository_admin": true
+      },
+      "settings": {
+        "allow_auto_merge": true,
+        "allow_merge_commit": true,
+        "allow_rebase_merge": false,
+        "allow_squash_merge": true,
+        "allow_update_branch": false,
+        "delete_branch_on_merge": true
+      },
+      "visibility": "public"
+    },
+    "rulesets": {
+      "immutable_release_tags": {
+        "bypass_actor_count": 0,
+        "enforcement": "active",
+        "id": 20355165,
+        "name": "Immutable release tags",
+        "ref_exclude": [],
+        "ref_include": [
+          "refs/tags/*"
+        ],
+        "rule_types": [
+          "deletion",
+          "non_fast_forward"
+        ],
+        "source": "grandchallenge/QUANTUM-TECHNOLOGIES",
+        "source_type": "Repository",
+        "target": "tag"
+      },
+      "protected_main": {
+        "allowed_merge_methods": [
+          "merge",
+          "squash"
+        ],
+        "bypass_actor_count": 0,
+        "dismiss_stale_reviews_on_push": true,
+        "enforcement": "active",
+        "id": 20106953,
+        "name": "branch_protect",
+        "ref_exclude": [],
+        "ref_include": [
+          "~DEFAULT_BRANCH"
+        ],
+        "require_code_owner_review": false,
+        "require_last_push_approval": false,
+        "required_approving_review_count": 0,
+        "required_review_thread_resolution": true,
+        "required_status_checks": [
+          "policy",
+          "security / action-policy",
+          "validate"
+        ],
+        "rule_types": [
+          "deletion",
+          "non_fast_forward",
+          "pull_request",
+          "required_status_checks"
+        ],
+        "source": "grandchallenge/QUANTUM-TECHNOLOGIES",
+        "source_type": "Repository",
+        "strict_required_status_checks_policy": true,
+        "target": "branch"
+      }
+    },
+    "schema_version": "1.0.0",
+    "security_controls": {
+      "codeql_languages": [
+        "actions",
+        "python"
+      ],
+      "codeql_query_suite": "extended",
+      "codeql_runner_type": "standard",
+      "codeql_runner_type_source": "live_api",
+      "codeql_schedule": "weekly",
+      "codeql_state": "configured",
+      "codeql_threat_model": "remote",
+      "codeql_updated_at": "2026-08-04T06:16:45Z",
+      "dependabot_security_updates_enabled": true,
+      "dependabot_security_updates_paused": false,
+      "private_vulnerability_reporting_enabled": true,
+      "vulnerability_alerts_and_dependency_graph_enabled": true,
+      "vulnerability_alerts_http_status": 204
+    },
+    "source_projections": [
+      {
+        "bytes": 330,
+        "path": "raw/.github_CODEOWNERS.json",
+        "sha256": "4e0f2599c54e010c8f14dddce9297984912f69c05fb348261ca84d01c49a50b8"
+      },
+      {
+        "bytes": 338,
+        "path": "raw/.github_dependabot.yml.json",
+        "sha256": "f4d9d0582bb78a3fcc7fb647af7885b2af690f185718f38093948493713bfe07"
+      },
+      {
+        "bytes": 369,
+        "path": "raw/.github_workflows_gcl-conformance.yml.json",
+        "sha256": "6f22871ff5c167822d6e8fab5eb2c2fbd82631f42858048750dfaff6f69dd6f2"
+      },
+      {
+        "bytes": 367,
+        "path": "raw/.github_workflows_qtr-validation.yml.json",
+        "sha256": "94ea9fed4ba2347b00ad754b3dc9514c5200a5a952d55182134b5aa1629c992b"
+      },
+      {
+        "bytes": 72,
+        "path": "raw/actor.json",
+        "sha256": "1000c0579e1b7b63eeba4718620e3ea2d7fbfd09834170c294cd569af9058bf6"
+      },
+      {
+        "bytes": 1913,
+        "path": "raw/branch-ruleset.json",
+        "sha256": "a57987d7836f9e18986ca5e3aa504f9c536069929b2d860dcb336b6ecffb0933"
+      },
+      {
+        "bytes": 250,
+        "path": "raw/codeql-default-setup.json",
+        "sha256": "6dea7927b8c5a593ba1857f81b01cc232c0fb9885c1cc0293b844df1f370fd72"
+      },
+      {
+        "bytes": 41,
+        "path": "raw/dependabot-security-updates.json",
+        "sha256": "3ad708381fa049cc5fca341f6317d9a29d6b7f2660b8d9b96f499f30ad7ea946"
+      },
+      {
+        "bytes": 467,
+        "path": "raw/governance_settings-readback_evidence_GCL-GHOS-QUANTUM-OWNER-CONTROLS-001.receipt.json.json",
+        "sha256": "7d3ad0c7a53521ea702e3935099fdab96bc0e52b8778136d6d4bc5e08f39de33"
+      },
+      {
+        "bytes": 480,
+        "path": "raw/governance_settings-readback_evidence_GCL-GHOS-QUANTUM-OWNER-CONTROLS-001.receipt.json.sha256.json",
+        "sha256": "19d1d8bff9bd11525ff2de1216895c995f0e8ae93fc8f41d844ecf33cdd36eb4"
+      },
+      {
+        "bytes": 22,
+        "path": "raw/private-vulnerability-reporting.json",
+        "sha256": "aa014142a0168313a765dd1211c4c605eb3f15107ab0e1a27ec472170a5fbeca"
+      },
+      {
+        "bytes": 122,
+        "path": "raw/protected-main.json",
+        "sha256": "83e0334e94240044df4a2943733e58ba45c3be65f7c884aeb92891e4e6aa2b1b"
+      },
+      {
+        "bytes": 496,
+        "path": "raw/repository.json",
+        "sha256": "5ae1a3db64b0c6d0bc22d251986991d45b47e61ede372955e830e4b2f813bf2c"
+      },
+      {
+        "bytes": 317,
+        "path": "raw/SECURITY.md.json",
+        "sha256": "9fdb37e796b34fd7f452ca776730eafdfd458e152498ce62a4531f344057d5ac"
+      },
+      {
+        "bytes": 858,
+        "path": "raw/tag-ruleset.json",
+        "sha256": "45dbfbfd5fbf5dca59e96e7b3a50c0fc4707868394284f0948868cc3812d0e99"
+      },
+      {
+        "bytes": 1164,
+        "path": "raw/vulnerability-alerts.http.txt",
+        "sha256": "a4b00e386c8191b4eb36f212320341b3d77e40597e73f2f06d1d261fa2c650c3"
+      }
+    ],
+    "validation": {
+      "admitted_execution_evidence_exact": true,
+      "authenticated_actor": true,
+      "codeql_runner_type_live_readback": true,
+      "governed_surface_identities_exact": true,
+      "immutable_tag_ruleset_exact": true,
+      "protected_main_exact": true,
+      "protected_main_ruleset_exact": true,
+      "repository_admin": true,
+      "repository_settings_exact": true,
+      "security_controls_exposed_fields_exact": true,
+      "unsupported_inference_absent": true,
+      "workflow_identities_exact": true
+    }
+  },
+  "description": "Closed schema for the exact owner-authenticated post-repair readback receipt.",
+  "title": "GCL-GHOS-QUANTUM-POST-REPAIR-READBACK-001 receipt"
+}
