@@ -28,7 +28,7 @@ def contract() -> dict:
 
 def main_ruleset() -> dict:
     return {
-        "id": 200,
+        "id": 20106953,
         "name": "branch_protect",
         "target": "branch",
         "enforcement": "active",
@@ -94,6 +94,20 @@ class QuantumFullReadbackTests(unittest.TestCase):
         self.assertEqual(set(schema["required"]), set(value))
         self.assertEqual(
             schema["properties"]["expected"]["const"], value["expected"]
+        )
+        self.assertEqual(
+            value["authority"]["owner_controls_evidence_merge"],
+            "a8f2441cd75e717ff30f05d32c0f5e90a7dd7394",
+        )
+        self.assertEqual(
+            value["operation_id"],
+            "GCL-GHOS-QUANTUM-POST-REPAIR-READBACK-001",
+        )
+        self.assertEqual(
+            value["expected"]["protected_main_ruleset"]["id"], 20106953
+        )
+        self.assertEqual(
+            len(value["expected"]["admitted_execution_evidence"]), 2
         )
 
     def test_contract_rejects_authority_substitution(self) -> None:
