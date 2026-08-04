@@ -1,0 +1,407 @@
+{
+  "schema_version": "1.0.0",
+  "operation": "GCL-GHOS-QUANTUM-PROTECTED-MAIN-READBACK-001",
+  "repository": "grandchallenge/QUANTUM-TECHNOLOGIES",
+  "api_version": "2026-03-10",
+  "recorded_at_utc": "2026-08-04T06:36:29.2997592Z",
+  "actor": {
+    "login": "fyremael",
+    "id": 17925951,
+    "repository_admin": true
+  },
+  "protected_main": "260f469ba7349350c2b192a0e066a24aa670d611",
+  "repository_record": {
+    "id": 1317238218,
+    "node_id": "R_kgDOToN1yg",
+    "name": "QUANTUM-TECHNOLOGIES",
+    "full_name": "grandchallenge/QUANTUM-TECHNOLOGIES",
+    "private": false,
+    "owner": {
+      "login": "grandchallenge",
+      "id": 131082493,
+      "node_id": "O_kgDOB9Ao_Q",
+      "avatar_url": "https://avatars.githubusercontent.com/u/131082493?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/grandchallenge",
+      "html_url": "https://github.com/grandchallenge",
+      "followers_url": "https://api.github.com/users/grandchallenge/followers",
+      "following_url": "https://api.github.com/users/grandchallenge/following{/other_user}",
+      "gists_url": "https://api.github.com/users/grandchallenge/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/grandchallenge/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/grandchallenge/subscriptions",
+      "organizations_url": "https://api.github.com/users/grandchallenge/orgs",
+      "repos_url": "https://api.github.com/users/grandchallenge/repos",
+      "events_url": "https://api.github.com/users/grandchallenge/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/grandchallenge/received_events",
+      "type": "Organization",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "html_url": "https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES",
+    "description": null,
+    "fork": false,
+    "url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES",
+    "forks_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/forks",
+    "keys_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/keys{/key_id}",
+    "collaborators_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/collaborators{/collaborator}",
+    "teams_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/teams",
+    "hooks_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/hooks",
+    "issue_events_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/issues/events{/number}",
+    "events_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/events",
+    "assignees_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/assignees{/user}",
+    "branches_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/branches{/branch}",
+    "tags_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/tags",
+    "blobs_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/git/blobs{/sha}",
+    "git_tags_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/git/tags{/sha}",
+    "git_refs_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/git/refs{/sha}",
+    "trees_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/git/trees{/sha}",
+    "statuses_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/statuses/{sha}",
+    "languages_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/languages",
+    "stargazers_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/stargazers",
+    "contributors_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/contributors",
+    "subscribers_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/subscribers",
+    "subscription_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/subscription",
+    "commits_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/commits{/sha}",
+    "git_commits_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/git/commits{/sha}",
+    "comments_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/comments{/number}",
+    "issue_comment_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/issues/comments{/number}",
+    "contents_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/contents/{+path}",
+    "compare_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/compare/{base}...{head}",
+    "merges_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/merges",
+    "archive_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/{archive_format}{/ref}",
+    "downloads_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/downloads",
+    "issues_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/issues{/number}",
+    "pulls_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/pulls{/number}",
+    "milestones_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/milestones{/number}",
+    "notifications_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/notifications{?since,all,participating}",
+    "labels_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/labels{/name}",
+    "releases_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/releases{/id}",
+    "deployments_url": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/deployments",
+    "created_at": "2026-07-30T12:20:22Z",
+    "updated_at": "2026-08-04T03:51:25Z",
+    "pushed_at": "2026-08-04T03:50:59Z",
+    "git_url": "git://github.com/grandchallenge/QUANTUM-TECHNOLOGIES.git",
+    "ssh_url": "git@github.com:grandchallenge/QUANTUM-TECHNOLOGIES.git",
+    "clone_url": "https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES.git",
+    "svn_url": "https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES",
+    "homepage": null,
+    "size": 105,
+    "stargazers_count": 0,
+    "watchers_count": 0,
+    "language": "Python",
+    "has_issues": true,
+    "has_projects": true,
+    "has_wiki": false,
+    "has_pages": false,
+    "has_discussions": false,
+    "forks_count": 0,
+    "mirror_url": null,
+    "archived": false,
+    "disabled": false,
+    "open_issues_count": 4,
+    "license": null,
+    "allow_forking": true,
+    "is_template": false,
+    "web_commit_signoff_required": false,
+    "has_pull_requests": true,
+    "pull_request_creation_policy": "all",
+    "topics": [],
+    "visibility": "public",
+    "forks": 0,
+    "open_issues": 4,
+    "watchers": 0,
+    "default_branch": "main",
+    "permissions": {
+      "admin": true,
+      "maintain": true,
+      "push": true,
+      "triage": true,
+      "pull": true
+    },
+    "temp_clone_token": "",
+    "allow_squash_merge": true,
+    "allow_merge_commit": true,
+    "allow_rebase_merge": false,
+    "allow_auto_merge": true,
+    "delete_branch_on_merge": true,
+    "allow_update_branch": false,
+    "squash_merge_commit_message": "COMMIT_MESSAGES",
+    "squash_merge_commit_title": "COMMIT_OR_PR_TITLE",
+    "merge_commit_message": "PR_TITLE",
+    "merge_commit_title": "MERGE_MESSAGE",
+    "custom_properties": {},
+    "organization": {
+      "login": "grandchallenge",
+      "id": 131082493,
+      "node_id": "O_kgDOB9Ao_Q",
+      "avatar_url": "https://avatars.githubusercontent.com/u/131082493?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/grandchallenge",
+      "html_url": "https://github.com/grandchallenge",
+      "followers_url": "https://api.github.com/users/grandchallenge/followers",
+      "following_url": "https://api.github.com/users/grandchallenge/following{/other_user}",
+      "gists_url": "https://api.github.com/users/grandchallenge/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/grandchallenge/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/grandchallenge/subscriptions",
+      "organizations_url": "https://api.github.com/users/grandchallenge/orgs",
+      "repos_url": "https://api.github.com/users/grandchallenge/repos",
+      "events_url": "https://api.github.com/users/grandchallenge/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/grandchallenge/received_events",
+      "type": "Organization",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "security_and_analysis": {
+      "secret_scanning": {
+        "status": "disabled"
+      },
+      "secret_scanning_push_protection": {
+        "status": "disabled"
+      },
+      "dependabot_security_updates": {
+        "status": "enabled"
+      },
+      "secret_scanning_non_provider_patterns": {
+        "status": "disabled"
+      },
+      "secret_scanning_validity_checks": {
+        "status": "disabled"
+      }
+    },
+    "network_count": 0,
+    "subscribers_count": 0
+  },
+  "ruleset_list": [
+    {
+      "id": 20355165,
+      "name": "Immutable release tags",
+      "target": "tag",
+      "source_type": "Repository",
+      "source": "grandchallenge/QUANTUM-TECHNOLOGIES",
+      "enforcement": "active",
+      "node_id": "RRS_lACqUmVwb3NpdG9yec5Og3XKzgE2mF0",
+      "_links": {
+        "self": {
+          "href": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/rulesets/20355165"
+        },
+        "html": {
+          "href": "https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES/rules/20355165"
+        }
+      },
+      "created_at": "2026-08-03T22:45:48.87-07:00",
+      "updated_at": "2026-08-03T22:45:48.891-07:00"
+    },
+    {
+      "id": 20106953,
+      "name": "branch_protect",
+      "target": "branch",
+      "source_type": "Repository",
+      "source": "grandchallenge/QUANTUM-TECHNOLOGIES",
+      "enforcement": "active",
+      "node_id": "RRS_lACqUmVwb3NpdG9yec5Og3XKzgEyzsk",
+      "_links": {
+        "self": {
+          "href": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/rulesets/20106953"
+        },
+        "html": {
+          "href": "https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES/rules/20106953"
+        }
+      },
+      "created_at": "2026-07-31T00:39:00.136-07:00",
+      "updated_at": "2026-08-03T22:30:31.109-07:00"
+    }
+  ],
+  "ruleset_details": [
+    {
+      "id": 20355165,
+      "name": "Immutable release tags",
+      "target": "tag",
+      "source_type": "Repository",
+      "source": "grandchallenge/QUANTUM-TECHNOLOGIES",
+      "enforcement": "active",
+      "conditions": {
+        "ref_name": {
+          "exclude": [],
+          "include": [
+            "refs/tags/*"
+          ]
+        }
+      },
+      "rules": [
+        {
+          "type": "deletion"
+        },
+        {
+          "type": "non_fast_forward"
+        }
+      ],
+      "node_id": "RRS_lACqUmVwb3NpdG9yec5Og3XKzgE2mF0",
+      "created_at": "2026-08-03T22:45:48.87-07:00",
+      "updated_at": "2026-08-03T22:45:48.891-07:00",
+      "bypass_actors": [],
+      "current_user_can_bypass": "never",
+      "_links": {
+        "self": {
+          "href": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/rulesets/20355165"
+        },
+        "html": {
+          "href": "https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES/rules/20355165"
+        }
+      }
+    },
+    {
+      "id": 20106953,
+      "name": "branch_protect",
+      "target": "branch",
+      "source_type": "Repository",
+      "source": "grandchallenge/QUANTUM-TECHNOLOGIES",
+      "enforcement": "active",
+      "conditions": {
+        "ref_name": {
+          "exclude": [],
+          "include": [
+            "~DEFAULT_BRANCH"
+          ]
+        }
+      },
+      "rules": [
+        {
+          "type": "deletion"
+        },
+        {
+          "type": "non_fast_forward"
+        },
+        {
+          "type": "pull_request",
+          "parameters": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "allowed_merge_methods": [
+              "merge",
+              "squash"
+            ]
+          }
+        },
+        {
+          "type": "required_status_checks",
+          "parameters": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "validate",
+                "integration_id": 15368
+              },
+              {
+                "context": "policy",
+                "integration_id": 15368
+              },
+              {
+                "context": "security / action-policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        }
+      ],
+      "node_id": "RRS_lACqUmVwb3NpdG9yec5Og3XKzgEyzsk",
+      "created_at": "2026-07-31T00:39:00.136-07:00",
+      "updated_at": "2026-08-03T22:30:31.109-07:00",
+      "bypass_actors": [],
+      "current_user_can_bypass": "never",
+      "_links": {
+        "self": {
+          "href": "https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/rulesets/20106953"
+        },
+        "html": {
+          "href": "https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES/rules/20106953"
+        }
+      }
+    }
+  ],
+  "validated_target_state": {
+    "repository_settings": {
+      "allow_merge_commit": true,
+      "allow_squash_merge": true,
+      "allow_rebase_merge": false,
+      "allow_auto_merge": true,
+      "allow_update_branch": false,
+      "delete_branch_on_merge": true
+    },
+    "protected_main_ruleset": {
+      "id": 20106953,
+      "name": "branch_protect",
+      "target": "branch",
+      "enforcement": "active",
+      "bypass_actor_count": 0,
+      "ref_include": [
+        "~DEFAULT_BRANCH"
+      ],
+      "ref_exclude": [],
+      "rule_types": [
+        "deletion",
+        "non_fast_forward",
+        "pull_request",
+        "required_status_checks"
+      ],
+      "required_approving_review_count": 0,
+      "dismiss_stale_reviews_on_push": true,
+      "require_code_owner_review": false,
+      "require_last_push_approval": false,
+      "required_review_thread_resolution": true,
+      "allowed_merge_methods": [
+        "merge",
+        "squash"
+      ],
+      "strict_required_status_checks_policy": true,
+      "required_status_checks": [
+        "policy",
+        "security / action-policy",
+        "validate"
+      ]
+    },
+    "immutable_release_tag_ruleset": {
+      "id": 20355165,
+      "name": "Immutable release tags",
+      "target": "tag",
+      "enforcement": "active",
+      "bypass_actor_count": 0,
+      "ref_include": [
+        "refs/tags/*"
+      ],
+      "ref_exclude": [],
+      "rule_types": [
+        "deletion",
+        "non_fast_forward"
+      ]
+    }
+  },
+  "request_contract": {
+    "method": "GET only",
+    "endpoints": [
+      "/user",
+      "/repos/grandchallenge/QUANTUM-TECHNOLOGIES",
+      "/repos/grandchallenge/QUANTUM-TECHNOLOGIES/commits/main",
+      "/repos/grandchallenge/QUANTUM-TECHNOLOGIES/rulesets?includes_parents=false&per_page=100",
+      "/repos/{repository}/rulesets/{ruleset_id}?includes_parents=false"
+    ]
+  },
+  "boundaries": {
+    "settings_or_rulesets_mutated": false,
+    "source_or_workflow_mutated": false,
+    "deviation_disposition_changed": false,
+    "repository_or_organization_conformance_claimed": false,
+    "mathematics_certified": false,
+    "quantum_advantage_proved": false,
+    "hardware_validated": false,
+    "deployment_manufacturing_product_or_commercial_authority": false
+  }
+}
