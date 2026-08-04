@@ -1,0 +1,56 @@
+{
+  "boundaries": {
+    "deployment_manufacturing_product_or_commercial_authority": false,
+    "deviation_disposition_changed": false,
+    "hardware_validated": false,
+    "mathematics_certified": false,
+    "quantum_advantage_proved": false,
+    "repository_or_organization_conformance_claimed": false,
+    "settings_or_ruleset_mutation_performed": false
+  },
+  "entries": [
+    {
+      "bytes": 330,
+      "content": "ewogICJwYXRoIjogIi5naXRodWIvQ09ERU9XTkVSUyIsCiAgInR5cGUiOiAiZmlsZSIsCiAgInNpemUiOiAyNjYsCiAgImdpdF9ibG9iX3NoYSI6ICIxYzEyMmNhMDgyNTM1NWM1NGVmNDM4Zjg5Y2EzODFjNDBjODBjNmZiIiwKICAiaHRtbF91cmwiOiAiaHR0cHM6Ly9naXRodWIuY29tL2dyYW5kY2hhbGxlbmdlL1FVQU5UVU0tVEVDSE5PTE9HSUVTL2Jsb2IvYThmMjQ0MWNkNzVlNzE3ZmYzMGYwNWQzMmMwZjVlOTBhN2RkNzM5NC8uZ2l0aHViL0NPREVPV05FUlMiLAogICJwcm90ZWN0ZWRfcmVmIjogImE4ZjI0NDFjZDc1ZTcxN2ZmMzBmMDVkMzJjMGY1ZTkwYTdkZDczOTQiCn0K",
+      "encoding": "base64",
+      "path": "raw/.github_CODEOWNERS.json",
+      "sha256": "4e0f2599c54e010c8f14dddce9297984912f69c05fb348261ca84d01c49a50b8"
+    },
+    {
+      "bytes": 338,
+      "content": "ewogICJwYXRoIjogIi5naXRodWIvZGVwZW5kYWJvdC55bWwiLAogICJ0eXBlIjogImZpbGUiLAogICJzaXplIjogMzI5LAogICJnaXRfYmxvYl9zaGEiOiAiOTE5ZGFmZjgxZjUwYWM0Mzc4OGRiODI0MzFkZTY3YTNkMzYyNThkOCIsCiAgImh0bWxfdXJsIjogImh0dHBzOi8vZ2l0aHViLmNvbS9ncmFuZGNoYWxsZW5nZS9RVUFOVFVNLVRFQ0hOT0xPR0lFUy9ibG9iL2E4ZjI0NDFjZDc1ZTcxN2ZmMzBmMDVkMzJjMGY1ZTkwYTdkZDczOTQvLmdpdGh1Yi9kZXBlbmRhYm90LnltbCIsCiAgInByb3RlY3RlZF9yZWYiOiAiYThmMjQ0MWNkNzVlNzE3ZmYzMGYwNWQzMmMwZjVlOTBhN2RkNzM5NCIKfQo=",
+      "encoding": "base64",
+      "path": "raw/.github_dependabot.yml.json",
+      "sha256": "f4d9d0582bb78a3fcc7fb647af7885b2af690f185718f38093948493713bfe07"
+    },
+    {
+      "bytes": 369,
+      "content": "ewogICJwYXRoIjogIi5naXRodWIvd29ya2Zsb3dzL2djbC1jb25mb3JtYW5jZS55bWwiLAogICJ0eXBlIjogImZpbGUiLAogICJzaXplIjogNTg4MiwKICAiZ2l0X2Jsb2Jfc2hhIjogImExNTkyYzY2Mjg4YjVhZDU4MzkzYjNiZTJiMTNmZGJjMTAyOTNhMzYiLAogICJodG1sX3VybCI6ICJodHRwczovL2dpdGh1Yi5jb20vZ3JhbmRjaGFsbGVuZ2UvUVVBTlRVTS1URUNITk9MT0dJRVMvYmxvYi9hOGYyNDQxY2Q3NWU3MTdmZjMwZjA1ZDMyYzBmNWU5MGE3ZGQ3Mzk0Ly5naXRodWIvd29ya2Zsb3dzL2djbC1jb25mb3JtYW5jZS55bWwiLAogICJwcm90ZWN0ZWRfcmVmIjogImE4ZjI0NDFjZDc1ZTcxN2ZmMzBmMDVkMzJjMGY1ZTkwYTdkZDczOTQiCn0K",
+      "encoding": "base64",
+      "path": "raw/.github_workflows_gcl-conformance.yml.json",
+      "sha256": "6f22871ff5c167822d6e8fab5eb2c2fbd82631f42858048750dfaff6f69dd6f2"
+    },
+    {
+      "bytes": 367,
+      "content": "ewogICJwYXRoIjogIi5naXRodWIvd29ya2Zsb3dzL3F0ci12YWxpZGF0aW9uLnltbCIsCiAgInR5cGUiOiAiZmlsZSIsCiAgInNpemUiOiA0OTc0LAogICJnaXRfYmxvYl9zaGEiOiAiMDAzZTg4NjkyNDViZDEyNGU3N2UwOTc5NjJkZWM4MjBiZTAxMWY0NCIsCiAgImh0bWxfdXJsIjogImh0dHBzOi8vZ2l0aHViLmNvbS9ncmFuZGNoYWxsZW5nZS9RVUFOVFVNLVRFQ0hOT0xPR0lFUy9ibG9iL2E4ZjI0NDFjZDc1ZTcxN2ZmMzBmMDVkMzJjMGY1ZTkwYTdkZDczOTQvLmdpdGh1Yi93b3JrZmxvd3MvcXRyLXZhbGlkYXRpb24ueW1sIiwKICAicHJvdGVjdGVkX3JlZiI6ICJhOGYyNDQxY2Q3NWU3MTdmZjMwZjA1ZDMyYzBmNWU5MGE3ZGQ3Mzk0Igp9Cg==",
+      "encoding": "base64",
+      "path": "raw/.github_workflows_qtr-validation.yml.json",
+      "sha256": "94ea9fed4ba2347b00ad754b3dc9514c5200a5a952d55182134b5aa1629c992b"
+    },
+    {
+      "bytes": 317,
+      "content": "ewogICJwYXRoIjogIlNFQ1VSSVRZLm1kIiwKICAidHlwZSI6ICJmaWxlIiwKICAic2l6ZSI6IDIwNDMsCiAgImdpdF9ibG9iX3NoYSI6ICI0OWNlYzYyZTk3MGNkMGYxMmI2YjAwM2EzZjYzNDI2NTg1YTc5ZTNhIiwKICAiaHRtbF91cmwiOiAiaHR0cHM6Ly9naXRodWIuY29tL2dyYW5kY2hhbGxlbmdlL1FVQU5UVU0tVEVDSE5PTE9HSUVTL2Jsb2IvYThmMjQ0MWNkNzVlNzE3ZmYzMGYwNWQzMmMwZjVlOTBhN2RkNzM5NC9TRUNVUklUWS5tZCIsCiAgInByb3RlY3RlZF9yZWYiOiAiYThmMjQ0MWNkNzVlNzE3ZmYzMGYwNWQzMmMwZjVlOTBhN2RkNzM5NCIKfQo=",
+      "encoding": "base64",
+      "path": "raw/SECURITY.md.json",
+      "sha256": "9fdb37e796b34fd7f452ca776730eafdfd458e152498ce62a4531f344057d5ac"
+    },
+    {
+      "bytes": 72,
+      "content": "ewogICJsb2dpbiI6ICJmeXJlbWFlbCIsCiAgImlkIjogMTc5MjU5NTEsCiAgInJlcG9zaXRvcnlfYWRtaW4iOiB0cnVlCn0K",
+      "encoding": "base64",
+      "path": "raw/actor.json",
+      "sha256": "1000c0579e1b7b63eeba4718620e3ea2d7fbfd09834170c294cd569af9058bf6"
+    },
+    {
+      "bytes": 1913,
+      "content": "ewogICJpZCI6IDIwMTA2OTUzLAogICJuYW1lIjogImJyYW5jaF9wcm90ZWN0IiwKICAidGFyZ2V0IjogImJyYW5jaCIsCiAgInNvdXJjZV90eXBlIjogIlJlcG9zaXRvcnkiLAogICJzb3VyY2UiOiAiZ3JhbmRjaGFsbGVuZ2UvUVVBTlRVTS1URUNITk9MT0dJRVMiLAogICJlbmZvcmNlbWVudCI6ICJhY3RpdmUiLAogICJjb25kaXRpb25zIjogewogICAgInJlZl9uYW1lIjogewogICAgICAiZXhjbHVkZSI6IFtdLAogICAgICAiaW5jbHVkZSI6IFsKICAgICAgICAifkRFRkFVTFRfQlJBTkNIIgogICAgICBdCiAgICB9CiAgfSwKICAicnVsZXMiOiBbCiAgICB7CiAgICAgICJ0eXBlIjogImRlbGV0aW9uIgogICAgfSwKICAgIHsKICAgICAgInR5cGUiOiAibm9uX2Zhc3RfZm9yd2FyZCIKICAgIH0sCiAgICB7CiAgICAgICJ0eXBlIjogInB1bGxfcmVxdWVzdCIsCiAgICAgICJwYXJhbWV0ZXJzIjogewogICAgICAgICJyZXF1aXJlZF9hcHByb3ZpbmdfcmV2aWV3X2NvdW50IjogMCwKICAgICAgICAiZGlzbWlzc19zdGFsZV9yZXZpZXdzX29uX3B1c2giOiB0cnVlLAogICAgICAgICJyZXF1aXJlZF9yZXZpZXdlcnMiOiBbXSwKICAgICAgICAicmVxdWlyZV9jb2RlX293bmVyX3JldmlldyI6IGZhbHNlLAogICAgICAgICJkaXNtaXNzYWxfcmVzdHJpY3Rpb24iOiB7CiAgICAgICAgICAiZW5hYmxlZCI6IGZhbHNlLAogICAgICAgICAgImFsbG93ZWRfYWN0b3JzIjogW10KICAgICAgICB9LAogICAgICAgICJyZXF1aXJlX2⁄Óù∆≠y
