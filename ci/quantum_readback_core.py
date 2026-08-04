@@ -106,6 +106,7 @@ def validate_contract(contract: dict[str, Any]) -> None:
         "profile_merge": "5ec22de5d18e02ba91b47f74f23c7acde6bc3ddc",
         "surfaces_merge": "cc89ec99493e5ecc2fa54cd5a4698dae0aa2e606",
         "action_policy_merge": "260f469ba7349350c2b192a0e066a24aa670d611",
+        "owner_controls_evidence_merge": "a8f2441cd75e717ff30f05d32c0f5e90a7dd7394",
     }
     exact_keys(authority, set(expected_authority), path="authority")
     require(authority == expected_authority, "authority identity drift")
