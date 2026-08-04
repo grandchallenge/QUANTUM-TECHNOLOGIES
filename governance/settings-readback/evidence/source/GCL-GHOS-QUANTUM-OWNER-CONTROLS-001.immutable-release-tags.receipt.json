@@ -1,0 +1,37 @@
+{
+  "operation": "GCL-GHOS-QUANTUM-OWNER-CONTROLS-001",
+  "suboperation": "immutable_release_tags",
+  "repository": "grandchallenge/QUANTUM-TECHNOLOGIES",
+  "recorded_at_utc": "2026-08-04T06:08:43.5893609Z",
+  "actor": "fyremael",
+  "repository_admin_required": true,
+  "api_version": "2026-03-10",
+  "created": false,
+  "ruleset": {
+    "id": 20355165,
+    "name": "Immutable release tags",
+    "target": "tag",
+    "enforcement": "active",
+    "source_type": "Repository",
+    "source": "grandchallenge/QUANTUM-TECHNOLOGIES",
+    "bypass_actor_count": 0,
+    "ref_include": [
+      "refs/tags/*"
+    ],
+    "ref_exclude": [],
+    "rule_types": [
+      "deletion",
+      "non_fast_forward"
+    ]
+  },
+  "boundaries": {
+    "branch_ruleset_changed": false,
+    "repository_merge_settings_changed": false,
+    "security_settings_changed": false,
+    "source_or_workflow_changed": false,
+    "deviations_closed": false,
+    "organization_wide_conformance_claimed": false,
+    "mathematical_or_quantum_advantage_claimed": false,
+    "deployment_manufacturing_product_or_commercial_authority": false
+  }
+}
