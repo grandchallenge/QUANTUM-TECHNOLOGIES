@@ -1,9 +1,9 @@
 * @fyremael
-/governance/ @grandchallenge/the-council @grandchallenge/amanuensis
-/schemas/ @grandchallenge/the-council @grandchallenge/amanuensis
-/registry/ @grandchallenge/the-council @grandchallenge/amanuensis
-/work-packages/ @grandchallenge/the-council @grandchallenge/amanuensis
-/reviews/ @grandchallenge/the-council @grandchallenge/amanuensis
-/evidence/ @grandchallenge/the-council @grandchallenge/amanuensis
-/.github/ @grandchallenge/security @grandchallenge/amanuensis @fyremael
-/SECURITY.md @grandchallenge/security @grandchallenge/amanuensis @fyremael
+/governance/ @fyremael @jimsteeg
+/schemas/ @fyremael @jimsteeg
+/registry/ @fyremael @jimsteeg
+/work-packages/ @fyremael @jimsteeg
+/reviews/ @fyremael @jimsteeg
+/evidence/ @fyremael @jimsteeg
+/.github/ @fyremael @jimsteeg
+/SECURITY.md @fyremael @jimsteeg
