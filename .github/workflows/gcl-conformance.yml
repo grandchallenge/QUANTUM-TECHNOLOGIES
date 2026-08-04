@@ -120,3 +120,8 @@ jobs:
           path: /tmp/QTR-SIG-PIN-001-gcl-conformance.json
           if-no-files-found: error
           retention-days: 90
+
+  security:
+    permissions:
+      contents: read
+    uses: grandchallenge/.github/.github/workflows/gcl-security.yml@f98003ef7f8a28ea774e82bf21ce0fe0323d1c28
