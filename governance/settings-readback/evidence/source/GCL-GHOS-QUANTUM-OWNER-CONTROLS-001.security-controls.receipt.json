@@ -1,0 +1,101 @@
+{
+  "receipt_version": "1.0.0",
+  "operation": "GCL-GHOS-QUANTUM-OWNER-CONTROLS-001",
+  "suboperation": "security_controls",
+  "repository": "grandchallenge/QUANTUM-TECHNOLOGIES",
+  "actor": "fyremael",
+  "repository_admin_proof": true,
+  "api_version": "2026-03-10",
+  "recorded_at_utc": "2026-08-04T06:17:01.7964860Z",
+  "pre_state": {
+    "recorded_at_utc": "2026-08-04T06:15:50.3087049Z",
+    "repository": {
+      "full_name": "grandchallenge/QUANTUM-TECHNOLOGIES",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "public",
+      "admin": true
+    },
+    "vulnerability_alerts": {
+      "enabled": true
+    },
+    "dependabot_security_updates": {
+      "available": true,
+      "enabled": false,
+      "paused": false
+    },
+    "private_vulnerability_reporting": {
+      "enabled": false
+    },
+    "codeql_default_setup": {
+      "available": true,
+      "state": "not-configured",
+      "languages": [
+        "actions",
+        "python"
+      ],
+      "query_suite": "default",
+      "threat_model": "remote",
+      "runner_type": "standard",
+      "schedule": null,
+      "updated_at": null
+    }
+  },
+  "mutations": [
+    "enable_dependabot_security_updates",
+    "enable_private_vulnerability_reporting",
+    "configure_codeql_default_setup"
+  ],
+  "post_state": {
+    "recorded_at_utc": "2026-08-04T06:16:59.4914192Z",
+    "vulnerability_alerts": {
+      "enabled": true
+    },
+    "dependabot_security_updates": {
+      "available": true,
+      "enabled": true,
+      "paused": false
+    },
+    "private_vulnerability_reporting": {
+      "enabled": true
+    },
+    "codeql_default_setup": {
+      "available": true,
+      "state": "configured",
+      "languages": [
+        "actions",
+        "python"
+      ],
+      "query_suite": "extended",
+      "threat_model": "remote",
+      "runner_type": "standard",
+      "schedule": "weekly",
+      "updated_at": "2026-08-04T06:16:45Z"
+    }
+  },
+  "codeql": {
+    "requested_state": "configured",
+    "requested_languages": [
+      "actions",
+      "python"
+    ],
+    "requested_query_suite": "extended",
+    "requested_threat_model": "remote",
+    "requested_runner_type": "standard",
+    "validation_run_id": 30883403446,
+    "validation_run_url": "https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES/actions/runs/30883403446",
+    "validation_run_conclusion": "success"
+  },
+  "boundaries": {
+    "branch_ruleset_changed": false,
+    "release_tag_ruleset_changed": false,
+    "repository_merge_settings_changed": false,
+    "source_or_workflow_changed": false,
+    "deviation_disposition_changed": false,
+    "repository_or_organization_conformance_claimed": false,
+    "mathematics_certified": false,
+    "quantum_advantage_proved": false,
+    "hardware_validated": false,
+    "deployment_manufacturing_product_or_commercial_authority": false
+  }
+}
