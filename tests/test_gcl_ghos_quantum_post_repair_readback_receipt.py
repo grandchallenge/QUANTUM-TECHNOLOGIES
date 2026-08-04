@@ -17,7 +17,7 @@ from schema_validation import SchemaValidationError, validate_instance
 OP = "GCL-GHOS-QUANTUM-POST-REPAIR-READBACK-001"
 BASE = "a8f2441cd75e717ff30f05d32c0f5e90a7dd7394"
 RECEIPT_SHA = "83109c5c7f7461480bc5f0119c96295716a194a71dce3fdebe3552d8602efe37"
-BUNDLE_SHA = "2bae1813706334f7571c144fa647da3ce2b9c9e791d5653246d34cc180179cae"
+BUNDLE_SHA = "3d17fbc44356c614a0b96c9f0aa3973fc4653f7fa85ebd8bc576cf4f7cf48080"
 
 RECEIPT = ROOT / "governance/settings-readback/evidence/GCL-GHOS-QUANTUM-POST-REPAIR-READBACK-001.receipt.json"
 DIGEST = ROOT / "governance/settings-readback/evidence/GCL-GHOS-QUANTUM-POST-REPAIR-READBACK-001.receipt.json.sha256"
