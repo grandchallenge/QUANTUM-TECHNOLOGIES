@@ -99,6 +99,7 @@ def collect(
     for requirement in (
         contract["expected"]["required_workflows"]
         + contract["expected"]["governed_surfaces"]
+        + contract["expected"]["admitted_execution_evidence"]
     ):
         path = requirement["path"]
         state = workflow_states.get(path) if "state" in requirement else None
@@ -114,6 +115,11 @@ def collect(
         documents,
         contract["expected"]["governed_surfaces"],
         kind="governed surface",
+    )
+    normalized_execution_evidence = validate_documents(
+        documents,
+        contract["expected"]["admitted_execution_evidence"],
+        kind="admitted execution evidence",
     )
 
     selected_checks, all_checks = wait_for_check_runs(
@@ -173,6 +179,8 @@ def collect(
         "security": security,
         "workflows": normalized_workflows,
         "governed_surfaces": normalized_surfaces,
+        "admitted_execution_evidence": normalized_execution_evidence,
+        "readback_gaps": [],
         "protected_main_check_runs": selected_checks,
         "codeql_validation": {
             "run_id": validation_run,
