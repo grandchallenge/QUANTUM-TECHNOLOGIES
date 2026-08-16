@@ -63,6 +63,8 @@ SOURCE_CONTEXT = {
     },
     "experiment_decoder": {
         "file": "18_4_4/ErrorCorrection_for_experiment_18_4_4.py",
+        "git_ref": "v1.1.3",
+        "git_blob_sha": "df82b3a6aa17b969a50b1b143cc10136cb24547f",
         "bp_method": "ms",
         "max_iter": 10000,
         "osd_method": "osd_cs",
