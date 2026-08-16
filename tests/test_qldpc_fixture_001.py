@@ -64,6 +64,34 @@ class QLDPCFixture001Tests(unittest.TestCase):
         with self.assertRaises(ValueError):
             MODULE.evaluate_fixture(fixture)
 
+    def test_unknown_source_field_fails_closed(self):
+        fixture = copy.deepcopy(self.fixture)
+        fixture["source"]["threshold"] = 0.7
+        with self.assertRaises(ValueError):
+            MODULE.evaluate_fixture(fixture)
+
+    def test_alternate_valid_logical_basis_cannot_replace_source_transcription(self):
+        fixture = copy.deepcopy(self.fixture)
+        fixture["logical_operators"]["x"][0] = ["L0", "L1", "L3", "L5", "L7", "L8"]
+        fixture["logical_operators"]["z"][1] = ["L3", "L5", "L6", "L7", "L8", "R0"]
+
+        hx, hz = MODULE.construct_checks(fixture["parameters"])
+        hx_rows = [MODULE.row_to_int(row) for row in hx]
+        hz_rows = [MODULE.row_to_int(row) for row in hz]
+        hx_span = MODULE.span(hx_rows)
+        hz_span = MODULE.span(hz_rows)
+        alternate = MODULE.validate_logicals(
+            fixture, hx_rows, hz_rows, hx_span, hz_span, len(hx[0])
+        )
+        self.assertEqual(alternate["canonical_pairing"], [
+            [1, 0, 0, 0],
+            [0, 1, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1],
+        ])
+        with self.assertRaises(ValueError):
+            MODULE.evaluate_fixture(fixture)
+
 
 if __name__ == "__main__":
     unittest.main()
