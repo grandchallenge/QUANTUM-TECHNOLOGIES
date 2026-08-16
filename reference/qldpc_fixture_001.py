@@ -19,7 +19,43 @@ import json
 from pathlib import Path
 from typing import Any
 
-EVALUATOR_VERSION = "0.1.0"
+EVALUATOR_VERSION = "0.1.1"
+
+EXPECTED_PARAMETERS = {
+    "a1": 1,
+    "a2": 0,
+    "a3": 2,
+    "b1": 1,
+    "b2": 0,
+    "b3": 2,
+    "l": 3,
+    "m": 3,
+}
+
+EXPECTED_SOURCE = {
+    "arxiv": "2505.09684v1",
+    "journal": "Nature Physics (2026)",
+    "license": "CC BY 4.0",
+    "source_scope": "Supplementary theoretical details I.1, equations S6-S11",
+    "title": "Demonstration of low-overhead quantum error correction codes",
+}
+
+EXPECTED_LOGICAL_OPERATORS = {
+    "x": [
+        ["L0", "L2", "L4", "L5", "L6", "L7"],
+        ["L1", "L2", "L3", "L4", "L6", "L8"],
+        ["L0", "L1", "L6", "R0"],
+        ["L0", "L1", "L4", "L5", "L6", "R1"],
+    ],
+    "z": [
+        ["L0", "L2", "L3", "L4", "L8", "R0"],
+        ["L0", "L2", "L4", "L5", "L6", "L7"],
+        ["L1", "L2", "L7", "R1"],
+        ["L0", "L1", "L6", "R0"],
+    ],
+}
+
+EXPECTED_REMOVED_CHECKS = {"x": [2, 8], "z": [3, 4]}
 
 
 def canonical_digest(payload: Any) -> str:
@@ -31,6 +67,14 @@ def canonical_digest(payload: Any) -> str:
         allow_nan=False,
     ).encode("utf-8")
     return hashlib.sha256(encoded).hexdigest()
+
+
+def require_exact_keys(mapping: dict[str, Any], expected: set[str], context: str) -> None:
+    observed = set(mapping)
+    if observed != expected:
+        missing = sorted(expected - observed)
+        extra = sorted(observed - expected)
+        raise ValueError(f"{context} key mismatch: missing={missing}, extra={extra}")
 
 
 def identity(n: int) -> list[list[int]]:
@@ -275,8 +319,44 @@ def validate_logicals(
 
 
 def evaluate_fixture(fixture: dict[str, Any]) -> dict[str, Any]:
+    require_exact_keys(
+        fixture,
+        {
+            "claim_boundary",
+            "construction",
+            "fixture_id",
+            "logical_operators",
+            "parameters",
+            "programme",
+            "source",
+            "source_declared_code",
+            "source_declared_rank",
+            "source_removed_checks",
+            "status",
+        },
+        "fixture",
+    )
+    require_exact_keys(fixture["parameters"], set(EXPECTED_PARAMETERS), "parameters")
+    require_exact_keys(fixture["source"], set(EXPECTED_SOURCE), "source")
+    require_exact_keys(fixture["logical_operators"], {"x", "z"}, "logical_operators")
+    require_exact_keys(fixture["source_declared_code"], {"n", "k", "d"}, "source_declared_code")
+    require_exact_keys(fixture["source_declared_rank"], {"hx", "hz"}, "source_declared_rank")
+    require_exact_keys(fixture["source_removed_checks"], {"x", "z"}, "source_removed_checks")
+
     if fixture["fixture_id"] != "QLDPC-FIXTURE-001":
         raise ValueError("this evaluator is restricted to QLDPC-FIXTURE-001")
+    if fixture["programme"] != "QTR":
+        raise ValueError("programme identity unexpectedly changed")
+    if fixture["construction"] != "bivariate_bicycle_css":
+        raise ValueError("construction identity unexpectedly changed")
+    if fixture["parameters"] != EXPECTED_PARAMETERS:
+        raise ValueError("source polynomial parameters unexpectedly changed")
+    if fixture["source"] != EXPECTED_SOURCE:
+        raise ValueError("protected source identity unexpectedly changed")
+    if fixture["logical_operators"] != EXPECTED_LOGICAL_OPERATORS:
+        raise ValueError("source logical-operator transcription unexpectedly changed")
+    if fixture["source_removed_checks"] != EXPECTED_REMOVED_CHECKS:
+        raise ValueError("source removed-check transcription unexpectedly changed")
     if fixture["status"] != "candidate_executable_not_promoted":
         raise ValueError("fixture status unexpectedly changed")
     if fixture["claim_boundary"] != {
@@ -394,6 +474,7 @@ def evaluate_fixture(fixture: dict[str, Any]) -> dict[str, Any]:
 
 def load_fixture(path: Path) -> dict[str, Any]:
     payload = json.loads(path.read_text(encoding="utf-8"))
+    require_exact_keys(payload, {"registry_version", "fixtures"}, "registry")
     fixtures = payload.get("fixtures")
     if payload.get("registry_version") != "0.1.0" or not isinstance(fixtures, list):
         raise ValueError("invalid qLDPC fixture registry")
