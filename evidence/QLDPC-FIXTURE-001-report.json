@@ -45,7 +45,7 @@
       "m": 3
     }
   },
-  "evaluator_version": "0.1.0",
+  "evaluator_version": "0.1.1",
   "exact_invariants": {
     "check_count_full": {
       "x": 9,
@@ -176,7 +176,7 @@
       "110000100100000000"
     ]
   },
-  "payload_sha256": "2c48ab3e33ac4f18f1a65c93dd6e59977cafc4b9b14149f68af896c3542a6d8e",
+  "payload_sha256": "6c2095f48762178bf0fe5c2b5fce8299261733912a1cccc7884d11f344718427",
   "reference_decoder": {
     "exact_success_counts_by_error_weight": {
       "0": {
