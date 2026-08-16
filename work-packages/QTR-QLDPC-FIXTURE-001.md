@@ -1,10 +1,16 @@
 # QTR-QLDPC-FIXTURE-001 — Exact `[[18,4,4]]` bivariate-bicycle replay
 
-Status: `candidate_executable_not_promoted`
+Status: `referee_promoted_bounded`
 
 Programme: `GCL Quantum Technologies Research (QTR)`
 
 Fixture identifier: `QLDPC-FIXTURE-001`
+
+Reviewed head: `a024afb5b3428f49c34d905625f8c56f466528e7`
+
+Scientific merge: `b899894cfe17680d556d32ff36e51683cd9f6b32`
+
+Promotion record: `reviews/QTR-QLDPC-REVIEW-001/promotion-record.json`
 
 ## 1. Purpose
 
@@ -16,6 +22,11 @@ finite algebraic invariants.
 The fixture exists to establish reproducibility and certification mechanics.
 It is not an optimization, decoder competition, hardware reproduction, or
 fault-tolerant architecture claim.
+
+The exact registry and evidence files reviewed at the bound head remain an
+immutable candidate snapshot. Bounded promotion authority is recorded by a
+separate documentary overlay; the reviewed registry and evidence status are not
+rewritten in place.
 
 ## 2. Protected source input
 
@@ -110,10 +121,16 @@ source record, and authority boundary. It also demonstrates that an alternate
 algebraically valid canonical logical basis cannot silently replace the exact
 source transcription.
 
+The separate test `tests/test_qldpc_fixture_001_promotion.py` checks that the
+promotion overlay remains bound to the reviewed head, scientific merge,
+workflow evidence, office records, immutable candidate snapshot, and downstream
+exclusions.
+
 ## 6. Claim boundary
 
 This work package authorizes only exact finite code-algebra replay for
-`QLDPC-FIXTURE-001`.
+`QLDPC-FIXTURE-001` and the bounded finite code-capacity reference baseline
+recorded in the reviewed evidence.
 
 It does **not** certify or authorize:
 
@@ -131,15 +148,20 @@ It does **not** certify or authorize:
 
 All such claims remain gated.
 
-## 7. Promotion condition
+## 7. Promotion record
 
-This package may advance beyond `candidate_executable_not_promoted` only after:
+The candidate package was reviewed at
+`a024afb5b3428f49c34d905625f8c56f466528e7` after the revision-1
+source-lock defect was repaired and replayed at a fresh exact head. Required
+QTR and GCL workflows were green, the revised adversarial boundary was accepted,
+and the Referee recorded the bounded disposition
+`APPROVE_BOUNDED_SCIENTIFIC_MERGE__QLDPC_FIXTURE_001_R2`.
 
-1. exact replay is green on the protected head;
-2. committed evidence matches deterministic regeneration;
-3. adversarial mutation tests are green;
-4. source transcription is independently reviewed;
-5. the Referee records a bounded disposition.
+The reviewed scientific package merged as
+`b899894cfe17680d556d32ff36e51683cd9f6b32`. The machine-readable promotion
+overlay is `reviews/QTR-QLDPC-REVIEW-001/promotion-record.json`.
 
-Until then, the fixture is executable evidence with no promoted scientific
-authority.
+Promotion does not alter `registry/qldpc-fixtures.json` or
+`evidence/QLDPC-FIXTURE-001-report.json`: both retain the exact candidate state
+and payload reviewed by the offices. Any future scientific extension requires a
+new governed fixture or work package.
