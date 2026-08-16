@@ -1,6 +1,6 @@
 # QTR-TCM-QDEC-002 — Exact factorized contraction equivalence audit
 
-Status: `candidate_executable_not_promoted`
+Status: `referee_promoted_bounded`
 
 Programme: `GCL Quantum Technologies Research (QTR)`
 
@@ -9,6 +9,14 @@ Experiment identifier: `TCM-QDEC-002`
 Tracking issue: `#42`
 
 Predecessor: `TCM-QDEC-001`
+
+Reviewed scientific head: `9123a9c6cc2c163031d8bff0c46e0a9dd4c8f8fd`
+
+Scientific merge: `d3340c91df3aa72dc5c7ba75906128c8eef2e174`
+
+Promotion authority: `reviews/QTR-TCM-QDEC-REVIEW-002/promotion-record.json`
+
+The reviewed `registry/tcm-qdec-002.json` and `evidence/TCM-QDEC-002-report.json` remain immutable scientific snapshots with status `candidate_executable_not_promoted`. Bounded authority is carried only by the separate promotion overlay.
 
 ## 1. Purpose
 
@@ -20,7 +28,7 @@ Its single question is:
 
 > Can the exact quotient-aware semiring scores, winning logical classes, tie sets, corrections, and frozen-corpus outcomes promoted by `TCM-QDEC-001` be reproduced through local factorization and exact transfer contraction, without enumerating all physical errors in the primary inference path?
 
-This is a representation-equivalence audit. It is not a scalability claim.
+The promoted result is a representation-equivalence result. It is not a scalability claim.
 
 ## 2. Frozen predecessor
 
@@ -31,82 +39,47 @@ The experiment is bound to the promoted `TCM-QDEC-001` snapshot:
 - predecessor bounded promotion pinned on protected main: `be022e3d1dd8490fd3856414908c6cdcb8b06ea4`;
 - predecessor promotion record: `reviews/QTR-TCM-QDEC-REVIEW-001/promotion-record.json`.
 
-The following semantics remain unchanged:
-
-- protected `[[18,4,4]]` one-sector CSS instance;
-- nine physical syndrome-check rows of rank seven;
-- 128-element stabilizer span;
-- four source-locked logical-Z operators;
-- Fixture 002 frozen weight-`0..4` corpus of 4048 errors;
-- stabilizer-equivalence success adjudication;
-- the three exact semiring definitions;
-- lowest-canonical-coset-key class tie rule;
-- lowest-Hamming-weight-then-integer representative rule.
+The protected `[[18,4,4]]` one-sector CSS instance, stabilizer span, source-locked logical-Z basis, Fixture 002 corpus, correctness adjudication, three semiring definitions, and all tie rules are unchanged.
 
 ## 3. Local parity factorization
 
-For each physical qubit `q`, define a 13-bit local column signature `c_q=(h_q,ell_q)`, where `h_q` is the nine-bit syndrome toggle caused by a unit error and `ell_q` is the four-bit commutation label against the source-locked logical-Z basis.
+Each physical qubit contributes a 13-bit local column signature consisting of nine syndrome-check parities and four commutation parities against the source-locked logical-Z basis. For an error pattern, the combined selector is the XOR accumulation of the signatures for occupied qubits.
 
-For an error pattern `e`, the combined selector is the XOR accumulation of the local signatures for qubits with `e_q=1`. The lower nine selector bits are the syndrome. The upper four bits identify the stabilizer-equivalence logical class within that syndrome fiber.
+The combined parity system has exact GF(2) rank `11`: syndrome rank `7` plus four independent logical-class coordinates. The `2048 = 128 × 16` reachable selector labels map bijectively to the exact syndrome/stabilizer-coset classes certified by the predecessor.
 
-The combined 13-row parity system has exact GF(2) rank `11`: syndrome rank `7` plus four independent logical-class coordinates. Consequently there are exactly `2^11=2048=128×16` reachable combined labels.
+## 4. Frozen contraction order and finite geometry
 
-## 4. Frozen contraction order
+The qubit contraction order is fixed as `0,1,2,...,17`. No adaptive order selection, min-fill heuristic, learning, or search is permitted.
 
-The qubit contraction order is fixed as `0,1,2,...,17`.
-
-No min-fill heuristic, adaptive order selection, search, learning, or machine-dependent optimization is permitted.
-
-After processing a prefix of qubits, the transfer state records only the accumulated 13-bit parity selector. Under the frozen order the exact prefix ranks are
+The exact prefix ranks are
 
 `0,1,2,3,4,5,6,7,8,9,10,11,11,11,11,11,11,11,11`,
 
-and the active sparse state counts are
+with active sparse state counts
 
 `1,2,4,8,16,32,64,128,256,512,1024,2048,2048,2048,2048,2048,2048,2048,2048`.
 
-The peak active transfer support on this finite fixture is therefore `2048` states. This bounded observation does not establish favorable scaling for a code family.
+The finite peak active transfer support is `2048`. This does not establish bounded width or favorable scaling for any qLDPC family.
 
 ## 5. Exact semiring contractions
 
-The three promoted algebras are represented locally without floating-point ranking.
+The three promoted algebras are represented locally without floating-point ranking:
 
-- `sum_product_bsc_p_0_1`: local weights `(9,1)`, giving physical-state weight `9^(18-w)`.
-- `soft_tropical_base_2`: local weights `(2,1)`, giving physical-state weight `2^(18-w)`.
-- `min_plus_hamming`: local costs `(0,1)`, with path addition and minimum over paths; equal minima retain the lowest integer representative.
+- `sum_product_bsc_p_0_1`: local weights `(9,1)`, yielding state weight `9^(18-w)`;
+- `soft_tropical_base_2`: local weights `(2,1)`, yielding `2^(18-w)`;
+- `min_plus_hamming`: local costs `(0,1)`, with Hamming-weight minimization and the frozen representative tie rule.
 
-No temperature scan, learned score, or optimized parameter search is permitted.
+Each algebra executes exactly `32766` binary transition relaxations under the frozen order; the three contractions record `98298` relaxations in total. These are deterministic finite operation counts, not runtime or asymptotic claims.
 
-## 6. Exact transfer recurrence
+## 6. Exact admitted evidence
 
-For each active selector state, a contracted qubit contributes exactly two branches: bit zero leaves the selector unchanged and bit one XORs the local column signature. Values are combined with the declared semiring operations.
+The promoted finite identities include:
 
-For the frozen order, each algebra executes exactly `32766` binary transition relaxations. Three contractions therefore record `98298` transition relaxations in total.
-
-These are deterministic operation counts, not runtime or complexity claims.
-
-## 7. Class identity and deterministic correction
-
-The factorized transfer table is indexed by `(syndrome, logical label)`. For every reachable label, the evaluator independently computes the minimum-weight representative by the min-plus transfer recurrence.
-
-Its canonical stabilizer-coset key is `min_{s in S}(e xor s)` under integer order. The 2048 reachable selector labels map bijectively to 2048 canonical stabilizer cosets. This binds the factorized logical labels to the exact quotient semantics used by `TCM-QDEC-001` rather than introducing a new equivalence relation.
-
-## 8. Candidate exact factorized evidence
-
-The bounded factorization produces:
-
-- check rank: `7`;
 - combined check-plus-logical rank: `11`;
-- selector capacity: `8192` formal 13-bit states;
 - reachable combined labels: `2048`;
-- logical classes per reachable syndrome: `16`;
 - peak active transfer support: `2048`;
-- transition relaxations per algebra: `32766`;
-- total transition relaxations: `98298`.
-
-The exact local-column signature digest is `2010b2f40048062203e8ee7607989ee30797e5ec37b0e94d5a5fd4eac8bfd023`.
-
-The canonical class/minimum-representative mapping digest is `0d907375404e37533a3dd182eccea7d6a3fd6637801745f8f5b39b7c4b683f8f`.
+- local-column signature SHA-256: `2010b2f40048062203e8ee7607989ee30797e5ec37b0e94d5a5fd4eac8bfd023`;
+- canonical class/minimum-representative mapping SHA-256: `0d907375404e37533a3dd182eccea7d6a3fd6637801745f8f5b39b7c4b683f8f`.
 
 Exact score-table digests are:
 
@@ -114,17 +87,15 @@ Exact score-table digests are:
 - soft tropical: `00c4b4c7612b6d05847963c4f8d432160cb2d6ec06fa4813700220461102bad5`;
 - min-plus: `178a357cd13b2b9bbab03bad09f08efafecf37f2b59080bb3a6107e552e3b524`.
 
-Global partition sanity checks are exact: sum-product mass `10^18`, soft-tropical mass `3^18 = 387420489`.
+Global partition checks are exact: sum-product mass `10^18` and soft-tropical mass `3^18 = 387420489`.
 
-The minimum-weight distribution over the 2048 combined labels is: weight 0 `1`, weight 1 `18`, weight 2 `153`, weight 3 `636`, weight 4 `870`, weight 5 `370`.
+## 7. Oracle equivalence
 
-## 9. Oracle equivalence
+The primary factorized path is computed before the promoted `TCM-QDEC-001` exhaustive implementation is invoked as an independent verification oracle.
 
-The primary factorized path is computed first. The already-promoted `TCM-QDEC-001` exhaustive implementation is then run separately as the verification oracle.
+For all `128 × 3 = 384` syndrome/algebra cells, the complete tied winning canonical-class sets and deterministic corrections exactly equal the predecessor oracle.
 
-The candidate requires exact equality for all `128 × 3 = 384` syndrome/algebra cells at two levels: the complete set of tied winning canonical logical classes, and the deterministic correction selected after the frozen class and representative tie rules.
-
-The factorized decision-table digests exactly reproduce the promoted identities:
+The reproduced decision-table digests are:
 
 - sum-product: `05dd32573ee965ce96caf707de3541f8be74b49317ad46b7929ef7dcf3bf64fc`;
 - soft tropical: `ea2a96e3878758cd2daebd28673d943c27740a3e1c3579d8429a8a658e567393`;
@@ -136,44 +107,32 @@ The tied-winning-class-set digests are:
 - soft tropical: `bf4297273ca05b1506bde6f5305464e5affdf78ba31b40e20a0fada3e26dd982`;
 - min-plus: `1991fe00aaec2f8ce1163ca7b4192054002a2ef176d4839d6883c01f4e724007`.
 
-## 10. Frozen-corpus readback
+## 8. Frozen-corpus readback
 
-Because the decision tables are exactly equal, the factorized path reproduces the promoted quotient-aware frozen-corpus outcomes:
+The factorized path reproduces the promoted quotient-aware success totals:
 
 - sum-product: `263/4048`;
 - soft tropical: `262/4048`;
 - min-plus: `226/4048`.
 
-All factorized corrections realize the input syndrome; remaining failures are zero-syndrome wrong-logical-class failures.
+Tie envelopes remain sum-product `[263,263]`, soft tropical `[262,262]`, and min-plus `[218,263]` with default `226`. The representation change therefore preserves the predecessor's min-plus ambiguity rather than suppressing it.
 
-Tie envelopes are also preserved exactly: sum-product `[263,263]`, soft tropical `[262,262]`, min-plus `[218,263]` with default `226`. Thus the representation change does not erase the min-plus ambiguity identified in `TCM-QDEC-001`.
+## 9. Evidence and replay
 
-## 11. Interpretation
+The immutable reviewed evidence payload is:
 
-The positive result, if admitted, is narrowly structural: on this exact finite fixture and these exact three algebras, the promoted stabilizer-coset inference can be expressed as a local parity transfer contraction and reproduces the exhaustive quotient oracle exactly.
+`efd9e76957421494897e2cc319137874b61093d66ea871f0202df3d07e6eb3c0`.
 
-It does not follow that the representation remains tractable as code size grows. The observed rank-11 boundary state is a property of this instance and chosen factorization. The experiment closes a representation gap, not a scaling theorem.
+The exact-head scientific replay passed `110/110` repository tests, including `13` TCM-QDEC-002 replay/adversarial tests, before Referee disposition. QTR validation, GCL conformance, security/action-policy, and CodeQL were successful on the reviewed head.
 
-## 12. Evidence and replay
+## 10. Claim boundary
 
-The deterministic report is regenerated with:
+The bounded promotion admits only the exact finite factorized-equivalence result described above.
 
-```bash
-python reference/tcm_qdec_002.py --output evidence/TCM-QDEC-002-report.json
-```
+It does **not** certify or authorize scalable tensor-network or transfer decoding; bounded contraction width for a qLDPC family; asymptotic complexity improvement; practical runtime or memory advantage; larger-code decoder performance; general qLDPC decoder performance; BP-OSD comparison; circuit-level or phenomenological noise; hardware validation; thresholds or pseudo-thresholds; learned decoder parameters; adaptive contraction-order optimization; `TCM-QDEC-003`; `QLDPC-FORGE`; or autonomous code, decoder, circuit, or architecture search.
 
-Candidate evidence payload: `efd9e76957421494897e2cc319137874b61093d66ea871f0202df3d07e6eb3c0`.
+## 11. Promotion disposition
 
-The replay/adversarial harness must verify immutable predecessor evidence and promotion binding; exact local-column construction from protected checks and logical-Z operators; combined rank and stabilizer-zero-logical-label properties; prefix rank/support profiles; exact class mapping and score-table digests; exact winning-class tie-set equality with the exhaustive predecessor oracle; exact decision-table equality; exact frozen-corpus success counts and tie envelopes; deterministic transition counters; and fail-closed mutations of predecessor identity, logical basis, algebra, contraction order, tie rule, and downstream authority.
+The bounded scientific review completed at exact head `9123a9c6cc2c163031d8bff0c46e0a9dd4c8f8fd`. Referee record `5310199674` approved only the finite representation-equivalence substrate described here. The scientific snapshot merged as `d3340c91df3aa72dc5c7ba75906128c8eef2e174`.
 
-## 13. Claim boundary
-
-`TCM-QDEC-002` may seek bounded promotion only for the exact finite factorized-equivalence result described above.
-
-It does **not** certify or authorize scalable tensor-network or transfer decoding; asymptotic complexity improvement; practical runtime or memory advantage; larger-code decoder performance; general qLDPC decoder performance; BP-OSD comparison; circuit-level or phenomenological noise; hardware validation; thresholds or pseudo-thresholds; learned decoder parameters; adaptive contraction-order optimization; `TCM-QDEC-003`; `QLDPC-FORGE`; or autonomous code, decoder, circuit, or architecture search.
-
-## 14. Promotion condition
-
-Promotion requires fresh exact-head replay, green adversarial tests, independent review of the parity/logical-label construction, verification that oracle enumeration is used only as a comparator rather than as the primary factorized inference path, and a bounded Referee disposition.
-
-Until then, `TCM-QDEC-002` remains executable candidate evidence only.
+Promotion authority is documentary and does not rewrite the registry or evidence that were reviewed. Any later scaling, larger-instance, performance, adaptive-order, or architecture stage requires a separately governed successor.
