@@ -1,0 +1,75 @@
+{
+  "record_version": "0.1.0",
+  "record_id": "QTR-QLDPC-REVIEW-001-PROMOTION",
+  "status": "referee_promoted_bounded",
+  "reviewed_head": "a024afb5b3428f49c34d905625f8c56f466528e7",
+  "scientific_merge_commit": "b899894cfe17680d556d32ff36e51683cd9f6b32",
+  "pull_request": 27,
+  "review_issue": 28,
+  "documentary_issue": 30,
+  "workflow_evidence": {
+    "qtr_validation_run": 31935906321,
+    "qtr_exact_head_artifact": 9260633783,
+    "qtr_artifact_digest": "sha256:6ed8527453d938c3d1beff4b15c139dabe95dbcf173e58eb7a71b15ae1b4e5df",
+    "gcl_conformance_run": 31935906776,
+    "gcl_conformance_artifact": 9260633358,
+    "gcl_artifact_digest": "sha256:7da35d5d565f8fe09f0e496d94e3ae3c66ab545dea44695a9420a84d3ee57f9b",
+    "gcl_scorecard_artifact": 9260632053,
+    "gcl_scorecard_digest": "sha256:05d881631de40c629de13550917d8726b7a653ffb7760aac8ef781ace8bdddb3",
+    "test_count": 61,
+    "evidence_payload_sha256": "6c2095f48762178bf0fe5c2b5fce8299261733912a1cccc7884d11f344718427",
+    "decoder_table_sha256": "96ce94c378b7b1fc5fe032fbd253aa932c1ca8abcb17b3d3c89b3ecda601da29"
+  },
+  "office_records": {
+    "Axiomatist": 5306485934,
+    "Cartographer": 5306486331,
+    "Grammarian": 5306486803,
+    "Verifier": 5306487235,
+    "Adversary": 5306488453,
+    "Formalist": 5306489043,
+    "Amanuensis": 5306489589,
+    "Referee": 5306491335
+  },
+  "referee": {
+    "disposition": "APPROVE_BOUNDED_SCIENTIFIC_MERGE__QLDPC_FIXTURE_001_R2",
+    "record": 5306491335,
+    "submitted_pull_request_review": null,
+    "live_ruleset_required_approving_reviews": 0
+  },
+  "protected_merge": {
+    "ruleset_id": 20106953,
+    "required_status_checks": [
+      "validate",
+      "policy",
+      "security / action-policy"
+    ],
+    "review_threads_resolved": true,
+    "main_base_at_merge": "db0783a61604a0931479770dfb0c3941cc51e5ff"
+  },
+  "promoted_scope": {
+    "code_algebra": "exact finite [[18,4,4]] CSS reconstruction with d_X=d_Z=4, rank 7/7, commuting checks, and qLDPC row/column weights",
+    "logical_basis": "the exact source-transcribed four-pair logical X/Z basis with canonical pairing",
+    "reference_decoder": "finite code-capacity exhaustive minimum-weight coset-leader baseline only"
+  },
+  "reviewed_snapshot": {
+    "registry_path": "registry/qldpc-fixtures.json",
+    "registry_status_at_review": "candidate_executable_not_promoted",
+    "evidence_path": "evidence/QLDPC-FIXTURE-001-report.json",
+    "evidence_status_at_review": "candidate_executable_not_promoted",
+    "evidence_payload_sha256": "6c2095f48762178bf0fe5c2b5fce8299261733912a1cccc7884d11f344718427",
+    "snapshot_preserved_byte_for_byte": true
+  },
+  "excluded_scope": [
+    "Kunlun hardware validation",
+    "circuit-level noise validation",
+    "BP-OSD performance",
+    "qLDPC threshold",
+    "practical break-even or resource superiority",
+    "syndrome-extraction fault tolerance",
+    "universal logical gate set",
+    "QLDPC-FIXTURE-002",
+    "TCM-QDEC",
+    "QLDPC-FORGE",
+    "autonomous code, decoder, circuit, or architecture search"
+  ]
+}
