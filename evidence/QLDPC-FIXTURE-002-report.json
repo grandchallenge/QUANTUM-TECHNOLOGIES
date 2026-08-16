@@ -94,7 +94,7 @@
   },
   "evaluator_version": "0.1.0",
   "fixture_id": "QLDPC-FIXTURE-002",
-  "payload_sha256": "f13522836c3fad9525984d8a99206343053f79af75494b4c6d7207d1075b41e9",
+  "payload_sha256": "d98c5d73f7fdf9259a35be60580dc9b6c32c5e4483cd765ed0dcba594b9299e5",
   "predecessor": {
     "evidence_path": "evidence/QLDPC-FIXTURE-001-report.json",
     "evidence_payload_sha256": "6c2095f48762178bf0fe5c2b5fce8299261733912a1cccc7884d11f344718427",
@@ -113,6 +113,8 @@
       "bp_method": "ms",
       "executed_by_fixture": false,
       "file": "18_4_4/ErrorCorrection_for_experiment_18_4_4.py",
+      "git_blob_sha": "df82b3a6aa17b969a50b1b143cc10136cb24547f",
+      "git_ref": "v1.1.3",
       "max_iter": 10000,
       "ms_scaling_factor": 0,
       "osd_method": "osd_cs",
