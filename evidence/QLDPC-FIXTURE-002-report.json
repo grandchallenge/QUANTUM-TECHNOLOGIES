@@ -1,0 +1,130 @@
+{
+  "benchmark_results": {
+    "agreement": {
+      "corpus_size": 4048,
+      "same_correction_count": 2188,
+      "same_success_outcome_count": 3925
+    },
+    "exact_coset_lookup": {
+      "failure_total": 3808,
+      "success_counts_by_error_weight": {
+        "0": {"failure": 0, "success": 1, "total": 1},
+        "1": {"failure": 0, "success": 18, "total": 18},
+        "2": {"failure": 90, "success": 63, "total": 153},
+        "3": {"failure": 748, "success": 68, "total": 816},
+        "4": {"failure": 2970, "success": 90, "total": 3060}
+      },
+      "success_total": 240,
+      "systems_counters": {
+        "decode_input_syndrome_evaluations": 4048,
+        "decode_table_lookups": 4048,
+        "setup_candidate_errors_considered": 988,
+        "setup_syndrome_evaluations": 988,
+        "table_canonical_serialized_bytes": 8961,
+        "table_entries": 128
+      },
+      "table_sha256": "96ce94c378b7b1fc5fe032fbd253aa932c1ca8abcb17b3d3c89b3ecda601da29"
+    },
+    "greedy_syndrome_descent": {
+      "failure_total": 3923,
+      "failure_witnesses": [
+        {"correction": "000000000000000000", "error": "100000000010000000", "error_weight": 2, "input_syndrome": "000010100", "residual_error_weight": 2, "residual_syndrome": "000010100"},
+        {"correction": "000000000000000000", "error": "100000000000000100", "error_weight": 2, "input_syndrome": "010000001", "residual_error_weight": 2, "residual_syndrome": "010000001"},
+        {"correction": "000000000000000000", "error": "100000000000000010", "error_weight": 2, "input_syndrome": "100000010", "residual_error_weight": 2, "residual_syndrome": "100000010"},
+        {"correction": "100000100000000000", "error": "011000000000000000", "error_weight": 2, "input_syndrome": "110000011", "residual_error_weight": 4, "residual_syndrome": "000100001"},
+        {"correction": "100000000100000000", "error": "010000100000000000", "error_weight": 2, "input_syndrome": "011100100", "residual_error_weight": 4, "residual_syndrome": "000000000"},
+        {"correction": "100000100000000000", "error": "010000000100000000", "error_weight": 2, "input_syndrome": "110100010", "residual_error_weight": 4, "residual_syndrome": "000000000"},
+        {"correction": "000000000000000000", "error": "010000000001000000", "error_weight": 2, "input_syndrome": "000001010", "residual_error_weight": 2, "residual_syndrome": "000001010"},
+        {"correction": "100000000000000001", "error": "010000000000000100", "error_weight": 2, "input_syndrome": "111000111", "residual_error_weight": 4, "residual_syndrome": "000000000"},
+        {"correction": "000000000000000000", "error": "010000000000000010", "error_weight": 2, "input_syndrome": "001000100", "residual_error_weight": 2, "residual_syndrome": "001000100"},
+        {"correction": "000000000000000000", "error": "010000000000000001", "error_weight": 2, "input_syndrome": "010000001", "residual_error_weight": 2, "residual_syndrome": "010000001"},
+        {"correction": "010000000010000000", "error": "001000010000000000", "error_weight": 2, "input_syndrome": "101010010", "residual_error_weight": 4, "residual_syndrome": "000000000"},
+        {"correction": "100000000001000000", "error": "001000001000000000", "error_weight": 2, "input_syndrome": "101001100", "residual_error_weight": 4, "residual_syndrome": "000000000"}
+      ],
+      "success_counts_by_error_weight": {
+        "0": {"failure": 0, "success": 1, "total": 1},
+        "1": {"failure": 0, "success": 18, "total": 18},
+        "2": {"failure": 115, "success": 38, "total": 153},
+        "3": {"failure": 806, "success": 10, "total": 816},
+        "4": {"failure": 3002, "success": 58, "total": 3060}
+      },
+      "success_total": 125,
+      "systems_counters": {
+        "column_syndrome_table_canonical_serialized_bytes": 217,
+        "column_syndrome_table_sha256": "cf7e37ff1372a3e87d6bac17511f18e71229ef6c54167a2c2183c1a8414cf412",
+        "decode_candidate_comparisons": 150984,
+        "decode_input_syndrome_evaluations": 4048,
+        "decode_iterations_total": 6570,
+        "iteration_histogram": {"0": 478, "1": 702, "2": 2736, "3": 132},
+        "setup_column_syndrome_evaluations": 18,
+        "stalled_with_nonzero_syndrome": 1818
+      }
+    }
+  },
+  "claim_boundary": {
+    "autonomous_search_authorized": false,
+    "bp_osd_performance_claim": false,
+    "circuit_level_noise_claim": false,
+    "cross_machine_latency_claim": false,
+    "experimental_data_reproduction_claim": false,
+    "hardware_validation_claim": false,
+    "qldpc_forge_authorized": false,
+    "systems_benchmark_only": true,
+    "tcm_qdec_authorized": false,
+    "threshold_claim": false
+  },
+  "corpus": {
+    "actual_error_count": 4048,
+    "canonical_serialized_bytes": 170017,
+    "corpus_sha256": "260b1a43cf1d777f28c475918e91a5f7cefc5d28a2bfb556338f7e30058f58a8",
+    "expected_error_count": 4048,
+    "kind": "exhaustive_hamming_weight_shells",
+    "max_weight": 4,
+    "randomness": "none",
+    "sector_model": "code_capacity_single_css_sector",
+    "shell_sizes": {"0": 1, "1": 18, "2": 153, "3": 816, "4": 3060}
+  },
+  "deterministic_system_model": {
+    "data_bits": 18,
+    "full_syndrome_bits": 9,
+    "independent_syndrome_bits": 7,
+    "memory_metric": "canonical_serialized_bytes_not_runtime_object_size",
+    "stabilizer_span_size": 128,
+    "wall_clock_authoritative": false
+  },
+  "evaluator_version": "0.1.0",
+  "fixture_id": "QLDPC-FIXTURE-002",
+  "payload_sha256": "f13522836c3fad9525984d8a99206343053f79af75494b4c6d7207d1075b41e9",
+  "predecessor": {
+    "evidence_path": "evidence/QLDPC-FIXTURE-001-report.json",
+    "evidence_payload_sha256": "6c2095f48762178bf0fe5c2b5fce8299261733912a1cccc7884d11f344718427",
+    "fixture_id": "QLDPC-FIXTURE-001",
+    "promotion_merge_commit": "ab9a24a08d4e31b4d8cd18edb0ab1e5a7a0b3950",
+    "scientific_merge_commit": "b899894cfe17680d556d32ff36e51683cd9f6b32"
+  },
+  "source_context": {
+    "archive": {
+      "doi": "10.5281/zenodo.17706106",
+      "filename": "ZhideLu/Exp_BivariateBicycleCode-v1.1.3.zip",
+      "md5": "95c3421c0301e07266357652f0179d2b",
+      "version": "v1.1.3"
+    },
+    "experiment_decoder": {
+      "bp_method": "ms",
+      "executed_by_fixture": false,
+      "file": "18_4_4/ErrorCorrection_for_experiment_18_4_4.py",
+      "max_iter": 10000,
+      "ms_scaling_factor": 0,
+      "osd_method": "osd_cs",
+      "osd_order": 7
+    },
+    "software": {
+      "bposd": "1.6",
+      "ldpc": "0.1.53",
+      "leaky": "0.2.2",
+      "python": "3.10.14",
+      "stim": "1.13.0"
+    }
+  },
+  "status": "candidate_executable_not_promoted"
+}
