@@ -1,0 +1,152 @@
+{
+  "claim_boundary": {
+    "adaptive_contraction_order_authorized": false,
+    "asymptotic_or_practical_complexity_advantage_claim": false,
+    "autonomous_search_authorized": false,
+    "bp_osd_performance_claim": false,
+    "circuit_level_noise_claim": false,
+    "exact_factorized_equivalence_only": true,
+    "frozen_tcm_qdec_001_semantics_only": true,
+    "general_qldpc_decoder_claim": false,
+    "hardware_validation_claim": false,
+    "larger_code_performance_claim": false,
+    "learned_decoder_authorized": false,
+    "oracle_full_enumeration_verification_only": true,
+    "portable_latency_or_memory_claim": false,
+    "primary_factorized_path_avoids_full_physical_state_enumeration": true,
+    "qldpc_forge_authorized": false,
+    "scalable_tensor_contraction_claim": false,
+    "tcm_qdec_003_authorized": false,
+    "threshold_claim": false
+  },
+  "decision_rule": {
+    "class_tie_break": "lowest_canonical_stabilizer_coset_key",
+    "representative_within_class": "lowest_hamming_weight_then_integer",
+    "winning_class": "exact_semiring_optimum"
+  },
+  "evaluator_version": "0.1.0",
+  "experiment_id": "TCM-QDEC-002",
+  "factorization_geometry": {
+    "check_rank": 7,
+    "column_signature_sha256": "2010b2f40048062203e8ee7607989ee30797e5ec37b0e94d5a5fd4eac8bfd023",
+    "combined_check_logical_rank": 11,
+    "logical_classes_per_syndrome": 16,
+    "peak_active_state_count": 2048,
+    "prefix_active_state_counts": [1,2,4,8,16,32,64,128,256,512,1024,2048,2048,2048,2048,2048,2048,2048,2048],
+    "prefix_combined_ranks": [0,1,2,3,4,5,6,7,8,9,10,11,11,11,11,11,11,11,11],
+    "reachable_combined_labels": 2048,
+    "reachable_syndromes": 128,
+    "redundant_selector_bits": 2,
+    "selector_space_capacity": 8192,
+    "stabilizer_span_size": 128,
+    "stabilizers_zero_logical_label": true
+  },
+  "factorized_contraction": {
+    "algebra_contractions": 3,
+    "canonical_class_mapping_sha256": "0d907375404e37533a3dd182eccea7d6a3fd6637801745f8f5b39b7c4b683f8f",
+    "final_score_entry_count_per_algebra": 2048,
+    "minimum_weight_histogram_over_combined_labels": {"0":1,"1":18,"2":153,"3":636,"4":870,"5":370},
+    "primary_full_physical_state_enumeration": false,
+    "score_table_sha256": {
+      "min_plus_hamming": "178a357cd13b2b9bbab03bad09f08efafecf37f2b59080bb3a6107e552e3b524",
+      "soft_tropical_base_2": "00c4b4c7612b6d05847963c4f8d432160cb2d6ec06fa4813700220461102bad5",
+      "sum_product_bsc_p_0_1": "1b6bd71b9b05f169f57103ae71cd8b540f88e05dbe0302f2b4d9c2562a76a7be"
+    },
+    "soft_tropical_total_partition_mass": 387420489,
+    "sum_product_total_partition_mass": 1000000000000000000,
+    "transition_relaxations_per_algebra": 32766,
+    "transition_relaxations_total": 98298
+  },
+  "factorized_decisions": {
+    "min_plus_hamming": {
+      "decision_table_sha256": "88a9a766b64c7e476ac5bb4da877a2b1f6d4e88cee88cde6ea7461cc74179f3f",
+      "failure_modes": {"nonzero_residual_syndrome":0,"zero_syndrome_wrong_logical_coset":3822},
+      "failure_total": 3822,
+      "success_by_error_weight": {"0":1,"1":18,"2":63,"3":54,"4":90},
+      "success_total": 226
+    },
+    "soft_tropical_base_2": {
+      "decision_table_sha256": "ea2a96e3878758cd2daebd28673d943c27740a3e1c3579d8429a8a658e567393",
+      "failure_modes": {"nonzero_residual_syndrome":0,"zero_syndrome_wrong_logical_coset":3786},
+      "failure_total": 3786,
+      "success_by_error_weight": {"0":1,"1":18,"2":63,"3":90,"4":90},
+      "success_total": 262
+    },
+    "sum_product_bsc_p_0_1": {
+      "decision_table_sha256": "05dd32573ee965ce96caf707de3541f8be74b49317ad46b7929ef7dcf3bf64fc",
+      "failure_modes": {"nonzero_residual_syndrome":0,"zero_syndrome_wrong_logical_coset":3785},
+      "failure_total": 3785,
+      "success_by_error_weight": {"0":1,"1":18,"2":63,"3":91,"4":90},
+      "success_total": 263
+    }
+  },
+  "oracle_equivalence": {
+    "decision_entries_checked": 384,
+    "decision_tables_exactly_equal": true,
+    "oracle_experiment_id": "TCM-QDEC-001",
+    "oracle_full_state_enumeration_count": 262144,
+    "promoted_decision_table_sha256": {
+      "min_plus_hamming": "88a9a766b64c7e476ac5bb4da877a2b1f6d4e88cee88cde6ea7461cc74179f3f",
+      "soft_tropical_base_2": "ea2a96e3878758cd2daebd28673d943c27740a3e1c3579d8429a8a658e567393",
+      "sum_product_bsc_p_0_1": "05dd32573ee965ce96caf707de3541f8be74b49317ad46b7929ef7dcf3bf64fc"
+    },
+    "promoted_success_totals": {"min_plus_hamming":226,"soft_tropical_base_2":262,"sum_product_bsc_p_0_1":263},
+    "promoted_tie_envelopes": {"min_plus_hamming":[218,263],"soft_tropical_base_2":[262,262],"sum_product_bsc_p_0_1":[263,263]},
+    "winning_class_tie_set_cells_checked": 384,
+    "winning_class_tie_sets_exactly_equal": true
+  },
+  "payload_sha256": "efd9e76957421494897e2cc319137874b61093d66ea871f0202df3d07e6eb3c0",
+  "predecessor": {
+    "evidence_path": "evidence/TCM-QDEC-001-report.json",
+    "evidence_payload_sha256": "1b19addcda5e04cf78a834b2162fe0873ed5eb15f3330995d8354906944b7122",
+    "experiment_id": "TCM-QDEC-001",
+    "promotion_main_commit": "be022e3d1dd8490fd3856414908c6cdcb8b06ea4",
+    "promotion_record_path": "reviews/QTR-TCM-QDEC-REVIEW-001/promotion-record.json",
+    "registry_path": "registry/tcm-qdec.json",
+    "scientific_merge_commit": "41524f805dce4f0c7b64b8e743b75a60b4f76773"
+  },
+  "representation": {
+    "combined_constraint_rank": 11,
+    "combined_selector_bits": 13,
+    "factorized_path_full_physical_state_enumeration": false,
+    "independent_syndrome_rank": 7,
+    "kind": "exact_column_transfer_factorization",
+    "local_column_signature": "syndrome_column_concat_logical_Z_pairing_column",
+    "logical_selector_bits": 4,
+    "oracle_comparison_full_state_enumeration": true,
+    "physical_variable_count": 18,
+    "qubit_contraction_order": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
+    "syndrome_selector_bits": 9
+  },
+  "semirings": {
+    "min_plus_hamming": {"interpretation":"minimum Hamming-weight tropical score","kind":"min_plus","local_bit_costs":[0,1],"score_direction":"minimize"},
+    "soft_tropical_base_2": {"interpretation":"exact partition score equivalent in ranking to beta=ln(2) soft-min","kind":"soft_tropical","local_bit_weights":[2,1],"score_direction":"maximize"},
+    "sum_product_bsc_p_0_1": {"interpretation":"exact numerator proportional to BSC p=0.1 likelihood","kind":"sum_product","local_bit_weights":[9,1],"score_direction":"maximize"}
+  },
+  "status": "candidate_executable_not_promoted",
+  "tie_sensitivity": {
+    "min_plus_hamming": {
+      "default_lowest_key_success_count": 226,
+      "frozen_corpus_success_count_envelope_over_winning_class_ties": {"max":263,"min":218},
+      "success_count_invariant_under_winning_class_tie_break": false,
+      "winning_class_count_histogram": {"1":37,"10":45,"3":45,"6":1}
+    },
+    "soft_tropical_base_2": {
+      "default_lowest_key_success_count": 262,
+      "frozen_corpus_success_count_envelope_over_winning_class_ties": {"max":262,"min":262},
+      "success_count_invariant_under_winning_class_tie_break": true,
+      "winning_class_count_histogram": {"1":37,"10":1,"3":45,"4":45}
+    },
+    "sum_product_bsc_p_0_1": {
+      "default_lowest_key_success_count": 263,
+      "frozen_corpus_success_count_envelope_over_winning_class_ties": {"max":263,"min":263},
+      "success_count_invariant_under_winning_class_tie_break": true,
+      "winning_class_count_histogram": {"1":37,"3":45,"4":45,"6":1}
+    }
+  },
+  "winning_class_tie_sets_sha256": {
+    "min_plus_hamming": "1991fe00aaec2f8ce1163ca7b4192054002a2ef176d4839d6883c01f4e724007",
+    "soft_tropical_base_2": "bf4297273ca05b1506bde6f5305464e5affdf78ba31b40e20a0fada3e26dd982",
+    "sum_product_bsc_p_0_1": "3778c019c7e235d916fa27616f83a9f8251a8c2a0276e09e0ea6dc1a6125cd60"
+  }
+}
