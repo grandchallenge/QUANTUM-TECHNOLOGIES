@@ -1,0 +1,230 @@
+{
+  "claim_boundary": {
+    "circuit_level_noise_claim": false,
+    "decoder_performance_claim": false,
+    "exact_code_algebra_only": true,
+    "fault_tolerant_architecture_claim": false,
+    "hardware_validation_claim": false,
+    "qldpc_forge_authorized": false,
+    "tcm_qdec_authorized": false,
+    "threshold_claim": false
+  },
+  "construction": {
+    "family": "bivariate_bicycle_css",
+    "hx": [
+      "101100000110000100",
+      "110010000011000010",
+      "011001000101000001",
+      "000101100100110000",
+      "000110010010011000",
+      "000011001001101000",
+      "100000101000100110",
+      "010000110000010011",
+      "001000011000001101"
+    ],
+    "hx_equals_hz": true,
+    "hz": [
+      "101100000110000100",
+      "110010000011000010",
+      "011001000101000001",
+      "000101100100110000",
+      "000110010010011000",
+      "000011001001101000",
+      "100000101000100110",
+      "010000110000010011",
+      "001000011000001101"
+    ],
+    "parameters": {
+      "a1": 1,
+      "a2": 0,
+      "a3": 2,
+      "b1": 1,
+      "b2": 0,
+      "b3": 2,
+      "l": 3,
+      "m": 3
+    }
+  },
+  "evaluator_version": "0.1.1",
+  "exact_invariants": {
+    "check_count_full": {
+      "x": 9,
+      "z": 9
+    },
+    "column_weights_hx": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "column_weights_hz": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "css_commutes": true,
+    "d": 4,
+    "dx": 4,
+    "dz": 4,
+    "independent_check_count": {
+      "x": 7,
+      "z": 7
+    },
+    "k": 4,
+    "kernel_size_hx": 2048,
+    "kernel_size_hz": 2048,
+    "minimum_weight_logical_witness_count_x": 45,
+    "minimum_weight_logical_witness_count_z": 45,
+    "n": 18,
+    "rank_hx": 7,
+    "rank_hz": 7,
+    "row_weights_hx": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+    ],
+    "row_weights_hz": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+    ],
+    "stabilizer_span_size_x": 128,
+    "stabilizer_span_size_z": 128
+  },
+  "fixture_id": "QLDPC-FIXTURE-001",
+  "logical_basis": {
+    "all_x_in_kernel_hz_not_x_stabilizer": true,
+    "all_z_in_kernel_hx_not_z_stabilizer": true,
+    "basis_size": 4,
+    "canonical_pairing": [
+      [
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        1
+      ]
+    ],
+    "x_bitstrings": [
+      "101011110000000000",
+      "011110101000000000",
+      "110000100100000000",
+      "110011100010000000"
+    ],
+    "z_bitstrings": [
+      "101110001100000000",
+      "101011110000000000",
+      "011000010010000000",
+      "110000100100000000"
+    ]
+  },
+  "payload_sha256": "6c2095f48762178bf0fe5c2b5fce8299261733912a1cccc7884d11f344718427",
+  "reference_decoder": {
+    "exact_success_counts_by_error_weight": {
+      "0": {
+        "success": 1,
+        "total": 1
+      },
+      "1": {
+        "success": 18,
+        "total": 18
+      },
+      "2": {
+        "success": 63,
+        "total": 153
+      },
+      "3": {
+        "success": 68,
+        "total": 816
+      },
+      "4": {
+        "success": 90,
+        "total": 3060
+      }
+    },
+    "guaranteed_correctable_weight": 1,
+    "kind": "exhaustive_minimum_weight_coset_leader",
+    "max_coset_leader_weight": 3,
+    "noise_scope": "code_capacity_single_css_sector",
+    "performance_comparison_authorized": false,
+    "reachable_syndromes": 128,
+    "table_entry_count": 128,
+    "table_sha256": "96ce94c378b7b1fc5fe032fbd253aa932c1ca8abcb17b3d3c89b3ecda601da29"
+  },
+  "removed_checks_source_record": {
+    "x": [
+      2,
+      8
+    ],
+    "z": [
+      3,
+      4
+    ]
+  },
+  "source": {
+    "arxiv": "2505.09684v1",
+    "journal": "Nature Physics (2026)",
+    "license": "CC BY 4.0",
+    "source_scope": "Supplementary theoretical details I.1, equations S6-S11",
+    "title": "Demonstration of low-overhead quantum error correction codes"
+  },
+  "status": "candidate_executable_not_promoted"
+}
