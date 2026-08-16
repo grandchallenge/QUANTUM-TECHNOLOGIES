@@ -1,0 +1,65 @@
+{
+  "fixtures": [
+    {
+      "claim_boundary": {
+        "circuit_level_noise_claim": false,
+        "decoder_performance_claim": false,
+        "exact_code_algebra_only": true,
+        "fault_tolerant_architecture_claim": false,
+        "hardware_validation_claim": false,
+        "qldpc_forge_authorized": false,
+        "tcm_qdec_authorized": false,
+        "threshold_claim": false
+      },
+      "construction": "bivariate_bicycle_css",
+      "fixture_id": "QLDPC-FIXTURE-001",
+      "logical_operators": {
+        "x": [
+          ["L0", "L2", "L4", "L5", "L6", "L7"],
+          ["L1", "L2", "L3", "L4", "L6", "L8"],
+          ["L0", "L1", "L6", "R0"],
+          ["L0", "L1", "L4", "L5", "L6", "R1"]
+        ],
+        "z": [
+          ["L0", "L2", "L3", "L4", "L8", "R0"],
+          ["L0", "L2", "L4", "L5", "L6", "L7"],
+          ["L1", "L2", "L7", "R1"],
+          ["L0", "L1", "L6", "R0"]
+        ]
+      },
+      "parameters": {
+        "a1": 1,
+        "a2": 0,
+        "a3": 2,
+        "b1": 1,
+        "b2": 0,
+        "b3": 2,
+        "l": 3,
+        "m": 3
+      },
+      "programme": "QTR",
+      "source": {
+        "arxiv": "2505.09684v1",
+        "journal": "Nature Physics (2026)",
+        "license": "CC BY 4.0",
+        "source_scope": "Supplementary theoretical details I.1, equations S6-S11",
+        "title": "Demonstration of low-overhead quantum error correction codes"
+      },
+      "source_declared_code": {
+        "d": 4,
+        "k": 4,
+        "n": 18
+      },
+      "source_declared_rank": {
+        "hx": 7,
+        "hz": 7
+      },
+      "source_removed_checks": {
+        "x": [2, 8],
+        "z": [3, 4]
+      },
+      "status": "candidate_executable_not_promoted"
+    }
+  ],
+  "registry_version": "0.1.0"
+}
