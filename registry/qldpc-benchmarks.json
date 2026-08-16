@@ -1,0 +1,74 @@
+{
+  "benchmarks": [
+    {
+      "claim_boundary": {
+        "autonomous_search_authorized": false,
+        "bp_osd_performance_claim": false,
+        "circuit_level_noise_claim": false,
+        "cross_machine_latency_claim": false,
+        "experimental_data_reproduction_claim": false,
+        "hardware_validation_claim": false,
+        "qldpc_forge_authorized": false,
+        "systems_benchmark_only": true,
+        "tcm_qdec_authorized": false,
+        "threshold_claim": false
+      },
+      "corpus": {
+        "expected_error_count": 4048,
+        "kind": "exhaustive_hamming_weight_shells",
+        "max_weight": 4,
+        "randomness": "none",
+        "sector_model": "code_capacity_single_css_sector"
+      },
+      "decoders": {
+        "exact_coset_lookup": {
+          "expected_table_sha256": "96ce94c378b7b1fc5fe032fbd253aa932c1ca8abcb17b3d3c89b3ecda601da29",
+          "kind": "minimum_weight_coset_leader_table",
+          "role": "exact_reference"
+        },
+        "greedy_syndrome_descent": {
+          "accept_only_strict_reduction": true,
+          "kind": "deterministic_best_syndrome_weight_reduction",
+          "max_iterations": 18,
+          "role": "simple_negative_capable_baseline",
+          "tie_break": "lowest_qubit_index"
+        }
+      },
+      "fixture_id": "QLDPC-FIXTURE-002",
+      "predecessor": {
+        "evidence_path": "evidence/QLDPC-FIXTURE-001-report.json",
+        "evidence_payload_sha256": "6c2095f48762178bf0fe5c2b5fce8299261733912a1cccc7884d11f344718427",
+        "fixture_id": "QLDPC-FIXTURE-001",
+        "promotion_merge_commit": "ab9a24a08d4e31b4d8cd18edb0ab1e5a7a0b3950",
+        "scientific_merge_commit": "b899894cfe17680d556d32ff36e51683cd9f6b32"
+      },
+      "programme": "QTR",
+      "source_context": {
+        "archive": {
+          "doi": "10.5281/zenodo.17706106",
+          "filename": "ZhideLu/Exp_BivariateBicycleCode-v1.1.3.zip",
+          "md5": "95c3421c0301e07266357652f0179d2b",
+          "version": "v1.1.3"
+        },
+        "experiment_decoder": {
+          "bp_method": "ms",
+          "executed_by_fixture": false,
+          "file": "18_4_4/ErrorCorrection_for_experiment_18_4_4.py",
+          "max_iter": 10000,
+          "ms_scaling_factor": 0,
+          "osd_method": "osd_cs",
+          "osd_order": 7
+        },
+        "software": {
+          "bposd": "1.6",
+          "ldpc": "0.1.53",
+          "leaky": "0.2.2",
+          "python": "3.10.14",
+          "stim": "1.13.0"
+        }
+      },
+      "status": "candidate_executable_not_promoted"
+    }
+  ],
+  "registry_version": "0.1.0"
+}
