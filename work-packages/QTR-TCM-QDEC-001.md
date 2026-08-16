@@ -1,6 +1,6 @@
 # QTR-TCM-QDEC-001 — Degeneracy-aware finite semiring inference audit
 
-Status: `candidate_executable_not_promoted`
+Status: `referee_promoted_bounded`
 
 Programme: `GCL Quantum Technologies Research (QTR)`
 
@@ -9,6 +9,14 @@ Experiment identifier: `TCM-QDEC-001`
 Tracking issue: `#37`
 
 Predecessor: `QLDPC-FIXTURE-002`
+
+Reviewed scientific head: `cba814e5e5fb6db8fba7a8afd8211189a477eecb`
+
+Scientific merge: `41524f805dce4f0c7b64b8e743b75a60b4f76773`
+
+Promotion authority: `reviews/QTR-TCM-QDEC-REVIEW-001/promotion-record.json`
+
+The reviewed `registry/tcm-qdec.json` and `evidence/TCM-QDEC-001-report.json` remain immutable scientific snapshots with status `candidate_executable_not_promoted`. Bounded authority is carried only by the separate promotion overlay.
 
 ## 1. Purpose
 
@@ -136,7 +144,7 @@ The following notions are deliberately not conflated:
 
 ## 7. Exact finite result
 
-The candidate evaluator produces the following six-cell result on the frozen `4048`-case corpus:
+The reviewed evaluator produces the following six-cell result on the frozen `4048`-case corpus:
 
 | terminal treatment | sum-product | soft tropical | min-plus |
 |---|---:|---:|---:|
@@ -188,34 +196,22 @@ The interval `[218,263]` is part of the scientific evidence. It must not be repl
 
 ## 10. Evidence and replay
 
-The deterministic report is regenerated with:
+The deterministic report is regenerated with
 
 ```bash
 python reference/tcm_qdec_001.py \
   --output evidence/TCM-QDEC-001-report.json
 ```
 
-The committed candidate evidence payload is:
+The immutable reviewed evidence payload is:
 
 `1b19addcda5e04cf78a834b2162fe0873ed5eb15f3330995d8354906944b7122`.
 
-The replay/adversarial harness must verify, at minimum:
-
-- exact committed-evidence regeneration;
-- predecessor payload and promotion identities;
-- frozen Fixture 002 corpus identity;
-- complete `2^18` state-space geometry;
-- exact six-cell success matrix;
-- residual-syndrome and wrong-logical-coset failure classification;
-- exact decision-table identities;
-- quotient-versus-representative repair/break counts;
-- replay of Fixture 002 exact and greedy anchors;
-- tie envelopes and tie-invariance claims;
-- fail-closed rejection of semiring, predecessor, corpus, promotion, and downstream-authority drift.
+The exact-head scientific replay passed `92/92` repository tests, including `13` TCM-QDEC-specific replay/adversarial tests, before Referee disposition.
 
 ## 11. Claim boundary
 
-`TCM-QDEC-001` may seek bounded promotion only for the exact finite semantic comparison described above.
+The bounded promotion admits only the exact finite semantic comparison described above.
 
 It does **not** certify or authorize:
 
@@ -233,19 +229,8 @@ It does **not** certify or authorize:
 - `QLDPC-FORGE`;
 - autonomous code, decoder, circuit, or architecture search.
 
-## 12. Promotion condition
+## 12. Promotion disposition
 
-Promotion requires:
+The bounded scientific review completed at exact head `cba814e5e5fb6db8fba7a8afd8211189a477eecb`. Referee record `5310039669` approved only the finite semantic substrate described here. The scientific snapshot merged as `41524f805dce4f0c7b64b8e743b75a60b4f76773`.
 
-1. exact protected-predecessor binding;
-2. byte-stable committed report regeneration;
-3. complete finite state-space replay;
-4. exact six-cell matrix reproduction;
-5. independent verification of matched repair/break counts;
-6. explicit retention of representative-space syndrome failures;
-7. explicit retention of min-plus tie sensitivity;
-8. green adversarial tests;
-9. fresh exact-head QTR and GCL workflows;
-10. a fresh bounded office review and Referee disposition.
-
-Until then, `TCM-QDEC-001` remains executable candidate evidence only.
+Promotion authority is documentary and does not rewrite the registry or evidence that were reviewed. Any later `TCM-QDEC` scale, implementation, performance, or architecture stage requires a separately governed successor.
