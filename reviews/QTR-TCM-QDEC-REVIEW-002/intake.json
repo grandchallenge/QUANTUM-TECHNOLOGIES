@@ -1,0 +1,51 @@
+{
+  "record_version": "0.1.0",
+  "record_id": "QTR-TCM-QDEC-REVIEW-002",
+  "status": "candidate_executable_not_promoted",
+  "review_cycle_status": "completed_referee_promoted",
+  "programme": "QTR",
+  "experiment_id": "TCM-QDEC-002",
+  "predecessor_experiment": "TCM-QDEC-001",
+  "reviewed_head": "9123a9c6cc2c163031d8bff0c46e0a9dd4c8f8fd",
+  "scientific_merge_commit": "d3340c91df3aa72dc5c7ba75906128c8eef2e174",
+  "pull_request": 43,
+  "tracking_issue": 42,
+  "review_issue": 44,
+  "documentary_issue": 45,
+  "referee_record": 5310199674,
+  "promotion_record": "reviews/QTR-TCM-QDEC-REVIEW-002/promotion-record.json",
+  "promotion_scope": [
+    "exact finite local parity transfer factorization on the protected [[18,4,4]] one-sector fixture",
+    "rank-11 combined syndrome-plus-logical selector and its exact 2048 reachable syndrome/coset labels",
+    "exact three-algebra factorized score tables, tied winning class sets, and deterministic corrections",
+    "exact equality with the promoted TCM-QDEC-001 quotient oracle on all 384 syndrome-by-algebra cells",
+    "finite support profiles, deterministic transition counts, class/score/tie digests, frozen-corpus outcomes, and retained min-plus tie ambiguity"
+  ],
+  "excluded_scope": [
+    "scalable tensor-network or transfer decoding",
+    "bounded contraction width for a qLDPC code family",
+    "asymptotic or practical complexity advantage",
+    "larger-code decoder performance",
+    "general qLDPC decoder performance or practical superiority",
+    "BP-OSD performance or comparison claims",
+    "circuit-level or phenomenological noise",
+    "hardware validation",
+    "threshold or pseudo-threshold claims",
+    "portable latency or runtime-memory claims",
+    "learned decoder parameters",
+    "adaptive contraction-order optimization",
+    "TCM-QDEC-003",
+    "QLDPC-FORGE",
+    "autonomous code, decoder, circuit, or architecture search"
+  ],
+  "required_offices": [
+    "Axiomatist",
+    "Cartographer",
+    "Grammarian",
+    "Verifier",
+    "Adversary",
+    "Formalist",
+    "Amanuensis",
+    "Referee"
+  ]
+}
