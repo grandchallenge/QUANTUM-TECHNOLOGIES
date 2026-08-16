@@ -1,0 +1,47 @@
+{
+  "record_version": "0.1.0",
+  "record_id": "QTR-TCM-QDEC-REVIEW-001",
+  "status": "candidate_executable_not_promoted",
+  "review_cycle_status": "completed_referee_promoted",
+  "programme": "QTR",
+  "experiment_id": "TCM-QDEC-001",
+  "predecessor_fixture": "QLDPC-FIXTURE-002",
+  "reviewed_head": "cba814e5e5fb6db8fba7a8afd8211189a477eecb",
+  "scientific_merge_commit": "41524f805dce4f0c7b64b8e743b75a60b4f76773",
+  "pull_request": 38,
+  "tracking_issue": 37,
+  "review_issue": 39,
+  "documentary_issue": 40,
+  "referee_record": 5310039669,
+  "promotion_record": "reviews/QTR-TCM-QDEC-REVIEW-001/promotion-record.json",
+  "promotion_scope": [
+    "exact finite one-sector enumeration of 2^18 physical error representatives on the protected [[18,4,4]] substrate",
+    "the declared representative-naive and stabilizer-coset terminal treatments",
+    "the declared exact sum-product, base-2 soft-tropical, and min-plus reductions",
+    "stabilizer-equivalence success adjudication, exact six-cell outcomes, failure diagnostics, decision identities, and matched repair/break counts",
+    "tie-sensitivity evidence including the min-plus [218,263] success-count envelope"
+  ],
+  "excluded_scope": [
+    "scalable tensor-network contraction or scalable TCM decoder",
+    "general qLDPC decoder performance or practical superiority",
+    "BP-OSD performance or comparison claims",
+    "circuit-level or phenomenological noise",
+    "hardware validation",
+    "threshold or pseudo-threshold claims",
+    "portable latency or runtime-memory claims",
+    "learned decoder parameters",
+    "TCM-QDEC-002",
+    "QLDPC-FORGE",
+    "autonomous code, decoder, circuit, or architecture search"
+  ],
+  "required_offices": [
+    "Axiomatist",
+    "Cartographer",
+    "Grammarian",
+    "Verifier",
+    "Adversary",
+    "Formalist",
+    "Amanuensis",
+    "Referee"
+  ]
+}
