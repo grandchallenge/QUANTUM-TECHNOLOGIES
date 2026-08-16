@@ -1,0 +1,107 @@
+{
+  "record_version": "0.1.0",
+  "record_id": "QTR-TCM-QDEC-REVIEW-001-PROMOTION",
+  "status": "referee_promoted_bounded",
+  "reviewed_head": "cba814e5e5fb6db8fba7a8afd8211189a477eecb",
+  "scientific_merge_commit": "41524f805dce4f0c7b64b8e743b75a60b4f76773",
+  "pull_request": 38,
+  "tracking_issue": 37,
+  "review_issue": 39,
+  "documentary_issue": 40,
+  "predecessor": {
+    "fixture_id": "QLDPC-FIXTURE-002",
+    "evidence_payload_sha256": "d98c5d73f7fdf9259a35be60580dc9b6c32c5e4483cd765ed0dcba594b9299e5",
+    "corpus_sha256": "260b1a43cf1d777f28c475918e91a5f7cefc5d28a2bfb556338f7e30058f58a8",
+    "scientific_merge_commit": "51c31bde2e0630314d3d48dceb9b92969c37c228",
+    "promotion_merge_commit": "074612e39e1232d1644edc487914ca571189f409"
+  },
+  "workflow_evidence": {
+    "qtr_validation_run": 31976908763,
+    "qtr_exact_head_artifact": 9271297946,
+    "qtr_artifact_digest": "sha256:5c5b9fe27ef2ff57e63f634c8343dc6aca97c9d6edb9be887755f071f28ffd2d",
+    "gcl_conformance_run": 31976909145,
+    "gcl_conformance_artifact": 9271295929,
+    "gcl_artifact_digest": "sha256:04900724e44cdd197ea0ae3a67ec03f38f398c2c4b42e5c4b370254d953ba497",
+    "gcl_scorecard_artifact": 9271296181,
+    "gcl_scorecard_digest": "sha256:abfec7559bca005dca8889e9143bf580aabeb8eb84c31541519644151819b40a",
+    "codeql_check": 95237714754,
+    "codeql_conclusion": "success",
+    "test_count": 92,
+    "tcm_qdec_test_count": 13,
+    "evidence_payload_sha256": "1b19addcda5e04cf78a834b2162fe0873ed5eb15f3330995d8354906944b7122"
+  },
+  "office_records": {
+    "Axiomatist": 5310035637,
+    "Cartographer": 5310036055,
+    "Grammarian": 5310036426,
+    "Verifier": 5310036878,
+    "Adversary": 5310037859,
+    "Formalist": 5310038311,
+    "Amanuensis": 5310038740,
+    "Referee": 5310039669
+  },
+  "referee": {
+    "disposition": "APPROVE_BOUNDED_SCIENTIFIC_MERGE__TCM_QDEC_001",
+    "record": 5310039669,
+    "live_ruleset_required_approving_reviews": 0
+  },
+  "protected_merge": {
+    "ruleset_id": 20106953,
+    "required_status_checks": [
+      "validate",
+      "policy",
+      "security / action-policy"
+    ],
+    "review_threads_resolved": true,
+    "main_base_at_merge": "074612e39e1232d1644edc487914ca571189f409"
+  },
+  "promoted_scope": {
+    "state_space": "exact one-sector enumeration of 262144 physical error representatives with 128 syndrome fibers and 16 stabilizer-equivalence classes per syndrome",
+    "terminal_treatments": "representative-naive coordinatewise marginals and stabilizer-coset aggregation as exactly registered",
+    "semirings": "exact integer sum-product BSC p=0.1 numerator, exact base-2 soft-tropical partition score, and min-plus Hamming reduction",
+    "six_cell_success_matrix": {
+      "representative_naive_marginals": {
+        "sum_product_bsc_p_0_1": 37,
+        "soft_tropical_base_2": 1,
+        "min_plus_hamming": 37
+      },
+      "stabilizer_coset_aggregate": {
+        "sum_product_bsc_p_0_1": 263,
+        "soft_tropical_base_2": 262,
+        "min_plus_hamming": 226
+      }
+    },
+    "matched_quotient_repairs": {
+      "sum_product_bsc_p_0_1": 226,
+      "soft_tropical_base_2": 261,
+      "min_plus_hamming": 189
+    },
+    "exact_lookup_nonmonotonicity": "sum-product quotient is net +23 versus Fixture 002 exact lookup but repairs 131 exact failures and breaks 108 exact successes",
+    "tie_sensitivity": {
+      "sum_product_bsc_p_0_1": [263, 263],
+      "soft_tropical_base_2": [262, 262],
+      "min_plus_hamming": [218, 263]
+    }
+  },
+  "reviewed_snapshot": {
+    "registry_path": "registry/tcm-qdec.json",
+    "registry_status_at_review": "candidate_executable_not_promoted",
+    "evidence_path": "evidence/TCM-QDEC-001-report.json",
+    "evidence_status_at_review": "candidate_executable_not_promoted",
+    "evidence_payload_sha256": "1b19addcda5e04cf78a834b2162fe0873ed5eb15f3330995d8354906944b7122",
+    "snapshot_preserved_byte_for_byte": true
+  },
+  "excluded_scope": [
+    "scalable tensor-network contraction or scalable TCM decoder",
+    "general qLDPC decoder performance or practical superiority",
+    "BP-OSD performance or comparison claims",
+    "circuit-level or phenomenological noise",
+    "hardware validation",
+    "threshold or pseudo-threshold claims",
+    "portable latency or runtime-memory claims",
+    "learned decoder parameters",
+    "TCM-QDEC-002",
+    "QLDPC-FORGE",
+    "autonomous code, decoder, circuit, or architecture search"
+  ]
+}
