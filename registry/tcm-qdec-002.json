@@ -1,0 +1,105 @@
+{
+  "experiments": [
+    {
+      "claim_boundary": {
+        "adaptive_contraction_order_authorized": false,
+        "asymptotic_or_practical_complexity_advantage_claim": false,
+        "autonomous_search_authorized": false,
+        "bp_osd_performance_claim": false,
+        "circuit_level_noise_claim": false,
+        "exact_factorized_equivalence_only": true,
+        "frozen_tcm_qdec_001_semantics_only": true,
+        "general_qldpc_decoder_claim": false,
+        "hardware_validation_claim": false,
+        "larger_code_performance_claim": false,
+        "learned_decoder_authorized": false,
+        "oracle_full_enumeration_verification_only": true,
+        "portable_latency_or_memory_claim": false,
+        "primary_factorized_path_avoids_full_physical_state_enumeration": true,
+        "qldpc_forge_authorized": false,
+        "scalable_tensor_contraction_claim": false,
+        "tcm_qdec_003_authorized": false,
+        "threshold_claim": false
+      },
+      "decision_rule": {
+        "class_tie_break": "lowest_canonical_stabilizer_coset_key",
+        "representative_within_class": "lowest_hamming_weight_then_integer",
+        "winning_class": "exact_semiring_optimum"
+      },
+      "experiment_id": "TCM-QDEC-002",
+      "predecessor": {
+        "evidence_path": "evidence/TCM-QDEC-001-report.json",
+        "evidence_payload_sha256": "1b19addcda5e04cf78a834b2162fe0873ed5eb15f3330995d8354906944b7122",
+        "experiment_id": "TCM-QDEC-001",
+        "promotion_main_commit": "be022e3d1dd8490fd3856414908c6cdcb8b06ea4",
+        "promotion_record_path": "reviews/QTR-TCM-QDEC-REVIEW-001/promotion-record.json",
+        "registry_path": "registry/tcm-qdec.json",
+        "scientific_merge_commit": "41524f805dce4f0c7b64b8e743b75a60b4f76773"
+      },
+      "programme": "QTR",
+      "representation": {
+        "combined_constraint_rank": 11,
+        "combined_selector_bits": 13,
+        "factorized_path_full_physical_state_enumeration": false,
+        "independent_syndrome_rank": 7,
+        "kind": "exact_column_transfer_factorization",
+        "local_column_signature": "syndrome_column_concat_logical_Z_pairing_column",
+        "logical_selector_bits": 4,
+        "oracle_comparison_full_state_enumeration": true,
+        "physical_variable_count": 18,
+        "qubit_contraction_order": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "syndrome_selector_bits": 9
+      },
+      "semirings": {
+        "min_plus_hamming": {
+          "interpretation": "minimum Hamming-weight tropical score",
+          "kind": "min_plus",
+          "local_bit_costs": [
+            0,
+            1
+          ],
+          "score_direction": "minimize"
+        },
+        "soft_tropical_base_2": {
+          "interpretation": "exact partition score equivalent in ranking to beta=ln(2) soft-min",
+          "kind": "soft_tropical",
+          "local_bit_weights": [
+            2,
+            1
+          ],
+          "score_direction": "maximize"
+        },
+        "sum_product_bsc_p_0_1": {
+          "interpretation": "exact numerator proportional to BSC p=0.1 likelihood",
+          "kind": "sum_product",
+          "local_bit_weights": [
+            9,
+            1
+          ],
+          "score_direction": "maximize"
+        }
+      },
+      "status": "candidate_executable_not_promoted"
+    }
+  ],
+  "registry_version": "0.1.0"
+}
