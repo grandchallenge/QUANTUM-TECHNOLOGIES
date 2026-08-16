@@ -337,7 +337,7 @@ def infer_tables(
 def classify(
     corpus: list[int], rows: list[int], stabilizers: set[int], table: dict[int, int]
 ) -> tuple[dict[str, Any], list[bool]]:
-    shell: dict[str, dict[str, int]] = {}
+    shell: dict[str, int] = {}
     failures = {"nonzero_residual_syndrome": 0,
                 "zero_syndrome_wrong_logical_coset": 0}
     outcomes: list[bool] = []
@@ -348,11 +348,8 @@ def classify(
         residual_syndrome = syndrome(residual, rows)
         ok = residual_syndrome == 0 and residual in stabilizers
         outcomes.append(ok)
-        bucket = shell.setdefault(
-            str(error.bit_count()), {"success": 0, "failure": 0, "total": 0}
-        )
-        bucket["total"] += 1
-        bucket["success" if ok else "failure"] += 1
+        w = str(error.bit_count())
+        shell[w] = shell.get(w, 0) + int(ok)
         if not ok:
             failures[
                 "nonzero_residual_syndrome"
@@ -363,7 +360,7 @@ def classify(
     return {
         "success_total": total,
         "failure_total": len(outcomes) - total,
-        "success_counts_by_error_weight": shell,
+        "success_by_error_weight": shell,
         "failure_modes": failures,
     }, outcomes
 
@@ -378,7 +375,7 @@ def delta(first: list[bool], second: list[bool]) -> dict[str, int]:
 
 def comparison_witnesses(
     corpus: list[int], rows: list[int], first: dict[int, int], second: dict[int, int],
-    first_outcomes: list[bool], second_outcomes: list[bool], limit: int = 8,
+    first_outcomes: list[bool], second_outcomes: list[bool], limit: int = 4,
 ) -> dict[str, list[dict[str, Any]]]:
     repaired: list[dict[str, Any]] = []
     broken: list[dict[str, Any]] = []
