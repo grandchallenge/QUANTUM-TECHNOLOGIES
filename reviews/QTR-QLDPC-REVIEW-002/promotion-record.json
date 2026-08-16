@@ -1,0 +1,95 @@
+{
+  "record_version": "0.1.0",
+  "record_id": "QTR-QLDPC-REVIEW-002-PROMOTION",
+  "status": "referee_promoted_bounded",
+  "reviewed_head": "e7b2eb0060e51d4157a6666f2e857c1fb19aaff1",
+  "scientific_merge_commit": "51c31bde2e0630314d3d48dceb9b92969c37c228",
+  "pull_request": 33,
+  "tracking_issue": 32,
+  "review_issue": 34,
+  "documentary_issue": 35,
+  "predecessor": {
+    "fixture_id": "QLDPC-FIXTURE-001",
+    "evidence_payload_sha256": "6c2095f48762178bf0fe5c2b5fce8299261733912a1cccc7884d11f344718427",
+    "promotion_merge_commit": "ab9a24a08d4e31b4d8cd18edb0ab1e5a7a0b3950"
+  },
+  "workflow_evidence": {
+    "qtr_validation_run": 31940539996,
+    "qtr_exact_head_artifact": 9261886132,
+    "qtr_artifact_digest": "sha256:05b126e1b624e94ebf1cded956dee148b04ffb0c97c002fd64d3f7bb57d971a4",
+    "gcl_conformance_run": 31940540498,
+    "gcl_conformance_artifact": 9261885983,
+    "gcl_artifact_digest": "sha256:f6803ba048847f5127e7886579f988e154935b6e659f9922b319f51a72fc863c",
+    "gcl_scorecard_artifact": 9261885197,
+    "gcl_scorecard_digest": "sha256:c47c99a89ac6e244cd4c0ae0f1a8692f41d3b4c2bc7a460f5f18bf618a1653d3",
+    "codeql_check": 95148990605,
+    "codeql_conclusion": "success",
+    "test_count": 74,
+    "evidence_payload_sha256": "d98c5d73f7fdf9259a35be60580dc9b6c32c5e4483cd765ed0dcba594b9299e5",
+    "corpus_sha256": "260b1a43cf1d777f28c475918e91a5f7cefc5d28a2bfb556338f7e30058f58a8",
+    "exact_decoder_table_sha256": "96ce94c378b7b1fc5fe032fbd253aa932c1ca8abcb17b3d3c89b3ecda601da29"
+  },
+  "source_context_lock": {
+    "zenodo_doi": "10.5281/zenodo.17706106",
+    "archive_version": "v1.1.3",
+    "archive_md5": "95c3421c0301e07266357652f0179d2b",
+    "experiment_decoder_git_ref": "v1.1.3",
+    "experiment_decoder_git_blob_sha": "df82b3a6aa17b969a50b1b143cc10136cb24547f",
+    "executed_by_fixture": false
+  },
+  "office_records": {
+    "Axiomatist": 5306871426,
+    "Cartographer": 5306872120,
+    "Grammarian": 5306872830,
+    "Verifier": 5306874672,
+    "Adversary": 5306876505,
+    "Formalist": 5306877250,
+    "Amanuensis": 5306877837,
+    "Referee": 5306878917
+  },
+  "referee": {
+    "disposition": "APPROVE_BOUNDED_SCIENTIFIC_MERGE__QLDPC_FIXTURE_002_R2",
+    "record": 5306878917,
+    "live_ruleset_required_approving_reviews": 0
+  },
+  "protected_merge": {
+    "ruleset_id": 20106953,
+    "required_status_checks": [
+      "validate",
+      "policy",
+      "security / action-policy"
+    ],
+    "review_threads_resolved": true,
+    "main_base_at_merge": "ab9a24a08d4e31b4d8cd18edb0ab1e5a7a0b3950"
+  },
+  "promoted_scope": {
+    "corpus": "one-sector exhaustive Hamming-weight-0-through-4 corpus of 4048 errors on the protected [[18,4,4]] Fixture 001 code",
+    "exact_baseline": "reconstructed exhaustive minimum-weight coset-leader lookup with exact stabilizer-equivalence scoring",
+    "simple_baseline": "deterministic greedy syndrome-descent baseline with retained finite failures",
+    "systems_evidence": "exact algorithmic counters and canonical serialization sizes; no portable runtime or memory claim",
+    "profiling": "optional machine-local diagnostic-only wall-clock output",
+    "source_context": "tag/blob-bound companion experimental BP-OSD configuration as provenance only"
+  },
+  "reviewed_snapshot": {
+    "registry_path": "registry/qldpc-benchmarks.json",
+    "registry_status_at_review": "candidate_executable_not_promoted",
+    "evidence_path": "evidence/QLDPC-FIXTURE-002-report.json",
+    "evidence_status_at_review": "candidate_executable_not_promoted",
+    "evidence_payload_sha256": "d98c5d73f7fdf9259a35be60580dc9b6c32c5e4483cd765ed0dcba594b9299e5",
+    "corpus_sha256": "260b1a43cf1d777f28c475918e91a5f7cefc5d28a2bfb556338f7e30058f58a8",
+    "snapshot_preserved_byte_for_byte": true
+  },
+  "excluded_scope": [
+    "experimental-data reproduction",
+    "circuit-level or Pauli+ noise-model validation",
+    "BP-OSD performance or superiority",
+    "Kunlun hardware validation",
+    "threshold or pseudo-threshold claims",
+    "cross-machine latency or memory claims",
+    "practical decoder or resource superiority",
+    "fault-tolerant logical operations",
+    "TCM-QDEC",
+    "QLDPC-FORGE",
+    "autonomous code, decoder, circuit, or architecture search"
+  ]
+}

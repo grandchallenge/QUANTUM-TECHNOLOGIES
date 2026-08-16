@@ -1,6 +1,6 @@
 # QTR-QLDPC-FIXTURE-002 — Frozen-corpus decoder systems benchmark
 
-Status: `candidate_executable_not_promoted`
+Status: `referee_promoted_bounded`
 
 Programme: `GCL Quantum Technologies Research (QTR)`
 
@@ -9,6 +9,16 @@ Fixture identifier: `QLDPC-FIXTURE-002`
 Predecessor: `QLDPC-FIXTURE-001`
 
 Tracking issue: `#32`
+
+Reviewed scientific head: `e7b2eb0060e51d4157a6666f2e857c1fb19aaff1`
+
+Scientific merge: `51c31bde2e0630314d3d48dceb9b92969c37c228`
+
+Promotion authority: `reviews/QTR-QLDPC-REVIEW-002/promotion-record.json`
+
+The registry and evidence files retain their reviewed
+`candidate_executable_not_promoted` status as an immutable scientific snapshot.
+The status above records the separate bounded governance disposition.
 
 ## 1. Purpose
 
@@ -138,8 +148,10 @@ context only:
 - leaky `0.2.2`.
 
 The source experiment decoder
-`18_4_4/ErrorCorrection_for_experiment_18_4_4.py` records min-sum BP,
-`max_iter=10000`, `osd_cs`, OSD order `7`, and min-sum scaling factor `0`.
+`18_4_4/ErrorCorrection_for_experiment_18_4_4.py` is bound to Git tag
+`v1.1.3` and blob `df82b3a6aa17b969a50b1b143cc10136cb24547f`. It records
+min-sum BP, `max_iter=10000`, `osd_cs`, OSD order `7`, and min-sum scaling
+factor `0`.
 
 Fixture 002 does **not** execute that BP-OSD pipeline. The transcription exists
 to establish a future compatibility boundary, not to import the source
@@ -161,19 +173,20 @@ python reference/qldpc_fixture_002.py \
   --profile-output /tmp/QLDPC-FIXTURE-002-profile.json
 ```
 
-The test package must verify exact committed replay and adversarially reject
+The test package verifies exact committed replay and adversarially rejects
 changes to the predecessor payload, predecessor claim boundary, corpus
 definition, source-context record, or downstream authorization flags.
 
 ## 8. Claim boundary
 
-Fixture 002 may seek promotion only for:
+Fixture 002 is promoted only for:
 
 - this frozen finite code-capacity corpus;
 - exact correctness scoring against the promoted Fixture 001 algebra;
 - the two explicitly named deterministic decoder baselines;
 - deterministic systems counters and preserved negative evidence;
-- non-authoritative optional local profiling mechanics.
+- non-authoritative optional local profiling mechanics;
+- the tag/blob-bound source BP-OSD configuration as provenance context only.
 
 It does **not** certify or authorize:
 
@@ -189,18 +202,17 @@ It does **not** certify or authorize:
 - `QLDPC-FORGE`;
 - autonomous code, decoder, circuit, or architecture search.
 
-## 9. Promotion condition
+## 9. Promotion record
 
-Promotion requires:
+The bounded promotion was reviewed at exact scientific head
+`e7b2eb0060e51d4157a6666f2e857c1fb19aaff1` and scientifically merged as
+`51c31bde2e0630314d3d48dceb9b92969c37c228`.
 
-1. exact predecessor binding and replay;
-2. byte-stable deterministic evidence regeneration;
-3. exhaustive corpus identity and shell counts;
-4. exact lookup results equal to Fixture 001;
-5. retained simple-decoder failures and witnesses;
-6. exact deterministic systems counters;
-7. green adversarial tests;
-8. exact-head QTR and GCL workflows;
-9. a fresh bounded office review and Referee disposition.
+The immutable reviewed evidence payload remains
+`d98c5d73f7fdf9259a35be60580dc9b6c32c5e4483cd765ed0dcba594b9299e5`
+and the frozen corpus remains
+`260b1a43cf1d777f28c475918e91a5f7cefc5d28a2bfb556338f7e30058f58a8`.
 
-Until then, Fixture 002 remains executable candidate evidence only.
+Authority is recorded separately in
+`reviews/QTR-QLDPC-REVIEW-002/promotion-record.json`. `TCM-QDEC` and
+`QLDPC-FORGE` remain gated.
