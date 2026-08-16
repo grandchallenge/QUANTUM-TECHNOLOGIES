@@ -54,20 +54,25 @@ The source declares an `[[18,4,4]]` code and rank seven for each full check
 matrix. It also supplies one four-pair logical Pauli basis.
 
 The exact transcribed inputs are stored in `registry/qldpc-fixtures.json`.
-They are inputs to replay, not GCL-certified facts.
+They are inputs to replay, not GCL-certified facts. The fixture-specific
+evaluator literal-binds the source identity, polynomial parameters, logical
+operator transcription, and redundant-check record; unknown record fields are
+rejected before report generation.
 
 ## 3. Exact replay obligations
 
 `reference/qldpc_fixture_001.py` shall independently reconstruct and check:
 
-1. binary matrix construction from the polynomial parameters;
-2. `H_X H_Z^T = 0` over `GF(2)`;
-3. exact ranks of `H_X` and `H_Z`;
-4. `n = 18` and `k = n-rank(H_X)-rank(H_Z) = 4`;
-5. exact CSS distances `d_X` and `d_Z` by exhaustive enumeration;
-6. row and column weight distributions;
-7. the source logical Pauli basis, including canonical X/Z pairing;
-8. a deterministic reference decoder for all reachable code-capacity
+1. fail-closed source identity, key-set, polynomial-parameter, logical-basis,
+   and redundant-check binding;
+2. binary matrix construction from the polynomial parameters;
+3. `H_X H_Z^T = 0` over `GF(2)`;
+4. exact ranks of `H_X` and `H_Z`;
+5. `n = 18` and `k = n-rank(H_X)-rank(H_Z) = 4`;
+6. exact CSS distances `d_X` and `d_Z` by exhaustive enumeration;
+7. row and column weight distributions;
+8. the source logical Pauli basis, including canonical X/Z pairing;
+9. a deterministic reference decoder for all reachable code-capacity
    syndromes.
 
 For this 18-qubit fixture, exhaustive enumeration is the authority mechanism.
@@ -101,7 +106,9 @@ canonical SHA-256 payload digest.
 
 The unit test `tests/test_qldpc_fixture_001.py` replays the committed evidence
 and includes fail-closed mutations of the declared distance, logical basis,
-and authority boundary.
+source record, and authority boundary. It also demonstrates that an alternate
+algebraically valid canonical logical basis cannot silently replace the exact
+source transcription.
 
 ## 6. Claim boundary
 
