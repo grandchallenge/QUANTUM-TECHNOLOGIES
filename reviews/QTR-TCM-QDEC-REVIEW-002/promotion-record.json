@@ -1,0 +1,124 @@
+{
+  "record_version": "0.1.0",
+  "record_id": "QTR-TCM-QDEC-REVIEW-002-PROMOTION",
+  "status": "referee_promoted_bounded",
+  "reviewed_head": "9123a9c6cc2c163031d8bff0c46e0a9dd4c8f8fd",
+  "scientific_merge_commit": "d3340c91df3aa72dc5c7ba75906128c8eef2e174",
+  "pull_request": 43,
+  "tracking_issue": 42,
+  "review_issue": 44,
+  "documentary_issue": 45,
+  "predecessor": {
+    "experiment_id": "TCM-QDEC-001",
+    "evidence_payload_sha256": "1b19addcda5e04cf78a834b2162fe0873ed5eb15f3330995d8354906944b7122",
+    "scientific_merge_commit": "41524f805dce4f0c7b64b8e743b75a60b4f76773",
+    "promotion_main_commit": "be022e3d1dd8490fd3856414908c6cdcb8b06ea4"
+  },
+  "workflow_evidence": {
+    "qtr_validation_run": 31978826134,
+    "qtr_exact_head_artifact": 9271793029,
+    "qtr_artifact_digest": "sha256:468db0b1d87a42a4c55564699aaf8132acbb5cf2b5362822cbd12c0e8403a790",
+    "gcl_conformance_run": 31978826374,
+    "gcl_conformance_artifact": 9271792060,
+    "gcl_artifact_digest": "sha256:2385a240a07a2ab93050e78ad0b3996db4f3dc3b4b8a2971b092b365929984a7",
+    "gcl_scorecard_artifact": 9271791062,
+    "gcl_scorecard_digest": "sha256:df720f446bed3c0843f788b1f1ef6cffbdd366a8a3df848fca80ad00f04e995b",
+    "codeql_check": 95242369046,
+    "codeql_conclusion": "success",
+    "test_count": 110,
+    "tcm_qdec_002_test_count": 13,
+    "evidence_payload_sha256": "efd9e76957421494897e2cc319137874b61093d66ea871f0202df3d07e6eb3c0"
+  },
+  "factorization_evidence": {
+    "column_signature_sha256": "2010b2f40048062203e8ee7607989ee30797e5ec37b0e94d5a5fd4eac8bfd023",
+    "canonical_class_mapping_sha256": "0d907375404e37533a3dd182eccea7d6a3fd6637801745f8f5b39b7c4b683f8f",
+    "score_table_sha256": {
+      "sum_product_bsc_p_0_1": "1b6bd71b9b05f169f57103ae71cd8b540f88e05dbe0302f2b4d9c2562a76a7be",
+      "soft_tropical_base_2": "00c4b4c7612b6d05847963c4f8d432160cb2d6ec06fa4813700220461102bad5",
+      "min_plus_hamming": "178a357cd13b2b9bbab03bad09f08efafecf37f2b59080bb3a6107e552e3b524"
+    },
+    "winning_class_tie_sets_sha256": {
+      "sum_product_bsc_p_0_1": "3778c019c7e235d916fa27616f83a9f8251a8c2a0276e09e0ea6dc1a6125cd60",
+      "soft_tropical_base_2": "bf4297273ca05b1506bde6f5305464e5affdf78ba31b40e20a0fada3e26dd982",
+      "min_plus_hamming": "1991fe00aaec2f8ce1163ca7b4192054002a2ef176d4839d6883c01f4e724007"
+    },
+    "combined_check_logical_rank": 11,
+    "reachable_combined_labels": 2048,
+    "peak_active_state_count": 2048,
+    "transition_relaxations_per_algebra": 32766
+  },
+  "office_records": {
+    "Axiomatist": 5310195842,
+    "Cartographer": 5310196276,
+    "Grammarian": 5310196692,
+    "Verifier": 5310197111,
+    "Adversary": 5310197737,
+    "Formalist": 5310198335,
+    "Amanuensis": 5310198934,
+    "Referee": 5310199674
+  },
+  "referee": {
+    "disposition": "APPROVE_BOUNDED_SCIENTIFIC_MERGE__TCM_QDEC_002",
+    "record": 5310199674,
+    "live_ruleset_required_approving_reviews": 0
+  },
+  "protected_merge": {
+    "ruleset_id": 20106953,
+    "required_status_checks": [
+      "validate",
+      "policy",
+      "security / action-policy"
+    ],
+    "review_threads_resolved": true,
+    "main_base_at_merge": "be022e3d1dd8490fd3856414908c6cdcb8b06ea4"
+  },
+  "promoted_scope": {
+    "representation": "exact local 13-bit syndrome-plus-logical parity transfer factorization on the protected [[18,4,4]] one-sector fixture",
+    "combined_rank": 11,
+    "reachable_labels": 2048,
+    "oracle_equivalence": "complete tied winning class sets and deterministic decisions equal TCM-QDEC-001 on all 384 syndrome-by-algebra cells",
+    "decision_table_sha256": {
+      "sum_product_bsc_p_0_1": "05dd32573ee965ce96caf707de3541f8be74b49317ad46b7929ef7dcf3bf64fc",
+      "soft_tropical_base_2": "ea2a96e3878758cd2daebd28673d943c27740a3e1c3579d8429a8a658e567393",
+      "min_plus_hamming": "88a9a766b64c7e476ac5bb4da877a2b1f6d4e88cee88cde6ea7461cc74179f3f"
+    },
+    "frozen_corpus_success_totals": {
+      "sum_product_bsc_p_0_1": 263,
+      "soft_tropical_base_2": 262,
+      "min_plus_hamming": 226
+    },
+    "tie_sensitivity": {
+      "sum_product_bsc_p_0_1": [263, 263],
+      "soft_tropical_base_2": [262, 262],
+      "min_plus_hamming": [218, 263]
+    },
+    "finite_diagnostics": "fixed-order prefix support profile, peak support 2048, deterministic transition counts and exact score/class/tie digests only"
+  },
+  "reviewed_snapshot": {
+    "registry_path": "registry/tcm-qdec-002.json",
+    "registry_blob_sha": "e112e4cace80caf7d40c504eb9944d31e3c0ec21",
+    "registry_status_at_review": "candidate_executable_not_promoted",
+    "evidence_path": "evidence/TCM-QDEC-002-report.json",
+    "evidence_blob_sha": "9d759709ee67da8fb064f674f34068d2134cfc15",
+    "evidence_status_at_review": "candidate_executable_not_promoted",
+    "evidence_payload_sha256": "efd9e76957421494897e2cc319137874b61093d66ea871f0202df3d07e6eb3c0",
+    "snapshot_preserved_byte_for_byte": true
+  },
+  "excluded_scope": [
+    "scalable tensor-network or transfer decoding",
+    "bounded contraction width for a qLDPC code family",
+    "asymptotic or practical complexity advantage",
+    "larger-code decoder performance",
+    "general qLDPC decoder performance or practical superiority",
+    "BP-OSD performance or comparison claims",
+    "circuit-level or phenomenological noise",
+    "hardware validation",
+    "threshold or pseudo-threshold claims",
+    "portable latency or runtime-memory claims",
+    "learned decoder parameters",
+    "adaptive contraction-order optimization",
+    "TCM-QDEC-003",
+    "QLDPC-FORGE",
+    "autonomous code, decoder, circuit, or architecture search"
+  ]
+}
