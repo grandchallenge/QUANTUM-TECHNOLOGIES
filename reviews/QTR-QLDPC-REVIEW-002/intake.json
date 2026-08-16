@@ -1,0 +1,47 @@
+{
+  "record_version": "0.1.0",
+  "record_id": "QTR-QLDPC-REVIEW-002",
+  "status": "candidate_executable_not_promoted",
+  "review_cycle_status": "completed_referee_promoted",
+  "programme": "QTR",
+  "fixture_id": "QLDPC-FIXTURE-002",
+  "predecessor_fixture": "QLDPC-FIXTURE-001",
+  "reviewed_head": "e7b2eb0060e51d4157a6666f2e857c1fb19aaff1",
+  "scientific_merge_commit": "51c31bde2e0630314d3d48dceb9b92969c37c228",
+  "pull_request": 33,
+  "tracking_issue": 32,
+  "review_issue": 34,
+  "documentary_issue": 35,
+  "referee_record": 5306878917,
+  "promotion_record": "reviews/QTR-QLDPC-REVIEW-002/promotion-record.json",
+  "promotion_scope": [
+    "frozen one-sector exhaustive Hamming-weight-0-through-4 corpus on the protected [[18,4,4]] Fixture 001 code",
+    "exact coset-leader lookup and deterministic greedy syndrome-descent baselines",
+    "exact stabilizer-equivalence correctness scoring, deterministic systems counters, and retained negative evidence",
+    "optional machine-local diagnostic profiling mechanics only",
+    "tag/blob-bound companion BP-OSD configuration as provenance context only"
+  ],
+  "excluded_scope": [
+    "experimental-data reproduction",
+    "circuit-level or Pauli+ noise-model validation",
+    "BP-OSD performance or superiority",
+    "Kunlun hardware validation",
+    "threshold or pseudo-threshold claims",
+    "cross-machine latency or memory claims",
+    "practical decoder or resource superiority",
+    "fault-tolerant logical operations",
+    "TCM-QDEC",
+    "QLDPC-FORGE",
+    "autonomous code, decoder, circuit, or architecture search"
+  ],
+  "required_offices": [
+    "Axiomatist",
+    "Cartographer",
+    "Grammarian",
+    "Verifier",
+    "Adversary",
+    "Formalist",
+    "Amanuensis",
+    "Referee"
+  ]
+}
