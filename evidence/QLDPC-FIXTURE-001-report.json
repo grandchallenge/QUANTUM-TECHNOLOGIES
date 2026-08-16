@@ -47,14 +47,58 @@
   },
   "evaluator_version": "0.1.0",
   "exact_invariants": {
-    "check_count_full": {"x": 9, "z": 9},
-    "column_weights_hx": [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-    "column_weights_hz": [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+    "check_count_full": {
+      "x": 9,
+      "z": 9
+    },
+    "column_weights_hx": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "column_weights_hz": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
     "css_commutes": true,
     "d": 4,
     "dx": 4,
     "dz": 4,
-    "independent_check_count": {"x": 7, "z": 7},
+    "independent_check_count": {
+      "x": 7,
+      "z": 7
+    },
     "k": 4,
     "kernel_size_hx": 2048,
     "kernel_size_hz": 2048,
@@ -63,8 +107,28 @@
     "n": 18,
     "rank_hx": 7,
     "rank_hz": 7,
-    "row_weights_hx": [6, 6, 6, 6, 6, 6, 6, 6, 6],
-    "row_weights_hz": [6, 6, 6, 6, 6, 6, 6, 6, 6],
+    "row_weights_hx": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+    ],
+    "row_weights_hz": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+    ],
     "stabilizer_span_size_x": 128,
     "stabilizer_span_size_z": 128
   },
@@ -73,7 +137,32 @@
     "all_x_in_kernel_hz_not_x_stabilizer": true,
     "all_z_in_kernel_hx_not_z_stabilizer": true,
     "basis_size": 4,
-    "canonical_pairing": [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]],
+    "canonical_pairing": [
+      [
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        1
+      ]
+    ],
     "x_bitstrings": [
       "101011110000000000",
       "011110101000000000",
@@ -90,11 +179,26 @@
   "payload_sha256": "2c48ab3e33ac4f18f1a65c93dd6e59977cafc4b9b14149f68af896c3542a6d8e",
   "reference_decoder": {
     "exact_success_counts_by_error_weight": {
-      "0": {"success": 1, "total": 1},
-      "1": {"success": 18, "total": 18},
-      "2": {"success": 63, "total": 153},
-      "3": {"success": 68, "total": 816},
-      "4": {"success": 90, "total": 3060}
+      "0": {
+        "success": 1,
+        "total": 1
+      },
+      "1": {
+        "success": 18,
+        "total": 18
+      },
+      "2": {
+        "success": 63,
+        "total": 153
+      },
+      "3": {
+        "success": 68,
+        "total": 816
+      },
+      "4": {
+        "success": 90,
+        "total": 3060
+      }
     },
     "guaranteed_correctable_weight": 1,
     "kind": "exhaustive_minimum_weight_coset_leader",
@@ -105,7 +209,16 @@
     "table_entry_count": 128,
     "table_sha256": "96ce94c378b7b1fc5fe032fbd253aa932c1ca8abcb17b3d3c89b3ecda601da29"
   },
-  "removed_checks_source_record": {"x": [2, 8], "z": [3, 4]},
+  "removed_checks_source_record": {
+    "x": [
+      2,
+      8
+    ],
+    "z": [
+      3,
+      4
+    ]
+  },
   "source": {
     "arxiv": "2505.09684v1",
     "journal": "Nature Physics (2026)",
