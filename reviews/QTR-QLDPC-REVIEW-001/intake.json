@@ -1,0 +1,43 @@
+{
+  "record_version": "0.1.0",
+  "record_id": "QTR-QLDPC-REVIEW-001",
+  "status": "candidate_executable_not_promoted",
+  "review_cycle_status": "completed_referee_promoted",
+  "programme": "QTR",
+  "fixture_id": "QLDPC-FIXTURE-001",
+  "reviewed_head": "a024afb5b3428f49c34d905625f8c56f466528e7",
+  "scientific_merge_commit": "b899894cfe17680d556d32ff36e51683cd9f6b32",
+  "pull_request": 27,
+  "review_issue": 28,
+  "documentary_issue": 30,
+  "referee_record": 5306491335,
+  "promotion_record": "reviews/QTR-QLDPC-REVIEW-001/promotion-record.json",
+  "promotion_scope": [
+    "exact finite reconstruction of the protected [[18,4,4]] bivariate-bicycle CSS fixture",
+    "exact GF(2) commutation, rank, dimension, distance, qLDPC weight, and source-logical-basis certification",
+    "finite code-capacity exhaustive minimum-weight coset-leader reference baseline"
+  ],
+  "excluded_scope": [
+    "Kunlun hardware validation",
+    "circuit-level noise validation",
+    "BP-OSD performance",
+    "qLDPC threshold",
+    "practical break-even or resource superiority",
+    "syndrome-extraction fault tolerance",
+    "universal logical gate set",
+    "QLDPC-FIXTURE-002",
+    "TCM-QDEC",
+    "QLDPC-FORGE",
+    "autonomous code, decoder, circuit, or architecture search"
+  ],
+  "required_offices": [
+    "Axiomatist",
+    "Cartographer",
+    "Grammarian",
+    "Verifier",
+    "Adversary",
+    "Formalist",
+    "Amanuensis",
+    "Referee"
+  ]
+}
