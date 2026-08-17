@@ -56,12 +56,34 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p /tmp/compare-pkgs
-          python -m pip download --no-deps --no-binary=:all: --dest /tmp/compare-pkgs "ldpc==0.1.53"
-          python -m pip download --no-deps --only-binary=:all: --dest /tmp/compare-pkgs "bposd==1.6"
-          test -f /tmp/compare-pkgs/ldpc-0.1.53.tar.gz
-          test -f /tmp/compare-pkgs/bposd-1.6-py3-none-any.whl
-          echo "$LDPC_SDIST_SHA256  /tmp/compare-pkgs/ldpc-0.1.53.tar.gz" | sha256sum -c -
-          echo "$BPOSD_WHEEL_SHA256  /tmp/compare-pkgs/bposd-1.6-py3-none-any.whl" | sha256sum -c -
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import urllib.request
+          from pathlib import Path
+
+          targets = [
+              ("ldpc", "0.1.53", "ldpc-0.1.53.tar.gz", os.environ["LDPC_SDIST_SHA256"]),
+              ("bposd", "1.6", "bposd-1.6-py3-none-any.whl", os.environ["BPOSD_WHEEL_SHA256"]),
+          ]
+          root = Path("/tmp/compare-pkgs")
+          for project, version, filename, expected in targets:
+              with urllib.request.urlopen(f"https://pypi.org/pypi/{project}/{version}/json") as response:
+                  release = json.load(response)
+              matches = [item for item in release["urls"] if item["filename"] == filename]
+              if len(matches) != 1:
+                  raise SystemExit(f"expected exactly one PyPI artifact for {filename}")
+              item = matches[0]
+              if item["digests"]["sha256"] != expected:
+                  raise SystemExit(f"PyPI metadata hash mismatch for {filename}")
+              path = root / filename
+              urllib.request.urlretrieve(item["url"], path)
+              observed = hashlib.sha256(path.read_bytes()).hexdigest()
+              if observed != expected:
+                  raise SystemExit(f"downloaded hash mismatch for {filename}: {observed}")
+              print(filename, observed)
+          PY
 
       - name: Install exact historical decoder environment
         run: |
@@ -96,7 +118,6 @@ jobs:
       - name: Write exact-head receipt
         run: |
           python - <<'PY'
-          import hashlib
           import json
           import os
           import subprocess
