@@ -4,24 +4,32 @@ on:
   pull_request:
     paths:
       - "registry/tcm-qdec-compare-001-manifest.json"
+      - "registry/tcm-qdec-compare-001.json"
       - "reference/tcm_qdec_compare_001.py"
       - "reference/tcm_qdec_compare_001_shard.py"
       - "reference/tcm_qdec_compare_001_exact_cell.py"
+      - "reference/tcm_qdec_compare_001_evidence.py"
       - "tests/test_tcm_qdec_compare_001.py"
       - "tests/test_tcm_qdec_compare_001_oracle.py"
+      - "tests/test_tcm_qdec_compare_001_evidence.py"
       - "evidence/TCM-QDEC-COMPARE-001-report.json"
+      - "work-packages/QTR-TCM-QDEC-COMPARE-001.md"
       - ".github/workflows/qtr-tcm-qdec-compare-001.yml"
   push:
     branches:
       - main
     paths:
       - "registry/tcm-qdec-compare-001-manifest.json"
+      - "registry/tcm-qdec-compare-001.json"
       - "reference/tcm_qdec_compare_001.py"
       - "reference/tcm_qdec_compare_001_shard.py"
       - "reference/tcm_qdec_compare_001_exact_cell.py"
+      - "reference/tcm_qdec_compare_001_evidence.py"
       - "tests/test_tcm_qdec_compare_001.py"
       - "tests/test_tcm_qdec_compare_001_oracle.py"
+      - "tests/test_tcm_qdec_compare_001_evidence.py"
       - "evidence/TCM-QDEC-COMPARE-001-report.json"
+      - "work-packages/QTR-TCM-QDEC-COMPARE-001.md"
       - ".github/workflows/qtr-tcm-qdec-compare-001.yml"
 
 permissions:
@@ -59,6 +67,9 @@ jobs:
 
       - name: Prove basis-reduction oracle matches explicit C18 span
         run: python -m unittest tests.test_tcm_qdec_compare_001_oracle -v
+
+      - name: Verify committed evidence boundary
+        run: python -m unittest tests.test_tcm_qdec_compare_001_evidence -v
 
       - name: Download and verify historical decoder packages
         run: |
@@ -195,21 +206,21 @@ jobs:
           set -euo pipefail
           echo "$LDPC_SDIST_SHA256  /tmp/compare-pkgs/ldpc-0.1.53.tar.gz" | sha256sum -c -
           echo "$BPOSD_WHEEL_SHA256  /tmp/compare-pkgs/bposd-1.6-py3-none-any.whl" | sha256sum -c -
+          python reference/tcm_qdec_compare_001_shard.py \
+            --assemble /tmp/compare-cells \
+            --output /tmp/TCM-QDEC-COMPARE-001-report.json
           if test -f evidence/TCM-QDEC-COMPARE-001-report.json; then
-            python reference/tcm_qdec_compare_001_shard.py \
-              --assemble /tmp/compare-cells \
-              --output /tmp/TCM-QDEC-COMPARE-001-report.json \
+            python reference/tcm_qdec_compare_001_evidence.py \
+              --report /tmp/TCM-QDEC-COMPARE-001-report.json \
+              --output /tmp/TCM-QDEC-COMPARE-001-committed-projection.json \
               --check-evidence evidence/TCM-QDEC-COMPARE-001-report.json
-          else
-            python reference/tcm_qdec_compare_001_shard.py \
-              --assemble /tmp/compare-cells \
-              --output /tmp/TCM-QDEC-COMPARE-001-report.json
           fi
 
       - name: Run COMPARE-001 adversarial/static tests
         run: |
           python -m unittest tests.test_tcm_qdec_compare_001 -v
           python -m unittest tests.test_tcm_qdec_compare_001_oracle -v
+          python -m unittest tests.test_tcm_qdec_compare_001_evidence -v
 
       - name: Write exact-head receipt
         run: |
@@ -248,6 +259,7 @@ jobs:
           name: TCM-QDEC-COMPARE-001-exact-head
           path: |
             /tmp/TCM-QDEC-COMPARE-001-report.json
+            /tmp/TCM-QDEC-COMPARE-001-committed-projection.json
             /tmp/TCM-QDEC-COMPARE-001-exact-head.json
             /tmp/compare-cells
             evidence/corpora/TCM-QDEC-COMPARE-001-C72-corpus.json
