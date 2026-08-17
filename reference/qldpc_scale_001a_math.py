@@ -437,3 +437,46 @@ def evaluate_compiled_descriptor(seed: int, scopes: list[tuple[int, ...]], descr
 def independent_fixed_selector_oracle(seed: int, scopes: list[tuple[int, ...]], order: list[int]) -> tuple[int, int, tuple[tuple[int, int], int]]:
     plan, final_ids = independent_runtime_plan(scopes, order)
     return evaluate_projection_plan(seed, scopes, plan, final_ids)
+
+
+_VALIDATION_SCOPES: list[tuple[int, ...]] | None = None
+_VALIDATION_SELECTOR_BASIS: list[int] | None = None
+_VALIDATION_COMPILED_PLAN = None
+_VALIDATION_COMPILED_FINALS = None
+_VALIDATION_ORACLE_PLAN = None
+_VALIDATION_ORACLE_FINALS = None
+
+
+def _validation_worker_init(scopes: list[tuple[int, ...]], selector_basis: list[int], order: list[int], descriptor: dict[str, Any]) -> None:
+    global _VALIDATION_SCOPES, _VALIDATION_SELECTOR_BASIS
+    global _VALIDATION_COMPILED_PLAN, _VALIDATION_COMPILED_FINALS
+    global _VALIDATION_ORACLE_PLAN, _VALIDATION_ORACLE_FINALS
+    _VALIDATION_SCOPES = scopes
+    _VALIDATION_SELECTOR_BASIS = selector_basis
+    _VALIDATION_COMPILED_PLAN, _VALIDATION_COMPILED_FINALS = runtime_plan_from_descriptor(descriptor)
+    _VALIDATION_ORACLE_PLAN, _VALIDATION_ORACLE_FINALS = independent_runtime_plan(scopes, order)
+
+
+def _validation_worker(coordinate: int) -> dict[str, Any]:
+    if _VALIDATION_SCOPES is None or _VALIDATION_SELECTOR_BASIS is None or _VALIDATION_COMPILED_PLAN is None or _VALIDATION_COMPILED_FINALS is None or _VALIDATION_ORACLE_PLAN is None or _VALIDATION_ORACLE_FINALS is None:
+        raise RuntimeError("validation worker not initialized")
+    seed = selector_lift(coordinate, _VALIDATION_SELECTOR_BASIS)
+    compiled = evaluate_projection_plan(seed, _VALIDATION_SCOPES, _VALIDATION_COMPILED_PLAN, _VALIDATION_COMPILED_FINALS)
+    oracle = evaluate_projection_plan(seed, _VALIDATION_SCOPES, _VALIDATION_ORACLE_PLAN, _VALIDATION_ORACLE_FINALS)
+    if compiled != oracle:
+        raise ValueError(f"SEMANTIC_EQUIVALENCE_FAILED at selector {coordinate}")
+    return {"coordinate": coordinate, "sum_product_bsc_p_0_1": str(compiled[0]), "soft_tropical_base_2": str(compiled[1]), "min_weight": compiled[2][0][0], "representative": str(compiled[2][0][1]), "canonical_key": str(compiled[2][1])}
+
+
+def run_validation_parallel(coordinates: list[int], scopes: list[tuple[int, ...]], selector_basis: list[int], order: list[int], descriptor: dict[str, Any], *, processes: int | None = None) -> list[dict[str, Any]]:
+    import multiprocessing
+    import os
+    worker_count = processes or min(4, os.cpu_count() or 1)
+    if worker_count <= 1:
+        _validation_worker_init(scopes, selector_basis, order, descriptor)
+        return [_validation_worker(coordinate) for coordinate in coordinates]
+    available = multiprocessing.get_all_start_methods()
+    method = "fork" if "fork" in available else "spawn"
+    context = multiprocessing.get_context(method)
+    with context.Pool(processes=worker_count, initializer=_validation_worker_init, initargs=(scopes, selector_basis, order, descriptor)) as pool:
+        return pool.map(_validation_worker, coordinates, chunksize=1)
