@@ -1,0 +1,20 @@
+{
+  "record_version": "0.1.0",
+  "record_id": "QTR-TCM-QDEC-REVIEW-003-INTAKE",
+  "experiment_id": "TCM-QDEC-003",
+  "status": "candidate_executable_not_promoted",
+  "review_cycle_status": "completed_referee_promoted",
+  "tracking_issue": 47,
+  "scientific_pull_request": 48,
+  "review_issue": 49,
+  "documentary_issue": 50,
+  "reviewed_head": "968029c156a3d668a0adc9adce850b62cd249671",
+  "scientific_merge_commit": "2925a41343c8e4592c1bf558d86ea461e0e1c7d4",
+  "evidence_payload_sha256": "f0ecdae04f3da4f0508454da59ce406a4e6c461f88f1784279cb6d7e360b595f",
+  "registry_blob_sha": "f47a2c3baae2e33e5b069eb06d78f406676fe257",
+  "evidence_blob_sha": "df8d664307e2080fe2ad764066f384975bab59c0",
+  "referee_record": 5310467316,
+  "referee_disposition": "APPROVE_BOUNDED_SCIENTIFIC_MERGE__TCM_QDEC_003",
+  "claim_boundary": "exact finite stabilizer-degeneracy factor equivalence and minimum induced width four on the frozen seven-variable factor graph only",
+  "snapshot_preserved_byte_for_byte": true
+}

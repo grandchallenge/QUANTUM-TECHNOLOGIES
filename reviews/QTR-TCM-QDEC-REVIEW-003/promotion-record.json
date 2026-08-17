@@ -1,0 +1,119 @@
+{
+  "record_version": "0.1.0",
+  "record_id": "QTR-TCM-QDEC-REVIEW-003-PROMOTION",
+  "status": "referee_promoted_bounded",
+  "reviewed_head": "968029c156a3d668a0adc9adce850b62cd249671",
+  "scientific_merge_commit": "2925a41343c8e4592c1bf558d86ea461e0e1c7d4",
+  "pull_request": 48,
+  "tracking_issue": 47,
+  "review_issue": 49,
+  "documentary_issue": 50,
+  "predecessor": {
+    "experiment_id": "TCM-QDEC-002",
+    "evidence_payload_sha256": "efd9e76957421494897e2cc319137874b61093d66ea871f0202df3d07e6eb3c0",
+    "scientific_merge_commit": "d3340c91df3aa72dc5c7ba75906128c8eef2e174",
+    "promotion_main_commit": "693756a2569e87eb6cfeaf276ccc2bc2474cd92b"
+  },
+  "workflow_evidence": {
+    "qtr_validation_run": 31981647450,
+    "qtr_exact_head_artifact": 9272512682,
+    "qtr_artifact_digest": "sha256:46553105f35a416e2e83bdd640813effb204a839383c778eeea90bc1bfd8fcb3",
+    "gcl_conformance_run": 31981647777,
+    "gcl_conformance_artifact": 9272509064,
+    "gcl_artifact_digest": "sha256:a730fcdf34755b0e183d9810a883dcb97cb7df5f06b2b6cba6b5ca1da81fc121",
+    "gcl_scorecard_artifact": 9272508833,
+    "gcl_scorecard_digest": "sha256:9281aee05368a73e5a1e420335c3144d9c21d335f8c9201abe4a2751e02542e4",
+    "codeql_check": 95249449291,
+    "codeql_conclusion": "success",
+    "test_count": 133,
+    "tcm_qdec_003_test_count": 17,
+    "evidence_payload_sha256": "f0ecdae04f3da4f0508454da59ce406a4e6c461f88f1784279cb6d7e360b595f"
+  },
+  "basis_and_width_evidence": {
+    "stabilizer_basis_row_indices": [0,1,2,3,4,5,6],
+    "selector_seed_basis_qubits": [0,1,2,3,4,5,6,7,8,9,10],
+    "factor_scope_sha256": "9b9f68ff6cf22447892c6d853defa6daf5f08c5859ffd4352500d1e11b89052d",
+    "orders_checked": 5040,
+    "minimum_induced_width": 4,
+    "optimal_order_count": 720,
+    "frozen_order": [2,4,0,1,3,5,6],
+    "peak_joint_table_entries": 32,
+    "assignment_evaluations_per_class": 126,
+    "assignment_evaluations_total": 774144,
+    "predecessor_transition_relaxations_total": 98298,
+    "order_audit_sha256": "76e357c69d25f552d21a114c632a322256087b0fd1036d7ee914c02e39c7aff0",
+    "frozen_order_trace_sha256": "898704d5fa4599dd4e11b1e85765046d0b6bb41ddfedaa3d4e329cf682dc6566"
+  },
+  "equivalence_evidence": {
+    "canonical_class_mapping_sha256": "0d907375404e37533a3dd182eccea7d6a3fd6637801745f8f5b39b7c4b683f8f",
+    "score_entries_checked": 6144,
+    "mapping_entries_checked": 2048,
+    "tie_cells_checked": 384,
+    "decision_entries_checked": 384,
+    "all_exactly_equal_to_tcm_qdec_002": true,
+    "frozen_corpus_success_totals": {
+      "sum_product_bsc_p_0_1": 263,
+      "soft_tropical_base_2": 262,
+      "min_plus_hamming": 226
+    },
+    "tie_envelopes": {
+      "sum_product_bsc_p_0_1": [263,263],
+      "soft_tropical_base_2": [262,262],
+      "min_plus_hamming": [218,263]
+    }
+  },
+  "office_records": {
+    "Axiomatist": 5310461303,
+    "Cartographer": 5310461990,
+    "Grammarian": 5310462976,
+    "Verifier": 5310463537,
+    "Adversary": 5310464755,
+    "Formalist": 5310465333,
+    "Amanuensis": 5310466072,
+    "Referee": 5310467316
+  },
+  "referee": {
+    "disposition": "APPROVE_BOUNDED_SCIENTIFIC_MERGE__TCM_QDEC_003",
+    "record": 5310467316,
+    "live_ruleset_required_approving_reviews": 0
+  },
+  "protected_merge": {
+    "ruleset_id": 20106953,
+    "required_status_checks": ["validate","policy","security / action-policy"],
+    "review_threads_resolved": true,
+    "main_base_at_merge": "693756a2569e87eb6cfeaf276ccc2bc2474cd92b"
+  },
+  "promoted_scope": {
+    "representation": "exact seven-variable stabilizer-degeneracy factorization on the protected [[18,4,4]] one-sector fixture",
+    "finite_width_result": "exact minimum induced width 4 over all 5040 elimination orders of the frozen seven-variable factor graph",
+    "predecessor_equivalence": "all 6144 scores, 2048 mapping entries, 384 tie sets and 384 decisions equal TCM-QDEC-002",
+    "negative_systems_evidence": "774144 assignment evaluations in the present class-by-class construction versus predecessor 98298 transition relaxations under non-equivalent primitive counters; no superiority inference"
+  },
+  "reviewed_snapshot": {
+    "registry_path": "registry/tcm-qdec-003.json",
+    "registry_blob_sha": "f47a2c3baae2e33e5b069eb06d78f406676fe257",
+    "registry_status_at_review": "candidate_executable_not_promoted",
+    "evidence_path": "evidence/TCM-QDEC-003-report.json",
+    "evidence_blob_sha": "df8d664307e2080fe2ad764066f384975bab59c0",
+    "evidence_status_at_review": "candidate_executable_not_promoted",
+    "evidence_payload_sha256": "f0ecdae04f3da4f0508454da59ce406a4e6c461f88f1784279cb6d7e360b595f",
+    "snapshot_preserved_byte_for_byte": true
+  },
+  "excluded_scope": [
+    "bounded contraction width for a qLDPC code family",
+    "scalable tensor-network or transfer decoding",
+    "asymptotic or practical complexity advantage",
+    "runtime or memory superiority",
+    "larger-code decoder performance",
+    "general qLDPC decoder performance or practical superiority",
+    "BP-OSD performance or comparison claims",
+    "circuit-level or phenomenological noise",
+    "hardware validation",
+    "threshold or pseudo-threshold claims",
+    "learned decoder parameters",
+    "adaptive online contraction-order optimization",
+    "TCM-QDEC-004",
+    "QLDPC-FORGE",
+    "autonomous code, decoder, circuit, or architecture search"
+  ]
+}
