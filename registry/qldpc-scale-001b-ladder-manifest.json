@@ -1,0 +1,215 @@
+{
+  "adjudication_vocabulary": [
+    "FINITE_LADDER_EXACTLY_FEASIBLE_THROUGH_ALL_RUNGS",
+    "FINITE_LADDER_EXACTLY_FEASIBLE_THROUGH_RUNG_<N>__LATER_BOUND_EXHAUSTED",
+    "FINITE_LADDER_STRUCTURAL_AUDIT_COMPLETED__COMPILATION_BOUND_EXHAUSTED",
+    "FINITE_LADDER_NONMONOTONE_STRUCTURE_OBSERVED",
+    "STRUCTURAL_AUDIT_BOUND_EXHAUSTED_AT_RUNG_<N>",
+    "SEMANTIC_EQUIVALENCE_FAILED_AT_RUNG_<N>",
+    "SOURCE_RECONSTRUCTION_NOT_CERTIFIED_AT_RUNG_<N>",
+    "OPERATIONAL_EXECUTION_INCOMPLETE"
+  ],
+  "authority": {
+    "authorization_comment": 5315569335,
+    "authorization_issue": 64,
+    "execution_issue": 65,
+    "protected_start_main": "57e465af680fc0030d47e14d9f40c9e2ab58dc09",
+    "referee_comment": 5315553347
+  },
+  "claim_boundary": {
+    "adaptive_online_ordering_authorized": false,
+    "asymptotic_scaling_claim": false,
+    "autonomous_search_authorized": false,
+    "circuit_level_authorized": false,
+    "controlled_approximation_authorized": false,
+    "conventional_decoder_comparison_authorized": false,
+    "family_treewidth_claim": false,
+    "finite_ladder_only": true,
+    "learned_decoder_authorized": false,
+    "memory_superiority_claim": false,
+    "qec_circuit_001_authorized": false,
+    "qldpc_forge_authorized": false,
+    "repeated_syndrome_authorized": false,
+    "runtime_superiority_claim": false
+  },
+  "compare_referral_maturity": {
+    "additional_requirement": "at least one post-72 compiled-and-exactly-validated rung OR a certified deterministic compilation-bound exhaustion",
+    "creates_compare_authority": false,
+    "minimum_post72_source_and_structural_certificates": 3
+  },
+  "compilation_ledger": {
+    "aop_total_is_runtime_model": false,
+    "event_types": [
+      "GF2_XOR",
+      "GF2_AND",
+      "EXACT_INT_ADD",
+      "EXACT_INT_MUL",
+      "EXACT_COMPARE",
+      "TABLE_READ",
+      "TABLE_WRITE",
+      "NODE_INTERN",
+      "INDEX_PROJECT",
+      "BITSET_OR"
+    ],
+    "resource_envelope_per_algebra": {
+      "max_canonical_serialized_compiled_bytes": 536870912,
+      "max_compilation_aop_events": 2147483648,
+      "max_factor_table_entry_evaluations": 134217728,
+      "max_peak_joint_table_entries": 1048576,
+      "max_retained_canonical_structural_nodes_or_entries": 4194304
+    }
+  },
+  "experiment_id": "QLDPC-SCALE-001B",
+  "ladder": [
+    {
+      "A": "x^3+y^1+y^2",
+      "B": "y^3+x^1+x^2",
+      "a_exponents": [3,1,2],
+      "b_exponents": [3,1,2],
+      "d_source": 6,
+      "ell": 6,
+      "k_source": 12,
+      "m": 6,
+      "n": 72,
+      "role": "anchor"
+    },
+    {
+      "A": "x^9+y^1+y^2",
+      "B": "y^0+x^2+x^7",
+      "a_exponents": [9,1,2],
+      "b_exponents": [0,2,7],
+      "d_source": 10,
+      "ell": 15,
+      "k_source": 8,
+      "m": 3,
+      "n": 90,
+      "role": "rung"
+    },
+    {
+      "A": "x^3+y^1+y^2",
+      "B": "y^3+x^1+x^2",
+      "a_exponents": [3,1,2],
+      "b_exponents": [3,1,2],
+      "d_source": 10,
+      "ell": 9,
+      "k_source": 8,
+      "m": 6,
+      "n": 108,
+      "role": "rung"
+    },
+    {
+      "A": "x^3+y^1+y^2",
+      "B": "y^3+x^1+x^2",
+      "a_exponents": [3,1,2],
+      "b_exponents": [3,1,2],
+      "d_source": 12,
+      "ell": 12,
+      "k_source": 12,
+      "m": 6,
+      "n": 144,
+      "role": "rung"
+    },
+    {
+      "A": "x^3+y^2+y^7",
+      "B": "y^3+x^1+x^2",
+      "a_exponents": [3,2,7],
+      "b_exponents": [3,1,2],
+      "d_source": 18,
+      "ell": 12,
+      "k_source": 12,
+      "m": 12,
+      "n": 288,
+      "role": "rung"
+    },
+    {
+      "A": "x^26+y^6+y^8",
+      "B": "y^7+x^9+x^20",
+      "a_exponents": [26,6,8],
+      "b_exponents": [7,9,20],
+      "d_source": 24,
+      "ell": 28,
+      "k_source": 24,
+      "m": 14,
+      "n": 784,
+      "role": "rung"
+    }
+  ],
+  "manifest_payload_sha256": "0beef3aa1062bd30c691e3f01d00db0d1d8890d07c0dca2761fa933978ff09f5",
+  "manifest_version": "0.1.0",
+  "order_policy": {
+    "orders": [
+      "lexicographic",
+      "deterministic_min_fill",
+      "deterministic_min_degree"
+    ],
+    "post_hoc_order_switch_allowed": false,
+    "primary": "deterministic_min_fill",
+    "tie_break": "lowest_original_variable_index"
+  },
+  "predecessor": {
+    "documentary_merge_commit": "57e465af680fc0030d47e14d9f40c9e2ab58dc09",
+    "evidence_blob_sha": "268a5bfa9ed35ad3cd5984031de20487835643d0",
+    "evidence_payload_sha256": "198bb28f47844aa98efa20d8c838c48870a8aef41ccfda266b16661677e363e1",
+    "experiment_id": "QLDPC-SCALE-001A",
+    "promotion_record_blob_sha": "14bb7ccb9edbad4b346269924466ab6dde8e0ca6",
+    "promotion_record_path": "reviews/QTR-QLDPC-SCALE-REVIEW-001A/promotion-record.json",
+    "registry_blob_sha": "9cf5ed39bd51c3e4f920e4b5b4687fc4eacec386",
+    "reviewed_head": "1bf76b536d9cd59d8a4b6b3518764df8e526986e",
+    "scientific_merge_commit": "e30e64adcbd67ab015b04415135bb167b3132a02"
+  },
+  "rung_status_fields": [
+    "source",
+    "structural",
+    "compile",
+    "semantic_validation"
+  ],
+  "semantics": {
+    "affine_model": "e(a,z)=L a XOR S z",
+    "algebras": {
+      "min_plus_hamming": {
+        "kind": "min_plus",
+        "local_bit_costs": [0,1],
+        "payload": "((minimum_weight,lowest_integer_representative),lowest_canonical_coset_key)"
+      },
+      "soft_tropical_base_2": {
+        "kind": "soft_tropical",
+        "local_bit_weights": [2,1]
+      },
+      "sum_product_bsc_p_0_1": {
+        "kind": "sum_product",
+        "local_bit_weights": [9,1]
+      }
+    },
+    "logical_z_rule": "canonical RREF nullspace basis scan extending rowspace(H_Z) inside ker(H_X)",
+    "sector": "X-error sector: X errors modulo independent X-stabilizer row space; syndrome from Z checks",
+    "selector_basis_rule": "lexicographically first independent physical columns of independent-Z-syndrome plus logical-Z functionals",
+    "stabilizer_basis_rule": "lexicographically first independent H_X rows"
+  },
+  "source": {
+    "blob_sha": "7ec5a36732a2a6dd229ab74405dedf36139ccda4",
+    "commit": "fa77e3333d3ec44c79d8f914dd24c040d1da471b",
+    "path": "decoder_setup.py",
+    "repository": "sbravyi/BivariateBicycleCodes"
+  },
+  "status": "frozen_execution_manifest",
+  "structural_ledger": {
+    "event_types": [
+      "GRAPH_NEIGHBOR_READ",
+      "GRAPH_EDGE_INSERT",
+      "GRAPH_EDGE_DELETE",
+      "ORDER_SCORE_EVAL",
+      "ORDER_COMPARE",
+      "GRAPH_STATE_WRITE"
+    ],
+    "max_events_per_rung": 1073741824,
+    "max_retained_graph_order_entries_per_rung": 4194304
+  },
+  "validation": {
+    "exhaustive_claim": false,
+    "generator": "SHA256(seed || uint64_be(counter)); digest bits MSB-first; first bit maps to selector coordinate 0; truncate to selector rank; reject reserved/duplicates",
+    "oracle": "independent fixed-selector variable elimination sharing mathematical local factors only",
+    "random_distinct_non_reserved": 256,
+    "reserved": "zero, every unit selector, all-ones",
+    "seed_template": "QLDPC-SCALE-001B::<n>::selector-validation::v1"
+  }
+}
