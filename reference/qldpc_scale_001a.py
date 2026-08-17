@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
 from __future__ import annotations
+
 import argparse
 import json
 import sys
 from collections import Counter
 from pathlib import Path
 from typing import Any
+
 HERE = Path(__file__).resolve().parent
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
+
 from qldpc_scale_001a_shared import *
 from qldpc_scale_001a_math import *
 from qldpc_scale_001a_symbolic import *
+
 
 def validate_predecessor(registry: dict[str, Any], evidence: dict[str, Any], promotion: dict[str, Any]) -> None:
     matches = [item for item in registry.get("experiments", []) if item.get("experiment_id") == "TCM-QDEC-004"]
@@ -19,7 +23,8 @@ def validate_predecessor(registry: dict[str, Any], evidence: dict[str, Any], pro
         raise ValueError("TCM-QDEC-004 immutable registry identity changed")
     if evidence.get("experiment_id") != "TCM-QDEC-004" or evidence.get("payload_sha256") != PREDECESSOR["evidence_payload_sha256"]:
         raise ValueError("TCM-QDEC-004 evidence identity changed")
-    unsigned = dict(evidence); unsigned.pop("payload_sha256", None)
+    unsigned = dict(evidence)
+    unsigned.pop("payload_sha256", None)
     if digest(unsigned) != PREDECESSOR["evidence_payload_sha256"]:
         raise ValueError("TCM-QDEC-004 evidence fails self-verification")
     if promotion.get("record_id") != "QTR-TCM-QDEC-REVIEW-004-PROMOTION" or promotion.get("status") != "referee_promoted_bounded":
@@ -78,8 +83,10 @@ def evaluate(experiment: dict[str, Any], predecessor_registry: dict[str, Any], p
     expected_map = {"source_record_sha256": EXPECTED_DIGESTS["source_record"], "hx_sha256": EXPECTED_DIGESTS["hx"], "hz_sha256": EXPECTED_DIGESTS["hz"], "independent_bases_sha256": EXPECTED_DIGESTS["independent_bases"], "logical_basis_sha256": EXPECTED_DIGESTS["logical_basis"], "selector_basis_sha256": EXPECTED_DIGESTS["selector_basis"], "factor_scope_sha256": EXPECTED_DIGESTS["factor_scopes"]}
     if source_digests != expected_map:
         raise ValueError("source/basis digest drift")
-    hx_rank = rank_rref(code["hx"])[0]; hz_rank = rank_rref(code["hz"])[0]
-    if hx_rank != 30 or hz_rank != 30 or int(((code["hx"] @ code["hz"].T) % 2).sum()) != 0:
+    hx_rank = rank_rref(code["hx"], 72)[0]
+    hz_rank = rank_rref(code["hz"], 72)[0]
+    commutation_nonzero = css_commutation_nonzero(code["hx"], code["hz"])
+    if hx_rank != 30 or hz_rank != 30 or commutation_nonzero != 0:
         raise ValueError("source code reconstruction failed")
     logical_dimension = 72 - hx_rank - hz_rank
     selector_rank = len(code["selector_basis_qubits"])
@@ -108,15 +115,8 @@ def evaluate(experiment: dict[str, Any], predecessor_registry: dict[str, Any], p
     validation_set_sha = digest(validation_coordinates)
     if validation_set_sha != EXPECTED_DIGESTS["validation_set"] or len(validation_coordinates) != 300:
         raise ValueError("frozen selector validation set changed")
-    validation_rows: list[dict[str, Any]] = []
     if full_validation:
-        for coordinate in validation_coordinates:
-            seed = selector_lift(coordinate, code["selector_basis_qubits"])
-            compiled = evaluate_compiled_descriptor(seed, code["scopes"], descriptor)
-            oracle = independent_fixed_selector_oracle(seed, code["scopes"], primary_order)
-            if compiled != oracle:
-                raise ValueError(f"SEMANTIC_EQUIVALENCE_FAILED at selector {coordinate}")
-            validation_rows.append({"coordinate": coordinate, "sum_product_bsc_p_0_1": str(compiled[0]), "soft_tropical_base_2": str(compiled[1]), "min_weight": compiled[2][0][0], "representative": str(compiled[2][0][1]), "canonical_key": str(compiled[2][1])})
+        validation_rows = run_validation_parallel(validation_coordinates, code["scopes"], code["selector_basis_qubits"], primary_order, descriptor)
         validation_outputs_sha = digest(validation_rows)
         if validation_outputs_sha != EXPECTED_DIGESTS["validation_outputs"]:
             raise ValueError("validation output digest drift")
@@ -129,8 +129,8 @@ def evaluate(experiment: dict[str, Any], predecessor_registry: dict[str, Any], p
         "authority": {"protected_start_main": PROTECTED_START_MAIN, "authorization_issue": AUTHORIZATION_ISSUE, "authorization_comment": AUTHORIZATION_COMMENT, "referee_comment": REFEREE_COMMENT, "execution_issue": EXECUTION_ISSUE, "instrumentation_comment": INSTRUMENTATION_COMMENT},
         "predecessor": PREDECESSOR,
         "source_binding": {**SOURCE, **source_digests, "independent_distance_certification_performed": False, "substitution_after_observation": False},
-        "code_reconstruction": {"n": 72, "k": logical_dimension, "hx_shape": [36, 72], "hz_shape": [36, 72], "hx_rank": hx_rank, "hz_rank": hz_rank, "css_commutation_nonzero_entries": 0, "x_independent_row_indices": code["x_indices"], "z_independent_row_indices": code["z_indices"], "logical_z_selected_kernel_free_columns": code["selected_free_columns"], "selector_rank": selector_rank, "selector_basis_qubits": code["selector_basis_qubits"], "reachable_syndrome_count": 1 << hz_rank, "logical_classes_per_syndrome": 1 << logical_dimension, "reachable_selector_count": 1 << selector_rank, "stabilizer_degeneracy_assignments_per_selector": 1 << hx_rank, "hx_row_weight_histogram": {str(k): v for k, v in sorted(Counter(map(int, code["hx"].sum(axis=1))).items())}, "hx_column_weight_histogram": {str(k): v for k, v in sorted(Counter(map(int, code["hx"].sum(axis=0))).items())}, "hz_row_weight_histogram": {str(k): v for k, v in sorted(Counter(map(int, code["hz"].sum(axis=1))).items())}, "hz_column_weight_histogram": {str(k): v for k, v in sorted(Counter(map(int, code["hz"].sum(axis=0))).items())}},
-        "factor_graph": {"independent_stabilizer_generators": hx_rank, "factor_arity_histogram": {str(k): v for k, v in sorted(Counter(map(len, code["scopes"])).items())}, "max_factor_arity": max(map(len, code["scopes"])), "factor_scope_sha256": source_digests["factor_scope_sha256"]},
+        "code_reconstruction": {"n": 72, "k": logical_dimension, "hx_shape": [36, 72], "hz_shape": [36, 72], "hx_rank": hx_rank, "hz_rank": hz_rank, "css_commutation_nonzero_entries": commutation_nonzero, "x_independent_row_indices": code["x_indices"], "z_independent_row_indices": code["z_indices"], "logical_z_selected_kernel_free_columns": code["selected_free_columns"], "selector_rank": selector_rank, "selector_basis_qubits": code["selector_basis_qubits"], "reachable_syndrome_count": 1 << hz_rank, "logical_classes_per_syndrome": 1 << logical_dimension, "reachable_selector_count": 1 << selector_rank, "stabilizer_degeneracy_assignments_per_selector": 1 << hx_rank, "hx_row_weight_histogram": row_weight_histogram(code["hx"]), "hx_column_weight_histogram": column_weight_histogram(code["hx"], 72), "hz_row_weight_histogram": row_weight_histogram(code["hz"]), "hz_column_weight_histogram": column_weight_histogram(code["hz"], 72)},
+        "factor_graph": {"independent_stabilizer_generators": hx_rank, "factor_arity_histogram": {str(key): value for key, value in sorted(Counter(map(len, code["scopes"])).items())}, "max_factor_arity": max(map(len, code["scopes"])), "factor_scope_sha256": source_digests["factor_scope_sha256"]},
         "elimination_order_audit": {"order_record_sha256": EXPECTED_DIGESTS["orders"], "orders": audit["orders"], "induced_width": audit["widths"], "peak_joint_table_entries": {name: 1 << (width + 1) for name, width in audit["widths"].items()}, "primary_order": "min_fill", "primary_order_switched_post_hoc": False, "global_treewidth_optimum_certified": False, "lexicographic_diagnostic_exceeds_primary_peak_table_cap": (1 << (audit["widths"]["lexicographic"] + 1)) > RESOURCE_ENVELOPE["max_peak_joint_table_entries"]},
         "compiled_descriptor": {**descriptor_meta, "primary_object_is_answer_cache": False, "selector_parameters_enter_only_at_evaluation": True, "repeated_evaluation_recompiles_descriptor": False},
         "symbolic_representation_certificate": {"representation": "inherited selector-parametric hash-consed exact expression DAG", "per_algebra": symbolic, "resource_cap_checks": cap_checks, "all_primary_compilation_caps_pass": True},
