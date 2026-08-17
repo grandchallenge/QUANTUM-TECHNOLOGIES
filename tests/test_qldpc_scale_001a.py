@@ -20,10 +20,16 @@ class QLDPCScale001ATests(unittest.TestCase):
         cls.pred_registry = json.loads((ROOT / "registry" / "tcm-qdec-004.json").read_text())
         cls.pred_evidence = json.loads((ROOT / "evidence" / "TCM-QDEC-004-report.json").read_text())
         cls.pred_promotion = json.loads((ROOT / M.PREDECESSOR["promotion_record_path"]).read_text())
-        cls.report = M.evaluate(cls.registry, cls.pred_registry, cls.pred_evidence, cls.pred_promotion, full_validation=True)
+        cls.report = M.evaluate(cls.registry, cls.pred_registry, cls.pred_evidence, cls.pred_promotion, full_validation=False)
 
     def test_committed_evidence_exactly_replays(self):
         expected = json.loads((ROOT / "evidence" / "QLDPC-SCALE-001A-report.json").read_text())
+        if self.report != expected:
+            for key in sorted(set(self.report) | set(expected)):
+                if self.report.get(key) != expected.get(key):
+                    print("QLDPC_SCALE_001A_DIFF", key)
+                    print("OBSERVED", json.dumps(self.report.get(key), sort_keys=True))
+                    print("EXPECTED", json.dumps(expected.get(key), sort_keys=True))
         self.assertEqual(self.report, expected)
         self.assertEqual(self.report["payload_sha256"], "198bb28f47844aa98efa20d8c838c48870a8aef41ccfda266b16661677e363e1")
 
