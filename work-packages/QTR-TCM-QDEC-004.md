@@ -2,7 +2,15 @@
 
 ## Status
 
-Candidate executable, not promoted. This work package is bounded by Human Steward disposition in issue #52 comment `5311144666` and execution docket #53.
+Referee-promoted bounded through the separate overlay in `reviews/QTR-TCM-QDEC-REVIEW-004/promotion-record.json`. The immutable scientific registry and evidence remain `candidate_executable_not_promoted` and are not rewritten by promotion.
+
+Reviewed head: `8177a57b63e3f2c953a028691d305563f298b572`.
+
+Scientific merge: `7eff1025e97ff962a6fed81e6f2fa0f4d14653a3`.
+
+Evidence payload: `a5c7e59fa849ddc37c070d78d4a4dab8b07ae5ceccfecefeb5a20f4ae0dc83a7`.
+
+Human Steward authority remains issue #52 comment `5311144666`; execution docket #53 authorized TCM-QDEC-004 only.
 
 ## Scientific question
 
@@ -24,11 +32,11 @@ For each local qubit factor, the evaluator constructs an exact symbolic expressi
 
 The result is a canonical hash-consed expression DAG for each algebra. The DAG contains exact terminals, selector-parameter choice nodes, and exact semiring operation nodes. Compilation does not enumerate or store the 2048 evaluated selector answers. Selector coordinates enter only when the already-compiled DAG is evaluated.
 
-A complete answer table is prohibited as the primary compiled object. Such a cache is not needed by the candidate mechanism.
+A complete answer table is prohibited as the primary compiled object. Such a cache is not needed by the promoted mechanism.
 
-## Exact semantic obligations
+## Exact semantic result
 
-Admission requires exact equality with TCM-QDEC-003 at the complete certified boundary:
+The promoted finite result preserves exact equality with TCM-QDEC-003 at the complete certified boundary:
 
 - 6144 class-score entries;
 - 2048 canonical-class/minimum-representative entries;
@@ -36,8 +44,6 @@ Admission requires exact equality with TCM-QDEC-003 at the complete certified bo
 - 384 deterministic decisions;
 - frozen-corpus success totals `263`, `262`, `226`;
 - tie envelopes `[263,263]`, `[262,262]`, `[218,263]`.
-
-The committed evidence must replay from source and remain byte-for-byte deterministic under canonical JSON serialization.
 
 ## Predeclared abstract-operation accounting
 
@@ -49,9 +55,9 @@ The unweighted AOP sum is a deterministic abstract event count only. It is not a
 
 Compilation cost, canonical compiled size, all-selector evaluation cost, one-shot cost, repeated-sweep break-even, and the original predecessor-specific counters are reported separately. The original `774144` assignment evaluations and `98298` TCM-QDEC-002 transition relaxations remain non-equivalent historical counters and are not translated into AOPs.
 
-## Candidate result
+## Promoted bounded result
 
-The exact candidate compilation retains:
+The exact compilation retains:
 
 - sum-product: 371 reachable expression nodes;
 - soft-tropical: 371 reachable expression nodes;
@@ -70,8 +76,8 @@ The common-ledger counts are:
 - one-shot reduction: 1,411,152 AOPs;
 - exact complete-sweep break-even: `k = 1`.
 
-This supports only the bounded classification `EXACT_SHARED_COMPILATION_WITH_REDUCED_DUPLICATION` under the declared abstract ledger on this fixed fixture. It does not establish runtime speedup, memory superiority, asymptotic improvement, or family-scale behavior.
+This promotes only the classification `EXACT_SHARED_COMPILATION_WITH_REDUCED_DUPLICATION` **under the declared abstract ledger on this fixed fixture**. It does not establish runtime speedup, memory superiority, asymptotic improvement, or family-scale behavior.
 
 ## Fail-closed boundary
 
-No authority is created for a larger code, a multi-size scaling ladder, BP/min-sum/BP-OSD comparison, repeated syndrome extraction, measurement error, circuit-level noise, thresholds, learned decoding, adaptive online contraction order, QLDPC-FORGE, or autonomous architecture search.
+No authority is created for `QLDPC-SCALE-001A`, a multi-size scaling ladder, BP/min-sum/BP-OSD comparison, repeated syndrome extraction, measurement error, circuit-level noise, thresholds, learned decoding, adaptive online contraction order, `QLDPC-FORGE`, or autonomous architecture search.
