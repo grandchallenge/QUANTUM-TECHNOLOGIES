@@ -1,0 +1,22 @@
+{
+  "claim_boundary": "exact source and named-order structural evidence on the fixed six-instance BB ladder, with deterministic Level-C compilation-bound exhaustion beginning at n=90 and no post-anchor compilation or semantic validation",
+  "documentary_issue": 68,
+  "evidence_blob_sha": "7a368204f3a8202544a8ff4fe720e7f54b1edea5",
+  "evidence_payload_sha256": "6b8076376eb621710d993d1cb8768c7d4c03b7fe9d67802e6ae2e77212b610fc",
+  "experiment_id": "QLDPC-SCALE-001B",
+  "manifest_blob_sha": "b4a8157aac966c6cd5bea08beb945c2f2ccdcc7b",
+  "manifest_payload_sha256": "0beef3aa1062bd30c691e3f01d00db0d1d8890d07c0dca2761fa933978ff09f5",
+  "record_id": "QTR-QLDPC-SCALE-REVIEW-001B-INTAKE",
+  "record_version": "0.1.0",
+  "referee_disposition": "APPROVE_BOUNDED_SCIENTIFIC_MERGE__QLDPC_SCALE_001B",
+  "referee_record": 5315946001,
+  "registry_blob_sha": "26f20f5a27a1488f71da677ecc9ead4fad76a958",
+  "review_cycle_status": "completed_referee_promoted",
+  "review_issue": 67,
+  "reviewed_head": "e4ba3cddc2440c868584ee675362f7d883855c73",
+  "scientific_merge_commit": "c6a7c7b3f7b49d52e22f5a79866c479aad326aa0",
+  "scientific_pull_request": 66,
+  "snapshot_preserved_byte_for_byte": true,
+  "status": "candidate_executable_not_promoted",
+  "tracking_issue": 65
+}

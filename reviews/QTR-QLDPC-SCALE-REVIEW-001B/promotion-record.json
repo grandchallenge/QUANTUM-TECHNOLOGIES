@@ -1,0 +1,175 @@
+{
+  "comparison_referral_maturity": {
+    "certified_deterministic_compilation_bound_exhaustion": true,
+    "compiled_validated_post72_rungs": 0,
+    "creates_compare_authority": false,
+    "maturity_criterion_met": true,
+    "observed_post72_source_and_structural_certificates": 5
+  },
+  "compilation_boundary": {
+    "first_post_anchor_exhaustion": {
+      "first_crossed_cap": "max_peak_joint_table_entries",
+      "min_fill_induced_width": 25,
+      "n": 90,
+      "predicted_peak_joint_table_entries": 67108864,
+      "stopped_before_materialization": true
+    },
+    "intrinsic_intractability_inferred": false,
+    "post_anchor_compiled_rungs": [],
+    "post_anchor_exhausted_rungs": [90, 108, 144, 288, 784],
+    "post_anchor_semantic_validation_rungs": [],
+    "primary_order": "min_fill",
+    "primary_peak_table_cap": 1048576,
+    "runtime_or_memory_inference": false
+  },
+  "documentary_issue": 68,
+  "excluded_scope": [
+    "global treewidth for any named rung or BB family",
+    "asymptotic or family scaling law",
+    "fitted scaling exponent as a certified claim",
+    "extrapolation beyond the six named finite instances",
+    "intrinsic intractability of exact contraction",
+    "generally scalable or non-scalable decoder claim",
+    "runtime superiority or inferiority",
+    "memory superiority or inferiority",
+    "independently certified post-anchor source distances",
+    "post-anchor compiled decoder semantics or selector validation",
+    "controlled approximation",
+    "BP, min-sum, or BP-OSD comparison",
+    "TCM-QDEC-COMPARE-001 execution authority",
+    "circuit-level or phenomenological noise",
+    "repeated syndrome extraction or measurement error",
+    "threshold or pseudo-threshold claims",
+    "hardware validation",
+    "learned decoder parameters",
+    "adaptive online contraction-order optimization",
+    "QEC-CIRCUIT-001",
+    "QLDPC-FORGE",
+    "autonomous code, decoder, circuit, or architecture search"
+  ],
+  "finite_ladder_evidence": {
+    "asymptotic_or_family_scaling_inferred": false,
+    "finite_named_ladder_only": true,
+    "lexicographic_nonmonotonic_witness": {
+      "from_n": 108,
+      "from_width": 33,
+      "to_n": 144,
+      "to_width": 31
+    },
+    "primary_classification": "FINITE_LADDER_STRUCTURAL_AUDIT_COMPLETED__COMPILATION_BOUND_EXHAUSTED",
+    "secondary_classifications": ["FINITE_LADDER_NONMONOTONE_STRUCTURE_OBSERVED"]
+  },
+  "manifest": {
+    "blob_sha": "b4a8157aac966c6cd5bea08beb945c2f2ccdcc7b",
+    "first_commit": "3fd6d882a5992c1be82e11f1f315a53130ffff8c",
+    "path": "registry/qldpc-scale-001b-ladder-manifest.json",
+    "payload_sha256": "0beef3aa1062bd30c691e3f01d00db0d1d8890d07c0dca2761fa933978ff09f5",
+    "snapshot_preserved_byte_for_byte": true
+  },
+  "office_records": {
+    "Adversary": 5315940302,
+    "Amanuensis": 5315944089,
+    "Axiomatist": 5315932097,
+    "Cartographer": 5315934901,
+    "Formalist": 5315942563,
+    "Grammarian": 5315936513,
+    "Referee": 5315946001,
+    "Verifier": 5315938082
+  },
+  "predecessor": {
+    "documentary_merge_commit": "57e465af680fc0030d47e14d9f40c9e2ab58dc09",
+    "evidence_blob_sha": "268a5bfa9ed35ad3cd5984031de20487835643d0",
+    "evidence_payload_sha256": "198bb28f47844aa98efa20d8c838c48870a8aef41ccfda266b16661677e363e1",
+    "experiment_id": "QLDPC-SCALE-001A",
+    "promotion_record_blob_sha": "14bb7ccb9edbad4b346269924466ab6dde8e0ca6",
+    "promotion_record_path": "reviews/QTR-QLDPC-SCALE-REVIEW-001A/promotion-record.json",
+    "registry_blob_sha": "9cf5ed39bd51c3e4f920e4b5b4687fc4eacec386"
+  },
+  "promoted_scope": {
+    "classification": "FINITE_LADDER_STRUCTURAL_AUDIT_COMPLETED__COMPILATION_BOUND_EXHAUSTED",
+    "comparison_boundary": "the Council maturity criterion for considering a future comparison referral is met; no TCM-QDEC-COMPARE-001 authority is created",
+    "compilation_result": "the frozen primary min-fill Level-C peak-table cap is first exceeded at n=90 before materialization and is exceeded at every later post-anchor rung",
+    "representation": "exact source and named-order structural audit over the fixed finite BB ladder {72,90,108,144,288,784}",
+    "secondary_result": "FINITE_LADDER_NONMONOTONE_STRUCTURE_OBSERVED",
+    "semantic_result": "no post-anchor compiled object or selector semantic validation was reached under 001B",
+    "source_result": "all five post-anchor source reconstructions certify exact n,k,CSS ranks/commutation and canonical basis identities; listed distances remain source-reported only",
+    "structural_result": "all five post-anchor Level-S audits fit their frozen structural budgets; exact named-order widths are promoted only for the six named instances",
+    "systems_boundary": "no intrinsic intractability, asymptotic, runtime, memory or practical decoder superiority/inferiority is inferred"
+  },
+  "protected_merge": {
+    "main_base_at_merge": "57e465af680fc0030d47e14d9f40c9e2ab58dc09",
+    "required_status_checks": ["validate", "policy", "security / action-policy"],
+    "review_threads_resolved": true,
+    "ruleset_id": 20106953
+  },
+  "pull_request": 66,
+  "record_id": "QTR-QLDPC-SCALE-REVIEW-001B-PROMOTION",
+  "record_version": "0.1.0",
+  "referee": {
+    "disposition": "APPROVE_BOUNDED_SCIENTIFIC_MERGE__QLDPC_SCALE_001B",
+    "live_ruleset_required_approving_reviews": 0,
+    "record": 5315946001
+  },
+  "review_issue": 67,
+  "reviewed_head": "e4ba3cddc2440c868584ee675362f7d883855c73",
+  "reviewed_snapshot": {
+    "evidence_blob_sha": "7a368204f3a8202544a8ff4fe720e7f54b1edea5",
+    "evidence_path": "evidence/QLDPC-SCALE-001B-report.json",
+    "evidence_payload_sha256": "6b8076376eb621710d993d1cb8768c7d4c03b7fe9d67802e6ae2e77212b610fc",
+    "evidence_status_at_review": "candidate_executable_not_promoted",
+    "manifest_blob_sha": "b4a8157aac966c6cd5bea08beb945c2f2ccdcc7b",
+    "manifest_path": "registry/qldpc-scale-001b-ladder-manifest.json",
+    "manifest_payload_sha256": "0beef3aa1062bd30c691e3f01d00db0d1d8890d07c0dca2761fa933978ff09f5",
+    "registry_blob_sha": "26f20f5a27a1488f71da677ecc9ead4fad76a958",
+    "registry_path": "registry/qldpc-scale-001b.json",
+    "registry_status_at_review": "candidate_executable_not_promoted",
+    "snapshot_preserved_byte_for_byte": true
+  },
+  "scientific_merge_commit": "c6a7c7b3f7b49d52e22f5a79866c479aad326aa0",
+  "source_evidence": {
+    "distance_status": "SOURCE_REPORTED_DISTANCE",
+    "named_ladder": [72, 90, 108, 144, 288, 784],
+    "post_anchor_distances_independently_certified": false,
+    "post_anchor_source_reported_parameters": [[90, 8, 10], [108, 8, 10], [144, 12, 12], [288, 12, 18], [784, 24, 24]],
+    "source_blob_sha": "7ec5a36732a2a6dd229ab74405dedf36139ccda4",
+    "source_commit": "fa77e3333d3ec44c79d8f914dd24c040d1da471b",
+    "source_path": "decoder_setup.py",
+    "source_repository": "sbravyi/BivariateBicycleCodes"
+  },
+  "status": "referee_promoted_bounded",
+  "structural_evidence": {
+    "all_post_anchor_level_s_audits_within_frozen_bounds": true,
+    "all_post_anchor_source_reconstructions_certified": true,
+    "global_treewidth_optimum_certified": false,
+    "largest_level_s_audit": {
+      "n": 784,
+      "peak_retained_entries": 69939,
+      "structural_events": 509630167
+    },
+    "level_s_caps": {
+      "max_events_per_rung": 1073741824,
+      "max_retained_entries_per_rung": 4194304
+    },
+    "named_order_widths": {
+      "lexicographic": [24, 28, 33, 31, 71, 253],
+      "min_degree": [18, 25, 30, 38, 83, 223],
+      "min_fill": [18, 25, 30, 34, 79, 201]
+    }
+  },
+  "tracking_issue": 65,
+  "workflow_evidence": {
+    "codeql_check": 95382235272,
+    "codeql_conclusion": "success",
+    "evidence_payload_sha256": "6b8076376eb621710d993d1cb8768c7d4c03b7fe9d67802e6ae2e77212b610fc",
+    "gcl_artifact_digest": "sha256:f244496ee4a5193a3b2efd737d22bcefbe5ee9b8553fb2cd9d52a2948e7629f7",
+    "gcl_conformance_artifact": 9287860207,
+    "gcl_conformance_run": 32028215876,
+    "gcl_scorecard_artifact": 9287857172,
+    "gcl_scorecard_digest": "sha256:0a7e92924f1f3e9fbbc1dc28f27c168c679daf48b4199ca48275e7b34df73199",
+    "qldpc_scale_001b_test_count": 15,
+    "qtr_artifact_digest": "sha256:10530cc88800dfaac8068b2445931975bc6951cf88aef4271ddcf586082cb26c",
+    "qtr_exact_head_artifact": 9288163459,
+    "qtr_validation_run": 32028215339,
+    "test_count": 209
+  }
+}
