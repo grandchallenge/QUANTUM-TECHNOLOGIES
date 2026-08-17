@@ -2,15 +2,21 @@
 
 ## Status
 
-Scientific candidate only. The immutable scientific registry and evidence are `candidate_executable_not_promoted`. No promotion authority exists unless a later exact-head review and separate immutable-snapshot promotion overlay justify it.
+Scientifically merged and Referee-promoted **only at the bounded single-instance feasibility boundary**. The immutable scientific registry and evidence remain `candidate_executable_not_promoted`; promotion authority is recorded separately in `reviews/QTR-QLDPC-SCALE-REVIEW-001A/promotion-record.json`.
+
+Reviewed scientific head: `1bf76b536d9cd59d8a4b6b3518764df8e526986e`.
+
+Scientific merge: `e30e64adcbd67ab015b04415135bb167b3132a02`.
 
 Protected starting main: `54456dd1d273a115e82a77c6c429925e03e0925e`.
 
 Human Steward authorization: issue #58 comment `5312914299`, `AUTHORIZE_QLDPC_SCALE_001A_WITH_AMENDMENTS`.
 
-Execution docket: #59.
+Execution docket: #59. Exact-head review: #61. Documentary promotion docket: #62.
 
 Evidence payload: `198bb28f47844aa98efa20d8c838c48870a8aef41ccfda266b16661677e363e1`.
+
+The promoted classification is `FEASIBLE_EXACT_WITHIN_BOUND`. It does not authorize `QLDPC-SCALE-001B` or any later programme node.
 
 ## Scientific question
 
@@ -125,9 +131,9 @@ Validation-output digest: `b5e168d3c8f4b420c8f2c1129ea23a3a4c5d6be946053aac7f165
 
 This is exact equality **on the frozen validation set only**. It is not exhaustive all-selector equivalence over `2^42` reachable selector coordinates.
 
-## Candidate adjudication
+## Bounded adjudication
 
-Candidate outcome: `FEASIBLE_EXACT_WITHIN_BOUND`.
+Promoted outcome: `FEASIBLE_EXACT_WITHIN_BOUND`.
 
 This means only that exact source reconstruction passed, the exact factor-graph audit passed, the primary parametric compilation fit every predeclared deterministic cap, exact equality held on the frozen validation sample, and no controlled approximation was used.
 
