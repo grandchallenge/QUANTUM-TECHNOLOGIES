@@ -1,0 +1,141 @@
+name: TCM-QDEC-COMPARE-001 exact replay
+
+on:
+  pull_request:
+    paths:
+      - "registry/tcm-qdec-compare-001-manifest.json"
+      - "reference/tcm_qdec_compare_001.py"
+      - "tests/test_tcm_qdec_compare_001.py"
+      - "evidence/TCM-QDEC-COMPARE-001-report.json"
+      - ".github/workflows/qtr-tcm-qdec-compare-001.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "registry/tcm-qdec-compare-001-manifest.json"
+      - "reference/tcm_qdec_compare_001.py"
+      - "tests/test_tcm_qdec_compare_001.py"
+      - "evidence/TCM-QDEC-COMPARE-001-report.json"
+      - ".github/workflows/qtr-tcm-qdec-compare-001.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tcm-qdec-compare-001-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compare:
+    name: compare-exact
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      LDPC_SDIST_SHA256: 3b2652aa993ab71672d680ac76ee2dcf3dc289fc5d11c07d060e5f838d8c3601
+      BPOSD_WHEEL_SHA256: 80e439246c11ca824610f9bc7858c68eb1f8a6b7cbb71760cf6c86e03c47ff5d
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.10.14"
+
+      - name: Assert exact subject checkout
+        run: |
+          test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+
+      - name: Verify frozen manifest and corpora before decoder installation
+        run: |
+          python reference/tcm_qdec_compare_001.py --static-only --output /tmp/TCM-QDEC-COMPARE-001-static.json
+
+      - name: Download and verify historical decoder packages
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/compare-pkgs
+          python -m pip download --no-deps --no-binary=:all: --dest /tmp/compare-pkgs "ldpc==0.1.53"
+          python -m pip download --no-deps --only-binary=:all: --dest /tmp/compare-pkgs "bposd==1.6"
+          test -f /tmp/compare-pkgs/ldpc-0.1.53.tar.gz
+          test -f /tmp/compare-pkgs/bposd-1.6-py3-none-any.whl
+          echo "$LDPC_SDIST_SHA256  /tmp/compare-pkgs/ldpc-0.1.53.tar.gz" | sha256sum -c -
+          echo "$BPOSD_WHEEL_SHA256  /tmp/compare-pkgs/bposd-1.6-py3-none-any.whl" | sha256sum -c -
+
+      - name: Install exact historical decoder environment
+        run: |
+          set -euo pipefail
+          python -m pip install /tmp/compare-pkgs/ldpc-0.1.53.tar.gz /tmp/compare-pkgs/bposd-1.6-py3-none-any.whl
+          python - <<'PY'
+          import importlib.metadata
+          import ldpc
+          assert str(ldpc.__version__).strip() == "0.1.53"
+          assert importlib.metadata.version("ldpc") == "0.1.53"
+          assert importlib.metadata.version("bposd") == "1.6"
+          print("ldpc", importlib.metadata.version("ldpc"))
+          print("bposd", importlib.metadata.version("bposd"))
+          PY
+          python -m pip freeze > /tmp/TCM-QDEC-COMPARE-001-pip-freeze.txt
+
+      - name: Execute frozen shared-interface comparison
+        run: |
+          set -euo pipefail
+          if test -f evidence/TCM-QDEC-COMPARE-001-report.json; then
+            python reference/tcm_qdec_compare_001.py \
+              --output /tmp/TCM-QDEC-COMPARE-001-report.json \
+              --check-evidence evidence/TCM-QDEC-COMPARE-001-report.json
+          else
+            python reference/tcm_qdec_compare_001.py \
+              --output /tmp/TCM-QDEC-COMPARE-001-report.json
+          fi
+
+      - name: Run COMPARE-001 adversarial/static tests
+        run: python -m unittest tests.test_tcm_qdec_compare_001 -v
+
+      - name: Write exact-head receipt
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+          subject = os.environ["SUBJECT_SHA"]
+          runtime = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+          report = json.loads(Path("/tmp/TCM-QDEC-COMPARE-001-report.json").read_text())
+          receipt = {
+              "receipt_version": "0.1.0",
+              "experiment_id": "TCM-QDEC-COMPARE-001",
+              "evaluated_commit": subject,
+              "runtime_head": runtime,
+              "exact_head_equal": subject == runtime,
+              "manifest_payload_sha256": "c68830f40733cde6957713060cec35adf317c75572cc960610c07c4d0e24d1e2",
+              "report_payload_sha256": report["payload_sha256"],
+              "ldpc_sdist_sha256": os.environ["LDPC_SDIST_SHA256"],
+              "bposd_wheel_sha256": os.environ["BPOSD_WHEEL_SHA256"],
+              "timing_authoritative": False,
+              "qec_circuit_001_authorized": False,
+          }
+          if not receipt["exact_head_equal"]:
+              raise SystemExit("COMPARE-001 exact-head mismatch")
+          Path("/tmp/TCM-QDEC-COMPARE-001-exact-head.json").write_text(
+              json.dumps(receipt, indent=2, sort_keys=True) + "\n"
+          )
+          PY
+
+      - name: Preserve exact comparison artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: TCM-QDEC-COMPARE-001-exact-head
+          path: |
+            /tmp/TCM-QDEC-COMPARE-001-static.json
+            /tmp/TCM-QDEC-COMPARE-001-report.json
+            /tmp/TCM-QDEC-COMPARE-001-pip-freeze.txt
+            /tmp/TCM-QDEC-COMPARE-001-exact-head.json
+            evidence/corpora/TCM-QDEC-COMPARE-001-C72-corpus.json
+            evidence/corpora/TCM-QDEC-COMPARE-001-C90-corpus.json
+            /tmp/compare-pkgs/ldpc-0.1.53.tar.gz
+            /tmp/compare-pkgs/bposd-1.6-py3-none-any.whl
+          if-no-files-found: error
+          retention-days: 90
