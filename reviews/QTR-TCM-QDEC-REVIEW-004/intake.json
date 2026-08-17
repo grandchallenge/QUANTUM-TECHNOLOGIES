@@ -1,0 +1,20 @@
+{
+  "record_version": "0.1.0",
+  "record_id": "QTR-TCM-QDEC-REVIEW-004-INTAKE",
+  "experiment_id": "TCM-QDEC-004",
+  "status": "candidate_executable_not_promoted",
+  "review_cycle_status": "completed_referee_promoted",
+  "tracking_issue": 53,
+  "scientific_pull_request": 54,
+  "review_issue": 55,
+  "documentary_issue": 56,
+  "reviewed_head": "8177a57b63e3f2c953a028691d305563f298b572",
+  "scientific_merge_commit": "7eff1025e97ff962a6fed81e6f2fa0f4d14653a3",
+  "evidence_payload_sha256": "a5c7e59fa849ddc37c070d78d4a4dab8b07ae5ceccfecefeb5a20f4ae0dc83a7",
+  "registry_blob_sha": "616f9ca9d81123f5b04d445e1ae5ca01e9559c85",
+  "evidence_blob_sha": "77b6a05ff245d0292036b7efa47a3fe775f845af",
+  "referee_record": 5311305441,
+  "referee_disposition": "APPROVE_BOUNDED_SCIENTIFIC_MERGE__TCM_QDEC_004",
+  "claim_boundary": "exact shared selector-parametric compilation on the frozen [[18,4,4]] fixture with reduced duplicated abstract work only under the declared AOP ledger",
+  "snapshot_preserved_byte_for_byte": true
+}
