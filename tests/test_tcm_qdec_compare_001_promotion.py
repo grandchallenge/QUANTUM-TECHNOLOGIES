@@ -126,14 +126,20 @@ class TCMQDECCompare001PromotionTests(unittest.TestCase):
         wp = (ROOT / "work-packages/QTR-TCM-QDEC-COMPARE-001.md").read_text(
             encoding="utf-8"
         )
+        readme_flat = " ".join(readme.split())
+        wp_flat = " ".join(wp.split())
 
         marker = "reviews/QTR-TCM-QDEC-COMPARE-REVIEW-001/promotion-record.json"
         self.assertIn(marker, readme)
         self.assertIn(marker, wp)
         self.assertIn("Referee-promoted", readme)
         self.assertIn("Referee-promoted bounded comparison authority", wp)
-        self.assertIn("`QEC-CIRCUIT-001` and `QLDPC-FORGE` remain unauthorized", wp)
-        self.assertIn("C72 and C90 TCM quality comparisons remain undefined", readme)
+        self.assertIn(
+            "`QEC-CIRCUIT-001` and `QLDPC-FORGE` remain unauthorized", wp_flat
+        )
+        self.assertIn(
+            "C72 and C90 TCM quality comparisons remain undefined", readme_flat
+        )
 
 
 if __name__ == "__main__":
