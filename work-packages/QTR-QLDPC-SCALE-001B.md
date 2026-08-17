@@ -1,8 +1,31 @@
 # QTR-QLDPC-SCALE-001B — bounded finite BB ladder
 
-Status: `candidate_executable_not_promoted`
+## Status
 
-Authority:
+Scientifically merged and Referee-promoted **only at the bounded finite-ladder source/structural and compilation-cap-exhaustion boundary**. The immutable scientific manifest, registry, and evidence remain candidate records; promotion authority is recorded separately in `reviews/QTR-QLDPC-SCALE-REVIEW-001B/promotion-record.json`.
+
+Reviewed scientific head: `e4ba3cddc2440c868584ee675362f7d883855c73`.
+
+Scientific merge: `c6a7c7b3f7b49d52e22f5a79866c479aad326aa0`.
+
+Protected starting main: `57e465af680fc0030d47e14d9f40c9e2ab58dc09`.
+
+Human Steward authorization: issue #64 comment `5315569335`, `ADOPT_WITH_AMENDMENTS__AUTHORIZE_QLDPC_SCALE_001B_ONLY`.
+
+Execution docket: #65. Exact-head review: #67. Documentary promotion docket: #68.
+
+Manifest payload: `0beef3aa1062bd30c691e3f01d00db0d1d8890d07c0dca2761fa933978ff09f5`.
+
+Evidence payload: `6b8076376eb621710d993d1cb8768c7d4c03b7fe9d67802e6ae2e77212b610fc`.
+
+Promoted primary adjudication: `FINITE_LADDER_STRUCTURAL_AUDIT_COMPLETED__COMPILATION_BOUND_EXHAUSTED`.
+
+Promoted secondary finite-ladder predicate: `FINITE_LADDER_NONMONOTONE_STRUCTURE_OBSERVED`.
+
+The Council maturity criterion for considering a future `TCM-QDEC-COMPARE-001` referral is satisfied, but this promotion creates **no comparison authority** or later-node authority.
+
+## Authority
+
 - protected start: `57e465af680fc0030d47e14d9f40c9e2ab58dc09`;
 - Human Steward: issue #64 comment `5315569335`;
 - Referee recommendation: issue #64 comment `5315553347`;
@@ -90,12 +113,14 @@ It creates **no comparison authority**.
 
 ## Claim exclusions
 
-This candidate does not establish:
+This promoted result does not establish:
 - global treewidth for any rung or family;
 - an asymptotic/family scaling law or fitted exponent;
-- a generally scalable decoder;
-- runtime or memory superiority;
+- a generally scalable or non-scalable decoder;
+- intrinsic intractability of exact contraction;
+- runtime or memory superiority or inferiority;
 - independently certified distances 10, 10, 12, 18 or 24;
+- post-anchor compiled decoder semantics or selector validation;
 - controlled approximation;
 - BP/min-sum/BP-OSD comparison;
 - circuit-level/repeated-syndrome behavior;
