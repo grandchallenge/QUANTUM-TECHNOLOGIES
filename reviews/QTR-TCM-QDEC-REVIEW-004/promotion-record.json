@@ -1,0 +1,136 @@
+{
+  "record_version": "0.1.0",
+  "record_id": "QTR-TCM-QDEC-REVIEW-004-PROMOTION",
+  "status": "referee_promoted_bounded",
+  "reviewed_head": "8177a57b63e3f2c953a028691d305563f298b572",
+  "scientific_merge_commit": "7eff1025e97ff962a6fed81e6f2fa0f4d14653a3",
+  "pull_request": 54,
+  "tracking_issue": 53,
+  "review_issue": 55,
+  "documentary_issue": 56,
+  "predecessor": {
+    "experiment_id": "TCM-QDEC-003",
+    "evidence_payload_sha256": "f0ecdae04f3da4f0508454da59ce406a4e6c461f88f1784279cb6d7e360b595f",
+    "scientific_merge_commit": "2925a41343c8e4592c1bf558d86ea461e0e1c7d4",
+    "promotion_main_commit": "4524be6fd51eb78b627e4303cd713b5c215fc7a8"
+  },
+  "workflow_evidence": {
+    "qtr_validation_run": 31989868977,
+    "qtr_exact_head_artifact": 9274961810,
+    "qtr_artifact_digest": "sha256:f67d62704ece739f46b12ea2b92f308695d625e3a46d497399cc1943c7beb163",
+    "gcl_conformance_run": 31989869350,
+    "gcl_conformance_artifact": 9274955536,
+    "gcl_artifact_digest": "sha256:90b92f0ad15f566b414a6af2dad569f20222fa51635f3041681ca17604021907",
+    "gcl_scorecard_artifact": 9274955133,
+    "gcl_scorecard_digest": "sha256:376aeb02e657511e0d81d799514871369e091265f833b8f6a4916759167183a8",
+    "codeql_check": 95271447697,
+    "codeql_conclusion": "success",
+    "test_count": 156,
+    "tcm_qdec_004_test_count": 16,
+    "evidence_payload_sha256": "a5c7e59fa849ddc37c070d78d4a4dab8b07ae5ceccfecefeb5a20f4ae0dc83a7"
+  },
+  "compiled_structure_evidence": {
+    "representation": "exact selector-parametric hash-consed expression DAG",
+    "selector_values_materialized_during_compilation": 0,
+    "primary_object_is_complete_answer_cache": false,
+    "sum_product_reachable_nodes": 371,
+    "soft_tropical_reachable_nodes": 371,
+    "min_plus_reachable_nodes": 388,
+    "retained_reachable_nodes_total": 1130,
+    "canonical_serialized_bytes_total": 65506,
+    "sum_product_dag_sha256": "74a20187b141813772400944962462b0fd4859f253b161bedc3d871231cfad8e",
+    "soft_tropical_dag_sha256": "e15b58e494d5ff75efd8778210d1d195701e71dea84a8d8dff4eafe02dcf2d68",
+    "min_plus_dag_sha256": "daaa544340d1d101c402f0f7be0d95eaf75c8f861fe7018f12cf29a797b35339"
+  },
+  "equivalence_evidence": {
+    "canonical_class_mapping_sha256": "0d907375404e37533a3dd182eccea7d6a3fd6637801745f8f5b39b7c4b683f8f",
+    "score_entries_checked": 6144,
+    "mapping_entries_checked": 2048,
+    "tie_cells_checked": 384,
+    "decision_entries_checked": 384,
+    "all_exactly_equal_to_tcm_qdec_003": true,
+    "frozen_corpus_success_totals": {
+      "sum_product_bsc_p_0_1": 263,
+      "soft_tropical_base_2": 262,
+      "min_plus_hamming": 226
+    },
+    "tie_envelopes": {
+      "sum_product_bsc_p_0_1": [263,263],
+      "soft_tropical_base_2": [262,262],
+      "min_plus_hamming": [218,263]
+    }
+  },
+  "aop_evidence": {
+    "taxonomy": ["GF2_XOR","GF2_AND","EXACT_INT_ADD","EXACT_INT_MUL","EXACT_COMPARE","TABLE_READ","TABLE_WRITE","NODE_INTERN"],
+    "compile_aop_total": 10160,
+    "evaluate_all_selectors_aop_total": 12694528,
+    "compiled_one_shot_aop_total": 12704688,
+    "reinstrumented_tcm_qdec_003_aop_total": 14115840,
+    "one_shot_aop_reduction": 1411152,
+    "break_even_complete_sweeps": 1,
+    "aop_total_is_runtime_model": false,
+    "runtime_or_memory_superiority_inferred": false,
+    "original_assignment_evaluations_preserved": 774144,
+    "original_transition_relaxations_preserved": 98298,
+    "original_counters_not_translated_to_aop": true
+  },
+  "office_records": {
+    "Axiomatist": 5311297918,
+    "Cartographer": 5311298617,
+    "Grammarian": 5311299351,
+    "Verifier": 5311300159,
+    "Adversary": 5311301116,
+    "Formalist": 5311302267,
+    "Amanuensis": 5311302980,
+    "Referee": 5311305441
+  },
+  "referee": {
+    "disposition": "APPROVE_BOUNDED_SCIENTIFIC_MERGE__TCM_QDEC_004",
+    "record": 5311305441,
+    "live_ruleset_required_approving_reviews": 0
+  },
+  "protected_merge": {
+    "ruleset_id": 20106953,
+    "required_status_checks": ["validate","policy","security / action-policy"],
+    "review_threads_resolved": true,
+    "main_base_at_merge": "4524be6fd51eb78b627e4303cd713b5c215fc7a8"
+  },
+  "promoted_scope": {
+    "representation": "exact shared selector-parametric compilation of the frozen TCM-QDEC-003 contraction on the protected [[18,4,4]] one-sector fixture",
+    "anti_cache_result": "compilation materializes zero selector answers and retains reusable exact structural DAGs rather than a complete answer cache",
+    "predecessor_equivalence": "all 6144 scores, 2048 mapping entries, 384 tie sets and 384 decisions equal TCM-QDEC-003",
+    "bounded_systems_result": "compiled one-shot path records 1411152 fewer abstract events than the re-instrumented TCM-QDEC-003 classwise path under the declared AOP ledger only; no runtime, memory, asymptotic, or scaling inference"
+  },
+  "reviewed_snapshot": {
+    "registry_path": "registry/tcm-qdec-004.json",
+    "registry_blob_sha": "616f9ca9d81123f5b04d445e1ae5ca01e9559c85",
+    "registry_status_at_review": "candidate_executable_not_promoted",
+    "evidence_path": "evidence/TCM-QDEC-004-report.json",
+    "evidence_blob_sha": "77b6a05ff245d0292036b7efa47a3fe775f845af",
+    "evidence_status_at_review": "candidate_executable_not_promoted",
+    "evidence_payload_sha256": "a5c7e59fa849ddc37c070d78d4a4dab8b07ae5ceccfecefeb5a20f4ae0dc83a7",
+    "snapshot_preserved_byte_for_byte": true
+  },
+  "excluded_scope": [
+    "QLDPC-SCALE-001A",
+    "QLDPC-SCALE-001B",
+    "bounded contraction width for a qLDPC code family",
+    "favorable family scaling",
+    "asymptotic or practical complexity advantage",
+    "runtime superiority",
+    "memory superiority",
+    "larger-code decoder performance",
+    "general qLDPC decoder performance or practical superiority",
+    "BP, min-sum, or BP-OSD performance or comparison claims",
+    "circuit-level or phenomenological noise",
+    "repeated syndrome extraction or measurement error",
+    "hardware validation",
+    "threshold or pseudo-threshold claims",
+    "learned decoder parameters",
+    "adaptive online contraction-order optimization",
+    "TCM-QDEC-COMPARE-001",
+    "QEC-CIRCUIT-001",
+    "QLDPC-FORGE",
+    "autonomous code, decoder, circuit, or architecture search"
+  ]
+}
