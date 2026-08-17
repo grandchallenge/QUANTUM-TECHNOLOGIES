@@ -1,0 +1,20 @@
+{
+  "record_version": "0.1.0",
+  "record_id": "QTR-QLDPC-SCALE-REVIEW-001A-INTAKE",
+  "experiment_id": "QLDPC-SCALE-001A",
+  "status": "candidate_executable_not_promoted",
+  "review_cycle_status": "completed_referee_promoted",
+  "tracking_issue": 59,
+  "scientific_pull_request": 60,
+  "review_issue": 61,
+  "documentary_issue": 62,
+  "reviewed_head": "1bf76b536d9cd59d8a4b6b3518764df8e526986e",
+  "scientific_merge_commit": "e30e64adcbd67ab015b04415135bb167b3132a02",
+  "evidence_payload_sha256": "198bb28f47844aa98efa20d8c838c48870a8aef41ccfda266b16661677e363e1",
+  "registry_blob_sha": "9cf5ed39bd51c3e4f920e4b5b4687fc4eacec386",
+  "evidence_blob_sha": "268a5bfa9ed35ad3cd5984031de20487835643d0",
+  "referee_record": 5315190043,
+  "referee_disposition": "APPROVE_BOUNDED_SCIENTIFIC_MERGE__QLDPC_SCALE_001A",
+  "claim_boundary": "exact single-instance feasibility on the source-bound [[72,12,6]] BB fixture, with exact compilation inside the frozen resource envelope and exact semantic equality on the frozen 300-selector validation set only",
+  "snapshot_preserved_byte_for_byte": true
+}
