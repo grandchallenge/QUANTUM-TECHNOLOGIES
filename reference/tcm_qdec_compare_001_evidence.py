@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Canonical committed-evidence projection for TCM-QDEC-COMPARE-001."""
+"""Canonical compact committed-evidence projection for TCM-QDEC-COMPARE-001."""
 
 from __future__ import annotations
 
@@ -27,13 +27,6 @@ def method_projection(data: dict[str, Any]) -> dict[str, Any]:
         "interface": data["interface"],
         "totals": data["totals"],
         "result_records_sha256": data["result_records_sha256"],
-        "oracle_implementation": data.get("oracle_implementation"),
-        "stabilizer_basis_rank": data.get("stabilizer_basis_rank"),
-        "osd_nominal_candidates_per_invocation": data.get(
-            "osd_nominal_candidates_per_invocation"
-        ),
-        "universal_operation_count": data["universal_operation_count"],
-        "timing_authoritative": data["timing_authoritative"],
     }
 
 
@@ -47,8 +40,8 @@ def project(report: dict[str, Any]) -> dict[str, Any]:
         "package_receipt": report["package_receipt"],
         "corpus_receipts": report["corpus_receipts"],
         "surfaces": {},
-        "cell_payload_sha256": report["cell_payload_sha256"],
         "detailed_result_record_digests": report["detailed_result_record_digests"],
+        "cell_payload_sha256": report["cell_payload_sha256"],
         "comparison_relation": report["comparison_relation"],
         "claim_boundary": report["claim_boundary"],
         "adjudication": report["adjudication"],
@@ -67,10 +60,8 @@ def project(report: dict[str, Any]) -> dict[str, Any]:
                 name: {
                     "status": data["status"],
                     "success_total": data["success_total"],
-                    "failure_total": data["failure_total"],
                     "decision_sha256": data["decision_sha256"],
                     "tie_envelope": data["tie_envelope"],
-                    "success_by_error_weight": data["success_by_error_weight"],
                 }
                 for name, data in source["tcm"].items()
             }
