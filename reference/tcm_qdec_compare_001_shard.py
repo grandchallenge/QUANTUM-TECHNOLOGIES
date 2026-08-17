@@ -35,37 +35,10 @@ def large_code_and_corpus(surface: str, manifest: dict[str, Any]):
 
 
 def execute_cell(surface: str, method: str) -> dict[str, Any]:
-    if surface not in SURFACES or method not in METHODS:
-        raise ValueError("unauthorized COMPARE-001 cell")
-    manifest = C.load_manifest()
-    package = C.package_receipt()
-    if surface == "C18":
-        hx, hz, corpus, n = c18_code_and_corpus()
-    else:
-        hx, hz, corpus, n = large_code_and_corpus(surface, manifest)
-    summary, records, outcomes = C.run_surface_method(method, hx, hz, corpus, n)
-    return {
-        "experiment_id": C.EXPERIMENT_ID,
-        "manifest_payload_sha256": C.MANIFEST_PAYLOAD,
-        "surface": surface,
-        "method": method,
-        "package_receipt": package,
-        "corpus_size": len(corpus),
-        "summary": summary,
-        "outcomes": outcomes,
-        "result_records_sha256": C.digest(records),
-        "cell_payload_sha256": C.digest(
-            {
-                "surface": surface,
-                "method": method,
-                "package_receipt": package,
-                "corpus_size": len(corpus),
-                "summary": summary,
-                "outcomes": outcomes,
-                "result_records_sha256": C.digest(records),
-            }
-        ),
-    }
+    """Execute a cell only through the exact basis-reduction scorer."""
+    import tcm_qdec_compare_001_exact_cell as exact_cell
+
+    return exact_cell.execute_cell(surface, method)
 
 
 def load_cells(root: Path) -> dict[tuple[str, str], dict[str, Any]]:
