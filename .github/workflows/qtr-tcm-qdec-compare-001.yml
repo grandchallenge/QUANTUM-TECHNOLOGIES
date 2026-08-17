@@ -5,6 +5,7 @@ on:
     paths:
       - "registry/tcm-qdec-compare-001-manifest.json"
       - "reference/tcm_qdec_compare_001.py"
+      - "reference/tcm_qdec_compare_001_shard.py"
       - "tests/test_tcm_qdec_compare_001.py"
       - "evidence/TCM-QDEC-COMPARE-001-report.json"
       - ".github/workflows/qtr-tcm-qdec-compare-001.yml"
@@ -14,6 +15,7 @@ on:
     paths:
       - "registry/tcm-qdec-compare-001-manifest.json"
       - "reference/tcm_qdec_compare_001.py"
+      - "reference/tcm_qdec_compare_001_shard.py"
       - "tests/test_tcm_qdec_compare_001.py"
       - "evidence/TCM-QDEC-COMPARE-001-report.json"
       - ".github/workflows/qtr-tcm-qdec-compare-001.yml"
@@ -25,15 +27,16 @@ concurrency:
   group: tcm-qdec-compare-001-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  LDPC_SDIST_SHA256: 3b2652aa993ab71672d680ac76ee2dcf3dc289fc5d11c07d060e5f838d8c3601
+  BPOSD_WHEEL_SHA256: 80e439246c11ca824610f9bc7858c68eb1f8a6b7cbb71760cf6c86e03c47ff5d
+
 jobs:
-  compare:
-    name: compare-exact
+  preflight:
+    name: compare-preflight
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
-    env:
-      SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-      LDPC_SDIST_SHA256: 3b2652aa993ab71672d680ac76ee2dcf3dc289fc5d11c07d060e5f838d8c3601
-      BPOSD_WHEEL_SHA256: 80e439246c11ca824610f9bc7858c68eb1f8a6b7cbb71760cf6c86e03c47ff5d
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -45,12 +48,10 @@ jobs:
           python-version: "3.10.14"
 
       - name: Assert exact subject checkout
-        run: |
-          test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
 
-      - name: Verify frozen manifest and corpora before decoder installation
-        run: |
-          python reference/tcm_qdec_compare_001.py --static-only --output /tmp/TCM-QDEC-COMPARE-001-static.json
+      - name: Verify frozen manifest and corpora before decoder execution
+        run: python reference/tcm_qdec_compare_001.py --static-only --output /tmp/TCM-QDEC-COMPARE-001-static.json
 
       - name: Download and verify historical decoder packages
         run: |
@@ -62,7 +63,6 @@ jobs:
           import os
           import urllib.request
           from pathlib import Path
-
           targets = [
               ("ldpc", "0.1.53", "ldpc-0.1.53.tar.gz", os.environ["LDPC_SDIST_SHA256"]),
               ("bposd", "1.6", "bposd-1.6-py3-none-any.whl", os.environ["BPOSD_WHEEL_SHA256"]),
@@ -85,9 +85,48 @@ jobs:
               print(filename, observed)
           PY
 
-      - name: Install exact historical decoder environment
+      - name: Preserve verified package artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: compare-packages
+          path: /tmp/compare-pkgs
+          if-no-files-found: error
+          retention-days: 90
+
+  cells:
+    name: compare-${{ matrix.surface }}-${{ matrix.method }}
+    needs: preflight
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        surface: [C18, C72, C90]
+        method: [BP_MIN_SUM, BP_OSD_CS_7, BP_SUM_PRODUCT]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.10.14"
+
+      - name: Assert exact subject checkout
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+
+      - name: Restore verified package artifacts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: compare-packages
+          path: /tmp/compare-pkgs
+
+      - name: Reverify package bytes and install exact environment
         run: |
           set -euo pipefail
+          echo "$LDPC_SDIST_SHA256  /tmp/compare-pkgs/ldpc-0.1.53.tar.gz" | sha256sum -c -
+          echo "$BPOSD_WHEEL_SHA256  /tmp/compare-pkgs/bposd-1.6-py3-none-any.whl" | sha256sum -c -
           python -m pip install /tmp/compare-pkgs/ldpc-0.1.53.tar.gz /tmp/compare-pkgs/bposd-1.6-py3-none-any.whl
           python - <<'PY'
           import importlib.metadata
@@ -95,20 +134,68 @@ jobs:
           assert str(ldpc.__version__).strip() == "0.1.53"
           assert importlib.metadata.version("ldpc") == "0.1.53"
           assert importlib.metadata.version("bposd") == "1.6"
-          print("ldpc", importlib.metadata.version("ldpc"))
-          print("bposd", importlib.metadata.version("bposd"))
           PY
-          python -m pip freeze > /tmp/TCM-QDEC-COMPARE-001-pip-freeze.txt
 
-      - name: Execute frozen shared-interface comparison
+      - name: Execute exactly one frozen comparison cell
+        run: |
+          mkdir -p /tmp/compare-cell
+          python reference/tcm_qdec_compare_001_shard.py \
+            --surface "${{ matrix.surface }}" \
+            --method "${{ matrix.method }}" \
+            --cell-output "/tmp/compare-cell/${{ matrix.surface }}-${{ matrix.method }}.json"
+
+      - name: Preserve cell result
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: compare-cell-${{ matrix.surface }}-${{ matrix.method }}
+          path: /tmp/compare-cell
+          if-no-files-found: error
+          retention-days: 90
+
+  aggregate:
+    name: compare-exact
+    needs: [preflight, cells]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.10.14"
+
+      - name: Assert exact subject checkout
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+
+      - name: Restore all frozen cell results
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: compare-cell-*
+          path: /tmp/compare-cells
+          merge-multiple: true
+
+      - name: Restore verified package artifacts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: compare-packages
+          path: /tmp/compare-pkgs
+
+      - name: Reverify package bytes and assemble exact matrix
         run: |
           set -euo pipefail
+          echo "$LDPC_SDIST_SHA256  /tmp/compare-pkgs/ldpc-0.1.53.tar.gz" | sha256sum -c -
+          echo "$BPOSD_WHEEL_SHA256  /tmp/compare-pkgs/bposd-1.6-py3-none-any.whl" | sha256sum -c -
           if test -f evidence/TCM-QDEC-COMPARE-001-report.json; then
-            python reference/tcm_qdec_compare_001.py \
+            python reference/tcm_qdec_compare_001_shard.py \
+              --assemble /tmp/compare-cells \
               --output /tmp/TCM-QDEC-COMPARE-001-report.json \
               --check-evidence evidence/TCM-QDEC-COMPARE-001-report.json
           else
-            python reference/tcm_qdec_compare_001.py \
+            python reference/tcm_qdec_compare_001_shard.py \
+              --assemble /tmp/compare-cells \
               --output /tmp/TCM-QDEC-COMPARE-001-report.json
           fi
 
@@ -126,8 +213,9 @@ jobs:
           runtime = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
           report = json.loads(Path("/tmp/TCM-QDEC-COMPARE-001-report.json").read_text())
           receipt = {
-              "receipt_version": "0.1.0",
+              "receipt_version": "0.2.0",
               "experiment_id": "TCM-QDEC-COMPARE-001",
+              "execution_mode": "deterministic_3x3_cell_shard",
               "evaluated_commit": subject,
               "runtime_head": runtime,
               "exact_head_equal": subject == runtime,
@@ -150,10 +238,9 @@ jobs:
         with:
           name: TCM-QDEC-COMPARE-001-exact-head
           path: |
-            /tmp/TCM-QDEC-COMPARE-001-static.json
             /tmp/TCM-QDEC-COMPARE-001-report.json
-            /tmp/TCM-QDEC-COMPARE-001-pip-freeze.txt
             /tmp/TCM-QDEC-COMPARE-001-exact-head.json
+            /tmp/compare-cells
             evidence/corpora/TCM-QDEC-COMPARE-001-C72-corpus.json
             evidence/corpora/TCM-QDEC-COMPARE-001-C90-corpus.json
             /tmp/compare-pkgs/ldpc-0.1.53.tar.gz
