@@ -1,0 +1,77 @@
+# QTR-TCM-QDEC-004 — shared exact selector-parametric compilation
+
+## Status
+
+Candidate executable, not promoted. This work package is bounded by Human Steward disposition in issue #52 comment `5311144666` and execution docket #53.
+
+## Scientific question
+
+Can the exact selector-parameterized quotient contraction be compiled once into a reusable selector-independent structural object and then evaluated across all 2048 reachable selectors with less duplicated deterministic work, while preserving the complete promoted score, mapping, tie and decision semantics?
+
+## Frozen substrate
+
+The experiment changes only evaluation architecture. It freezes the protected `[[18,4,4]]` one-sector code, source logical basis, stabilizer basis rows `[0,1,2,3,4,5,6]`, selector seed basis qubits `[0,1,2,3,4,5,6,7,8,9,10]`, seven-variable elimination order `[2,4,0,1,3,5,6]`, all three exact algebras, canonical-class and minimum-representative rules, class tie rule, and every protected TCM-QDEC-003 semantic digest.
+
+## Primary mechanism
+
+Write the promoted affine physical error as
+
+`e(a,z) = L a XOR S z`,
+
+with eleven selector parameters `a` and seven stabilizer-degeneracy variables `z`.
+
+For each local qubit factor, the evaluator constructs an exact symbolic expression depending on its stabilizer scope and, for the first eleven physical unit-basis sites, at most one selector parameter. It then eliminates the seven `z` variables in the frozen TCM-QDEC-003 order while leaving all selector parameters symbolic.
+
+The result is a canonical hash-consed expression DAG for each algebra. The DAG contains exact terminals, selector-parameter choice nodes, and exact semiring operation nodes. Compilation does not enumerate or store the 2048 evaluated selector answers. Selector coordinates enter only when the already-compiled DAG is evaluated.
+
+A complete answer table is prohibited as the primary compiled object. Such a cache is not needed by the candidate mechanism.
+
+## Exact semantic obligations
+
+Admission requires exact equality with TCM-QDEC-003 at the complete certified boundary:
+
+- 6144 class-score entries;
+- 2048 canonical-class/minimum-representative entries;
+- 384 winning-class tie sets;
+- 384 deterministic decisions;
+- frozen-corpus success totals `263`, `262`, `226`;
+- tie envelopes `[263,263]`, `[262,262]`, `[218,263]`.
+
+The committed evidence must replay from source and remain byte-for-byte deterministic under canonical JSON serialization.
+
+## Predeclared abstract-operation accounting
+
+Both the compiled path and an independently re-instrumented TCM-QDEC-003 classwise replay use the same typed AOP ledger:
+
+`GF2_XOR`, `GF2_AND`, `EXACT_INT_ADD`, `EXACT_INT_MUL`, `EXACT_COMPARE`, `TABLE_READ`, `TABLE_WRITE`, `NODE_INTERN`.
+
+The unweighted AOP sum is a deterministic abstract event count only. It is not a runtime model. No runtime or memory superiority may be inferred from it.
+
+Compilation cost, canonical compiled size, all-selector evaluation cost, one-shot cost, repeated-sweep break-even, and the original predecessor-specific counters are reported separately. The original `774144` assignment evaluations and `98298` TCM-QDEC-002 transition relaxations remain non-equivalent historical counters and are not translated into AOPs.
+
+## Candidate result
+
+The exact candidate compilation retains:
+
+- sum-product: 371 reachable expression nodes;
+- soft-tropical: 371 reachable expression nodes;
+- min-plus/product objective: 388 reachable expression nodes;
+- 1130 reachable nodes total;
+- 65,506 canonical serialized bytes total.
+
+No selector answer is materialized during compilation.
+
+The common-ledger counts are:
+
+- compilation: 10,160 AOPs;
+- evaluation of all 2048 selectors in all three algebras: 12,694,528 AOPs;
+- complete one-shot compiled path: 12,704,688 AOPs;
+- re-instrumented TCM-QDEC-003 classwise replay: 14,115,840 AOPs;
+- one-shot reduction: 1,411,152 AOPs;
+- exact complete-sweep break-even: `k = 1`.
+
+This supports only the bounded classification `EXACT_SHARED_COMPILATION_WITH_REDUCED_DUPLICATION` under the declared abstract ledger on this fixed fixture. It does not establish runtime speedup, memory superiority, asymptotic improvement, or family-scale behavior.
+
+## Fail-closed boundary
+
+No authority is created for a larger code, a multi-size scaling ladder, BP/min-sum/BP-OSD comparison, repeated syndrome extraction, measurement error, circuit-level noise, thresholds, learned decoding, adaptive online contraction order, QLDPC-FORGE, or autonomous architecture search.
