@@ -1,6 +1,6 @@
 # QTR-TCM-QDEC-003 — Exact degeneracy-variable elimination-width audit
 
-Status: `candidate_executable_not_promoted`
+Status: `referee_promoted_bounded`
 
 Programme: `GCL Quantum Technologies Research (QTR)`
 
@@ -160,7 +160,7 @@ This negative systems tradeoff is part of the evidence.
 
 ## 9. Interpretation
 
-If admitted, `TCM-QDEC-003` establishes a specific structural fact:
+The boundedly admitted result is a specific structural fact:
 
 > On the protected `[[18,4,4]]` fixture, quotient-aware class scores can be represented as exact contractions over seven stabilizer-degeneracy variables whose finite factor graph has exact minimum induced width four, while reproducing the entire promoted score/mapping/tie/decision object.
 
@@ -171,7 +171,7 @@ The experiment separates two questions that must not be conflated:
 - **local structural width:** favorable on this fixture;
 - **total arithmetic work under the present class-by-class construction:** larger than the predecessor counter.
 
-That distinction is the principal scientific result of this stage.
+That distinction is part of the promoted scientific result.
 
 ## 10. Replay
 
@@ -181,7 +181,7 @@ The deterministic report is regenerated with:
 python reference/tcm_qdec_003.py --output evidence/TCM-QDEC-003-report.json
 ```
 
-Candidate evidence payload:
+Reviewed evidence payload:
 
 `f0ecdae04f3da4f0508454da59ce406a4e6c461f88f1784279cb6d7e360b595f`.
 
@@ -193,12 +193,14 @@ The experiment is conceptually consonant with the tensor-network view of quantum
 
 ## 12. Claim boundary
 
-`TCM-QDEC-003` may seek bounded promotion only for the exact finite degeneracy-variable representation and elimination-width result described above.
+`TCM-QDEC-003` is boundedly promoted only for the exact finite degeneracy-variable representation and elimination-width result described above.
 
 It does **not** certify or authorize bounded contraction width for a qLDPC family; scalable tensor-network decoding; asymptotic or practical complexity advantage; runtime or memory superiority; larger-code performance; general qLDPC decoder performance; BP-OSD comparison; circuit-level or phenomenological noise; hardware validation; thresholds or pseudo-thresholds; learned decoding; adaptive online contraction ordering; `TCM-QDEC-004`; `QLDPC-FORGE`; or autonomous code, decoder, circuit, or architecture search.
 
-## 13. Promotion condition
+## 13. Promotion authority
 
-Promotion requires fresh exact-head repository replay, green adversarial tests, independent review of the stabilizer-basis quotient parameterization and elimination-width calculation, verification that the score/mapping/tie/decision objects are exactly predecessor-equivalent, explicit retention of the unfavorable arithmetic-count comparison, and a bounded Referee disposition.
+The bounded Referee disposition is recorded on review issue `#49` at comment `5310467316`.
 
-Until then, `TCM-QDEC-003` remains executable candidate evidence only.
+The exact scientific subject was reviewed at `968029c156a3d668a0adc9adce850b62cd249671` and scientifically merged as `2925a41343c8e4592c1bf558d86ea461e0e1c7d4`.
+
+Repository-resident authority is recorded separately in `reviews/QTR-TCM-QDEC-REVIEW-003/promotion-record.json`. The reviewed scientific registry `registry/tcm-qdec-003.json` and evidence `evidence/TCM-QDEC-003-report.json` remain immutable candidate snapshots with status `candidate_executable_not_promoted`; promotion does not rewrite the evidence that was reviewed.
