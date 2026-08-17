@@ -1,0 +1,167 @@
+{
+  "record_version": "0.1.0",
+  "record_id": "QTR-QLDPC-SCALE-REVIEW-001A-PROMOTION",
+  "status": "referee_promoted_bounded",
+  "reviewed_head": "1bf76b536d9cd59d8a4b6b3518764df8e526986e",
+  "scientific_merge_commit": "e30e64adcbd67ab015b04415135bb167b3132a02",
+  "pull_request": 60,
+  "tracking_issue": 59,
+  "review_issue": 61,
+  "documentary_issue": 62,
+  "predecessor": {
+    "experiment_id": "TCM-QDEC-004",
+    "scientific_merge_commit": "7eff1025e97ff962a6fed81e6f2fa0f4d14653a3",
+    "promotion_record_path": "reviews/QTR-TCM-QDEC-REVIEW-004/promotion-record.json",
+    "promotion_record_blob_sha": "aaeae5bb9d02f96ac7d8aba865167be04aa91d04",
+    "evidence_payload_sha256": "a5c7e59fa849ddc37c070d78d4a4dab8b07ae5ceccfecefeb5a20f4ae0dc83a7"
+  },
+  "workflow_evidence": {
+    "qtr_validation_run": 32022235025,
+    "qtr_exact_head_artifact": 9285955097,
+    "qtr_artifact_digest": "sha256:cf4c7d6f72db01a8fc10826d69f26112be1caa91d448df9d734c8fd87946eb0e",
+    "gcl_conformance_run": 32022235533,
+    "gcl_conformance_artifact": 9285770897,
+    "gcl_artifact_digest": "sha256:6a5e5b32fb8b72047ec0aa7dba6e9068e40fcea7838af426a16f7a9d8f11d930",
+    "gcl_scorecard_artifact": 9285768730,
+    "gcl_scorecard_digest": "sha256:64174ecea59ab354aa7edc32a51a2b8ec71cc573aa5e142c88c3d3f7898686af",
+    "codeql_check": 95364269260,
+    "codeql_conclusion": "success",
+    "test_count": 185,
+    "qldpc_scale_001a_test_count": 20,
+    "evidence_payload_sha256": "198bb28f47844aa98efa20d8c838c48870a8aef41ccfda266b16661677e363e1"
+  },
+  "source_evidence": {
+    "source_repository": "sbravyi/BivariateBicycleCodes",
+    "source_commit": "fa77e3333d3ec44c79d8f914dd24c040d1da471b",
+    "source_path": "decoder_setup.py",
+    "source_blob_sha": "7ec5a36732a2a6dd229ab74405dedf36139ccda4",
+    "source_reported_parameters": [72,12,6],
+    "distance_status": "SOURCE_REPORTED_DISTANCE",
+    "distance_independently_certified": false
+  },
+  "structural_evidence": {
+    "n": 72,
+    "k": 12,
+    "hx_rank": 30,
+    "hz_rank": 30,
+    "css_commutation_exact": true,
+    "independent_stabilizer_generators": 30,
+    "selector_rank": 42,
+    "factor_arity_histogram": {"1":7,"2":22,"3":43},
+    "predeclared_induced_widths": {
+      "lexicographic": 24,
+      "min_fill": 18,
+      "min_degree": 18
+    },
+    "primary_order": "min_fill",
+    "primary_peak_joint_table_entries": 524288,
+    "global_treewidth_optimum_certified": false
+  },
+  "compilation_evidence": {
+    "descriptor_steps": 30,
+    "descriptor_structural_scalar_entries": 1772,
+    "descriptor_canonical_serialized_bytes": 14912,
+    "descriptor_sha256": "c47e85efbad65619eea5d2be84bc63185d81bbac08a5e82ea71330a5b858dd5c",
+    "selector_values_materialized_during_compilation": 0,
+    "answer_cache_entries": 0,
+    "primary_object_is_answer_cache": false,
+    "repeated_evaluation_recompiles_descriptor": false,
+    "all_primary_compilation_caps_pass": true,
+    "per_algebra": {
+      "sum_product_bsc_p_0_1": {
+        "node_count": 2157761,
+        "canonical_serialized_bytes": 44776799,
+        "compile_aop_total": 20339963
+      },
+      "soft_tropical_base_2": {
+        "node_count": 2157761,
+        "canonical_serialized_bytes": 44776798,
+        "compile_aop_total": 20339963
+      },
+      "min_plus_hamming": {
+        "node_count": 2157832,
+        "canonical_serialized_bytes": 49165354,
+        "compile_aop_total": 20340034
+      }
+    },
+    "aop_total_is_runtime_model": false,
+    "runtime_or_memory_superiority_inferred": false
+  },
+  "validation_evidence": {
+    "selector_rank": 42,
+    "selector_space_size": 4398046511104,
+    "frozen_selector_count": 300,
+    "reserved_selector_count": 44,
+    "pseudorandom_selector_count": 256,
+    "validation_set_sha256": "2eabc60f4ea2d64be6e4fea5ee33e527de46b115e727a8607b5332b19ba1e1bf",
+    "validation_outputs_sha256": "b5e168d3c8f4b420c8f2c1129ea23a3a4c5d6be946053aac7f1650cc4dd79189",
+    "compiled_vs_independent_oracle_all_equal": true,
+    "algebras_checked": ["sum_product_bsc_p_0_1","soft_tropical_base_2","min_plus_hamming"],
+    "exhaustive_all_selector_equivalence": false
+  },
+  "office_records": {
+    "Axiomatist": 5315178525,
+    "Cartographer": 5315179977,
+    "Grammarian": 5315181412,
+    "Verifier": 5315183612,
+    "Adversary": 5315185167,
+    "Formalist": 5315186741,
+    "Amanuensis": 5315188203,
+    "Referee": 5315190043
+  },
+  "referee": {
+    "disposition": "APPROVE_BOUNDED_SCIENTIFIC_MERGE__QLDPC_SCALE_001A",
+    "record": 5315190043,
+    "live_ruleset_required_approving_reviews": 0
+  },
+  "protected_merge": {
+    "ruleset_id": 20106953,
+    "required_status_checks": ["validate","policy","security / action-policy"],
+    "review_threads_resolved": true,
+    "main_base_at_merge": "54456dd1d273a115e82a77c6c429925e03e0925e"
+  },
+  "promoted_scope": {
+    "classification": "FEASIBLE_EXACT_WITHIN_BOUND",
+    "representation": "exact single-instance selector-parametric contraction on the source-bound [[72,12,6]] BB fixture",
+    "structural_result": "the predeclared deterministic min-fill order has exact induced width 18 and peak joint table 2^19 on this finite factor graph; no global treewidth optimum is certified",
+    "compilation_result": "the selector-independent exact compilation fits every frozen deterministic resource cap and materializes zero selector answers",
+    "semantic_result": "compiled evaluation equals an independent exact fixed-selector oracle on all 300 frozen validation selectors in all three exact algebras",
+    "distance_result": "d=6 remains source-reported provenance only",
+    "systems_boundary": "no runtime, memory, asymptotic, scaling, or practical decoder superiority is inferred"
+  },
+  "reviewed_snapshot": {
+    "registry_path": "registry/qldpc-scale-001a.json",
+    "registry_blob_sha": "9cf5ed39bd51c3e4f920e4b5b4687fc4eacec386",
+    "registry_status_at_review": "candidate_executable_not_promoted",
+    "evidence_path": "evidence/QLDPC-SCALE-001A-report.json",
+    "evidence_blob_sha": "268a5bfa9ed35ad3cd5984031de20487835643d0",
+    "evidence_status_at_review": "candidate_executable_not_promoted",
+    "evidence_payload_sha256": "198bb28f47844aa98efa20d8c838c48870a8aef41ccfda266b16661677e363e1",
+    "snapshot_preserved_byte_for_byte": true
+  },
+  "excluded_scope": [
+    "exhaustive equivalence over the full 2^42 selector space",
+    "global treewidth 18",
+    "independently certified distance 6",
+    "certified family relation between the 18-qubit and 72-qubit fixtures",
+    "multi-size scaling law, slope, exponent, or monotonic growth claim",
+    "bounded contraction width for a qLDPC code family",
+    "asymptotic complexity advantage",
+    "runtime superiority",
+    "memory superiority",
+    "general qLDPC decoder performance or practical superiority",
+    "BP, min-sum, or BP-OSD performance or comparison claims",
+    "controlled approximation",
+    "circuit-level or phenomenological noise",
+    "repeated syndrome extraction or measurement error",
+    "hardware validation",
+    "threshold or pseudo-threshold claims",
+    "learned decoder parameters",
+    "adaptive online contraction-order optimization",
+    "QLDPC-SCALE-001B",
+    "TCM-QDEC-COMPARE-001",
+    "QEC-CIRCUIT-001",
+    "QLDPC-FORGE",
+    "autonomous code, decoder, circuit, or architecture search"
+  ]
+}
