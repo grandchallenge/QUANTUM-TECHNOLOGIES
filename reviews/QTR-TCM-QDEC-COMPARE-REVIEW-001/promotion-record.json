@@ -1,0 +1,190 @@
+{
+  "comparison_evidence": {
+    "c18": {
+      "conventional_success_totals": {
+        "BP_MIN_SUM": 145,
+        "BP_OSD_CS_7": 244,
+        "BP_SUM_PRODUCT": 19
+      },
+      "corpus_size": 4048,
+      "min_plus_tie_envelope": [218, 263],
+      "pairwise_bp_osd": {
+        "TCM::min_plus_hamming": {
+          "bp_only_success": 191,
+          "bp_success": 244,
+          "success_difference_bp_minus_tcm_default": 18,
+          "tcm_default_success": 226,
+          "tcm_only_success": 173
+        },
+        "TCM::soft_tropical_base_2": {
+          "bp_only_success": 179,
+          "bp_success": 244,
+          "success_difference_bp_minus_tcm": -18,
+          "tcm_only_success": 197,
+          "tcm_success": 262
+        },
+        "TCM::sum_product_bsc_p_0_1": {
+          "bp_only_success": 178,
+          "bp_success": 244,
+          "success_difference_bp_minus_tcm": -19,
+          "tcm_only_success": 197,
+          "tcm_success": 263
+        }
+      },
+      "tcm_success_totals": {
+        "min_plus_hamming_default": 226,
+        "soft_tropical_base_2": 262,
+        "sum_product_bsc_p_0_1": 263
+      }
+    },
+    "c72": {
+      "conventional_success_totals": {
+        "BP_MIN_SUM": 161,
+        "BP_OSD_CS_7": 161,
+        "BP_SUM_PRODUCT": 144
+      },
+      "corpus_size": 329,
+      "quality_comparison_with_tcm": "COMPARISON_CELL_UNDEFINED",
+      "tcm_status": "SHARED_DECODER_INTERFACE_NOT_CERTIFIED"
+    },
+    "c90": {
+      "conventional_success_totals": {
+        "BP_MIN_SUM": 200,
+        "BP_OSD_CS_7": 211,
+        "BP_SUM_PRODUCT": 171
+      },
+      "corpus_size": 347,
+      "quality_comparison_with_tcm": "COMPARISON_CELL_UNDEFINED",
+      "tcm_status": "NOT_REACHED_EXACT_COMPILATION_BOUND"
+    },
+    "cross_surface_aggregate_winner_defined": false
+  },
+  "documentary_base_at_creation": "18f04d4af18582bbd00ae2769927408dce9b04ee",
+  "documentary_issue": 74,
+  "excluded_scope": [
+    "TCM quality imputation or ranking on C72 or C90",
+    "cross-surface aggregate decoder winner",
+    "general TCM, BP, min-sum, or BP-OSD superiority theorem",
+    "current-best conventional decoder survey",
+    "runtime superiority or inferiority",
+    "memory superiority or inferiority",
+    "universal operation-count comparison across unlike methods",
+    "asymptotic or family decoder scaling law",
+    "intrinsic intractability inferred from the C90 exact-TCM compilation boundary",
+    "extrapolation beyond the named finite C18/C72/C90 surfaces",
+    "controlled or approximate TCM",
+    "hyperparameter search or post-outcome tuning",
+    "circuit-level or repeated-syndrome decoding",
+    "measurement error or phenomenological noise",
+    "threshold or pseudo-threshold claims",
+    "hardware validation",
+    "learned decoder parameters",
+    "adaptive online contraction-order optimization",
+    "QEC-CIRCUIT-001",
+    "QLDPC-FORGE",
+    "autonomous code, decoder, circuit, or architecture search"
+  ],
+  "historical_conventional_environment": {
+    "bposd_version": "1.6",
+    "bposd_wheel_sha256": "80e439246c11ca824610f9bc7858c68eb1f8a6b7cbb71760cf6c86e03c47ff5d",
+    "ldpc_bp_decoder_source_blob": "dbee68689c795bc2417166e2e25eb495fa4be5bb",
+    "ldpc_bposd_decoder_source_blob": "1e588ab70dbc684f45f36bbdeed524d0c98b70d0",
+    "ldpc_sdist_sha256": "3b2652aa993ab71672d680ac76ee2dcf3dc289fc5d11c07d060e5f838d8c3601",
+    "ldpc_upstream_commit": "8e2cba3206cf639518164d8b409f7d21b17d0738",
+    "ldpc_version": "0.1.53",
+    "python_version": "3.10.14"
+  },
+  "manifest": {
+    "blob_sha": "577cc70f78ef588e2212aa48a1ab44b2a44a64fc",
+    "first_commit": "a187bcbd52d032ab62c85d5aa9c4e5d44576b45b",
+    "path": "registry/tcm-qdec-compare-001-manifest.json",
+    "payload_sha256": "c68830f40733cde6957713060cec35adf317c75572cc960610c07c4d0e24d1e2",
+    "snapshot_preserved_byte_for_byte": true
+  },
+  "office_records": {
+    "Adversary": 5321441112,
+    "Amanuensis": 5321443597,
+    "Axiomatist": 5321436183,
+    "Cartographer": 5321437221,
+    "Formalist": 5321442497,
+    "Grammarian": 5321438238,
+    "Referee": 5321445597,
+    "Verifier": 5321439489
+  },
+  "predecessor": {
+    "documentary_merge_commit": "d2cef907ee3c1ae1d56f0625c706a87d35b3c89f",
+    "evidence_blob_sha": "7a368204f3a8202544a8ff4fe720e7f54b1edea5",
+    "evidence_payload_sha256": "6b8076376eb621710d993d1cb8768c7d4c03b7fe9d67802e6ae2e77212b610fc",
+    "experiment_id": "QLDPC-SCALE-001B",
+    "promotion_record_blob_sha": "c0d80e41b9213d228ece723a05b974d5aefa92b8",
+    "promotion_record_path": "reviews/QTR-QLDPC-SCALE-REVIEW-001B/promotion-record.json",
+    "registry_blob_sha": "26f20f5a27a1488f71da677ecc9ead4fad76a958",
+    "scientific_merge_commit": "c6a7c7b3f7b49d52e22f5a79866c479aad326aa0"
+  },
+  "promoted_scope": {
+    "c18_result": "exact finite matched shared-interface comparison on the frozen 4048-input C18 corpus, including all reviewed conventional/TCM totals and pairwise outcome relations",
+    "c72_result": "frozen conventional reach/status sample only; TCM quality comparison remains undefined because the shared decoder interface was not certified",
+    "c90_result": "frozen conventional reach/status sample only; the inherited exact TCM path did not cross its frozen compilation bound and no TCM quality score is imputed",
+    "classification": "SHARED_INTERFACE_COMPARISON_COMPLETED_ON_C18",
+    "min_plus_qualifier": "the deterministic/default min-plus success count 226 retains certified tie envelope [218,263], so BP-OSD default difference +18 is not unconditional superiority",
+    "secondary_classifications": [
+      "TCM_SHARED_DECODER_INTERFACE_NOT_CERTIFIED_ON_C72",
+      "CONVENTIONAL_BASELINES_REACHED_C90__TCM_NOT_REACHED_EXACT_BOUND"
+    ],
+    "systems_boundary": "no general decoder-family ordering, runtime/memory superiority, asymptotic scaling, intrinsic intractability, threshold, circuit, hardware, learned-decoder, autonomous-search, or Forge inference"
+  },
+  "protected_merge": {
+    "main_base_at_scientific_merge": "d2cef907ee3c1ae1d56f0625c706a87d35b3c89f",
+    "required_status_checks": [
+      "validate",
+      "policy",
+      "security / action-policy"
+    ],
+    "review_threads_resolved": true,
+    "ruleset_id": 20106953
+  },
+  "pull_request": 72,
+  "record_id": "QTR-TCM-QDEC-COMPARE-REVIEW-001-PROMOTION",
+  "record_version": "0.1.0",
+  "referee": {
+    "disposition": "APPROVE_BOUNDED_SCIENTIFIC_MERGE__TCM_QDEC_COMPARE_001",
+    "live_ruleset_required_approving_reviews": 0,
+    "record": 5321445597
+  },
+  "review_issue": 73,
+  "reviewed_head": "3ebe409c60e7907b8251d44ee822141159d2879c",
+  "reviewed_snapshot": {
+    "evidence_blob_sha": "86a8acaceebb3caaaf7be4e3447f1fdcdaeeedaa",
+    "evidence_path": "evidence/TCM-QDEC-COMPARE-001-report.json",
+    "evidence_payload_sha256": "9bd93dd1f0b6c5d7ca59523c7dfd382524639adf77aefaedd8900b2b01de6b7c",
+    "evidence_status_at_review": "candidate_executable_not_promoted",
+    "full_exact_report_payload_sha256": "6385c2da742e14ecf2bc41336c78c2a8ff42b1cdd897fb5e7cfac056e2214146",
+    "manifest_blob_sha": "577cc70f78ef588e2212aa48a1ab44b2a44a64fc",
+    "manifest_path": "registry/tcm-qdec-compare-001-manifest.json",
+    "manifest_payload_sha256": "c68830f40733cde6957713060cec35adf317c75572cc960610c07c4d0e24d1e2",
+    "registry_blob_sha": "828498bf4d2a1b4a559700698bc324f9c1925e02",
+    "registry_path": "registry/tcm-qdec-compare-001.json",
+    "registry_status_at_review": "candidate_executable_not_promoted",
+    "snapshot_preserved_byte_for_byte": true
+  },
+  "scientific_merge_commit": "18f04d4af18582bbd00ae2769927408dce9b04ee",
+  "status": "referee_promoted_bounded",
+  "tracking_issue": 71,
+  "workflow_evidence": {
+    "compare_exact_artifact": 9304727792,
+    "compare_exact_artifact_digest": "sha256:34f37ec1a351a42e08c7143b359ca40191db4cd92ceeab2881930a67e3942182",
+    "compare_exact_run": 32079738866,
+    "evidence_payload_sha256": "9bd93dd1f0b6c5d7ca59523c7dfd382524639adf77aefaedd8900b2b01de6b7c",
+    "full_exact_report_payload_sha256": "6385c2da742e14ecf2bc41336c78c2a8ff42b1cdd897fb5e7cfac056e2214146",
+    "gcl_conformance_artifact": 9304686378,
+    "gcl_conformance_artifact_digest": "sha256:751207e6d4a0a374568ec87fcf013005b9ed758d743280fd3a5d804be2bc3ecc",
+    "gcl_conformance_run": 32079739300,
+    "gcl_scorecard_artifact": 9304686037,
+    "gcl_scorecard_digest": "sha256:6d70377fc5ec45c44137e742ac7f023d9d6baba5b3a5acdec9ff8f03416a6e43",
+    "qtr_exact_head_artifact": 9304922160,
+    "qtr_exact_head_artifact_digest": "sha256:8147fac46bcc1e07e9afae0bad2eb89ee52a6f8ed25a8a9af6a2963f4939c248",
+    "qtr_test_count": 243,
+    "qtr_validation_run": 32079738856,
+    "security_action_policy_conclusion": "success"
+  }
+}
