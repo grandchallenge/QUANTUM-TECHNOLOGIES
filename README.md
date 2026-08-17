@@ -28,9 +28,9 @@ A smaller signal is useful only when semantic sufficiency, access cost, spectral
 
 A second research lane establishes certified qLDPC/QEC substrates before any broader architecture search. Its governed sequence is now
 
-`QLDPC-FIXTURE-001 → QLDPC-FIXTURE-002 → TCM-QDEC-001 → TCM-QDEC-002 → TCM-QDEC-003 → QLDPC-FORGE`.
+`QLDPC-FIXTURE-001 → QLDPC-FIXTURE-002 → TCM-QDEC-001 → TCM-QDEC-002 → TCM-QDEC-003 → TCM-QDEC-004 → QLDPC-SCALE-001A → QLDPC-SCALE-001B → TCM-QDEC-COMPARE-001 → QEC-CIRCUIT-001 → QLDPC-FORGE`.
 
-The first two qLDPC fixtures and the first three bounded TCM-QDEC experiments are Referee-promoted. `TCM-QDEC-004` and `QLDPC-FORGE` remain gated.
+The first two qLDPC fixtures and the first four bounded TCM-QDEC experiments are Referee-promoted. `QLDPC-SCALE-001A` and every later node remain separately gated.
 
 ## Authority state
 
@@ -45,7 +45,8 @@ The first two qLDPC fixtures and the first three bounded TCM-QDEC experiments ar
 - `QTR-TCM-QDEC-001`: Referee-promoted only for the exact finite representative-versus-stabilizer-coset semiring audit on the protected Fixture 002 substrate.
 - `QTR-TCM-QDEC-002`: Referee-promoted only for exact finite equivalence between the frozen quotient semantics and a fixed-order local parity transfer factorization on the protected `[[18,4,4]]` fixture.
 - `QTR-TCM-QDEC-003`: Referee-promoted only for the exact seven-variable stabilizer-degeneracy factorization, the exact minimum induced width `4` over all `5040` elimination orders of that frozen finite factor graph, complete predecessor score/mapping/tie/decision equivalence, and the retained unfavorable deterministic operation-count comparison.
-- `TCM-QDEC-004` and `QLDPC-FORGE`: gated.
+- `QTR-TCM-QDEC-004`: Referee-promoted only for exact shared selector-parametric compilation on the same protected finite fixture, complete predecessor semantic equivalence, and the exact reduction in duplicated abstract work under the declared AOP ledger. This is not a runtime, memory, asymptotic, or scaling result.
+- `QLDPC-SCALE-001A`, `QLDPC-SCALE-001B`, `TCM-QDEC-COMPARE-001`, `QEC-CIRCUIT-001`, and `QLDPC-FORGE`: gated.
 
 The signal-lane downstream promotion was reviewed at `c6d3c460804bcc414226cac3700a864773ba2fdf` and merged as `f96452e3eeb1688bf8eb60c7b22e3adf500bae39`. Its exact candidate registry and evidence snapshot remain immutable; authority is recorded in `reviews/QTR-SIG-NEXT-001/promotion-record.json`.
 
@@ -58,6 +59,8 @@ The second qLDPC fixture was reviewed at `e7b2eb0060e51d4157a6666f2e857c1fb19aaf
 `TCM-QDEC-002` was reviewed at `9123a9c6cc2c163031d8bff0c46e0a9dd4c8f8fd` and scientifically merged as `d3340c91df3aa72dc5c7ba75906128c8eef2e174`. Its exact factorization registry and evidence snapshot remain immutable; bounded authority is recorded in `reviews/QTR-TCM-QDEC-REVIEW-002/promotion-record.json`.
 
 `TCM-QDEC-003` was reviewed at `968029c156a3d668a0adc9adce850b62cd249671` and scientifically merged as `2925a41343c8e4592c1bf558d86ea461e0e1c7d4`. Its exact degeneracy-factor registry and evidence snapshot remain immutable; bounded authority is recorded in `reviews/QTR-TCM-QDEC-REVIEW-003/promotion-record.json`.
+
+`TCM-QDEC-004` was reviewed at `8177a57b63e3f2c953a028691d305563f298b572` and scientifically merged as `7eff1025e97ff962a6fed81e6f2fa0f4d14653a3`. Its exact selector-parametric registry and evidence snapshot remain immutable; bounded authority is recorded in `reviews/QTR-TCM-QDEC-REVIEW-004/promotion-record.json`.
 
 The adoption and promotion records do not certify a general theorem, prove quantum advantage, validate hardware evidence, establish practical resource superiority, certify a qLDPC threshold, establish bounded tensor width for a code family, or authorize later qLDPC decoder/search stages.
 
@@ -89,7 +92,11 @@ For all `384` syndrome-by-algebra cells, the factorized tied winning class sets 
 
 The seven-variable contractions reproduce exactly all `6144` TCM-QDEC-002 score entries, all `2048` class mapping/minimum-representative entries, all `384` winning-class tie sets, and all `384` deterministic decisions. The frozen corpus totals and min-plus ambiguity remain unchanged. The smaller local elimination boundary is deliberately not converted into a systems claim: the present class-by-class construction records `774144` assignment evaluations versus TCM-QDEC-002's `98298` transition relaxations under non-equivalent primitive counters. No arithmetic, runtime, memory, asymptotic, or practical superiority follows.
 
-The reviewed registry and evidence files for all five qLDPC/QEC stages retain `candidate_executable_not_promoted` because they are immutable scientific snapshots. Promotion authority is recorded in separate documentary overlays. This prevents later governance changes from rewriting the evidence that was actually reviewed.
+`TCM-QDEC-004` keeps all TCM-QDEC-003 semantics fixed and compiles the same seven-variable contraction while retaining the eleven reachable selector coordinates as explicit parameters. Exact symbolic elimination produces canonical hash-consed expression DAGs with `371`, `371`, and `388` reachable nodes for the three promoted algebras. Compilation materializes zero selector answers; the compiled objects are reusable structural representations rather than complete 2048-answer caches.
+
+The compiled path reproduces exactly all `6144` scores, `2048` mapping/minimum-representative entries, `384` tied-winning-class sets, and `384` deterministic decisions, including the success totals `263`, `262`, `226` and min-plus envelope `[218,263]`. Under the predeclared common AOP event ledger, compilation plus one complete 2048-selector sweep records `12,704,688` events versus `14,115,840` for an independently re-instrumented classwise TCM-QDEC-003 replay, a difference of `1,411,152`. The AOP total is an abstract deterministic event count, not a runtime model; this finite result does not establish speed, memory, asymptotic, or scaling superiority.
+
+The reviewed registry and evidence files for all six qLDPC/QEC stages retain `candidate_executable_not_promoted` because they are immutable scientific snapshots. Promotion authority is recorded in separate documentary overlays. This prevents later governance changes from rewriting the evidence that was actually reviewed.
 
 ## Key files
 
@@ -103,26 +110,31 @@ The reviewed registry and evidence files for all five qLDPC/QEC stages retain `c
 - `work-packages/QTR-TCM-QDEC-001.md`: promoted bounded finite degeneracy-aware semiring audit.
 - `work-packages/QTR-TCM-QDEC-002.md`: promoted bounded exact factorized-equivalence audit.
 - `work-packages/QTR-TCM-QDEC-003.md`: promoted bounded exact degeneracy-factor and finite elimination-width audit.
+- `work-packages/QTR-TCM-QDEC-004.md`: promoted bounded exact selector-parametric shared-compilation audit.
 - `registry/qldpc-fixtures.json`: immutable Fixture 001 source/candidate snapshot.
 - `registry/qldpc-benchmarks.json`: immutable Fixture 002 benchmark candidate snapshot.
 - `registry/tcm-qdec.json`: immutable TCM-QDEC-001 experiment candidate snapshot.
 - `registry/tcm-qdec-002.json`: immutable TCM-QDEC-002 factorization candidate snapshot.
 - `registry/tcm-qdec-003.json`: immutable TCM-QDEC-003 degeneracy-factor candidate snapshot.
+- `registry/tcm-qdec-004.json`: immutable TCM-QDEC-004 selector-parametric compilation candidate snapshot.
 - `reference/qldpc_fixture_001.py`: exact dependency-free Fixture 001 evaluator.
 - `reference/qldpc_fixture_002.py`: deterministic dependency-free Fixture 002 evaluator.
 - `reference/tcm_qdec_001.py`: exact dependency-free TCM-QDEC-001 finite evaluator.
 - `reference/tcm_qdec_002.py`: exact dependency-free TCM-QDEC-002 factorized evaluator.
 - `reference/tcm_qdec_003.py`: exact dependency-free TCM-QDEC-003 degeneracy-factor evaluator.
+- `reference/tcm_qdec_004.py`: exact dependency-free TCM-QDEC-004 selector-parametric compiler/evaluator.
 - `evidence/QLDPC-FIXTURE-001-report.json`: immutable Fixture 001 exact replay report.
 - `evidence/QLDPC-FIXTURE-002-report.json`: immutable Fixture 002 exact benchmark report.
 - `evidence/TCM-QDEC-001-report.json`: immutable TCM-QDEC-001 exact finite report.
 - `evidence/TCM-QDEC-002-report.json`: immutable TCM-QDEC-002 exact factorization report.
 - `evidence/TCM-QDEC-003-report.json`: immutable TCM-QDEC-003 exact degeneracy-factor report.
+- `evidence/TCM-QDEC-004-report.json`: immutable TCM-QDEC-004 exact shared-compilation report.
 - `reviews/QTR-QLDPC-REVIEW-001/`: Fixture 001 review-cycle closure and promotion authority records.
 - `reviews/QTR-QLDPC-REVIEW-002/`: Fixture 002 review-cycle closure and promotion authority records.
 - `reviews/QTR-TCM-QDEC-REVIEW-001/`: TCM-QDEC-001 review-cycle closure and promotion authority records.
 - `reviews/QTR-TCM-QDEC-REVIEW-002/`: TCM-QDEC-002 review-cycle closure and promotion authority records.
 - `reviews/QTR-TCM-QDEC-REVIEW-003/`: TCM-QDEC-003 review-cycle closure and promotion authority records.
+- `reviews/QTR-TCM-QDEC-REVIEW-004/`: TCM-QDEC-004 review-cycle closure and promotion authority records.
 - `registry/`: governed candidate and downstream atlas records.
 - `schemas/`: fail-closed record schemas.
 - `reference/`: dependency-free deterministic evaluators.
@@ -144,6 +156,7 @@ python reference/qldpc_fixture_002.py
 python reference/tcm_qdec_001.py
 python reference/tcm_qdec_002.py
 python reference/tcm_qdec_003.py
+python reference/tcm_qdec_004.py
 ```
 
 ## Foundational sources
