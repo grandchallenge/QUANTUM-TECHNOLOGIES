@@ -1,0 +1,133 @@
+{
+  "documentary_base_at_creation": "da820411b45f2e23fe961ed9fb4597a3b3d3e774",
+  "documentary_issue": 80,
+  "execution_issue": 77,
+  "excluded_scope": [
+    "gate-level syndrome extraction",
+    "ancilla preparation, hook errors, or gate propagation",
+    "gate-location physical faults",
+    "hardware noise or hardware validation",
+    "full-Pauli decoding",
+    "error-rate or round-count sweeps",
+    "threshold or pseudo-threshold claims",
+    "runtime or memory superiority or inferiority",
+    "asymptotic or family scaling",
+    "intrinsic intractability inferred from the frozen TCM compilation bound",
+    "learned decoding",
+    "adaptive or autonomous contraction-order search",
+    "later QEC-CIRCUIT subgates",
+    "QLDPC-FORGE",
+    "autonomous code, decoder, circuit, or architecture search"
+  ],
+  "office_records": {
+    "Adversary": 5322291257,
+    "Amanuensis": 5322293577,
+    "Axiomatist": 5322287791,
+    "Cartographer": 5322288596,
+    "Formalist": 5322292765,
+    "Grammarian": 5322289400,
+    "Referee": 5322294699,
+    "Verifier": 5322290336
+  },
+  "promotion_authorization": {
+    "comment": 5322340585,
+    "disposition": "ADOPT_WITH_AMENDMENTS__AUTHORIZE_QEC_CIRCUIT_001_DOCUMENTARY_PROMOTION_ONLY",
+    "issue": 80
+  },
+  "promotion_authority_location": "documentary_overlay_only",
+  "promoted_scope": {
+    "classification": "THREE_ROUND_PHENOMENOLOGICAL_TEMPORAL_SUBSTRATE_CERTIFIED__CONVENTIONAL_ROWS_COMPLETED__TCM_EXACT_BOUND_EXHAUSTED",
+    "conventional_pairwise_scope": "finite outcome relations on the frozen 2851-history corpus only",
+    "conventional_success_totals": {
+      "TEMP_BP_MIN_SUM": 2430,
+      "TEMP_BP_OSD_CS_7": 2520,
+      "TEMP_BP_SUM_PRODUCT": 1736
+    },
+    "corpus_size": 2851,
+    "detector_fiber_ambiguity": {
+      "authoritative_histories_in_ambiguous_fibers": 405,
+      "distinct_detector_vectors": 2517,
+      "fibers_with_multiple_terminal_stabilizer_classes": 135
+    },
+    "quarantined_workflow_run": 32085478805,
+    "systems_boundary": "no gate-level, hardware, threshold, runtime/memory, family-scaling, learned-decoder, autonomous-search, later-circuit-subgate, or Forge inference",
+    "tcm": {
+      "frozen_peak_joint_table_cap": 1048576,
+      "induced_width": 34,
+      "predicted_peak_joint_table_entries": 34359738368,
+      "quality_defined": false,
+      "status": "TEMPORAL_TCM_EXACT_BOUND_EXHAUSTED",
+      "tcm_vs_conventional_quality_ordering_defined": false
+    }
+  },
+  "protected_merge": {
+    "main_base_at_scientific_merge": "b1e6a45073842ac498b476f6c8c1d31b133e553a",
+    "merge_commit": "da820411b45f2e23fe961ed9fb4597a3b3d3e774",
+    "merge_parent_candidate": "32bbb7117670a30fad70ee9969e2699239678a09",
+    "merge_parent_protected_base": "b1e6a45073842ac498b476f6c8c1d31b133e553a",
+    "verified_signature": true
+  },
+  "pull_request": 78,
+  "quarantine": {
+    "evaluated_head": "5f623a086dc9657e8abc32926bc42b374862cd51",
+    "results_admitted": false,
+    "workflow_run": 32085478805
+  },
+  "record_id": "QTR-QEC-CIRCUIT-REVIEW-001-PROMOTION",
+  "record_version": "0.1.0",
+  "referee": {
+    "disposition": "APPROVE_BOUNDED_SCIENTIFIC_MERGE__QEC_CIRCUIT_001",
+    "record": 5322294699
+  },
+  "referral_office_records": {
+    "Adversary": 5322311572,
+    "Amanuensis": 5322312887,
+    "Axiomatist": 5322308972,
+    "Cartographer": 5322309547,
+    "Formalist": 5322312173,
+    "Grammarian": 5322310223,
+    "Referee": 5322313853,
+    "Verifier": 5322310847
+  },
+  "review_issue": 79,
+  "reviewed_head": "32bbb7117670a30fad70ee9969e2699239678a09",
+  "reviewed_snapshot": {
+    "evidence_blob_sha": "4ebdcc1b94391973535df15c5bb377e96decc3b5",
+    "evidence_path": "evidence/QEC-CIRCUIT-001-report.json",
+    "evidence_payload_sha256": "e7c6f3479f5f06b56df95452833e22b59a9db97a9de5d18491c040238f36fed0",
+    "evidence_status_at_review": "candidate_executable_not_promoted",
+    "full_exact_report_payload_sha256": "6138aaf0630a5e222c8ae8688d03ce5a48015d506bfc5000e3e19b3f93fb0d6f",
+    "manifest_amendment_blob_sha": "92820d7eb66f0e24d4b004fc8e6dfb73f5939b66",
+    "manifest_amendment_path": "registry/qec-circuit-001-manifest-amendment-001.json",
+    "manifest_amendment_payload_sha256": "8be8637ef976c9096b22259f0f849e2350a997b80038f4815302fbefa5f2ad19",
+    "manifest_blob_sha": "f426fdc88cfefbdcd6e712b29c1243952276d18b",
+    "manifest_path": "registry/qec-circuit-001-manifest.json",
+    "manifest_payload_sha256": "15962fa93eb92632e760e62a54fbd03a8322fb09b8c3b41de2f0b4225fb52dfb",
+    "registry_blob_sha": "80af09123128bbaebadc24dfe4345799405b3f82",
+    "registry_path": "registry/qec-circuit-001.json",
+    "registry_status_at_review": "candidate_executable_not_promoted",
+    "snapshot_preserved_byte_for_byte": true
+  },
+  "scientific_merge_commit": "da820411b45f2e23fe961ed9fb4597a3b3d3e774",
+  "scientific_status_strings_intentionally_unchanged": true,
+  "status": "referee_promoted_bounded",
+  "workflow_evidence": {
+    "codeql_actions_analysis_id": 1631901081,
+    "codeql_actions_results_count": 0,
+    "codeql_check_id": 95558932695,
+    "codeql_python_analysis_id": 1631901258,
+    "codeql_python_results_count": 0,
+    "codeql_version": "2.26.3",
+    "gcl_conformance_artifact": 9306753803,
+    "gcl_conformance_artifact_digest": "sha256:4fd8b0bab25cec9c997c343abb8a2073687648d5409e2e2c9228280a060ace02",
+    "gcl_conformance_run": 32086097988,
+    "gcl_scorecard_artifact": 9306752484,
+    "gcl_scorecard_digest": "sha256:98698f0275c5c82c4133f2f3b673d03d65c72dbd875d0ed4ba883514bc51ed98",
+    "qec_exact_artifact": 9306785937,
+    "qec_exact_artifact_digest": "sha256:b60d26baac8c485504da5a4684c849832ec8fe6dad974dc081931b4a87c1e23e",
+    "qec_exact_run": 32086097703,
+    "qtr_exact_head_artifact": 9306945649,
+    "qtr_exact_head_artifact_digest": "sha256:8e47ca754c0e820d1e696c8c6e5d77bee6c66a652307cc2b0a913d1c40be6c35",
+    "qtr_validation_run": 32086097752
+  }
+}
