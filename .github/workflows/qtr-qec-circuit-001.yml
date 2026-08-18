@@ -4,8 +4,10 @@ on:
   pull_request:
     paths:
       - "registry/qec-circuit-001-manifest.json"
+      - "registry/qec-circuit-001-manifest-amendment-001.json"
       - "registry/qec-circuit-001.json"
       - "reference/qec_circuit_001.py"
+      - "reference/qec_circuit_001_exact.py"
       - "tests/test_qec_circuit_001.py"
       - "evidence/QEC-CIRCUIT-001-report.json"
       - "work-packages/QTR-QEC-CIRCUIT-001.md"
@@ -15,8 +17,10 @@ on:
       - main
     paths:
       - "registry/qec-circuit-001-manifest.json"
+      - "registry/qec-circuit-001-manifest-amendment-001.json"
       - "registry/qec-circuit-001.json"
       - "reference/qec_circuit_001.py"
+      - "reference/qec_circuit_001_exact.py"
       - "tests/test_qec_circuit_001.py"
       - "evidence/QEC-CIRCUIT-001-report.json"
       - "work-packages/QTR-QEC-CIRCUIT-001.md"
@@ -32,6 +36,8 @@ concurrency:
 env:
   SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
   MANIFEST_PAYLOAD_SHA256: 15962fa93eb92632e760e62a54fbd03a8322fb09b8c3b41de2f0b4225fb52dfb
+  AMENDMENT_PAYLOAD_SHA256: 8be8637ef976c9096b22259f0f849e2350a997b80038f4815302fbefa5f2ad19
+  QUARANTINED_RUN_ID: "32085478805"
   LDPC_SDIST_SHA256: 3b2652aa993ab71672d680ac76ee2dcf3dc289fc5d11c07d060e5f838d8c3601
   BPOSD_WHEEL_SHA256: 80e439246c11ca824610f9bc7858c68eb1f8a6b7cbb71760cf6c86e03c47ff5d
 
@@ -39,7 +45,7 @@ jobs:
   preflight:
     name: temporal-preflight
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -53,8 +59,8 @@ jobs:
       - name: Assert exact subject checkout
         run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
 
-      - name: Replay frozen temporal substrate before decoder execution
-        run: python reference/qec_circuit_001.py --static-only --output /tmp/QEC-CIRCUIT-001-static.json
+      - name: Replay amended temporal substrate before authoritative decoder execution
+        run: python reference/qec_circuit_001_exact.py --static-only --output /tmp/QEC-CIRCUIT-001-static.json
 
       - name: Run fail-closed temporal tests
         run: python -m unittest tests.test_qec_circuit_001 -v
@@ -92,7 +98,7 @@ jobs:
               print(filename, observed)
           PY
 
-      - name: Preserve preflight and verified package artifacts
+      - name: Preserve amended preflight and verified package artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: qec-circuit-preflight
@@ -145,14 +151,14 @@ jobs:
           assert importlib.metadata.version("bposd") == "1.6"
           PY
 
-      - name: Execute exactly one frozen temporal conventional row
+      - name: Execute one authoritative amended conventional row
         run: |
           mkdir -p /tmp/qec-circuit-cell
-          python reference/qec_circuit_001.py \
+          python reference/qec_circuit_001_exact.py \
             --method "${{ matrix.method }}" \
             --output "/tmp/qec-circuit-cell/${{ matrix.method }}.json"
 
-      - name: Preserve temporal row result
+      - name: Preserve amended temporal row result
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: qec-circuit-cell-${{ matrix.method }}
@@ -164,7 +170,7 @@ jobs:
     name: temporal-exact
     needs: [preflight, conventional]
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -178,27 +184,27 @@ jobs:
       - name: Assert exact subject checkout
         run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
 
-      - name: Restore frozen temporal row results
+      - name: Restore authoritative temporal row results
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           pattern: qec-circuit-cell-*
           path: /tmp/qec-circuit-cells
           merge-multiple: true
 
-      - name: Restore preflight artifact
+      - name: Restore amended preflight artifact
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: qec-circuit-preflight
           path: /tmp/qec-circuit-preflight
 
-      - name: Assemble bounded temporal report
+      - name: Assemble bounded amended temporal report
         run: |
-          python reference/qec_circuit_001.py \
+          python reference/qec_circuit_001_exact.py \
             --assemble /tmp/qec-circuit-cells \
             --output /tmp/QEC-CIRCUIT-001-report.json
           python -m unittest tests.test_qec_circuit_001 -v
 
-      - name: Write exact-head receipt
+      - name: Write exact-head amended receipt
         run: |
           python - <<'PY'
           import json
@@ -210,13 +216,16 @@ jobs:
           runtime = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
           report = json.loads(Path("/tmp/QEC-CIRCUIT-001-report.json").read_text())
           receipt = {
-              "receipt_version": "0.1.0",
+              "receipt_version": "0.2.0",
               "experiment_id": "QEC-CIRCUIT-001",
-              "execution_mode": "three_round_phenomenological_repeated_syndrome_exact_substrate_plus_three_pinned_conventional_rows",
+              "execution_mode": "amended_three_round_phenomenological_repeated_syndrome_exact_substrate_plus_three_pinned_conventional_rows",
               "evaluated_commit": subject,
               "runtime_head": runtime,
               "exact_head_equal": subject == runtime,
               "manifest_payload_sha256": os.environ["MANIFEST_PAYLOAD_SHA256"],
+              "manifest_amendment_payload_sha256": os.environ["AMENDMENT_PAYLOAD_SHA256"],
+              "quarantined_workflow_run": int(os.environ["QUARANTINED_RUN_ID"]),
+              "quarantined_results_admitted": False,
               "report_payload_sha256": report["payload_sha256"],
               "temporal_tcm_status": report["temporal_tcm"]["status"],
               "ldpc_sdist_sha256": os.environ["LDPC_SDIST_SHA256"],
@@ -228,6 +237,8 @@ jobs:
           }
           if not receipt["exact_head_equal"]:
               raise SystemExit("QEC-CIRCUIT-001 exact-head mismatch")
+          if report.get("manifest_amendment_payload_sha256") != os.environ["AMENDMENT_PAYLOAD_SHA256"]:
+              raise SystemExit("QEC-CIRCUIT-001 amendment binding mismatch")
           if receipt["temporal_tcm_status"] != "TEMPORAL_TCM_EXACT_BOUND_EXHAUSTED":
               raise SystemExit("QEC-CIRCUIT-001 TCM bounded status drift")
           Path("/tmp/QEC-CIRCUIT-001-exact-head.json").write_text(
@@ -235,7 +246,7 @@ jobs:
           )
           PY
 
-      - name: Preserve exact temporal artifacts
+      - name: Preserve exact amended temporal artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: QEC-CIRCUIT-001-exact-head
