@@ -1,0 +1,23 @@
+{
+  "claim_boundary": "bounded finite C18 matched shared-interface comparison, with C72/C90 TCM quality cells explicitly undefined and C90 reach/status only",
+  "documentary_issue": 74,
+  "evidence_blob_sha": "86a8acaceebb3caaaf7be4e3447f1fdcdaeeedaa",
+  "evidence_payload_sha256": "9bd93dd1f0b6c5d7ca59523c7dfd382524639adf77aefaedd8900b2b01de6b7c",
+  "experiment_id": "TCM-QDEC-COMPARE-001",
+  "full_exact_report_payload_sha256": "6385c2da742e14ecf2bc41336c78c2a8ff42b1cdd897fb5e7cfac056e2214146",
+  "manifest_blob_sha": "577cc70f78ef588e2212aa48a1ab44b2a44a64fc",
+  "manifest_payload_sha256": "c68830f40733cde6957713060cec35adf317c75572cc960610c07c4d0e24d1e2",
+  "record_id": "QTR-TCM-QDEC-COMPARE-REVIEW-001-INTAKE",
+  "record_version": "0.1.0",
+  "referee_disposition": "APPROVE_BOUNDED_SCIENTIFIC_MERGE__TCM_QDEC_COMPARE_001",
+  "referee_record": 5321445597,
+  "registry_blob_sha": "828498bf4d2a1b4a559700698bc324f9c1925e02",
+  "review_cycle_status": "completed_referee_promoted",
+  "review_issue": 73,
+  "reviewed_head": "3ebe409c60e7907b8251d44ee822141159d2879c",
+  "scientific_merge_commit": "18f04d4af18582bbd00ae2769927408dce9b04ee",
+  "scientific_pull_request": 72,
+  "snapshot_preserved_byte_for_byte": true,
+  "status": "candidate_executable_not_promoted",
+  "tracking_issue": 71
+}

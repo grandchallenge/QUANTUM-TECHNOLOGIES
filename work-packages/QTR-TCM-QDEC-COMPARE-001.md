@@ -2,9 +2,20 @@
 
 ## Status
 
-Scientific candidate only. The immutable scientific registry and evidence remain
-`candidate_executable_not_promoted`. No comparison promotion authority and no
-`QEC-CIRCUIT-001` authority exists at this stage.
+Referee-promoted bounded comparison authority via a separate documentary overlay.
+The immutable scientific registry and evidence remain
+`candidate_executable_not_promoted`; promotion authority is recorded in
+`reviews/QTR-TCM-QDEC-COMPARE-REVIEW-001/promotion-record.json`.
+
+This promotion is limited to the finite C18 matched comparison and the explicit
+C72/C90 reach/status and undefined-cell boundaries. `QEC-CIRCUIT-001` and
+`QLDPC-FORGE` remain unauthorized.
+
+Reviewed scientific head:
+`3ebe409c60e7907b8251d44ee822141159d2879c`.
+
+Scientific merge:
+`18f04d4af18582bbd00ae2769927408dce9b04ee`.
 
 Human Steward authorization: issue #70 comment `5320400759`,
 `ADOPT_WITH_AMENDMENTS__AUTHORIZE_TCM_QDEC_COMPARE_001_ONLY`.
@@ -230,8 +241,9 @@ Secondary candidate outcomes:
 - `TCM_SHARED_DECODER_INTERFACE_NOT_CERTIFIED_ON_C72`;
 - `CONVENTIONAL_BASELINES_REACHED_C90__TCM_NOT_REACHED_EXACT_BOUND`.
 
-These are candidate scientific findings only until exact-head review and any
-separate promotion overlay are completed.
+These exact scientific findings are now Referee-promoted only within the bounded
+scope recorded in `reviews/QTR-TCM-QDEC-COMPARE-REVIEW-001/promotion-record.json`.
+The immutable registry and evidence remain the reviewed candidate snapshot.
 
 ## Fail-closed claim boundary
 
