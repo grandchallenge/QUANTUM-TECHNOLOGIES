@@ -150,7 +150,7 @@ class QECCircuit001PromotionTests(unittest.TestCase):
         self.assertIn("TCM quality remains undefined", readme_flat)
         self.assertIn("no TCM-vs-conventional quality ordering is defined", wp_flat)
         self.assertIn("`QLDPC-FORGE` remains unauthorized", wp_flat)
-        self.assertIn("later `QEC-CIRCUIT` subgates remain unauthorized", wp_flat)
+        self.assertIn("Later `QEC-CIRCUIT` subgates remain unauthorized", wp_flat)
 
 
 if __name__ == "__main__":
