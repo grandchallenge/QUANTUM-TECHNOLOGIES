@@ -2,7 +2,9 @@
 
 ## Status
 
-`authorized_candidate_execution__amended_premeasurement_contract`
+`referee_promoted_bounded__documentary_overlay`
+
+Referee-promoted bounded temporal authority is recorded only in `reviews/QTR-QEC-CIRCUIT-REVIEW-001/promotion-record.json`. The scientific registry and evidence remain immutable candidate snapshots with status `candidate_executable_not_promoted`.
 
 This work package implements only the first temporal/repeated-syndrome subgate of `QEC-CIRCUIT-001`. It is not a gate-level syndrome-extraction, hardware, threshold, or fault-tolerant-circuit result.
 
@@ -14,8 +16,15 @@ This work package implements only the first temporal/repeated-syndrome subgate o
 - Execution docket: issue #77.
 - Protected starting `main`: `b1e6a45073842ac498b476f6c8c1d31b133e553a`.
 - Scientific branch: `agent/qec-circuit-001`.
+- Exact-head review: issue #79.
+- Reviewed scientific head: `32bbb7117670a30fad70ee9969e2699239678a09`.
+- Referee scientific disposition: #79 comment `5322294699` — `APPROVE_BOUNDED_SCIENTIFIC_MERGE__QEC_CIRCUIT_001`.
+- Scientific merge: `da820411b45f2e23fe961ed9fb4597a3b3d3e774`.
+- Documentary promotion referral: issue #80.
+- Human Steward documentary authorization: #80 comment `5322340585` — `ADOPT_WITH_AMENDMENTS__AUTHORIZE_QEC_CIRCUIT_001_DOCUMENTARY_PROMOTION_ONLY`.
+- Documentary promotion record: `reviews/QTR-QEC-CIRCUIT-REVIEW-001/promotion-record.json`.
 
-No later `QEC-CIRCUIT` subgate and no `QLDPC-FORGE` authority is inherited.
+No later `QEC-CIRCUIT` subgate and no `QLDPC-FORGE` authority is inherited. Later `QEC-CIRCUIT` subgates remain unauthorized, and `QLDPC-FORGE` remains unauthorized.
 
 ## Manifest package and execution quarantine
 
@@ -33,7 +42,7 @@ The pre-outcome repair is committed as:
 - `registry/qec-circuit-001-manifest-amendment-001.json`;
 - amendment payload `8be8637ef976c9096b22259f0f849e2350a997b80038f4815302fbefa5f2ad19`.
 
-The amendment changes no conventional measurement parameter, detector map, corpus, channel probability, or terminal correctness oracle. Every conventional row must rerun from scratch under the amended two-part manifest.
+The amendment changes no conventional measurement parameter, detector map, corpus, channel probability, or terminal correctness oracle. Every conventional row was rerun from scratch under the amended two-part manifest.
 
 ## Frozen temporal fixture
 
@@ -101,7 +110,7 @@ Therefore exact temporal TCM stops before table materialization as:
 
 `TEMPORAL_TCM_EXACT_BOUND_EXHAUSTED`.
 
-This is only a result under the frozen deterministic envelope. It is not intrinsic-intractability, runtime, memory, or family-scaling evidence.
+This is only a result under the frozen deterministic envelope. It is not intrinsic-intractability, runtime, memory, or family-scaling evidence. TCM quality remains undefined.
 
 ## Conventional temporal rows
 
@@ -112,13 +121,21 @@ The exact COMPARE-001 package identities remain unchanged:
 
 Rows are `TEMP_BP_MIN_SUM`, `TEMP_BP_OSD_CS_7`, and conditionally certified `TEMP_BP_SUM_PRODUCT`. Each decodes the frozen `28 × 75` detector matrix exactly once per authoritative history. No retries, tuning, package substitution, per-history parameter changes, or outcome-dependent fallback are allowed.
 
+The frozen exact finite success totals are:
+
+- `TEMP_BP_OSD_CS_7`: `2520/2851`;
+- `TEMP_BP_MIN_SUM`: `2430/2851`;
+- `TEMP_BP_SUM_PRODUCT`: `1736/2851`.
+
+These conventional totals and their pairwise relations are promoted only on this exact finite corpus. Because exact temporal TCM stops at the frozen compilation bound, no TCM-vs-conventional quality ordering is defined.
+
 The authoritative execution route is `reference/qec_circuit_001_exact.py`, which composes the base manifest and amendment. `reference/qec_circuit_001.py` is retained only as the frozen substrate/conventional engine.
 
 ## Machine route
 
 `.github/workflows/qtr-qec-circuit-001.yml` requires exact-head checkout, amended static replay, fail-closed tests, exact package verification, fresh execution of all three conventional rows, deterministic report assembly, quarantine binding, and an exact-head receipt.
 
-Scientific evidence remains candidate-only until exact-head review and Referee adjudication.
+The reviewed scientific registry and compact evidence remain `candidate_executable_not_promoted` byte-for-byte. Referee-promoted bounded temporal authority resides only in `reviews/QTR-QEC-CIRCUIT-REVIEW-001/promotion-record.json`.
 
 ## Explicit exclusions
 
@@ -126,4 +143,8 @@ No authority or claim is created for physical gate schedules, ancilla/hook error
 
 ## Promotion boundary
 
-A favorable conventional result is not itself a success predicate. Exact temporal TCM is bound-exhausted under the frozen cap, so no TCM-versus-conventional quality ordering is defined in this docket. Any scientific merge must remain candidate-only until role-separated exact-head review, Referee disposition, expected-head merge, and a separate documentary promotion overlay if justified.
+The bounded documentary promotion memorializes only the already reviewed finite temporal substrate, the three frozen conventional outcome rows and pairwise relations, detector-fiber ambiguity, and the exact temporal TCM reach/status result under the frozen resource envelope.
+
+A favorable conventional result is not itself a general success predicate. Exact temporal TCM is bound-exhausted under the frozen cap, so no TCM-versus-conventional quality ordering is defined in this docket. Promotion does not convert that reach boundary into intrinsic-intractability, runtime, memory, threshold, scaling, gate-level, hardware, or general decoder-family evidence.
+
+Promotion authority is documentary only. The immutable scientific manifest, amendment, registry, evidence, reference implementations, and exact replay workflow remain unchanged from scientific merge `da820411b45f2e23fe961ed9fb4597a3b3d3e774`.
