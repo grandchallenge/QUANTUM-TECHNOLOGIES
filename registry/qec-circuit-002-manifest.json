@@ -1,0 +1,288 @@
+{
+  "authority": {
+    "council_issue": 82,
+    "execution_issue": 83,
+    "human_steward_authorization_comment": 5323092968,
+    "human_steward_disposition": "ADOPT_WITH_AMENDMENTS__AUTHORIZE_QEC_CIRCUIT_002_ONLY",
+    "protected_start_main": "82027613cc966c755c4af8420d0584b5b79fa1e4",
+    "referee_comment": 5323031200,
+    "referee_recommendation": "RECOMMEND_ADOPTION_WITH_AMENDMENTS__NO_EXECUTION_AUTHORITY"
+  },
+  "baseline": {
+    "all_factor_scope_sha256": "cfa139dc874a162d6ad23c3ab9b48d3830b42c9ee2221676d73d0ebf8fa4f733",
+    "factor_count": 107,
+    "factor_scope_arity_histogram": {
+      "1": 82,
+      "12": 2,
+      "18": 2,
+      "7": 7,
+      "8": 14
+    },
+    "id": "R0_BASELINE_107_FACTOR",
+    "logical_selector_scope_sha256": "1e9f79b2a4fb270f461d09de428f9faa54a8627f517a078290be0fcdd712cb38",
+    "protected_primary_induced_width": 34,
+    "protected_primary_peak_joint_arity": 35,
+    "protected_primary_peak_joint_table_entries": 34359738368,
+    "protected_status": "TEMPORAL_TCM_EXACT_BOUND_EXHAUSTED",
+    "variable_count": 75
+  },
+  "claim_boundary": {
+    "adaptive_or_stochastic_order_search_authorized": false,
+    "family_or_asymptotic_claim": false,
+    "gate_level_claim": false,
+    "global_treewidth_claim": false,
+    "hardware_claim": false,
+    "intrinsic_intractability_claim": false,
+    "later_qec_circuit_subgate_authorized": false,
+    "learned_decoder_authorized": false,
+    "physics_model_changed": false,
+    "qec_circuit_003_authorized": false,
+    "qldpc_forge_authorized": false,
+    "representation_only": true,
+    "runtime_or_memory_superiority_claim": false,
+    "threshold_claim": false
+  },
+  "execution_rule": {
+    "compile_only_if_primary_preflight_inside_all_caps": true,
+    "complete_all_structural_preflights_even_after_success": true,
+    "conventional_rows_rerun": false,
+    "cross_representation_exact_equality_required_if_multiple_compile": true,
+    "evaluate_distinct_detector_vectors_if_compiled": 2517,
+    "logical_selector_classes_per_detector": 16,
+    "map_decisions_to_authoritative_histories": 2851,
+    "quality_defined_only_if_semantically_valid_successor_compiles": true,
+    "structural_preflight_order": [
+      "R0_BASELINE_107_FACTOR",
+      "R1_TERMINAL_DIRECT_AUX",
+      "R2_TERMINAL_CHAIN_AUX",
+      "R3_CAUSAL_STATE_CHAIN"
+    ]
+  },
+  "experiment_id": "QEC-CIRCUIT-002",
+  "frozen_semantics": {
+    "algebra": "exact_sum_product_bsc_p_0_1",
+    "authoritative_histories_in_ambiguous_fibers": 405,
+    "code": "[[18,4,4]]",
+    "corpus_kind": "complete_elementary_fault_weight_0_through_2",
+    "corpus_record_sha256": "137550c93359f8a9153cffa5e2ebdad926e2d07e27b203fe3aaf39a972d12eb7",
+    "corpus_size": 2851,
+    "correction_representative_table_sha256": "bb3b6e56891c6858684e6f61eace6d56bbbd4f26b026636197c2b8031cbafce7",
+    "detector_map_rank": 28,
+    "detector_map_sha256": "960701757ef5c223d4ed96070508472e4f37feef92aec69d15b175bc078dbcb7",
+    "detector_map_shape": [
+      28,
+      75
+    ],
+    "distinct_detector_vectors": 2517,
+    "elementary_fault_probability": "1/10",
+    "fault_coordinate_order": {
+      "f1": [
+        0,
+        17
+      ],
+      "f2": [
+        18,
+        35
+      ],
+      "f3": [
+        36,
+        53
+      ],
+      "m1": [
+        54,
+        60
+      ],
+      "m2": [
+        61,
+        67
+      ],
+      "m3": [
+        68,
+        74
+      ]
+    },
+    "fault_variable_count": 75,
+    "fibers_with_multiple_terminal_stabilizer_classes": 135,
+    "logical_z_basis_sha256": "8604b04e58cf735de4a7a4622bfd09eb78876b321ad4977c39c6e9ed36eed51a",
+    "sector": "X_error",
+    "semantic_objective": "aggregate exact likelihood mass over all 75-bit temporal fault histories consistent with the 28-bit detector input, grouped by the four protected terminal logical-selector parities; choose a winning terminal logical class, then return its frozen deterministic terminal correction representative",
+    "terminal_projection": "P_data(x)=f1 XOR f2 XOR f3",
+    "tie_semantics": {
+      "deterministic_default": "lowest_integer_four_bit_logical_selector",
+      "retain_all_maximizing_logical_selectors": true
+    }
+  },
+  "manifest_payload_sha256": "9ba84244f828bc0c4f9f128e54d2c89693930c2280540f9dc420ae13e964aa29",
+  "predecessor": {
+    "evidence_blob": "4ebdcc1b94391973535df15c5bb377e96decc3b5",
+    "evidence_payload_sha256": "e7c6f3479f5f06b56df95452833e22b59a9db97a9de5d18491c040238f36fed0",
+    "evidence_status": "candidate_executable_not_promoted",
+    "full_exact_report_payload_sha256": "6138aaf0630a5e222c8ae8688d03ce5a48015d506bfc5000e3e19b3f93fb0d6f",
+    "manifest_amendment_blob": "92820d7eb66f0e24d4b004fc8e6dfb73f5939b66",
+    "manifest_amendment_payload_sha256": "8be8637ef976c9096b22259f0f849e2350a997b80038f4815302fbefa5f2ad19",
+    "manifest_blob": "f426fdc88cfefbdcd6e712b29c1243952276d18b",
+    "manifest_payload_sha256": "15962fa93eb92632e760e62a54fbd03a8322fb09b8c3b41de2f0b4225fb52dfb",
+    "promotion_main": "82027613cc966c755c4af8420d0584b5b79fa1e4",
+    "promotion_record_path": "reviews/QTR-QEC-CIRCUIT-REVIEW-001/promotion-record.json",
+    "quarantined_workflow_run": 32085478805,
+    "registry_blob": "80af09123128bbaebadc24dfe4345799405b3f82",
+    "registry_status": "candidate_executable_not_promoted",
+    "reviewed_head": "32bbb7117670a30fad70ee9969e2699239678a09",
+    "scientific_merge": "da820411b45f2e23fe961ed9fb4597a3b3d3e774"
+  },
+  "representation_family_mutable_after_width_inspection": false,
+  "representations": [
+    {
+      "auxiliary_variables": {
+        "e": {
+          "count": 18,
+          "indices": [
+            75,
+            92
+          ],
+          "order": "q=0..17"
+        }
+      },
+      "forbidden_extra_rewrite": true,
+      "hard_relations": {
+        "terminal_error": "for each q: e[q] = f1[q] XOR f2[q] XOR f3[q]"
+      },
+      "id": "R1_TERMINAL_DIRECT_AUX",
+      "original_variable_count": 75,
+      "selector_rewrite": "replace each original logical-selector factor by the same protected logical-Z parity acting only on e",
+      "unchanged_factors": [
+        "75 unary channel factors",
+        "28 detector parity factors"
+      ]
+    },
+    {
+      "auxiliary_variables": {
+        "e": {
+          "count": 18,
+          "indices": [
+            93,
+            110
+          ],
+          "order": "q=0..17"
+        },
+        "u": {
+          "count": 18,
+          "indices": [
+            75,
+            92
+          ],
+          "order": "q=0..17"
+        }
+      },
+      "forbidden_extra_rewrite": true,
+      "hard_relations": {
+        "first_accumulator": "for each q: u[q] = f1[q] XOR f2[q]",
+        "terminal_error": "for each q: e[q] = u[q] XOR f3[q]"
+      },
+      "id": "R2_TERMINAL_CHAIN_AUX",
+      "original_variable_count": 75,
+      "selector_rewrite": "replace each original logical-selector factor by the same protected logical-Z parity acting only on e",
+      "unchanged_factors": [
+        "75 unary channel factors",
+        "28 detector parity factors"
+      ]
+    },
+    {
+      "auxiliary_variables": {
+        "e": {
+          "count": 18,
+          "indices": [
+            93,
+            110
+          ],
+          "order": "q=0..17"
+        },
+        "r": {
+          "count": 21,
+          "indices": [
+            111,
+            131
+          ],
+          "order": "round-major t=1..3 then check-major c=0..6"
+        },
+        "u": {
+          "count": 18,
+          "indices": [
+            75,
+            92
+          ],
+          "order": "q=0..17"
+        }
+      },
+      "detector_rewrite": {
+        "d1": "d1[c] = r[1,c] XOR m1[c]",
+        "d2": "d2[c] = r[2,c] XOR m1[c] XOR m2[c]",
+        "d3": "d3[c] = r[3,c] XOR m2[c] XOR m3[c]",
+        "d4": "d4[c] = m3[c]"
+      },
+      "forbidden_extra_rewrite": true,
+      "hard_relations": {
+        "first_accumulator": "for each q: u[q] = f1[q] XOR f2[q]",
+        "syndrome_increment": "for each t,c: r[t,c] = parity(H_Z_basis[c] AND f_t)",
+        "terminal_error": "for each q: e[q] = u[q] XOR f3[q]"
+      },
+      "id": "R3_CAUSAL_STATE_CHAIN",
+      "original_variable_count": 75,
+      "physical_circuit_semantics_introduced": false,
+      "selector_rewrite": "same four protected logical-Z parity factors acting only on terminal e",
+      "unchanged_factors": [
+        "75 unary channel factors"
+      ]
+    }
+  ],
+  "resource_envelope": {
+    "canonical_serialized_compiled_artifact_bytes": 536870912,
+    "caps_may_increase_inside_docket": false,
+    "compilation_common_ledger_aop_events": 2147483648,
+    "controlled_approximation_authorized": false,
+    "cumulative_exact_factor_table_entry_evaluations": 134217728,
+    "peak_joint_table_entries": 1048576,
+    "retained_canonical_structural_nodes_entries": 4194304
+  },
+  "semantic_equivalence_gate": {
+    "deterministic_transformation_receipt_required": true,
+    "exact_marginal_recovery_required": true,
+    "local_truth_table_enumeration_required": true,
+    "no_auxiliary_multiplicity_or_normalization_change": true,
+    "same_exact_objective_required": true,
+    "same_four_logical_selector_classes_required": true,
+    "semantic_failure_invalidates_width_claim": true,
+    "unique_auxiliary_extension_required": true
+  },
+  "status": "preoutcome_representation_family_frozen_before_successor_width_inspection",
+  "structural_policy": {
+    "adaptive_contraction_authorized": false,
+    "auxiliary_order_exception_authorized": false,
+    "diagnostic_orders": [
+      "lexicographic",
+      "deterministic_min_degree"
+    ],
+    "diagnostic_tie_break": "lowest_canonical_variable_index",
+    "global_treewidth_claim": false,
+    "hand_designed_order_authorized": false,
+    "order_portfolio_authorized": false,
+    "post_outcome_order_tuning_authorized": false,
+    "primary_order": "deterministic_min_fill",
+    "primary_tie_break": "lowest_canonical_variable_index",
+    "stochastic_search_authorized": false
+  },
+  "transported_conventional_results": {
+    "TEMP_BP_MIN_SUM": {
+      "success": 2430,
+      "total": 2851
+    },
+    "TEMP_BP_OSD_CS_7": {
+      "success": 2520,
+      "total": 2851
+    },
+    "TEMP_BP_SUM_PRODUCT": {
+      "success": 1736,
+      "total": 2851
+    }
+  }
+}
