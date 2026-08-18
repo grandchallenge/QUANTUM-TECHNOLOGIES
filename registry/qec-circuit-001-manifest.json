@@ -1,0 +1,252 @@
+{
+  "authority": {
+    "council_issue": 76,
+    "execution_issue": 77,
+    "human_steward_authorization_comment": 5321917311,
+    "human_steward_disposition": "ADOPT_WITH_AMENDMENTS__AUTHORIZE_QEC_CIRCUIT_001_ONLY",
+    "protected_start_main": "b1e6a45073842ac498b476f6c8c1d31b133e553a",
+    "referee_comment": 5321884229,
+    "referee_recommendation": "RECOMMEND_ADOPTION_WITH_AMENDMENTS__NO_EXECUTION_AUTHORITY"
+  },
+  "claim_boundary": {
+    "adaptive_order_search_authorized": false,
+    "ancilla_or_hook_error_claim": false,
+    "autonomous_search_authorized": false,
+    "error_rate_sweep_authorized": false,
+    "family_or_asymptotic_claim": false,
+    "full_pauli_claim": false,
+    "gate_level_syndrome_extraction_claim": false,
+    "gate_propagation_claim": false,
+    "hardware_noise_claim": false,
+    "later_qec_circuit_subgate_authorized": false,
+    "learned_decoder_authorized": false,
+    "phenomenological_repeated_syndrome_fixture_only": true,
+    "qldpc_forge_authorized": false,
+    "round_count_scaling_claim": false,
+    "runtime_or_memory_superiority_claim": false,
+    "threshold_or_pseudothreshold_claim": false
+  },
+  "conventional_package_lock": {
+    "bposd": {
+      "source_blob": "1e588ab70dbc684f45f36bbdeed524d0c98b70d0",
+      "version": "1.6",
+      "wheel_sha256": "80e439246c11ca824610f9bc7858c68eb1f8a6b7cbb71760cf6c86e03c47ff5d"
+    },
+    "ldpc": {
+      "bp_decoder_blob": "dbee68689c795bc2417166e2e25eb495fa4be5bb",
+      "sdist_sha256": "3b2652aa993ab71672d680ac76ee2dcf3dc289fc5d11c07d060e5f838d8c3601",
+      "upstream_commit": "8e2cba3206cf639518164d8b409f7d21b17d0738",
+      "version": "0.1.53"
+    },
+    "python": "3.10.14",
+    "rows": {
+      "TEMP_BP_MIN_SUM": {
+        "bp_method": "ms",
+        "class": "ldpc.bp_decoder",
+        "max_iter": 10000,
+        "ms_scaling_factor": 0,
+        "osd": false
+      },
+      "TEMP_BP_OSD_CS_7": {
+        "bp_method": "ms",
+        "class": "ldpc.bposd_decoder",
+        "max_iter": 10000,
+        "ms_scaling_factor": 0,
+        "osd_method": "osd_cs",
+        "osd_order": 7
+      },
+      "TEMP_BP_SUM_PRODUCT": {
+        "bp_method": "ps",
+        "class": "ldpc.bp_decoder",
+        "conditional_on_interface_certification": true,
+        "max_iter": 10000,
+        "ms_scaling_factor": 0,
+        "osd": false
+      }
+    }
+  },
+  "corpus": {
+    "canonical_serialized_bytes": 609005,
+    "coordinate_count": 75,
+    "counts": {
+      "0": 1,
+      "1": 75,
+      "2": 2775,
+      "total": 2851
+    },
+    "deduplicate_by_detector": false,
+    "kind": "complete_elementary_fault_weight_0_through_2",
+    "order": "zero_then_units_ascending_then_unordered_pairs_lexicographic",
+    "ordered_fault_detector_terminal_record_sha256": "137550c93359f8a9153cffa5e2ebdad926e2d07e27b203fe3aaf39a972d12eb7"
+  },
+  "council_offices": {
+    "Adversary": 5321880057,
+    "Amanuensis": 5321882728,
+    "Axiomatist": 5321875381,
+    "Cartographer": 5321876447,
+    "Formalist": 5321881142,
+    "Grammarian": 5321877421,
+    "Referee": 5321884229,
+    "Verifier": 5321878711
+  },
+  "detector_fibers_predecoder": {
+    "ambiguity_retained": true,
+    "authoritative_histories_in_ambiguous_fibers": 405,
+    "distinct_detector_vectors": 2517,
+    "fiber_size_histogram": {
+      "1": 2320,
+      "2": 60,
+      "3": 137
+    },
+    "fibers_with_multiple_terminal_stabilizer_classes": 135,
+    "terminal_stabilizer_class_count_per_fiber_histogram": {
+      "1": 2382,
+      "3": 135
+    }
+  },
+  "detector_map": {
+    "column_weight_histogram": {
+      "1": 6,
+      "2": 45,
+      "3": 24
+    },
+    "dual_construction_required": true,
+    "matrix_vs_recurrence_exhaustive_corpus_equality_required": true,
+    "rank": 28,
+    "row_bitstrings": [
+      "101100000110000100000000000000000000000000000000000000100000000000000000000",
+      "110010000011000010000000000000000000000000000000000000010000000000000000000",
+      "011001000101000001000000000000000000000000000000000000001000000000000000000",
+      "000011001001101000000000000000000000000000000000000000000100000000000000000",
+      "100000101000100110000000000000000000000000000000000000000010000000000000000",
+      "010000110000010011000000000000000000000000000000000000000001000000000000000",
+      "001000011000001101000000000000000000000000000000000000000000100000000000000",
+      "000000000000000000101100000110000100000000000000000000100000010000000000000",
+      "000000000000000000110010000011000010000000000000000000010000001000000000000",
+      "000000000000000000011001000101000001000000000000000000001000000100000000000",
+      "000000000000000000000011001001101000000000000000000000000100000010000000000",
+      "000000000000000000100000101000100110000000000000000000000010000001000000000",
+      "000000000000000000010000110000010011000000000000000000000001000000100000000",
+      "000000000000000000001000011000001101000000000000000000000000100000010000000",
+      "000000000000000000000000000000000000101100000110000100000000010000001000000",
+      "000000000000000000000000000000000000110010000011000010000000001000000100000",
+      "000000000000000000000000000000000000011001000101000001000000000100000010000",
+      "000000000000000000000000000000000000000011001001101000000000000010000001000",
+      "000000000000000000000000000000000000100000101000100110000000000001000000100",
+      "000000000000000000000000000000000000010000110000010011000000000000100000010",
+      "000000000000000000000000000000000000001000011000001101000000000000010000001",
+      "000000000000000000000000000000000000000000000000000000000000000000001000000",
+      "000000000000000000000000000000000000000000000000000000000000000000000100000",
+      "000000000000000000000000000000000000000000000000000000000000000000000010000",
+      "000000000000000000000000000000000000000000000000000000000000000000000001000",
+      "000000000000000000000000000000000000000000000000000000000000000000000000100",
+      "000000000000000000000000000000000000000000000000000000000000000000000000010",
+      "000000000000000000000000000000000000000000000000000000000000000000000000001"
+    ],
+    "row_weights": [7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,8,8,8,8,1,1,1,1,1,1,1],
+    "sha256": "960701757ef5c223d4ed96070508472e4f37feef92aec69d15b175bc078dbcb7",
+    "shape": [28,75]
+  },
+  "experiment_id": "QEC-CIRCUIT-001",
+  "fixture": {
+    "code": "[[18,4,4]]",
+    "full_hz_rows": [
+      "101100000110000100",
+      "110010000011000010",
+      "011001000101000001",
+      "000101100100110000",
+      "000110010010011000",
+      "000011001001101000",
+      "100000101000100110",
+      "010000110000010011",
+      "001000011000001101"
+    ],
+    "independent_z_check_basis": {
+      "construction": "remove source-recorded Z checks with zero-based indices 3 and 4",
+      "rank": 7,
+      "row_count": 7,
+      "rows": [
+        "101100000110000100",
+        "110010000011000010",
+        "011001000101000001",
+        "000011001001101000",
+        "100000101000100110",
+        "010000110000010011",
+        "001000011000001101"
+      ],
+      "sha256": "630820d00b3c0cd7011425b7cfb4b2d43c092c3759ff505f1a81966545c09a55",
+      "source_removed_indices": [3,4]
+    },
+    "sector": "X_error",
+    "stabilizer_equivalence": "terminal residual belongs to Row(H_X)"
+  },
+  "manifest_payload_sha256": "15962fa93eb92632e760e62a54fbd03a8322fb09b8c3b41de2f0b4225fb52dfb",
+  "manifest_version": "0.1.0",
+  "predecessors": {
+    "QLDPC-FIXTURE-001": {
+      "evidence_blob": "48cdf8c4d27acbf064345d32b9fa636a38d37b79",
+      "evidence_path": "evidence/QLDPC-FIXTURE-001-report.json",
+      "evidence_payload_sha256": "6c2095f48762178bf0fe5c2b5fce8299261733912a1cccc7884d11f344718427"
+    },
+    "TCM-QDEC-004": {
+      "evidence_blob": "77b6a05ff245d0292036b7efa47a3fe775f845af",
+      "evidence_payload_sha256": "a5c7e59fa849ddc37c070d78d4a4dab8b07ae5ceccfecefeb5a20f4ae0dc83a7",
+      "registry_blob": "616f9ca9d81123f5b04d445e1ae5ca01e9559c85",
+      "reviewed_head": "8177a57b63e3f2c953a028691d305563f298b572",
+      "scientific_merge": "7eff1025e97ff962a6fed81e6f2fa0f4d14653a3"
+    },
+    "TCM-QDEC-COMPARE-001": {
+      "compact_evidence_payload_sha256": "9bd93dd1f0b6c5d7ca59523c7dfd382524639adf77aefaedd8900b2b01de6b7c",
+      "evidence_blob": "86a8acaceebb3caaaf7be4e3447f1fdcdaeeedaa",
+      "full_report_payload_sha256": "6385c2da742e14ecf2bc41336c78c2a8ff42b1cdd897fb5e7cfac056e2214146",
+      "manifest_blob": "577cc70f78ef588e2212aa48a1ab44b2a44a64fc",
+      "manifest_payload_sha256": "c68830f40733cde6957713060cec35adf317c75572cc960610c07c4d0e24d1e2",
+      "promotion_main": "b1e6a45073842ac498b476f6c8c1d31b133e553a",
+      "registry_blob": "828498bf4d2a1b4a559700698bc324f9c1925e02",
+      "reviewed_head": "3ebe409c60e7907b8251d44ee822141159d2879c",
+      "scientific_merge": "18f04d4af18582bbd00ae2769927408dce9b04ee"
+    }
+  },
+  "programme": "QTR",
+  "status": "authorized_manifest_frozen_before_decoder_execution",
+  "tcm_resource_envelope": {
+    "canonical_serialized_compiled_artifact_bytes": 536870912,
+    "caps_may_increase_inside_docket": false,
+    "compilation_aop_events": 2147483648,
+    "controlled_approximation_authorized": false,
+    "cumulative_exact_factor_table_entry_evaluations": 134217728,
+    "peak_joint_table_entries": 1048576,
+    "retained_canonical_structural_nodes_entries": 4194304
+  },
+  "temporal_model": {
+    "channel": {"kind":"independent_binary_elementary_faults","p":0.1},
+    "coordinate_order": ["f1[0:18]","f2[0:18]","f3[0:18]","m1[0:7]","m2[0:7]","m3[0:7]"],
+    "data_fault_width_per_round": 18,
+    "fault_object": "x=(f1,f2,f3,m1,m2,m3) in F_2^75",
+    "measurement_fault_width_per_round": 7,
+    "noisy_rounds": 3,
+    "recurrence": {"dt":"y_t XOR y_(t-1), t=1..4","e0":"0","et":"e_(t-1) XOR f_t","st":"H_Z_basis * e_t","y0":"0","y4":"s3","yt":"s_t XOR m_t for t=1..3"},
+    "terminal_projection": "P_data(x)=f1 XOR f2 XOR f3",
+    "terminal_readout": "perfect_after_round_3"
+  },
+  "temporal_tcm_structural_preflight": {
+    "candidate_tcm_status": "TEMPORAL_TCM_EXACT_BOUND_EXHAUSTED",
+    "factor_scope_arity_histogram": {"1":7,"7":7,"8":14},
+    "factor_scope_count": 28,
+    "factor_scope_sha256": "f9b1d5c71cc0db26f314e842096d210e6f1d8eddab15e23717921f008f7abb1b",
+    "not_intrinsic_intractability_claim": true,
+    "orders": {
+      "deterministic_min_degree": {"fill_edges_inserted":306,"induced_width":20,"order_sha256":"72b626cb80cde8ea72a9c1a96382803f12fa8d3b0584c2bc164d78cc4ee08935","peak_joint_arity":21,"peak_joint_table_entries":2097152},
+      "deterministic_min_fill": {"fill_edges_inserted":308,"induced_width":20,"order_sha256":"1ce2a38d7830ee7ce51a8aa03512f84663b91de95a12d986da838e13f11b3b4f","peak_joint_arity":21,"peak_joint_table_entries":2097152},
+      "lexicographic": {"fill_edges_inserted":701,"induced_width":27,"order_sha256":"a933f9e444fb1546a40ad50e1dbf811d2acfb71d2eb503afcf5318efcc343fb9","peak_joint_arity":28,"peak_joint_table_entries":268435456}
+    },
+    "primary_order": "deterministic_min_fill",
+    "primary_peak_table_cap": 1048576,
+    "primary_prediction_status": "EXCEEDS_FROZEN_PEAK_TABLE_CAP_BEFORE_MATERIALIZATION"
+  },
+  "terminal_correctness": {
+    "detector_consistency_is_not_correctness_oracle": true,
+    "logical_success": "e3 XOR c in Row(H_X)",
+    "syndrome_consistency": "H_Z c = H_Z e3"
+  }
+}
