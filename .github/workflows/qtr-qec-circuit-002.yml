@@ -1,0 +1,60 @@
+name: QEC-CIRCUIT-002 exact decomposition replay
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qec-circuit-002-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  exact-replay:
+    name: exact replay
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.8"
+      - name: Assert exact subject checkout
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+      - name: Replay full exact decomposition audit
+        run: |
+          python reference/qec_circuit_002.py --output /tmp/QEC-CIRCUIT-002-full.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('/tmp/QEC-CIRCUIT-002-full.json').read_text())
+          assert report['payload_sha256'] == '90d73b06e3778fea7322435f1ff7db74fc3cb708038057ef338643082aa25c28'
+          assert report['adjudication_candidate'] == 'TEMPORAL_PREDECLARED_DECOMPOSITION_FAMILY_EXHAUSTED'
+          assert report['quality_boundary']['temporal_tcm_quality_defined'] is False
+          PY
+      - name: Reproduce compact committed evidence
+        run: |
+          python reference/qec_circuit_002_evidence.py \
+            --input /tmp/QEC-CIRCUIT-002-full.json \
+            --output /tmp/QEC-CIRCUIT-002-report.json
+          cmp /tmp/QEC-CIRCUIT-002-report.json evidence/QEC-CIRCUIT-002-report.json
+      - name: Run QEC-CIRCUIT-002 tests
+        run: python -m unittest tests.test_qec_circuit_002 -v
+      - name: Preserve exact-head evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QEC-CIRCUIT-002-exact-head
+          path: |
+            /tmp/QEC-CIRCUIT-002-full.json
+            /tmp/QEC-CIRCUIT-002-report.json
+          if-no-files-found: error
+          retention-days: 90

@@ -1,0 +1,233 @@
+{
+  "adjudication_candidate": "TEMPORAL_PREDECLARED_DECOMPOSITION_FAMILY_EXHAUSTED",
+  "claim_boundary": {
+    "adaptive_or_stochastic_order_search_authorized": false,
+    "family_or_asymptotic_claim": false,
+    "gate_level_claim": false,
+    "global_treewidth_claim": false,
+    "hardware_claim": false,
+    "intrinsic_intractability_claim": false,
+    "later_qec_circuit_subgate_authorized": false,
+    "learned_decoder_authorized": false,
+    "physics_model_changed": false,
+    "qec_circuit_003_authorized": false,
+    "qldpc_forge_authorized": false,
+    "representation_only": true,
+    "runtime_or_memory_superiority_claim": false,
+    "threshold_claim": false
+  },
+  "experiment_id": "QEC-CIRCUIT-002",
+  "full_exact_report_payload_sha256": "90d73b06e3778fea7322435f1ff7db74fc3cb708038057ef338643082aa25c28",
+  "manifest_payload_sha256": "9ba84244f828bc0c4f9f128e54d2c89693930c2280540f9dc420ae13e964aa29",
+  "payload_sha256": "cb9915e3d9bb32dc5abf1705c3dc7709082b79e3c5b91b391fb2aca0e632fcc3",
+  "quality_boundary": {
+    "conventional_vs_tcm_quality_ordering_defined": false,
+    "reason": "NO_SEMANTICALLY_VALID_SUCCESSOR_REPRESENTATION_COMPILED_UNDER_FROZEN_CAPS",
+    "temporal_tcm_quality_defined": false
+  },
+  "report_version": "0.1.0",
+  "semantic_equivalence": {
+    "R1_TERMINAL_DIRECT_AUX": {
+      "selector_receipt_sha256": "2a7c7aabf03c645ba3028d7989c551d82b7ebfb001c9f17cc902bc803dd8e2d9",
+      "status": "TEMPORAL_DECOMPOSITION_SEMANTIC_EQUIVALENCE_CERTIFIED",
+      "terminal_relation_receipt_sha256": "ee26e328e893db21dbd860887541edc44545515ca583e77d257fce3d82f175bc"
+    },
+    "R2_TERMINAL_CHAIN_AUX": {
+      "selector_receipt_sha256": "2a7c7aabf03c645ba3028d7989c551d82b7ebfb001c9f17cc902bc803dd8e2d9",
+      "status": "TEMPORAL_DECOMPOSITION_SEMANTIC_EQUIVALENCE_CERTIFIED",
+      "terminal_chain_receipt_sha256": "58a2480b08b25bb23ad3643ce7c9c799f8ac7c2990490ddfe98f022fb2feb4de"
+    },
+    "R3_CAUSAL_STATE_CHAIN": {
+      "detector_assignments_checked": 4494,
+      "detector_rewrite_receipt_sha256": "0ef88c6ac026714ad9132ce38759268c969f4557595c728e3d990b9e5962497d",
+      "selector_receipt_sha256": "2a7c7aabf03c645ba3028d7989c551d82b7ebfb001c9f17cc902bc803dd8e2d9",
+      "status": "TEMPORAL_DECOMPOSITION_SEMANTIC_EQUIVALENCE_CERTIFIED",
+      "syndrome_increment_receipt_sha256": "a072cb066a3f7a780b491dc7c5bb771b5fe914506ef3cf5585bcd28504f3e1e8",
+      "syndrome_increment_relations_checked": 21,
+      "terminal_chain_receipt_sha256": "58a2480b08b25bb23ad3643ce7c9c799f8ac7c2990490ddfe98f022fb2feb4de"
+    }
+  },
+  "status": "candidate_executable_not_promoted",
+  "structural_rows": [
+    {
+      "factor_count": 107,
+      "factor_scope_arity_histogram": {
+        "1": 82,
+        "12": 2,
+        "18": 2,
+        "7": 7,
+        "8": 14
+      },
+      "factor_scope_sha256": "cfa139dc874a162d6ad23c3ab9b48d3830b42c9ee2221676d73d0ebf8fa4f733",
+      "global_treewidth_claim": false,
+      "orders": {
+        "deterministic_min_degree": {
+          "fill_edges_inserted": 576,
+          "induced_width": 39,
+          "order_sha256": "23c0c1ef08467158695efa47aa8679b0000d371f674c51d20fc5a82fcbe66631",
+          "peak_joint_arity": 40,
+          "peak_joint_table_entries": 1099511627776
+        },
+        "deterministic_min_fill": {
+          "fill_edges_inserted": 526,
+          "induced_width": 34,
+          "order_sha256": "49ade42ee557a2b2364ed2dfc5ba319a0670451a8e36e8e2d2d7da485212e4ea",
+          "peak_joint_arity": 35,
+          "peak_joint_table_entries": 34359738368
+        },
+        "lexicographic": {
+          "fill_edges_inserted": 1199,
+          "induced_width": 43,
+          "order_sha256": "a933f9e444fb1546a40ad50e1dbf811d2acfb71d2eb503afcf5318efcc343fb9",
+          "peak_joint_arity": 44,
+          "peak_joint_table_entries": 17592186044416
+        }
+      },
+      "primal_edge_count": 782,
+      "primary_cap": 1048576,
+      "representation": "R0_BASELINE_107_FACTOR",
+      "status": "TEMPORAL_DECOMPOSITION_EXACT_BOUND_EXHAUSTED",
+      "stopped_before_table_materialization": true,
+      "variable_count": 75
+    },
+    {
+      "factor_count": 125,
+      "factor_scope_arity_histogram": {
+        "1": 82,
+        "4": 20,
+        "6": 2,
+        "7": 7,
+        "8": 14
+      },
+      "factor_scope_sha256": "43d884672cd590f15fbde3033e47bc30b138adade2810c2a391b6423230b0642",
+      "global_treewidth_claim": false,
+      "orders": {
+        "deterministic_min_degree": {
+          "fill_edges_inserted": 999,
+          "induced_width": 38,
+          "order_sha256": "5b3023527ba12a157cc4c77c2023b07343d652f1ce166f631328b75eeface4e4",
+          "peak_joint_arity": 39,
+          "peak_joint_table_entries": 549755813888
+        },
+        "deterministic_min_fill": {
+          "fill_edges_inserted": 981,
+          "induced_width": 36,
+          "order_sha256": "3b39b5a4a15a1193a3518d72a0e718eceb786bffd53a11c35def3646c2efe257",
+          "peak_joint_arity": 37,
+          "peak_joint_table_entries": 137438953472
+        },
+        "lexicographic": {
+          "fill_edges_inserted": 2776,
+          "induced_width": 64,
+          "order_sha256": "6f34d3e80fbebd1e8a88dc7c5ab5961c444c8cdb5fe0105f0f86ce699c5129c0",
+          "peak_joint_arity": 65,
+          "peak_joint_table_entries": 36893488147419103232
+        }
+      },
+      "primal_edge_count": 635,
+      "primary_cap": 1048576,
+      "representation": "R1_TERMINAL_DIRECT_AUX",
+      "status": "TEMPORAL_DECOMPOSITION_EXACT_BOUND_EXHAUSTED",
+      "stopped_before_table_materialization": true,
+      "variable_count": 93
+    },
+    {
+      "factor_count": 143,
+      "factor_scope_arity_histogram": {
+        "1": 82,
+        "3": 36,
+        "4": 2,
+        "6": 2,
+        "7": 7,
+        "8": 14
+      },
+      "factor_scope_sha256": "13687a9a9dd8c273cc695abccaecb03e9914896ba24aec483ba22ea2dbd5b32a",
+      "global_treewidth_claim": false,
+      "orders": {
+        "deterministic_min_degree": {
+          "fill_edges_inserted": 1057,
+          "induced_width": 38,
+          "order_sha256": "c6612163fab60eb22e3f658b9c9913d9da8127911f4576ed1a23383a72568e9a",
+          "peak_joint_arity": 39,
+          "peak_joint_table_entries": 549755813888
+        },
+        "deterministic_min_fill": {
+          "fill_edges_inserted": 1039,
+          "induced_width": 36,
+          "order_sha256": "f6d9b98dd826a9887ee4fa9831904f3c39ac160d2323e2f2a133d8f1f6e64f87",
+          "peak_joint_arity": 37,
+          "peak_joint_table_entries": 137438953472
+        },
+        "lexicographic": {
+          "fill_edges_inserted": 2839,
+          "induced_width": 50,
+          "order_sha256": "17968791ba9d96394101326257096c9691d7844ca94708b5e1295079dde3e707",
+          "peak_joint_arity": 51,
+          "peak_joint_table_entries": 2251799813685248
+        }
+      },
+      "primal_edge_count": 635,
+      "primary_cap": 1048576,
+      "representation": "R2_TERMINAL_CHAIN_AUX",
+      "status": "TEMPORAL_DECOMPOSITION_EXACT_BOUND_EXHAUSTED",
+      "stopped_before_table_materialization": true,
+      "variable_count": 111
+    },
+    {
+      "factor_count": 164,
+      "factor_scope_arity_histogram": {
+        "1": 82,
+        "2": 7,
+        "3": 50,
+        "4": 2,
+        "6": 2,
+        "7": 21
+      },
+      "factor_scope_sha256": "b0efedbc00055fa4f410bd241af9e2e93f7224085e12234725e1a118e7a9816f",
+      "global_treewidth_claim": false,
+      "orders": {
+        "deterministic_min_degree": {
+          "fill_edges_inserted": 1169,
+          "induced_width": 38,
+          "order_sha256": "c1e48902fc435e3a0b2791b24e24351543f1435a8bda4c58b67aae067650cb50",
+          "peak_joint_arity": 39,
+          "peak_joint_table_entries": 549755813888
+        },
+        "deterministic_min_fill": {
+          "fill_edges_inserted": 1151,
+          "induced_width": 36,
+          "order_sha256": "bfbaa983614cd5ef1aef891ca55af06afd94f6fb863ea3d54be0db6ae9e77df0",
+          "peak_joint_arity": 37,
+          "peak_joint_table_entries": 137438953472
+        },
+        "lexicographic": {
+          "fill_edges_inserted": 3015,
+          "induced_width": 56,
+          "order_sha256": "3988b1b5d8391fbda60d8f3537e551b810cfd9f2e106af27adf153400a58102a",
+          "peak_joint_arity": 57,
+          "peak_joint_table_entries": 144115188075855872
+        }
+      },
+      "primal_edge_count": 586,
+      "primary_cap": 1048576,
+      "representation": "R3_CAUSAL_STATE_CHAIN",
+      "status": "TEMPORAL_DECOMPOSITION_EXACT_BOUND_EXHAUSTED",
+      "stopped_before_table_materialization": true,
+      "variable_count": 132
+    }
+  ],
+  "transported_conventional_results": {
+    "TEMP_BP_MIN_SUM": {
+      "success": 2430,
+      "total": 2851
+    },
+    "TEMP_BP_OSD_CS_7": {
+      "success": 2520,
+      "total": 2851
+    },
+    "TEMP_BP_SUM_PRODUCT": {
+      "success": 1736,
+      "total": 2851
+    }
+  }
+}

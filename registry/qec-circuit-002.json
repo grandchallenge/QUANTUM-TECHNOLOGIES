@@ -1,0 +1,67 @@
+{
+  "experiments": [
+    {
+      "adjudication": {
+        "primary_outcome": "TEMPORAL_PREDECLARED_DECOMPOSITION_FAMILY_EXHAUSTED",
+        "secondary_outcomes": [
+          "TEMPORAL_REPRESENTATION_BASELINE_REPRODUCED",
+          "TEMPORAL_DECOMPOSITION_SEMANTIC_EQUIVALENCE_CERTIFIED",
+          "TEMPORAL_DECOMPOSITION_EXACT_BOUND_EXHAUSTED"
+        ]
+      },
+      "authority": {
+        "authorization_comment": 5323092968,
+        "authorization_issue": 82,
+        "execution_issue": 83,
+        "protected_start_main": "82027613cc966c755c4af8420d0584b5b79fa1e4",
+        "referee_comment": 5323031200
+      },
+      "claim_boundary": {
+        "family_or_asymptotic_claim": false,
+        "gate_level_claim": false,
+        "global_treewidth_claim": false,
+        "intrinsic_intractability_claim": false,
+        "later_qec_circuit_subgate_authorized": false,
+        "physics_model_changed": false,
+        "qec_circuit_003_authorized": false,
+        "qldpc_forge_authorized": false,
+        "runtime_or_memory_superiority_claim": false,
+        "threshold_claim": false
+      },
+      "evidence": {
+        "committed_projection_path": "evidence/QEC-CIRCUIT-002-report.json",
+        "committed_projection_payload_sha256": "cb9915e3d9bb32dc5abf1705c3dc7709082b79e3c5b91b391fb2aca0e632fcc3",
+        "full_exact_report_payload_sha256": "90d73b06e3778fea7322435f1ff7db74fc3cb708038057ef338643082aa25c28"
+      },
+      "experiment_id": "QEC-CIRCUIT-002",
+      "manifest": {
+        "first_commit": "ace579c9f3856349da612ac243d37970967f2562",
+        "path": "registry/qec-circuit-002-manifest.json",
+        "payload_sha256": "9ba84244f828bc0c4f9f128e54d2c89693930c2280540f9dc420ae13e964aa29"
+      },
+      "predecessor": {
+        "experiment_id": "QEC-CIRCUIT-001",
+        "promotion_main": "82027613cc966c755c4af8420d0584b5b79fa1e4",
+        "promotion_status": "referee_promoted_bounded"
+      },
+      "quality_boundary": {
+        "conventional_vs_tcm_quality_ordering_defined": false,
+        "temporal_tcm_quality_defined": false
+      },
+      "representation_family": [
+        "R0_BASELINE_107_FACTOR",
+        "R1_TERMINAL_DIRECT_AUX",
+        "R2_TERMINAL_CHAIN_AUX",
+        "R3_CAUSAL_STATE_CHAIN"
+      ],
+      "status": "candidate_executable_not_promoted",
+      "structural_primary_widths": {
+        "R0_BASELINE_107_FACTOR": 34,
+        "R1_TERMINAL_DIRECT_AUX": 36,
+        "R2_TERMINAL_CHAIN_AUX": 36,
+        "R3_CAUSAL_STATE_CHAIN": 36
+      }
+    }
+  ],
+  "registry_version": "0.1.0"
+}
