@@ -1,0 +1,149 @@
+{
+  "documentary_base_at_creation": "e85d67619a0d739fe039cca8f271f9a32ae2f3db",
+  "documentary_issue": 86,
+  "execution_issue": 83,
+  "excluded_scope": [
+    "QEC-CIRCUIT-003 or any later QEC-CIRCUIT subgate",
+    "gate-level syndrome extraction",
+    "ancilla preparation, hook errors, or CNOT/gate propagation",
+    "gate-location physical faults",
+    "changed physical noise models or full-Pauli decoding",
+    "error-rate or round-count sweeps",
+    "threshold or pseudothreshold claims",
+    "runtime or memory superiority or inferiority",
+    "global treewidth",
+    "intrinsic intractability",
+    "family or asymptotic scaling",
+    "learned decoding",
+    "adaptive or stochastic contraction-order search",
+    "QLDPC-FORGE",
+    "autonomous code, decoder, circuit, or architecture search"
+  ],
+  "office_records": {
+    "Adversary": 5334655387,
+    "Amanuensis": 5334659061,
+    "Axiomatist": 5334646346,
+    "Cartographer": 5334648038,
+    "Formalist": 5334657250,
+    "Grammarian": 5334652050,
+    "Referee": 5334661008,
+    "Verifier": 5334653752
+  },
+  "promotion_authorization": {
+    "comment": 5335168196,
+    "disposition": "ADOPT_WITH_AMENDMENTS__AUTHORIZE_QEC_CIRCUIT_002_DOCUMENTARY_PROMOTION_ONLY",
+    "issue": 86
+  },
+  "promotion_authority_location": "documentary_overlay_only",
+  "promoted_scope": {
+    "classification": "TEMPORAL_PREDECLARED_DECOMPOSITION_FAMILY_EXHAUSTED",
+    "frozen_peak_joint_table_cap": 1048576,
+    "quality_boundary": {
+      "temporal_tcm_quality_defined": false,
+      "tcm_vs_conventional_quality_ordering_defined": false
+    },
+    "representation_family": {
+      "R0_BASELINE_107_FACTOR": {
+        "induced_width": 34,
+        "predicted_peak_joint_table_entries": 34359738368,
+        "status": "TEMPORAL_DECOMPOSITION_EXACT_BOUND_EXHAUSTED"
+      },
+      "R1_TERMINAL_DIRECT_AUX": {
+        "induced_width": 36,
+        "predicted_peak_joint_table_entries": 137438953472,
+        "semantic_status": "TEMPORAL_DECOMPOSITION_SEMANTIC_EQUIVALENCE_CERTIFIED",
+        "status": "TEMPORAL_DECOMPOSITION_EXACT_BOUND_EXHAUSTED"
+      },
+      "R2_TERMINAL_CHAIN_AUX": {
+        "induced_width": 36,
+        "predicted_peak_joint_table_entries": 137438953472,
+        "semantic_status": "TEMPORAL_DECOMPOSITION_SEMANTIC_EQUIVALENCE_CERTIFIED",
+        "status": "TEMPORAL_DECOMPOSITION_EXACT_BOUND_EXHAUSTED"
+      },
+      "R3_CAUSAL_STATE_CHAIN": {
+        "induced_width": 36,
+        "predicted_peak_joint_table_entries": 137438953472,
+        "semantic_status": "TEMPORAL_DECOMPOSITION_SEMANTIC_EQUIVALENCE_CERTIFIED",
+        "status": "TEMPORAL_DECOMPOSITION_EXACT_BOUND_EXHAUSTED"
+      }
+    },
+    "successor_representation_compiled": false,
+    "systems_boundary": "finite predeclared representation-family and named-order resource result only; no global complexity, quality, physics, scaling, downstream-circuit, or Forge inference"
+  },
+  "protected_merge": {
+    "main_base_at_scientific_merge": "82027613cc966c755c4af8420d0584b5b79fa1e4",
+    "merge_commit": "e85d67619a0d739fe039cca8f271f9a32ae2f3db",
+    "merge_parent_candidate": "695ea1da951cd2b4f9d5a6a07c30b090cfd37709",
+    "merge_parent_protected_base": "82027613cc966c755c4af8420d0584b5b79fa1e4",
+    "merge_tree": "b89ddf1c914c4f6c7a209a4b5c8994880f2c465b",
+    "verified_signature": true
+  },
+  "pull_request": 84,
+  "record_id": "QTR-QEC-CIRCUIT-REVIEW-002-PROMOTION",
+  "record_version": "0.1.0",
+  "referee": {
+    "disposition": "APPROVE_BOUNDED_SCIENTIFIC_MERGE__QEC_CIRCUIT_002",
+    "record": 5334661008
+  },
+  "referral_office_records": {
+    "Adversary": 5334685597,
+    "Amanuensis": 5334687929,
+    "Axiomatist": 5334680466,
+    "Cartographer": 5334681821,
+    "Formalist": 5334686843,
+    "Grammarian": 5334682875,
+    "Referee": 5334690079,
+    "Verifier": 5334684223
+  },
+  "review_issue": 85,
+  "reviewed_head": "695ea1da951cd2b4f9d5a6a07c30b090cfd37709",
+  "reviewed_snapshot": {
+    "evidence_blob_sha": "90d1f462e8666dbe5f26fbb241e6befa29ef6916",
+    "evidence_path": "evidence/QEC-CIRCUIT-002-report.json",
+    "evidence_payload_sha256": "cb9915e3d9bb32dc5abf1705c3dc7709082b79e3c5b91b391fb2aca0e632fcc3",
+    "evidence_projector_blob_sha": "9f2d5eaadb8ca948f3e9229fe43cb0e9cc5b4957",
+    "evidence_projector_path": "reference/qec_circuit_002_evidence.py",
+    "evidence_status_at_review": "candidate_executable_not_promoted",
+    "evaluator_blob_sha": "92f8bafbc3460d18d9a3b9d316848d289f4b545f",
+    "evaluator_path": "reference/qec_circuit_002.py",
+    "first_preoutcome_manifest_commit": "ace579c9f3856349da612ac243d37970967f2562",
+    "full_exact_report_payload_sha256": "90d73b06e3778fea7322435f1ff7db74fc3cb708038057ef338643082aa25c28",
+    "manifest_blob_sha": "fdbec274a7520cf718d9b8b247fccfc9f83b3495",
+    "manifest_path": "registry/qec-circuit-002-manifest.json",
+    "manifest_payload_sha256": "9ba84244f828bc0c4f9f128e54d2c89693930c2280540f9dc420ae13e964aa29",
+    "registry_blob_sha": "67560eb2c2955bd79fb6a3f7c3b0a35d83b1a17a",
+    "registry_path": "registry/qec-circuit-002.json",
+    "registry_status_at_review": "candidate_executable_not_promoted",
+    "snapshot_preserved_byte_for_byte": true,
+    "workflow_blob_sha": "84716388da3004ee658f7c83fba9984c151fb5c1",
+    "workflow_path": ".github/workflows/qtr-qec-circuit-002.yml"
+  },
+  "scientific_merge_commit": "e85d67619a0d739fe039cca8f271f9a32ae2f3db",
+  "scientific_status_strings_intentionally_unchanged": true,
+  "status": "referee_promoted_bounded",
+  "workflow_evidence": {
+    "codeql_execution_docket_receipt": 5334640843,
+    "codeql_exact_head_analyses": 2,
+    "codeql_exact_head_checks": 3,
+    "codeql_non_green_checks": 0,
+    "codeql_open_exact_head_alerts": 0,
+    "codeql_problem_analyses": 0,
+    "exact_decomposition_artifact": 9310231539,
+    "exact_decomposition_artifact_digest": "sha256:ae6621f814b46b7ff689c5b162acde512f536d0dcd6e9f2525aa8b95cf057f7f",
+    "exact_decomposition_run": 32096861740,
+    "gcl_conformance_artifact": 9310229841,
+    "gcl_conformance_run": 32096862004,
+    "gcl_scorecard_artifact": 9310228598,
+    "qtr_exact_head_artifact": 9310357487,
+    "qtr_exact_head_artifact_digest": "sha256:6d6be9452bb134babc80df237256d9076066f9bd59089581d7c44f00da8170a5",
+    "qtr_validation_run": 32096861753,
+    "timeout_provenance": {
+      "diagnostic_run": 32095587023,
+      "diagnostic_subject_head": "628fa4508eb938e77456a0eb83ba13169d2ecb82",
+      "first_attempt": "all substantive validation and receipt steps completed successfully before the fixed wrapper timeout; workflow conclusion cancelled",
+      "second_attempt": "cancelled inside repository-wide tests because the new test redundantly recomputed the full exact audit",
+      "test_only_repair_commit": "695ea1da951cd2b4f9d5a6a07c30b090cfd37709",
+      "test_only_repair_scientific_result_changed": false
+    }
+  }
+}

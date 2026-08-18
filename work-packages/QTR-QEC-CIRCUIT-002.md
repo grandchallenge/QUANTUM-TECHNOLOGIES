@@ -2,15 +2,28 @@
 
 ## Status
 
-`CANDIDATE_EXECUTABLE_NOT_PROMOTED`
+`REFEREE_PROMOTED_BOUNDED`
 
-Scientific execution is authorized only by Council contract #82 and Human Steward authorization comment `5323092968`:
+Referee-promoted bounded representation authority is recorded only in the documentary overlay:
+
+`reviews/QTR-QEC-CIRCUIT-REVIEW-002/promotion-record.json`
+
+The immutable scientific registry and evidence remain exactly `candidate_executable_not_promoted`; documentary promotion does not rewrite those scientific snapshots.
+
+Scientific execution was authorized only by Council contract #82 and Human Steward authorization comment `5323092968`:
 
 `ADOPT_WITH_AMENDMENTS__AUTHORIZE_QEC_CIRCUIT_002_ONLY`
 
-Execution docket: #83.
+Documentary promotion was separately authorized on Issue #86 by Human Steward comment `5335168196`:
 
-Protected starting `main`: `82027613cc966c755c4af8420d0584b5b79fa1e4`.
+`ADOPT_WITH_AMENDMENTS__AUTHORIZE_QEC_CIRCUIT_002_DOCUMENTARY_PROMOTION_ONLY`
+
+Execution docket: #83.
+Scientific review: #85.
+Documentary referral: #86.
+
+Protected scientific merge: `e85d67619a0d739fe039cca8f271f9a32ae2f3db`.
+Reviewed exact head: `695ea1da951cd2b4f9d5a6a07c30b090cfd37709`.
 
 ## Question
 
@@ -32,7 +45,7 @@ Manifest payload SHA-256:
 
 `9ba84244f828bc0c4f9f128e54d2c89693930c2280540f9dc420ae13e964aa29`
 
-No representation may be added, removed, repaired, or retuned after width inspection.
+No representation was added, removed, repaired, or retuned after width inspection.
 
 ## Frozen scientific object
 
@@ -111,7 +124,7 @@ Thus the three predeclared exact auxiliary-state rewrites do not improve the fro
 
 All four structural audits completed. Every row stopped before inadmissible table materialization.
 
-The candidate adjudication is:
+The bounded promoted scientific result is:
 
 `TEMPORAL_PREDECLARED_DECOMPOSITION_FAMILY_EXHAUSTED`
 
@@ -143,7 +156,13 @@ Compact evidence payload SHA-256:
 
 `cb9915e3d9bb32dc5abf1705c3dc7709082b79e3c5b91b391fb2aca0e632fcc3`
 
-Scientific evidence and registry status remain `candidate_executable_not_promoted` pending exact-head review and adjudication.
+The scientific evidence and registry status remain exactly `candidate_executable_not_promoted`. The scientific merge and later documentary promotion are recorded outside those immutable scientific files.
+
+## Review and replay provenance
+
+The exact reviewed scientific head was `695ea1da951cd2b4f9d5a6a07c30b090cfd37709`; Referee scientific disposition comment `5334661008` approved only the bounded scientific merge. Protected merge readback fixed scientific merge `e85d67619a0d739fe039cca8f271f9a32ae2f3db`.
+
+Authoritative exact-head machine evidence includes exact decomposition replay run `32096861740`, GCL conformance run `32096862004`, QTR validation run `32096861753`, and CodeQL receipt comment `5334640843`. Earlier QTR attempts under run `32095587023` remain diagnostic/non-authoritative timeout provenance. The final test-only repair did not change the manifest, evaluator, evidence, registry, representation family, or scientific result.
 
 ## Explicit exclusions
 
@@ -164,8 +183,14 @@ This result creates no authority or claim for:
 - `QLDPC-FORGE`;
 - autonomous code, decoder, circuit, or architecture search.
 
-## Next governance boundary
+`QEC-CIRCUIT-003` remains unauthorized. `QLDPC-FORGE` remains unauthorized.
 
-The candidate scientific package must pass fresh exact-head replay, repository validation, GCL conformance, CodeQL, role-separated exact-head review, and Referee disposition before any scientific merge.
+## Documentary promotion boundary
 
-Any later documentary promotion is a separate governance operation. `QEC-CIRCUIT-003` and `QLDPC-FORGE` remain gated regardless of this result.
+The documentary overlay may promote only the bounded scientific result and its completed provenance chain. It does not convert the underlying scientific status strings into promotion authority.
+
+Final documentary promotion, if merged after fresh exact-head gates and documentary review, is represented only by:
+
+`reviews/QTR-QEC-CIRCUIT-REVIEW-002/promotion-record.json`
+
+No downstream authority follows from that record.
