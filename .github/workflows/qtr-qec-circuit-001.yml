@@ -8,7 +8,9 @@ on:
       - "registry/qec-circuit-001.json"
       - "reference/qec_circuit_001.py"
       - "reference/qec_circuit_001_exact.py"
+      - "reference/qec_circuit_001_evidence.py"
       - "tests/test_qec_circuit_001.py"
+      - "tests/test_qec_circuit_001_evidence.py"
       - "evidence/QEC-CIRCUIT-001-report.json"
       - "work-packages/QTR-QEC-CIRCUIT-001.md"
       - ".github/workflows/qtr-qec-circuit-001.yml"
@@ -21,7 +23,9 @@ on:
       - "registry/qec-circuit-001.json"
       - "reference/qec_circuit_001.py"
       - "reference/qec_circuit_001_exact.py"
+      - "reference/qec_circuit_001_evidence.py"
       - "tests/test_qec_circuit_001.py"
+      - "tests/test_qec_circuit_001_evidence.py"
       - "evidence/QEC-CIRCUIT-001-report.json"
       - "work-packages/QTR-QEC-CIRCUIT-001.md"
       - ".github/workflows/qtr-qec-circuit-001.yml"
@@ -37,6 +41,8 @@ env:
   SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
   MANIFEST_PAYLOAD_SHA256: 15962fa93eb92632e760e62a54fbd03a8322fb09b8c3b41de2f0b4225fb52dfb
   AMENDMENT_PAYLOAD_SHA256: 8be8637ef976c9096b22259f0f849e2350a997b80038f4815302fbefa5f2ad19
+  COMPACT_EVIDENCE_PAYLOAD_SHA256: e7c6f3479f5f06b56df95452833e22b59a9db97a9de5d18491c040238f36fed0
+  FULL_REPORT_PAYLOAD_SHA256: 6138aaf0630a5e222c8ae8688d03ce5a48015d506bfc5000e3e19b3f93fb0d6f
   QUARANTINED_RUN_ID: "32085478805"
   LDPC_SDIST_SHA256: 3b2652aa993ab71672d680ac76ee2dcf3dc289fc5d11c07d060e5f838d8c3601
   BPOSD_WHEEL_SHA256: 80e439246c11ca824610f9bc7858c68eb1f8a6b7cbb71760cf6c86e03c47ff5d
@@ -63,7 +69,9 @@ jobs:
         run: python reference/qec_circuit_001_exact.py --static-only --output /tmp/QEC-CIRCUIT-001-static.json
 
       - name: Run fail-closed temporal tests
-        run: python -m unittest tests.test_qec_circuit_001 -v
+        run: |
+          python -m unittest tests.test_qec_circuit_001 -v
+          python -m unittest tests.test_qec_circuit_001_evidence -v
 
       - name: Download and verify frozen decoder packages
         run: |
@@ -197,12 +205,17 @@ jobs:
           name: qec-circuit-preflight
           path: /tmp/qec-circuit-preflight
 
-      - name: Assemble bounded amended temporal report
+      - name: Assemble bounded amended temporal report and verify candidate projection
         run: |
           python reference/qec_circuit_001_exact.py \
             --assemble /tmp/qec-circuit-cells \
             --output /tmp/QEC-CIRCUIT-001-report.json
+          python reference/qec_circuit_001_evidence.py \
+            --report /tmp/QEC-CIRCUIT-001-report.json \
+            --output /tmp/QEC-CIRCUIT-001-committed-projection.json \
+            --check-evidence evidence/QEC-CIRCUIT-001-report.json
           python -m unittest tests.test_qec_circuit_001 -v
+          python -m unittest tests.test_qec_circuit_001_evidence -v
 
       - name: Write exact-head amended receipt
         run: |
@@ -215,8 +228,9 @@ jobs:
           subject = os.environ["SUBJECT_SHA"]
           runtime = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
           report = json.loads(Path("/tmp/QEC-CIRCUIT-001-report.json").read_text())
+          evidence = json.loads(Path("/tmp/QEC-CIRCUIT-001-committed-projection.json").read_text())
           receipt = {
-              "receipt_version": "0.2.0",
+              "receipt_version": "0.3.0",
               "experiment_id": "QEC-CIRCUIT-001",
               "execution_mode": "amended_three_round_phenomenological_repeated_syndrome_exact_substrate_plus_three_pinned_conventional_rows",
               "evaluated_commit": subject,
@@ -227,6 +241,7 @@ jobs:
               "quarantined_workflow_run": int(os.environ["QUARANTINED_RUN_ID"]),
               "quarantined_results_admitted": False,
               "report_payload_sha256": report["payload_sha256"],
+              "committed_evidence_payload_sha256": evidence["payload_sha256"],
               "temporal_tcm_status": report["temporal_tcm"]["status"],
               "ldpc_sdist_sha256": os.environ["LDPC_SDIST_SHA256"],
               "bposd_wheel_sha256": os.environ["BPOSD_WHEEL_SHA256"],
@@ -237,6 +252,10 @@ jobs:
           }
           if not receipt["exact_head_equal"]:
               raise SystemExit("QEC-CIRCUIT-001 exact-head mismatch")
+          if receipt["report_payload_sha256"] != os.environ["FULL_REPORT_PAYLOAD_SHA256"]:
+              raise SystemExit("QEC-CIRCUIT-001 full report payload mismatch")
+          if receipt["committed_evidence_payload_sha256"] != os.environ["COMPACT_EVIDENCE_PAYLOAD_SHA256"]:
+              raise SystemExit("QEC-CIRCUIT-001 compact evidence payload mismatch")
           if report.get("manifest_amendment_payload_sha256") != os.environ["AMENDMENT_PAYLOAD_SHA256"]:
               raise SystemExit("QEC-CIRCUIT-001 amendment binding mismatch")
           if receipt["temporal_tcm_status"] != "TEMPORAL_TCM_EXACT_BOUND_EXHAUSTED":
@@ -252,6 +271,7 @@ jobs:
           name: QEC-CIRCUIT-001-exact-head
           path: |
             /tmp/QEC-CIRCUIT-001-report.json
+            /tmp/QEC-CIRCUIT-001-committed-projection.json
             /tmp/QEC-CIRCUIT-001-exact-head.json
             /tmp/qec-circuit-preflight/QEC-CIRCUIT-001-static.json
             /tmp/qec-circuit-cells
