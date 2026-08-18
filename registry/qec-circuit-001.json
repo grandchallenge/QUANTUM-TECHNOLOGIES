@@ -1,0 +1,72 @@
+{
+  "experiments": [
+    {
+      "adjudication": {
+        "primary_outcome": "TEMPORAL_SUBSTRATE_CERTIFIED__CONVENTIONAL_ROWS_COMPLETED__TCM_EXACT_BOUND_EXHAUSTED",
+        "secondary_outcomes": [
+          "TEMPORAL_DETECTOR_FIBER_AMBIGUITY_RETAINED",
+          "TEMPORAL_CONVENTIONAL_BP_ROWS_COMPLETED",
+          "TEMPORAL_TCM_EXACT_BOUND_EXHAUSTED"
+        ]
+      },
+      "authority": {
+        "authorization_comment": 5321917311,
+        "authorization_issue": 76,
+        "execution_issue": 77,
+        "protected_start_main": "b1e6a45073842ac498b476f6c8c1d31b133e553a",
+        "referee_comment": 5321884229
+      },
+      "claim_boundary": {
+        "conventional_pairwise_quality_defined": true,
+        "gate_level_claim": false,
+        "hardware_claim": false,
+        "later_qec_circuit_subgate_authorized": false,
+        "qldpc_forge_authorized": false,
+        "runtime_or_memory_superiority": false,
+        "tcm_quality_defined": false,
+        "tcm_vs_conventional_quality_ordering_defined": false,
+        "threshold_claim": false
+      },
+      "evidence": {
+        "committed_projection_path": "evidence/QEC-CIRCUIT-001-report.json",
+        "committed_projection_payload_sha256": "e7c6f3479f5f06b56df95452833e22b59a9db97a9de5d18491c040238f36fed0",
+        "full_exact_report_payload_sha256": "6138aaf0630a5e222c8ae8688d03ce5a48015d506bfc5000e3e19b3f93fb0d6f"
+      },
+      "experiment_id": "QEC-CIRCUIT-001",
+      "manifest": {
+        "amendment_path": "registry/qec-circuit-001-manifest-amendment-001.json",
+        "amendment_payload_sha256": "8be8637ef976c9096b22259f0f849e2350a997b80038f4815302fbefa5f2ad19",
+        "base_first_commit": "ce36f40cd33d665084bd3cf2f744a7cae94bc76c",
+        "base_path": "registry/qec-circuit-001-manifest.json",
+        "base_payload_sha256": "15962fa93eb92632e760e62a54fbd03a8322fb09b8c3b41de2f0b4225fb52dfb",
+        "quarantined_workflow_run": 32085478805
+      },
+      "methods": {
+        "conventional": [
+          "TEMP_BP_MIN_SUM",
+          "TEMP_BP_OSD_CS_7",
+          "TEMP_BP_SUM_PRODUCT"
+        ],
+        "tcm": [
+          "TEMP_TCM_EXACT"
+        ]
+      },
+      "status": "candidate_executable_not_promoted",
+      "surface": {
+        "code": "[[18,4,4]]",
+        "corpus_size": 2851,
+        "detector_bits": 28,
+        "fault_coordinates": 75,
+        "noise_model": "three_round_phenomenological_repeated_syndrome_plus_perfect_terminal_readout",
+        "role": "bounded_temporal_substrate_and_conventional_quality_with_tcm_reach_status"
+      },
+      "temporal_tcm": {
+        "frozen_peak_joint_table_cap": 1048576,
+        "induced_width": 34,
+        "predicted_peak_joint_table_entries": 34359738368,
+        "status": "TEMPORAL_TCM_EXACT_BOUND_EXHAUSTED"
+      }
+    }
+  ],
+  "registry_version": "0.1.0"
+}

@@ -1,0 +1,280 @@
+name: QEC-CIRCUIT-001 exact replay
+
+on:
+  pull_request:
+    paths:
+      - "registry/qec-circuit-001-manifest.json"
+      - "registry/qec-circuit-001-manifest-amendment-001.json"
+      - "registry/qec-circuit-001.json"
+      - "reference/qec_circuit_001.py"
+      - "reference/qec_circuit_001_exact.py"
+      - "reference/qec_circuit_001_evidence.py"
+      - "tests/test_qec_circuit_001.py"
+      - "tests/test_qec_circuit_001_evidence.py"
+      - "evidence/QEC-CIRCUIT-001-report.json"
+      - "work-packages/QTR-QEC-CIRCUIT-001.md"
+      - ".github/workflows/qtr-qec-circuit-001.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "registry/qec-circuit-001-manifest.json"
+      - "registry/qec-circuit-001-manifest-amendment-001.json"
+      - "registry/qec-circuit-001.json"
+      - "reference/qec_circuit_001.py"
+      - "reference/qec_circuit_001_exact.py"
+      - "reference/qec_circuit_001_evidence.py"
+      - "tests/test_qec_circuit_001.py"
+      - "tests/test_qec_circuit_001_evidence.py"
+      - "evidence/QEC-CIRCUIT-001-report.json"
+      - "work-packages/QTR-QEC-CIRCUIT-001.md"
+      - ".github/workflows/qtr-qec-circuit-001.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qec-circuit-001-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  MANIFEST_PAYLOAD_SHA256: 15962fa93eb92632e760e62a54fbd03a8322fb09b8c3b41de2f0b4225fb52dfb
+  AMENDMENT_PAYLOAD_SHA256: 8be8637ef976c9096b22259f0f849e2350a997b80038f4815302fbefa5f2ad19
+  COMPACT_EVIDENCE_PAYLOAD_SHA256: e7c6f3479f5f06b56df95452833e22b59a9db97a9de5d18491c040238f36fed0
+  FULL_REPORT_PAYLOAD_SHA256: 6138aaf0630a5e222c8ae8688d03ce5a48015d506bfc5000e3e19b3f93fb0d6f
+  QUARANTINED_RUN_ID: "32085478805"
+  LDPC_SDIST_SHA256: 3b2652aa993ab71672d680ac76ee2dcf3dc289fc5d11c07d060e5f838d8c3601
+  BPOSD_WHEEL_SHA256: 80e439246c11ca824610f9bc7858c68eb1f8a6b7cbb71760cf6c86e03c47ff5d
+
+jobs:
+  preflight:
+    name: temporal-preflight
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.10.14"
+
+      - name: Assert exact subject checkout
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+
+      - name: Replay amended temporal substrate before authoritative decoder execution
+        run: python reference/qec_circuit_001_exact.py --static-only --output /tmp/QEC-CIRCUIT-001-static.json
+
+      - name: Run fail-closed temporal tests
+        run: |
+          python -m unittest tests.test_qec_circuit_001 -v
+          python -m unittest tests.test_qec_circuit_001_evidence -v
+
+      - name: Download and verify frozen decoder packages
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/qec-circuit-pkgs
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import urllib.request
+          from pathlib import Path
+
+          targets = [
+              ("ldpc", "0.1.53", "ldpc-0.1.53.tar.gz", os.environ["LDPC_SDIST_SHA256"]),
+              ("bposd", "1.6", "bposd-1.6-py3-none-any.whl", os.environ["BPOSD_WHEEL_SHA256"]),
+          ]
+          root = Path("/tmp/qec-circuit-pkgs")
+          for project, version, filename, expected in targets:
+              with urllib.request.urlopen(f"https://pypi.org/pypi/{project}/{version}/json") as response:
+                  release = json.load(response)
+              matches = [item for item in release["urls"] if item["filename"] == filename]
+              if len(matches) != 1:
+                  raise SystemExit(f"expected exactly one PyPI artifact for {filename}")
+              item = matches[0]
+              if item["digests"]["sha256"] != expected:
+                  raise SystemExit(f"PyPI metadata hash mismatch for {filename}")
+              path = root / filename
+              urllib.request.urlretrieve(item["url"], path)
+              observed = hashlib.sha256(path.read_bytes()).hexdigest()
+              if observed != expected:
+                  raise SystemExit(f"downloaded hash mismatch for {filename}: {observed}")
+              print(filename, observed)
+          PY
+
+      - name: Preserve amended preflight and verified package artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qec-circuit-preflight
+          path: |
+            /tmp/QEC-CIRCUIT-001-static.json
+            /tmp/qec-circuit-pkgs
+          if-no-files-found: error
+          retention-days: 90
+
+  conventional:
+    name: temporal-${{ matrix.method }}
+    needs: preflight
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        method: [TEMP_BP_MIN_SUM, TEMP_BP_OSD_CS_7, TEMP_BP_SUM_PRODUCT]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.10.14"
+
+      - name: Assert exact subject checkout
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+
+      - name: Restore verified decoder packages
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: qec-circuit-preflight
+          path: /tmp/qec-circuit-preflight
+
+      - name: Reverify and install exact package environment
+        run: |
+          set -euo pipefail
+          PKG=/tmp/qec-circuit-preflight/qec-circuit-pkgs
+          echo "$LDPC_SDIST_SHA256  $PKG/ldpc-0.1.53.tar.gz" | sha256sum -c -
+          echo "$BPOSD_WHEEL_SHA256  $PKG/bposd-1.6-py3-none-any.whl" | sha256sum -c -
+          python -m pip install "$PKG/ldpc-0.1.53.tar.gz" "$PKG/bposd-1.6-py3-none-any.whl"
+          python - <<'PY'
+          import importlib.metadata
+          import ldpc
+          assert str(ldpc.__version__).strip() == "0.1.53"
+          assert importlib.metadata.version("ldpc") == "0.1.53"
+          assert importlib.metadata.version("bposd") == "1.6"
+          PY
+
+      - name: Execute one authoritative amended conventional row
+        run: |
+          mkdir -p /tmp/qec-circuit-cell
+          python reference/qec_circuit_001_exact.py \
+            --method "${{ matrix.method }}" \
+            --output "/tmp/qec-circuit-cell/${{ matrix.method }}.json"
+
+      - name: Preserve amended temporal row result
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qec-circuit-cell-${{ matrix.method }}
+          path: /tmp/qec-circuit-cell
+          if-no-files-found: error
+          retention-days: 90
+
+  aggregate:
+    name: temporal-exact
+    needs: [preflight, conventional]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.10.14"
+
+      - name: Assert exact subject checkout
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+
+      - name: Restore authoritative temporal row results
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: qec-circuit-cell-*
+          path: /tmp/qec-circuit-cells
+          merge-multiple: true
+
+      - name: Restore amended preflight artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: qec-circuit-preflight
+          path: /tmp/qec-circuit-preflight
+
+      - name: Assemble bounded amended temporal report and verify candidate projection
+        run: |
+          python reference/qec_circuit_001_exact.py \
+            --assemble /tmp/qec-circuit-cells \
+            --output /tmp/QEC-CIRCUIT-001-report.json
+          python reference/qec_circuit_001_evidence.py \
+            --report /tmp/QEC-CIRCUIT-001-report.json \
+            --output /tmp/QEC-CIRCUIT-001-committed-projection.json \
+            --check-evidence evidence/QEC-CIRCUIT-001-report.json
+          python -m unittest tests.test_qec_circuit_001 -v
+          python -m unittest tests.test_qec_circuit_001_evidence -v
+
+      - name: Write exact-head amended receipt
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          subject = os.environ["SUBJECT_SHA"]
+          runtime = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+          report = json.loads(Path("/tmp/QEC-CIRCUIT-001-report.json").read_text())
+          evidence = json.loads(Path("/tmp/QEC-CIRCUIT-001-committed-projection.json").read_text())
+          receipt = {
+              "receipt_version": "0.3.0",
+              "experiment_id": "QEC-CIRCUIT-001",
+              "execution_mode": "amended_three_round_phenomenological_repeated_syndrome_exact_substrate_plus_three_pinned_conventional_rows",
+              "evaluated_commit": subject,
+              "runtime_head": runtime,
+              "exact_head_equal": subject == runtime,
+              "manifest_payload_sha256": os.environ["MANIFEST_PAYLOAD_SHA256"],
+              "manifest_amendment_payload_sha256": os.environ["AMENDMENT_PAYLOAD_SHA256"],
+              "quarantined_workflow_run": int(os.environ["QUARANTINED_RUN_ID"]),
+              "quarantined_results_admitted": False,
+              "report_payload_sha256": report["payload_sha256"],
+              "committed_evidence_payload_sha256": evidence["payload_sha256"],
+              "temporal_tcm_status": report["temporal_tcm"]["status"],
+              "ldpc_sdist_sha256": os.environ["LDPC_SDIST_SHA256"],
+              "bposd_wheel_sha256": os.environ["BPOSD_WHEEL_SHA256"],
+              "gate_level_claim": False,
+              "threshold_claim": False,
+              "runtime_or_memory_superiority_claim": False,
+              "qldpc_forge_authorized": False,
+          }
+          if not receipt["exact_head_equal"]:
+              raise SystemExit("QEC-CIRCUIT-001 exact-head mismatch")
+          if receipt["report_payload_sha256"] != os.environ["FULL_REPORT_PAYLOAD_SHA256"]:
+              raise SystemExit("QEC-CIRCUIT-001 full report payload mismatch")
+          if receipt["committed_evidence_payload_sha256"] != os.environ["COMPACT_EVIDENCE_PAYLOAD_SHA256"]:
+              raise SystemExit("QEC-CIRCUIT-001 compact evidence payload mismatch")
+          if report.get("manifest_amendment_payload_sha256") != os.environ["AMENDMENT_PAYLOAD_SHA256"]:
+              raise SystemExit("QEC-CIRCUIT-001 amendment binding mismatch")
+          if receipt["temporal_tcm_status"] != "TEMPORAL_TCM_EXACT_BOUND_EXHAUSTED":
+              raise SystemExit("QEC-CIRCUIT-001 TCM bounded status drift")
+          Path("/tmp/QEC-CIRCUIT-001-exact-head.json").write_text(
+              json.dumps(receipt, indent=2, sort_keys=True) + "\n"
+          )
+          PY
+
+      - name: Preserve exact amended temporal artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QEC-CIRCUIT-001-exact-head
+          path: |
+            /tmp/QEC-CIRCUIT-001-report.json
+            /tmp/QEC-CIRCUIT-001-committed-projection.json
+            /tmp/QEC-CIRCUIT-001-exact-head.json
+            /tmp/qec-circuit-preflight/QEC-CIRCUIT-001-static.json
+            /tmp/qec-circuit-cells
+            /tmp/qec-circuit-preflight/qec-circuit-pkgs
+          if-no-files-found: error
+          retention-days: 90

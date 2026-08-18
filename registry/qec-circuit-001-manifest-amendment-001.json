@@ -1,0 +1,116 @@
+{
+  "amendment_payload_sha256": "8be8637ef976c9096b22259f0f849e2350a997b80038f4815302fbefa5f2ad19",
+  "amendment_version": "0.1.0",
+  "base_manifest": {
+    "first_commit": "ce36f40cd33d665084bd3cf2f744a7cae94bc76c",
+    "path": "registry/qec-circuit-001-manifest.json",
+    "payload_sha256": "15962fa93eb92632e760e62a54fbd03a8322fb09b8c3b41de2f0b4225fb52dfb"
+  },
+  "claim_boundary": {
+    "family_or_asymptotic_claim": false,
+    "gate_level_claim": false,
+    "qldpc_forge_authorized": false,
+    "runtime_or_memory_superiority_claim": false,
+    "threshold_claim": false
+  },
+  "experiment_id": "QEC-CIRCUIT-001",
+  "quarantined_execution": {
+    "all_rows_must_reexecute_under_amended_contract": true,
+    "decoder_result_payloads_inspected_before_repair": false,
+    "evaluated_head": "5f623a086dc9657e8abc32926bc42b374862cd51",
+    "job_status_metadata_inspected_only": true,
+    "reason": "temporal TCM structural preflight omitted terminal logical-class selector factors and unary channel factors from the declared exact temporal TCM representation",
+    "scientific_results_admitted": false,
+    "workflow_run": 32085478805
+  },
+  "repair": {
+    "channel_probability_changed": false,
+    "conventional_decoder_contract_changed": false,
+    "corpus_changed": false,
+    "detector_map_changed": false,
+    "outcome_driven": false,
+    "tcm_semantics_changed_from_incomplete_to_complete_declared_representation": true,
+    "terminal_correctness_oracle_changed": false
+  },
+  "status": "premeasurement_specification_repair__prior_run_quarantined",
+  "temporal_tcm": {
+    "algebra": {
+      "elementary_fault_probability": "1/10",
+      "history_weight_numerator": "9**(75-hamming_weight)",
+      "kind": "exact_sum_product",
+      "name": "sum_product_bsc_p_0_1",
+      "score_direction": "maximize"
+    },
+    "correction_representative": {
+      "maximum_representative_weight": 5,
+      "rule": "lowest_hamming_weight_then_integer among 18-bit corrections with the observed terminal syndrome and winning four-bit logical selector",
+      "table_entry_count": 2048,
+      "table_sha256": "bb3b6e56891c6858684e6f61eace6d56bbbd4f26b026636197c2b8031cbafce7"
+    },
+    "factor_representation": {
+      "all_factor_scope_sha256": "cfa139dc874a162d6ad23c3ab9b48d3830b42c9ee2221676d73d0ebf8fa4f733",
+      "detector_parity_factor_count": 28,
+      "detector_scope_source": "frozen detector matrix D",
+      "factor_count": 107,
+      "factor_scope_arity_histogram": {
+        "1": 82,
+        "7": 7,
+        "8": 14,
+        "12": 2,
+        "18": 2
+      },
+      "logical_selector_scope_sha256": "1e9f79b2a4fb270f461d09de428f9faa54a8627f517a078290be0fcdd712cb38",
+      "terminal_logical_selector_factor_count": 4,
+      "unary_channel_factor_count": 75,
+      "variable_count": 75
+    },
+    "logical_selector": {
+      "basis_bitstrings": [
+        "101110001100000000",
+        "101011110000000000",
+        "011000010010000000",
+        "110000100100000000"
+      ],
+      "basis_sha256": "8604b04e58cf735de4a7a4622bfd09eb78876b321ad4977c39c6e9ed36eed51a",
+      "class_count_per_terminal_syndrome": 16,
+      "definition": "lambda_j = parity(P_data(x) AND protected_logical_Z_j), j=0..3",
+      "selector_bits": 4
+    },
+    "row": "TEMP_TCM_EXACT",
+    "semantic_objective": "aggregate exact likelihood mass over all 75-bit temporal fault histories consistent with the 28-bit detector input, grouped by the four protected terminal logical-selector parities; choose a winning terminal logical class, then return its frozen deterministic terminal correction representative",
+    "structural_preflight": {
+      "frozen_peak_joint_table_cap": 1048576,
+      "intrinsic_intractability_claim": false,
+      "orders": {
+        "deterministic_min_degree": {
+          "fill_edges_inserted": 576,
+          "induced_width": 39,
+          "order_sha256": "23c0c1ef08467158695efa47aa8679b0000d371f674c51d20fc5a82fcbe66631",
+          "peak_joint_arity": 40,
+          "peak_joint_table_entries": 1099511627776
+        },
+        "deterministic_min_fill": {
+          "fill_edges_inserted": 526,
+          "induced_width": 34,
+          "order_sha256": "49ade42ee557a2b2364ed2dfc5ba319a0670451a8e36e8e2d2d7da485212e4ea",
+          "peak_joint_arity": 35,
+          "peak_joint_table_entries": 34359738368
+        },
+        "lexicographic": {
+          "fill_edges_inserted": 1199,
+          "induced_width": 43,
+          "order_sha256": "a933f9e444fb1546a40ad50e1dbf811d2acfb71d2eb503afcf5318efcc343fb9",
+          "peak_joint_arity": 44,
+          "peak_joint_table_entries": 17592186044416
+        }
+      },
+      "primary_order": "deterministic_min_fill",
+      "status": "TEMPORAL_TCM_EXACT_BOUND_EXHAUSTED",
+      "stopped_before_table_materialization": true
+    },
+    "tie_semantics": {
+      "deterministic_default": "lowest_integer_four_bit_logical_selector",
+      "retain_all_maximizing_logical_selectors": true
+    }
+  }
+}

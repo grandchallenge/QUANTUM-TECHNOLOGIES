@@ -1,0 +1,159 @@
+{
+  "adjudication_candidate": "TEMPORAL_SUBSTRATE_CERTIFIED__CONVENTIONAL_ROWS_COMPLETED__TCM_EXACT_BOUND_EXHAUSTED",
+  "authority": {
+    "council_issue": 76,
+    "disposition": "ADOPT_WITH_AMENDMENTS__AUTHORIZE_QEC_CIRCUIT_001_ONLY",
+    "execution_issue": 77,
+    "human_steward_authorization_comment": 5321917311,
+    "protected_start_main": "b1e6a45073842ac498b476f6c8c1d31b133e553a"
+  },
+  "claim_boundary": {
+    "adaptive_order_search_authorized": false,
+    "ancilla_or_hook_error_claim": false,
+    "autonomous_search_authorized": false,
+    "error_rate_sweep_authorized": false,
+    "family_or_asymptotic_claim": false,
+    "full_pauli_claim": false,
+    "gate_level_syndrome_extraction_claim": false,
+    "gate_propagation_claim": false,
+    "hardware_noise_claim": false,
+    "later_qec_circuit_subgate_authorized": false,
+    "learned_decoder_authorized": false,
+    "phenomenological_repeated_syndrome_fixture_only": true,
+    "qldpc_forge_authorized": false,
+    "round_count_scaling_claim": false,
+    "runtime_or_memory_superiority_claim": false,
+    "threshold_or_pseudothreshold_claim": false
+  },
+  "comparison_boundary": {
+    "conventional_vs_tcm_quality_ordering_defined": false,
+    "gate_level_claim": false,
+    "runtime_or_memory_superiority_claim": false,
+    "tcm_quality_defined": false,
+    "tcm_reason": "TEMPORAL_TCM_EXACT_BOUND_EXHAUSTED",
+    "threshold_claim": false
+  },
+  "conventional_methods": {
+    "TEMP_BP_MIN_SUM": {
+      "by_elementary_fault_weight": {
+        "0": {"correction_valued": 1, "declared_failures": 0, "inputs": 1, "oracle_failure": 0, "oracle_success": 1},
+        "1": {"correction_valued": 75, "declared_failures": 0, "inputs": 75, "oracle_failure": 0, "oracle_success": 75},
+        "2": {"correction_valued": 2775, "declared_failures": 0, "inputs": 2775, "oracle_failure": 421, "oracle_success": 2354}
+      },
+      "correction_valued": 2851,
+      "declared_failures": 0,
+      "detector_consistent": 2657,
+      "detector_inconsistent": 194,
+      "interface_status": "CERTIFIED",
+      "oracle_failure": 421,
+      "oracle_success": 2430,
+      "terminal_syndrome_consistent": 2689,
+      "terminal_syndrome_inconsistent": 162
+    },
+    "TEMP_BP_OSD_CS_7": {
+      "by_elementary_fault_weight": {
+        "0": {"correction_valued": 1, "declared_failures": 0, "inputs": 1, "oracle_failure": 0, "oracle_success": 1},
+        "1": {"correction_valued": 75, "declared_failures": 0, "inputs": 75, "oracle_failure": 0, "oracle_success": 75},
+        "2": {"correction_valued": 2775, "declared_failures": 0, "inputs": 2775, "oracle_failure": 331, "oracle_success": 2444}
+      },
+      "correction_valued": 2851,
+      "declared_failures": 0,
+      "detector_consistent": 2851,
+      "detector_inconsistent": 0,
+      "interface_status": "CERTIFIED",
+      "oracle_failure": 331,
+      "oracle_success": 2520,
+      "terminal_syndrome_consistent": 2851,
+      "terminal_syndrome_inconsistent": 0
+    },
+    "TEMP_BP_SUM_PRODUCT": {
+      "by_elementary_fault_weight": {
+        "0": {"correction_valued": 1, "declared_failures": 0, "inputs": 1, "oracle_failure": 0, "oracle_success": 1},
+        "1": {"correction_valued": 75, "declared_failures": 0, "inputs": 75, "oracle_failure": 0, "oracle_success": 75},
+        "2": {"correction_valued": 2775, "declared_failures": 0, "inputs": 2775, "oracle_failure": 1115, "oracle_success": 1660}
+      },
+      "correction_valued": 2851,
+      "declared_failures": 0,
+      "detector_consistent": 1655,
+      "detector_inconsistent": 1196,
+      "interface_status": "CERTIFIED",
+      "oracle_failure": 1115,
+      "oracle_success": 1736,
+      "terminal_syndrome_consistent": 1736,
+      "terminal_syndrome_inconsistent": 1115
+    }
+  },
+  "conventional_pairwise": {
+    "TEMP_BP_MIN_SUM__vs__TEMP_BP_OSD_CS_7": {
+      "both_failure": 331,
+      "both_success": 2430,
+      "left_only_success": 0,
+      "matched_correction_valued_inputs": 2851,
+      "net_left_minus_right": -90,
+      "right_only_success": 90
+    },
+    "TEMP_BP_MIN_SUM__vs__TEMP_BP_SUM_PRODUCT": {
+      "both_failure": 411,
+      "both_success": 1726,
+      "left_only_success": 704,
+      "matched_correction_valued_inputs": 2851,
+      "net_left_minus_right": 694,
+      "right_only_success": 10
+    },
+    "TEMP_BP_OSD_CS_7__vs__TEMP_BP_SUM_PRODUCT": {
+      "both_failure": 321,
+      "both_success": 1726,
+      "left_only_success": 794,
+      "matched_correction_valued_inputs": 2851,
+      "net_left_minus_right": 784,
+      "right_only_success": 10
+    }
+  },
+  "experiment_id": "QEC-CIRCUIT-001",
+  "manifest_package": {
+    "amendment_payload_sha256": "8be8637ef976c9096b22259f0f849e2350a997b80038f4815302fbefa5f2ad19",
+    "base_manifest_payload_sha256": "15962fa93eb92632e760e62a54fbd03a8322fb09b8c3b41de2f0b4225fb52dfb",
+    "quarantined_results_admitted": false,
+    "quarantined_workflow_run": 32085478805
+  },
+  "measurement_origin": {
+    "artifact_digest": "sha256:f851d683b1f442ed2251579d3212f239386134aa1d034bb8c30155eee0c8498d",
+    "bound_full_exact_report_payload_sha256": "6138aaf0630a5e222c8ae8688d03ce5a48015d506bfc5000e3e19b3f93fb0d6f",
+    "exact_head_artifact": 9306683617,
+    "head": "64ef8fd367e5426f4cfd9839cf0ee2817fd65643",
+    "workflow_run": 32085787908
+  },
+  "payload_sha256": "e7c6f3479f5f06b56df95452833e22b59a9db97a9de5d18491c040238f36fed0",
+  "report_version": "0.1.0",
+  "status": "candidate_executable_not_promoted",
+  "substrate": {
+    "authoritative_histories_in_ambiguous_fibers": 405,
+    "code": "[[18,4,4]]",
+    "corpus_record_sha256": "137550c93359f8a9153cffa5e2ebdad926e2d07e27b203fe3aaf39a972d12eb7",
+    "corpus_size": 2851,
+    "detector_bit_count": 28,
+    "detector_map_rank": 28,
+    "detector_map_sha256": "960701757ef5c223d4ed96070508472e4f37feef92aec69d15b175bc078dbcb7",
+    "distinct_detector_vectors": 2517,
+    "fault_coordinate_count": 75,
+    "fiber_size_histogram": {"1": 2320, "2": 60, "3": 137},
+    "fibers_with_multiple_terminal_stabilizer_classes": 135,
+    "kind": "three_round_phenomenological_repeated_syndrome_temporal_fixture",
+    "sector": "X_error"
+  },
+  "temporal_tcm": {
+    "algebra": "sum_product_bsc_p_0_1",
+    "correction_representative_table_sha256": "bb3b6e56891c6858684e6f61eace6d56bbbd4f26b026636197c2b8031cbafce7",
+    "factor_count": 107,
+    "factor_scope_sha256": "cfa139dc874a162d6ad23c3ab9b48d3830b42c9ee2221676d73d0ebf8fa4f733",
+    "frozen_peak_joint_table_cap": 1048576,
+    "induced_width": 34,
+    "intrinsic_intractability_claim": false,
+    "peak_joint_arity": 35,
+    "predicted_peak_joint_table_entries": 34359738368,
+    "primary_order": "deterministic_min_fill",
+    "quality_defined": false,
+    "status": "TEMPORAL_TCM_EXACT_BOUND_EXHAUSTED",
+    "stopped_before_table_materialization": true
+  }
+}
