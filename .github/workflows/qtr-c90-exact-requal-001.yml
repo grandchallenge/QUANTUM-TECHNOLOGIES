@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - 'registry/qtr-c90-exact-requal-001-manifest.json'
+      - 'registry/qtr-c90-exact-requal-001.json'
+      - 'evidence/QTR-C90-EXACT-REQUAL-001-report.json'
       - 'configs/compute/qtr_c90_exact_requal_001_job.json'
       - 'reference/qtr_c90_exact_requal_001.py'
       - 'colab/qtr_c90_exact_remote_job.py'
@@ -52,6 +54,32 @@ jobs:
           assert r["scientific_semantic_validation"]["performed"] is False
           print("phase_m_static_status=",r["phase_m_static_adjudication"]["status"])
           print("payload_sha256=",r["payload_sha256"])
+          PY
+      - name: Verify committed candidate evidence
+        run: |
+          python - "$RUNNER_TEMP/QTR-C90-EXACT-REQUAL-001-static.json" <<'PY'
+          import hashlib,json,sys
+          static=json.load(open(sys.argv[1]))
+          ev=json.load(open("evidence/QTR-C90-EXACT-REQUAL-001-report.json"))
+          claimed=ev.pop("payload_sha256")
+          raw=json.dumps(ev,sort_keys=True,separators=(",",":"),ensure_ascii=True,allow_nan=False).encode()
+          assert hashlib.sha256(raw).hexdigest()==claimed
+          ev["payload_sha256"]=claimed
+          assert ev["status"]=="candidate_executable_not_promoted"
+          assert ev["manifest_payload_sha256"]==static["manifest_payload_sha256"]
+          assert ev["protected_identity_replay"]==static["protected_identity_replay"]
+          assert ev["resource_result"]["phase_m_status"]==static["phase_m_static_adjudication"]["status"]
+          x=static["resource_ledger"]["exact_structural_counts"]
+          rr=ev["resource_result"]
+          assert rr["amended_peak_joint_table_entries"]["value"]==x["peak_joint_table_entries"]
+          assert rr["unchanged_factor_table_entry_evaluations"]["value"]==x["factor_table_entry_evaluations"]
+          assert rr["unchanged_compilation_aop_events"]["mandatory_lower_bound"]==x["mandatory_compilation_aop_lower_bound"]
+          assert rr["retained_node_prequalification"]["intern_attempt_upper_bound"]==x["node_intern_attempts"]
+          cross=static["resource_ledger"]["first_crossed_step_zero_based"]
+          assert rr["first_exact_crossing"]["step_zero_based"]==cross["factor_table_entry_evaluations"]==cross["mandatory_compilation_aop_lower_bound"]
+          assert static["phase_m_static_adjudication"]["calibration_required"] is False
+          assert static["phase_m_static_adjudication"]["phase_x_reachable"] is False
+          print("candidate_evidence_payload_sha256=",claimed)
           PY
       - name: Preserve static Phase-M candidate artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

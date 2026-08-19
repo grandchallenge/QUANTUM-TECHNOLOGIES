@@ -1,0 +1,110 @@
+{
+  "adjudication": {
+    "calibration_reached": false,
+    "downstream_authority_created": false,
+    "frozen_307_validation_reached": false,
+    "operational_failure_used_for_scientific_adjudication": false,
+    "phase_x_reached": false,
+    "physical_memory_question_reached": false,
+    "primary_outcome": "C90_MEMORY_STORAGE_QUALIFICATION_FAILED",
+    "secondary_outcome": "C90_X100_PEAK_ENTRY_REQUALIFICATION_INSUFFICIENT_UNDER_UNCHANGED_COMPILATION_LEDGER"
+  },
+  "authority": {
+    "council_issue": 91,
+    "execution_issue": 92,
+    "human_steward_comment": 5336703933,
+    "referee_comment": 5336617970
+  },
+  "claim_boundary": {
+    "accelerator_native_qec_authorized": false,
+    "asymptotic_claim": false,
+    "autonomous_search_authorized": false,
+    "changes_historical_001b_adjudication": false,
+    "controlled_approximation_authorized": false,
+    "decoder_quality_claim": false,
+    "family_scaling_claim": false,
+    "global_treewidth_claim": false,
+    "hardware_performance_claim": false,
+    "larger_rungs_authorized": false,
+    "memory_superiority_claim": false,
+    "qec_circuit_003_authorized": false,
+    "qldpc_forge_authorized": false,
+    "runtime_superiority_claim": false,
+    "single_finite_c90_requalification_only": true
+  },
+  "experiment_id": "QTR-C90-EXACT-REQUAL-001",
+  "manifest_payload_sha256": "870202c16fe1d5edea69e9af845fd306964557b6edcd4e3902a203af9820cd33",
+  "measurement": {
+    "artifact_digest": "sha256:6aacd245d661890bfb2b779163c1212de5507765a75afba6f504294f0c88feda",
+    "artifact_id": 9350225619,
+    "exact_head": "725409b738c50723be40ef2fcbaf6b1d7d06f684",
+    "host_memory_calibration_performed": false,
+    "host_memory_measurement_used": false,
+    "phase_x_performed": false,
+    "semantic_validation_performed": false,
+    "static_report_payload_sha256": "db049cd3a92beec414c54e6c4a24b38fa9c5a3a56a2610c1c40c49b860f78ec7",
+    "workflow_run_id": 32209429648
+  },
+  "payload_sha256": "5b7740eef2d5b9e8f95cbf487c3841223b7e1350d7b0f9558c9629c78357dc0c",
+  "protected_identity_replay": {
+    "c90_source_and_basis_digests": {
+      "factor_scope_sha256": "8dd0b2849491df78376a7f7eb8940efa142737caf45df1fe2104fe4929da50da",
+      "hx_sha256": "31af739c5854bd3287b3e1319fc99e4c5f220fdd5c1486420d0cb17d6fce86af",
+      "hz_sha256": "c79c2c8c3373fbc4b46b43364f403b07c1b093f98f0be1832fac0f1f571fd7ca",
+      "independent_bases_sha256": "377fae0d662372aa53372deaac9e602d4a97919150bcb3b3de65ecf714c598a8",
+      "logical_basis_sha256": "6cf0007ae20507fbd34163362e96c0e4741cc7ce0437debb542f565b151aeb8a",
+      "selector_basis_sha256": "257809cb3c37594e5d19b6f8a79018680f84bdec06ed898be45e4d1c504fb716",
+      "source_record_sha256": "f99851301f0fce2970d20ef2e4d1f054b7efbfec294de8937ec4d9e2993a04ae"
+    },
+    "min_fill_induced_width": 25,
+    "order_record_sha256": "a612ced5cb6adce4d4dab40800e48bb80b7dd1542dc5cd89d4667cb56ae6c468",
+    "predicted_peak_joint_table_entries": 67108864,
+    "validation_selector_count": 307,
+    "validation_set_sha256": "c0a675e3124ed96de66a516a2d679923b8c230c7530b80d5d431df66d781a85c"
+  },
+  "protected_start_main": "8b52c71c916e9eea4a4c76309846cdb2b4a7d55a",
+  "resource_result": {
+    "aggregate_exact_counts": {
+      "elimination_joint_assignments": 201383934,
+      "factor_table_reads": 902850558,
+      "local_factor_entries": 628,
+      "output_entries": 100691967,
+      "semiring_multiply_events": 701466624
+    },
+    "amended_peak_joint_table_entries": {
+      "cap": 104857600,
+      "pass": true,
+      "value": 67108864
+    },
+    "first_exact_crossing": {
+      "cumulative_factor_table_entry_evaluations": 134275700,
+      "cumulative_mandatory_aop_lower_bound": 2819896240,
+      "involved_factor_count": 5,
+      "joint_assignments": 67108864,
+      "output_arity": 25,
+      "step_zero_based": 15,
+      "union_arity": 26,
+      "variable": 0
+    },
+    "phase_m_status": "C90_MEMORY_STORAGE_QUALIFICATION_FAILED",
+    "reason": "EXACT_DETERMINISTIC_COMPILATION_CAP_CROSSED_PRECALIBRATION",
+    "retained_node_prequalification": {
+      "cap": 4194304,
+      "certified_pass": false,
+      "decisive_for_outcome": false,
+      "intern_attempt_upper_bound": 802159899
+    },
+    "unchanged_compilation_aop_events": {
+      "cap": 2147483648,
+      "definite_fail": true,
+      "mandatory_lower_bound": 3410023338
+    },
+    "unchanged_factor_table_entry_evaluations": {
+      "cap": 134217728,
+      "pass": false,
+      "value": 201384562
+    }
+  },
+  "schema_version": 1,
+  "status": "candidate_executable_not_promoted"
+}
