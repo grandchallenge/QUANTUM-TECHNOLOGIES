@@ -1,0 +1,49 @@
+{
+  "claim_boundary": {
+    "c90_exact_compilation_authorized": false,
+    "engineering_evidence_only": true,
+    "hardware_performance_claim": false,
+    "physical_materialization_authorized": false,
+    "promotion_authorized": false,
+    "qec_circuit_003_authorized": false,
+    "qldpc_forge_authorized": false,
+    "runtime_or_memory_superiority_claim": false,
+    "scientific_execution_authorized": false,
+    "selector_validation_authorized": false
+  },
+  "jobs": [
+    {
+      "claim_boundary": {
+        "c90_exact_compilation_authorized": false,
+        "engineering_evidence_only": true,
+        "hardware_performance_claim": false,
+        "physical_materialization_authorized": false,
+        "promotion_authorized": false,
+        "qec_circuit_003_authorized": false,
+        "qldpc_forge_authorized": false,
+        "runtime_or_memory_superiority_claim": false,
+        "scientific_execution_authorized": false,
+        "selector_validation_authorized": false
+      },
+      "enabled": false,
+      "experiment_id": "QTR-C90-EXACT-REQUAL-CANDIDATE-001",
+      "nominal_envelope_multiplier": 100,
+      "remote_timeout_seconds": 21600,
+      "required_authorization": {
+        "requirement": "separate QTR scientific execution contract and Human Steward authorization after runtime/memory prequalification",
+        "status": "UNSATISFIED"
+      },
+      "resource": {
+        "accelerator": null,
+        "variant": "CPU"
+      },
+      "schema_version": 1,
+      "scientific_backend": "cpu_reference",
+      "scientific_execution_authorized": false,
+      "workload": "c90_exact_candidate"
+    }
+  ],
+  "matrix_id": "QTR-C90-EXACT-REQUAL-CANDIDATE-001",
+  "schema_version": 1,
+  "status": "FROZEN_DISABLED_PENDING_SEPARATE_SCIENTIFIC_AUTHORITY"
+}
