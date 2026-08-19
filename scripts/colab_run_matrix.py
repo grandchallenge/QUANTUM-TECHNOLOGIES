@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 from datetime import datetime, timezone
 import json
 from pathlib import Path
@@ -78,14 +79,35 @@ def load_matrix(path: Path) -> dict:
     return matrix
 
 
-def latest_green_receipt(experiment_id: str) -> Path | None:
+def sha256_file(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            h.update(block)
+    return h.hexdigest()
+
+
+def source_head() -> str:
+    return subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+    ).strip()
+
+
+def latest_green_receipt(
+    experiment_id: str, job_path: Path, expected_source_commit: str
+) -> Path | None:
     base = ROOT / "runs" / "hosted" / experiment_id
+    expected_job_sha256 = sha256_file(job_path)
     for path in sorted(base.glob("*/experiment_receipt.json"), reverse=True):
         try:
             receipt = json.loads(path.read_text(encoding="utf-8"))
         except Exception:
             continue
-        if receipt.get("status") == "GREEN_ENGINEERING":
+        if (
+            receipt.get("status") == "GREEN_ENGINEERING"
+            and receipt.get("job_sha256") == expected_job_sha256
+            and receipt.get("source_commit") == expected_source_commit
+        ):
             return path
     return None
 
@@ -105,6 +127,7 @@ def main() -> int:
     jobs_dir.mkdir(parents=True, exist_ok=True)
 
     results = []
+    exact_source_head = source_head()
     for idx, job in enumerate(matrix["jobs"], 1):
         variant = job["resource"]["variant"]
         accel = job["resource"]["accelerator"]
@@ -118,7 +141,9 @@ def main() -> int:
             continue
 
         if args.resume:
-            receipt = latest_green_receipt(job["experiment_id"])
+            receipt = latest_green_receipt(
+                job["experiment_id"], job_path, exact_source_head
+            )
             if receipt is not None:
                 print(f"[QTR] {matrix_id}: SKIP green {job['experiment_id']} receipt={receipt}")
                 results.append({
