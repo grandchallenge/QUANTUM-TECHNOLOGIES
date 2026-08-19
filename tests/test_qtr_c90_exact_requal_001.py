@@ -3,9 +3,8 @@ from __future__ import annotations
 import importlib.util
 import json
 import sys
+import tempfile
 from pathlib import Path
-
-import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 REF = ROOT / "reference"
@@ -19,6 +18,15 @@ def load_module(name: str, path: Path):
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
+
+def assert_value_error(match: str, thunk) -> None:
+    try:
+        thunk()
+    except ValueError as exc:
+        assert match in str(exc)
+    else:
+        raise AssertionError(f"expected ValueError containing {match!r}")
 
 
 c90 = load_module("qtr_c90_exact_requal_001", REF / "qtr_c90_exact_requal_001.py")
@@ -84,29 +92,34 @@ def test_static_adjudication_fails_closed_on_unchanged_exact_cap():
     assert result["phase_x_reachable"] is False
 
 
-def test_phase_x_requires_exact_pass_receipt_same_session(tmp_path):
+def test_phase_x_requires_exact_pass_receipt_same_session():
     m = c90.load_manifest()
-    fail = {
-        "status": "C90_MEMORY_STORAGE_QUALIFICATION_FAILED",
-        "manifest_payload_sha256": c90.MANIFEST_PAYLOAD,
-        "hosted_session_identity": "SESSION-A",
-    }
-    fail["payload_sha256"] = c90.digest(fail)
-    path = tmp_path / "phase_m.json"
-    path.write_text(json.dumps(fail), encoding="utf-8")
-    with pytest.raises(ValueError, match="Phase X forbidden"):
-        c90.require_phase_m_pass(m, path, "SESSION-A")
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp) / "phase_m.json"
+        fail = {
+            "status": "C90_MEMORY_STORAGE_QUALIFICATION_FAILED",
+            "manifest_payload_sha256": c90.MANIFEST_PAYLOAD,
+            "hosted_session_identity": "SESSION-A",
+        }
+        fail["payload_sha256"] = c90.digest(fail)
+        path.write_text(json.dumps(fail), encoding="utf-8")
+        assert_value_error(
+            "Phase X forbidden",
+            lambda: c90.require_phase_m_pass(m, path, "SESSION-A"),
+        )
 
-    passed = {
-        "status": "C90_MEMORY_STORAGE_QUALIFIED_WITHIN_BOUND",
-        "manifest_payload_sha256": c90.MANIFEST_PAYLOAD,
-        "hosted_session_identity": "SESSION-A",
-    }
-    passed["payload_sha256"] = c90.digest(passed)
-    path.write_text(json.dumps(passed), encoding="utf-8")
-    with pytest.raises(ValueError, match="session mismatch"):
-        c90.require_phase_m_pass(m, path, "SESSION-B")
-    assert c90.require_phase_m_pass(m, path, "SESSION-A")["status"].endswith("WITHIN_BOUND")
+        passed = {
+            "status": "C90_MEMORY_STORAGE_QUALIFIED_WITHIN_BOUND",
+            "manifest_payload_sha256": c90.MANIFEST_PAYLOAD,
+            "hosted_session_identity": "SESSION-A",
+        }
+        passed["payload_sha256"] = c90.digest(passed)
+        path.write_text(json.dumps(passed), encoding="utf-8")
+        assert_value_error(
+            "session mismatch",
+            lambda: c90.require_phase_m_pass(m, path, "SESSION-B"),
+        )
+        assert c90.require_phase_m_pass(m, path, "SESSION-A")["status"].endswith("WITHIN_BOUND")
 
 
 def test_state_machine_has_no_recovery_edge_after_negative_phase_m():
