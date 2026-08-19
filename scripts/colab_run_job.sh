@@ -10,9 +10,13 @@ JOB="${1:-}"
   exit 2
 }
 
+VENV_PY="$ROOT/.venv/bin/python"
+COLAB_BIN="$ROOT/.venv/bin/colab"
+[[ -x "$VENV_PY" ]] || { echo "missing $VENV_PY; run scripts/bootstrap_colab_runner_env.sh" >&2; exit 2; }
+[[ -x "$COLAB_BIN" ]] || { echo "missing $COLAB_BIN; run scripts/bootstrap_colab_runner_env.sh" >&2; exit 2; }
 COLAB_AUTH="${COLAB_AUTH:-oauth2}"
 
-readarray -t META < <(python - "$JOB" <<'PY'
+readarray -t META < <("$VENV_PY" - "$JOB" <<'PY'
 import json, sys
 job=json.load(open(sys.argv[1], encoding="utf-8"))
 required={"schema_version","experiment_id","workload","resource","remote_timeout_seconds",
@@ -43,19 +47,19 @@ PAYLOAD="$LOCAL_RUN/gcl_source.tar.gz"
 MANIFEST="$LOCAL_RUN/gcl_manifest.json"
 cp "$JOB" "$LOCAL_RUN/gcl_job.json"
 
-python scripts/build_colab_payload.py --output "$PAYLOAD" --manifest "$MANIFEST"
+"$VENV_PY" scripts/build_colab_payload.py --output "$PAYLOAD" --manifest "$MANIFEST"
 
 ALLOCATED=0
 cleanup() {
   rc=$?
   set +e
   if [[ "$ALLOCATED" -eq 1 ]]; then
-    colab --auth="$COLAB_AUTH" log -s "$SESSION" -o "$LOCAL_RUN/colab-execution.md" \
+    "$COLAB_BIN" --auth="$COLAB_AUTH" log -s "$SESSION" -o "$LOCAL_RUN/colab-execution.md" \
       > "$LOCAL_RUN/colab-log-command.txt" 2>&1 || true
-    colab --auth="$COLAB_AUTH" stop -s "$SESSION" \
+    "$COLAB_BIN" --auth="$COLAB_AUTH" stop -s "$SESSION" \
       > "$LOCAL_RUN/colab-stop.txt" 2>&1 || true
   fi
-  colab --auth="$COLAB_AUTH" sessions > "$LOCAL_RUN/colab-sessions-after.txt" 2>&1 || true
+  "$COLAB_BIN" --auth="$COLAB_AUTH" sessions > "$LOCAL_RUN/colab-sessions-after.txt" 2>&1 || true
   exit "$rc"
 }
 trap cleanup EXIT INT TERM
@@ -63,15 +67,15 @@ trap cleanup EXIT INT TERM
 echo "[QTR] allocating session=$SESSION variant=$VARIANT accelerator=${ACCELERATOR:-none}"
 case "$VARIANT" in
   CPU|DEFAULT)
-    colab --auth="$COLAB_AUTH" new -s "$SESSION"
+    "$COLAB_BIN" --auth="$COLAB_AUTH" new -s "$SESSION"
     ;;
   GPU)
     [[ -n "$ACCELERATOR" ]] || { echo "GPU accelerator missing" >&2; exit 3; }
-    colab --auth="$COLAB_AUTH" new -s "$SESSION" --gpu "$ACCELERATOR"
+    "$COLAB_BIN" --auth="$COLAB_AUTH" new -s "$SESSION" --gpu "$ACCELERATOR"
     ;;
   TPU)
     [[ -n "$ACCELERATOR" ]] || { echo "TPU accelerator missing" >&2; exit 3; }
-    colab --auth="$COLAB_AUTH" new -s "$SESSION" --tpu "$ACCELERATOR"
+    "$COLAB_BIN" --auth="$COLAB_AUTH" new -s "$SESSION" --tpu "$ACCELERATOR"
     ;;
   *)
     echo "unsupported resource variant: $VARIANT" >&2
@@ -80,24 +84,24 @@ case "$VARIANT" in
 esac
 ALLOCATED=1
 
-colab --auth="$COLAB_AUTH" status -s "$SESSION" > "$LOCAL_RUN/colab-status.txt"
+"$COLAB_BIN" --auth="$COLAB_AUTH" status -s "$SESSION" > "$LOCAL_RUN/colab-status.txt"
 
-colab --auth="$COLAB_AUTH" upload -s "$SESSION" "$PAYLOAD" /content/gcl_source.tar.gz
-colab --auth="$COLAB_AUTH" upload -s "$SESSION" "$LOCAL_RUN/gcl_job.json" /content/gcl_job.json
-colab --auth="$COLAB_AUTH" upload -s "$SESSION" "$MANIFEST" /content/gcl_manifest.json
+"$COLAB_BIN" --auth="$COLAB_AUTH" upload -s "$SESSION" "$PAYLOAD" /content/gcl_source.tar.gz
+"$COLAB_BIN" --auth="$COLAB_AUTH" upload -s "$SESSION" "$LOCAL_RUN/gcl_job.json" /content/gcl_job.json
+"$COLAB_BIN" --auth="$COLAB_AUTH" upload -s "$SESSION" "$MANIFEST" /content/gcl_manifest.json
 
 set +e
-colab --auth="$COLAB_AUTH" exec -s "$SESSION" -f "$ROOT/colab/qtr_remote_job.py" \
+"$COLAB_BIN" --auth="$COLAB_AUTH" exec -s "$SESSION" -f "$ROOT/colab/qtr_remote_job.py" \
   --timeout "$REMOTE_TIMEOUT" \
   > >(tee "$LOCAL_RUN/remote-stdout.txt") \
   2> >(tee "$LOCAL_RUN/remote-stderr.txt" >&2)
 REMOTE_RC=$?
 set -e
 
-colab --auth="$COLAB_AUTH" download -s "$SESSION" \
+"$COLAB_BIN" --auth="$COLAB_AUTH" download -s "$SESSION" \
   /content/experiment_receipt.json "$LOCAL_RUN/experiment_receipt.json" \
   > "$LOCAL_RUN/download-receipt.txt" 2>&1 || true
-colab --auth="$COLAB_AUTH" download -s "$SESSION" \
+"$COLAB_BIN" --auth="$COLAB_AUTH" download -s "$SESSION" \
   /content/gcl_output_bundle.tar.gz "$LOCAL_RUN/gcl_output_bundle.tar.gz" \
   > "$LOCAL_RUN/download-bundle.txt" 2>&1 || true
 
@@ -110,7 +114,7 @@ colab --auth="$COLAB_AUTH" download -s "$SESSION" \
   exit 12
 }
 
-python - "$LOCAL_RUN/experiment_receipt.json" "$MANIFEST" "$LOCAL_RUN/gcl_job.json" <<'PY'
+"$VENV_PY" - "$LOCAL_RUN/experiment_receipt.json" "$MANIFEST" "$LOCAL_RUN/gcl_job.json" <<'PY'
 import hashlib, json, sys
 from pathlib import Path
 receipt=json.load(open(sys.argv[1], encoding="utf-8"))
