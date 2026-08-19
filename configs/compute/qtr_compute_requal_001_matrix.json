@@ -1,0 +1,45 @@
+{
+  "claim_boundary": {
+    "changes_protected_scientific_result": false,
+    "engineering_evidence_only": true,
+    "entry_count_requalification_only": true,
+    "hardware_performance_claim": false,
+    "physical_materialization_authorized": false,
+    "promotion_authorized": false,
+    "qec_circuit_003_authorized": false,
+    "qldpc_forge_authorized": false,
+    "runtime_or_memory_superiority_claim": false,
+    "scientific_execution_authorized": false
+  },
+  "jobs": [
+    {
+      "claim_boundary": {
+        "changes_protected_scientific_result": false,
+        "engineering_evidence_only": true,
+        "entry_count_requalification_only": true,
+        "hardware_performance_claim": false,
+        "physical_materialization_authorized": false,
+        "promotion_authorized": false,
+        "qec_circuit_003_authorized": false,
+        "qldpc_forge_authorized": false,
+        "runtime_or_memory_superiority_claim": false,
+        "scientific_execution_authorized": false
+      },
+      "enabled": true,
+      "experiment_id": "QTR-COMPUTE-REQUAL-001-PREFLIGHT-CPU",
+      "nominal_envelope_multiplier": 100,
+      "remote_timeout_seconds": 3600,
+      "resource": {
+        "accelerator": null,
+        "variant": "CPU"
+      },
+      "schema_version": 1,
+      "scientific_backend": "cpu_reference",
+      "scientific_execution_authorized": false,
+      "workload": "compute_requal_preflight"
+    }
+  ],
+  "matrix_id": "QTR-COMPUTE-REQUAL-001",
+  "schema_version": 1,
+  "status": "PREQUALIFICATION_ONLY__NO_MATERIALIZATION"
+}

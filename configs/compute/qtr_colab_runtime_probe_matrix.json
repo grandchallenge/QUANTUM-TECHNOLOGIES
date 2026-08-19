@@ -1,0 +1,148 @@
+{
+  "claim_boundary": {
+    "engineering_evidence_only": true,
+    "hardware_performance_claim": false,
+    "promotion_authorized": false,
+    "qec_circuit_003_authorized": false,
+    "qldpc_forge_authorized": false,
+    "runtime_or_memory_superiority_claim": false,
+    "scientific_execution_authorized": false
+  },
+  "jobs": [
+    {
+      "claim_boundary": {
+        "engineering_evidence_only": true,
+        "hardware_performance_claim": false,
+        "promotion_authorized": false,
+        "qec_circuit_003_authorized": false,
+        "qldpc_forge_authorized": false,
+        "runtime_or_memory_superiority_claim": false,
+        "scientific_execution_authorized": false
+      },
+      "enabled": true,
+      "experiment_id": "QTR-COLAB-RUNTIME-PROBE-001-CPU",
+      "remote_timeout_seconds": 1200,
+      "resource": {
+        "accelerator": null,
+        "variant": "CPU"
+      },
+      "schema_version": 1,
+      "scientific_backend": "engineering_probe",
+      "scientific_execution_authorized": false,
+      "workload": "runtime_probe"
+    },
+    {
+      "claim_boundary": {
+        "engineering_evidence_only": true,
+        "hardware_performance_claim": false,
+        "promotion_authorized": false,
+        "qec_circuit_003_authorized": false,
+        "qldpc_forge_authorized": false,
+        "runtime_or_memory_superiority_claim": false,
+        "scientific_execution_authorized": false
+      },
+      "enabled": true,
+      "experiment_id": "QTR-COLAB-RUNTIME-PROBE-001-T4",
+      "remote_timeout_seconds": 1200,
+      "resource": {
+        "accelerator": "T4",
+        "variant": "GPU"
+      },
+      "schema_version": 1,
+      "scientific_backend": "engineering_probe",
+      "scientific_execution_authorized": false,
+      "workload": "runtime_probe"
+    },
+    {
+      "claim_boundary": {
+        "engineering_evidence_only": true,
+        "hardware_performance_claim": false,
+        "promotion_authorized": false,
+        "qec_circuit_003_authorized": false,
+        "qldpc_forge_authorized": false,
+        "runtime_or_memory_superiority_claim": false,
+        "scientific_execution_authorized": false
+      },
+      "enabled": true,
+      "experiment_id": "QTR-COLAB-RUNTIME-PROBE-001-L4",
+      "remote_timeout_seconds": 1200,
+      "resource": {
+        "accelerator": "L4",
+        "variant": "GPU"
+      },
+      "schema_version": 1,
+      "scientific_backend": "engineering_probe",
+      "scientific_execution_authorized": false,
+      "workload": "runtime_probe"
+    },
+    {
+      "claim_boundary": {
+        "engineering_evidence_only": true,
+        "hardware_performance_claim": false,
+        "promotion_authorized": false,
+        "qec_circuit_003_authorized": false,
+        "qldpc_forge_authorized": false,
+        "runtime_or_memory_superiority_claim": false,
+        "scientific_execution_authorized": false
+      },
+      "enabled": true,
+      "experiment_id": "QTR-COLAB-RUNTIME-PROBE-001-A100",
+      "remote_timeout_seconds": 1200,
+      "resource": {
+        "accelerator": "A100",
+        "variant": "GPU"
+      },
+      "schema_version": 1,
+      "scientific_backend": "engineering_probe",
+      "scientific_execution_authorized": false,
+      "workload": "runtime_probe"
+    },
+    {
+      "claim_boundary": {
+        "engineering_evidence_only": true,
+        "hardware_performance_claim": false,
+        "promotion_authorized": false,
+        "qec_circuit_003_authorized": false,
+        "qldpc_forge_authorized": false,
+        "runtime_or_memory_superiority_claim": false,
+        "scientific_execution_authorized": false
+      },
+      "enabled": true,
+      "experiment_id": "QTR-COLAB-RUNTIME-PROBE-001-TPU-V5E1",
+      "remote_timeout_seconds": 1200,
+      "resource": {
+        "accelerator": "v5e1",
+        "variant": "TPU"
+      },
+      "schema_version": 1,
+      "scientific_backend": "engineering_probe",
+      "scientific_execution_authorized": false,
+      "workload": "runtime_probe"
+    },
+    {
+      "claim_boundary": {
+        "engineering_evidence_only": true,
+        "hardware_performance_claim": false,
+        "promotion_authorized": false,
+        "qec_circuit_003_authorized": false,
+        "qldpc_forge_authorized": false,
+        "runtime_or_memory_superiority_claim": false,
+        "scientific_execution_authorized": false
+      },
+      "enabled": true,
+      "experiment_id": "QTR-COLAB-RUNTIME-PROBE-001-TPU-V6E1",
+      "remote_timeout_seconds": 1200,
+      "resource": {
+        "accelerator": "v6e1",
+        "variant": "TPU"
+      },
+      "schema_version": 1,
+      "scientific_backend": "engineering_probe",
+      "scientific_execution_authorized": false,
+      "workload": "runtime_probe"
+    }
+  ],
+  "matrix_id": "QTR-COLAB-RUNTIME-PROBE-001",
+  "schema_version": 1,
+  "status": "ENGINEERING_PROBE_ONLY"
+}
