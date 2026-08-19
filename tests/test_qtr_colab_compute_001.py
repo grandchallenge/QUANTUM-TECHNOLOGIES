@@ -74,3 +74,42 @@ def test_work_package_keeps_accelerator_and_scientific_backend_distinct():
     assert "Allocating a GPU or TPU does not cause them to execute on that accelerator." in text
     assert "separate exact-equivalence" in text
     assert "QEC-CIRCUIT-003" in text
+
+
+def test_resume_requires_exact_job_digest_and_source_commit(tmp_path):
+    old_root = matrix_mod.ROOT
+    matrix_mod.ROOT = tmp_path
+    try:
+        job_path = tmp_path / "job.json"
+        job_path.write_text('{"a":1}\n', encoding="utf-8")
+        receipt_dir = tmp_path / "runs" / "hosted" / "X" / "001"
+        receipt_dir.mkdir(parents=True)
+        receipt_path = receipt_dir / "experiment_receipt.json"
+        receipt_path.write_text(json.dumps({
+            "status": "GREEN_ENGINEERING",
+            "job_sha256": "stale",
+            "source_commit": "HEAD",
+        }), encoding="utf-8")
+        assert matrix_mod.latest_green_receipt("X", job_path, "HEAD") is None
+        receipt_path.write_text(json.dumps({
+            "status": "GREEN_ENGINEERING",
+            "job_sha256": matrix_mod.sha256_file(job_path),
+            "source_commit": "OLD",
+        }), encoding="utf-8")
+        assert matrix_mod.latest_green_receipt("X", job_path, "HEAD") is None
+        receipt_path.write_text(json.dumps({
+            "status": "GREEN_ENGINEERING",
+            "job_sha256": matrix_mod.sha256_file(job_path),
+            "source_commit": "HEAD",
+        }), encoding="utf-8")
+        assert matrix_mod.latest_green_receipt("X", job_path, "HEAD") == receipt_path
+    finally:
+        matrix_mod.ROOT = old_root
+
+
+def test_host_runner_requires_receipt_and_bundle_before_green():
+    text = (ROOT / "scripts/colab_run_job.sh").read_text(encoding="utf-8")
+    assert "missing experiment receipt" in text
+    assert "missing output bundle" in text
+    assert "receipt source commit mismatch" in text
+    assert "receipt job digest mismatch" in text
