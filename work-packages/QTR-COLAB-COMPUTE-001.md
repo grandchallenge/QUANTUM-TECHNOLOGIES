@@ -38,6 +38,17 @@ bash scripts/bootstrap_colab_runner_env.sh --rebuild
 source .venv/bin/activate
 ```
 
+One-command hosted engineering preflight:
+
+```bash
+bash scripts/run_qtr_colab_compute_preflight.sh --rebuild
+```
+
+This command runs the independent resource-discovery matrix first and the CPU-reference
+compute-envelope prequalification second. It still returns nonzero if any requested
+accelerator is unavailable or fails validation; those failures are retained rather
+than being silently substituted.
+
 ## 3. Runtime probe matrix
 
 The first matrix characterizes requested Colab resources and rejects silent
