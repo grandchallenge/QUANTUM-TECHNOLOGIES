@@ -28,7 +28,13 @@ while [[ $# -gt 0 ]]; do
 done
 
 command -v uv >/dev/null 2>&1 || die "uv is required"
+UV_BIN="$(command -v uv)"
 mkdir -p "$ARTIFACT_DIR"
+
+if [[ "$VERIFY_ONLY" -eq 0 ]]; then
+  say "ensuring Python $PYTHON_SERIES is available under uv"
+  "$UV_BIN" python install "$PYTHON_SERIES"
+fi
 
 if [[ "$REBUILD" -eq 1 && "$VERIFY_ONLY" -eq 0 ]]; then
   rm -rf "$VENV_DIR"
@@ -37,26 +43,35 @@ fi
 if [[ ! -x "$VENV_DIR/bin/python" ]]; then
   [[ "$VERIFY_ONLY" -eq 0 ]] || die ".venv missing in --verify-only mode"
   say "creating Python $PYTHON_SERIES runner environment"
-  uv venv --python "$PYTHON_SERIES" "$VENV_DIR"
+  "$UV_BIN" venv --python "$PYTHON_SERIES" --seed "$VENV_DIR"
 fi
 
 VENV_PY="$VENV_DIR/bin/python"
+ACTUAL_SERIES="$($VENV_PY -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')"
+[[ "$ACTUAL_SERIES" == "$PYTHON_SERIES" ]] || die "expected Python $PYTHON_SERIES, found $ACTUAL_SERIES"
 
 if [[ "$VERIFY_ONLY" -eq 0 ]]; then
   say "installing local runner test dependencies"
-  uv pip install --python "$VENV_PY" "pytest>=8,<9"
+  "$UV_BIN" pip install --python "$VENV_PY" "pytest>=8,<9"
   say "installing isolated Colab CLI toolchain"
-  uv tool install --force "google-colab-cli==$COLAB_CLI_VERSION" \
-    --with "jupyter-kernel-client==$JUPYTER_KERNEL_CLIENT_VERSION"
+  "$UV_BIN" tool install --force --python "$PYTHON_SERIES" \
+    --with "jupyter-kernel-client==$JUPYTER_KERNEL_CLIENT_VERSION" \
+    "google-colab-cli==$COLAB_CLI_VERSION"
 fi
 
-COLAB_BIN="$(command -v colab || true)"
-[[ -n "$COLAB_BIN" ]] || die "colab CLI not found on PATH"
+TOOL_BIN_DIR="$($UV_BIN tool dir --bin)"
+COLAB_BIN="$TOOL_BIN_DIR/colab"
+[[ -x "$COLAB_BIN" ]] || die "Colab CLI executable not found at $COLAB_BIN"
+ln -sfn "$COLAB_BIN" "$VENV_DIR/bin/colab"
+export PATH="$VENV_DIR/bin:$TOOL_BIN_DIR:$PATH"
+command -v colab >/dev/null 2>&1 || die "colab CLI is not visible on PATH"
+colab --help >/dev/null 2>&1 || die "colab CLI exists but cannot start"
 
-say "checking Colab CLI version"
+say "checking Colab CLI provenance"
+"$UV_BIN" tool list > "$ARTIFACT_DIR/uv-tool-list.txt"
+grep -q "google-colab-cli v$COLAB_CLI_VERSION" "$ARTIFACT_DIR/uv-tool-list.txt" \
+  || die "uv tool list does not report google-colab-cli v$COLAB_CLI_VERSION"
 colab version > "$ARTIFACT_DIR/colab-version.txt" 2>&1
-grep -q "$COLAB_CLI_VERSION" "$ARTIFACT_DIR/colab-version.txt" \
-  || die "expected google-colab-cli $COLAB_CLI_VERSION"
 
 if [[ "$CHECK_AUTH" -eq 1 ]]; then
   say "checking Colab access (auth=$COLAB_AUTH)"
