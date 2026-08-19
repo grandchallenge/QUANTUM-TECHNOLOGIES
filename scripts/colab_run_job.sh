@@ -101,17 +101,35 @@ colab --auth="$COLAB_AUTH" download -s "$SESSION" \
   /content/gcl_output_bundle.tar.gz "$LOCAL_RUN/gcl_output_bundle.tar.gz" \
   > "$LOCAL_RUN/download-bundle.txt" 2>&1 || true
 
-if [[ -f "$LOCAL_RUN/experiment_receipt.json" ]]; then
-  python - "$LOCAL_RUN/experiment_receipt.json" <<'PY'
-import json, sys
-r=json.load(open(sys.argv[1], encoding="utf-8"))
-print("[QTR] remote receipt status:", r.get("status"))
-print("[QTR] observed runtime:", r.get("runtime",{}).get("observed_variant"),
-      r.get("runtime",{}).get("observed_accelerator"))
-if r.get("status") != "GREEN_ENGINEERING":
+[[ -f "$LOCAL_RUN/experiment_receipt.json" ]] || {
+  echo "[QTR] missing experiment receipt; evidence retained at $LOCAL_RUN" >&2
+  exit 11
+}
+[[ -f "$LOCAL_RUN/gcl_output_bundle.tar.gz" ]] || {
+  echo "[QTR] missing output bundle; evidence retained at $LOCAL_RUN" >&2
+  exit 12
+}
+
+python - "$LOCAL_RUN/experiment_receipt.json" "$MANIFEST" "$LOCAL_RUN/gcl_job.json" <<'PY'
+import hashlib, json, sys
+from pathlib import Path
+receipt=json.load(open(sys.argv[1], encoding="utf-8"))
+manifest=json.load(open(sys.argv[2], encoding="utf-8"))
+job_path=Path(sys.argv[3])
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+print("[QTR] remote receipt status:", receipt.get("status"))
+print("[QTR] observed runtime:", receipt.get("runtime",{}).get("observed_variant"),
+      receipt.get("runtime",{}).get("observed_accelerator"))
+if receipt.get("status") != "GREEN_ENGINEERING":
     raise SystemExit(10)
+if receipt.get("source_commit") != manifest.get("source_commit"):
+    raise SystemExit("receipt source commit mismatch")
+if receipt.get("source_payload_sha256") != manifest.get("payload_sha256"):
+    raise SystemExit("receipt source payload mismatch")
+if receipt.get("job_sha256") != sha(job_path):
+    raise SystemExit("receipt job digest mismatch")
 PY
-fi
 
 if [[ "$REMOTE_RC" -ne 0 ]]; then
   echo "[QTR] remote execution failed rc=$REMOTE_RC; evidence retained at $LOCAL_RUN" >&2
