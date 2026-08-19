@@ -1,0 +1,44 @@
+{
+  "experiments": [
+    {
+      "authority": {
+        "council_issue": 91,
+        "execution_issue": 92,
+        "human_steward_comment": 5336703933,
+        "protected_start_main": "8b52c71c916e9eea4a4c76309846cdb2b4a7d55a",
+        "referee_comment": 5336617970
+      },
+      "claim_boundary": {
+        "accelerator_native_qec_authorized": false,
+        "asymptotic_claim": false,
+        "autonomous_search_authorized": false,
+        "changes_historical_001b_adjudication": false,
+        "controlled_approximation_authorized": false,
+        "decoder_quality_claim": false,
+        "family_scaling_claim": false,
+        "global_treewidth_claim": false,
+        "hardware_performance_claim": false,
+        "larger_rungs_authorized": false,
+        "memory_superiority_claim": false,
+        "qec_circuit_003_authorized": false,
+        "qldpc_forge_authorized": false,
+        "runtime_superiority_claim": false,
+        "single_finite_c90_requalification_only": true
+      },
+      "evidence": {
+        "path": "evidence/QTR-C90-EXACT-REQUAL-001-report.json",
+        "payload_sha256": "5b7740eef2d5b9e8f95cbf487c3841223b7e1350d7b0f9558c9629c78357dc0c"
+      },
+      "experiment_id": "QTR-C90-EXACT-REQUAL-001",
+      "manifest": {
+        "path": "registry/qtr-c90-exact-requal-001-manifest.json",
+        "payload_sha256": "870202c16fe1d5edea69e9af845fd306964557b6edcd4e3902a203af9820cd33"
+      },
+      "outcome": "C90_MEMORY_STORAGE_QUALIFICATION_FAILED",
+      "phase_x_reached": false,
+      "programme": "QTR",
+      "status": "candidate_executable_not_promoted"
+    }
+  ],
+  "registry_version": "0.1.0"
+}

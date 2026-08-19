@@ -1,0 +1,89 @@
+name: QTR C90 exact requalification
+
+on:
+  pull_request:
+    paths:
+      - 'registry/qtr-c90-exact-requal-001-manifest.json'
+      - 'registry/qtr-c90-exact-requal-001.json'
+      - 'evidence/QTR-C90-EXACT-REQUAL-001-report.json'
+      - 'configs/compute/qtr_c90_exact_requal_001_job.json'
+      - 'reference/qtr_c90_exact_requal_001.py'
+      - 'colab/qtr_c90_exact_remote_job.py'
+      - 'scripts/run_qtr_c90_exact_requal_colab.sh'
+      - 'tests/test_qtr_c90_exact_requal_001.py'
+      - 'work-packages/QTR-C90-EXACT-REQUAL-001.md'
+      - '.github/workflows/qtr-c90-exact-requal-001.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-phase-m:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+      - name: Verify exact subject
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12'
+      - name: Run bounded C90 contract tests
+        run: |
+          python -m pip install --disable-pip-version-check pytest
+          python -m pytest -q tests/test_qtr_c90_exact_requal_001.py --import-mode=importlib
+      - name: Run non-materializing Phase-M static ledger
+        run: |
+          python reference/qtr_c90_exact_requal_001.py static \
+            --output "$RUNNER_TEMP/QTR-C90-EXACT-REQUAL-001-static.json"
+          python - "$RUNNER_TEMP/QTR-C90-EXACT-REQUAL-001-static.json" <<'PY'
+          import json,sys
+          r=json.load(open(sys.argv[1]))
+          assert r["engineering_resource_qualification"]["host_memory_calibration_performed"] is False
+          assert r["engineering_resource_qualification"]["host_memory_measurement_used"] is False
+          assert r["scientific_exact_compilation"]["performed"] is False
+          assert r["scientific_semantic_validation"]["performed"] is False
+          print("phase_m_static_status=",r["phase_m_static_adjudication"]["status"])
+          print("payload_sha256=",r["payload_sha256"])
+          PY
+      - name: Verify committed candidate evidence
+        run: |
+          python - "$RUNNER_TEMP/QTR-C90-EXACT-REQUAL-001-static.json" <<'PY'
+          import hashlib,json,sys
+          static=json.load(open(sys.argv[1]))
+          ev=json.load(open("evidence/QTR-C90-EXACT-REQUAL-001-report.json"))
+          claimed=ev.pop("payload_sha256")
+          raw=json.dumps(ev,sort_keys=True,separators=(",",":"),ensure_ascii=True,allow_nan=False).encode()
+          assert hashlib.sha256(raw).hexdigest()==claimed
+          ev["payload_sha256"]=claimed
+          assert ev["status"]=="candidate_executable_not_promoted"
+          assert ev["manifest_payload_sha256"]==static["manifest_payload_sha256"]
+          assert ev["protected_identity_replay"]==static["protected_identity_replay"]
+          assert ev["resource_result"]["phase_m_status"]==static["phase_m_static_adjudication"]["status"]
+          x=static["resource_ledger"]["exact_structural_counts"]
+          rr=ev["resource_result"]
+          assert rr["amended_peak_joint_table_entries"]["value"]==x["peak_joint_table_entries"]
+          assert rr["unchanged_factor_table_entry_evaluations"]["value"]==x["factor_table_entry_evaluations"]
+          assert rr["unchanged_compilation_aop_events"]["mandatory_lower_bound"]==x["mandatory_compilation_aop_lower_bound"]
+          assert rr["retained_node_prequalification"]["intern_attempt_upper_bound"]==x["node_intern_attempts"]
+          cross=static["resource_ledger"]["first_crossed_step_zero_based"]
+          assert rr["first_exact_crossing"]["step_zero_based"]==cross["factor_table_entry_evaluations"]==cross["mandatory_compilation_aop_lower_bound"]
+          assert static["phase_m_static_adjudication"]["calibration_required"] is False
+          assert static["phase_m_static_adjudication"]["phase_x_reachable"] is False
+          print("candidate_evidence_payload_sha256=",claimed)
+          PY
+      - name: Preserve static Phase-M candidate artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qtr-c90-exact-requal-001-static
+          path: ${{ runner.temp }}/QTR-C90-EXACT-REQUAL-001-static.json
+          if-no-files-found: error
