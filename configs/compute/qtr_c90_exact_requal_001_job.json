@@ -1,0 +1,37 @@
+{
+  "authority": {
+    "council_issue": 91,
+    "execution_issue": 92,
+    "human_steward_comment": 5336703933,
+    "referee_comment": 5336617970
+  },
+  "claim_boundary": {
+    "accelerator_native_qec_authorized": false,
+    "asymptotic_claim": false,
+    "autonomous_search_authorized": false,
+    "changes_historical_001b_adjudication": false,
+    "controlled_approximation_authorized": false,
+    "decoder_quality_claim": false,
+    "family_scaling_claim": false,
+    "global_treewidth_claim": false,
+    "hardware_performance_claim": false,
+    "larger_rungs_authorized": false,
+    "memory_superiority_claim": false,
+    "qec_circuit_003_authorized": false,
+    "qldpc_forge_authorized": false,
+    "runtime_superiority_claim": false,
+    "single_finite_c90_requalification_only": true
+  },
+  "experiment_id": "QTR-C90-EXACT-REQUAL-001",
+  "hosted_session_identity": "__HOST_RENDERED__",
+  "manifest_payload_sha256": "870202c16fe1d5edea69e9af845fd306964557b6edcd4e3902a203af9820cd33",
+  "remote_timeout_seconds": 21600,
+  "resource": {
+    "accelerator": null,
+    "variant": "CPU"
+  },
+  "schema_version": 1,
+  "scientific_backend": "cpu_reference",
+  "scientific_execution_authorized": true,
+  "workload": "c90_exact_requal_conditional"
+}
