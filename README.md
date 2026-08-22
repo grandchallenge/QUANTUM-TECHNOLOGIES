@@ -30,7 +30,7 @@ A second research lane establishes certified qLDPC/QEC substrates before any bro
 
 `QLDPC-FIXTURE-001 → QLDPC-FIXTURE-002 → TCM-QDEC-001 → TCM-QDEC-002 → TCM-QDEC-003 → TCM-QDEC-004 → QLDPC-SCALE-001A → QLDPC-SCALE-001B → TCM-QDEC-COMPARE-001 → QEC-CIRCUIT-001 → QEC-CIRCUIT-002 → QLDPC-FORGE`.
 
-The first two qLDPC fixtures, the first four bounded TCM-QDEC experiments, the bounded single-instance `QLDPC-SCALE-001A` feasibility result, the bounded finite-ladder `QLDPC-SCALE-001B` structural/cap-exhaustion result, the bounded `TCM-QDEC-COMPARE-001` finite shared-interface comparison, the bounded `QEC-CIRCUIT-001` three-round phenomenological temporal result, and the bounded `QEC-CIRCUIT-002` predeclared exact representation-family exhaustion result are Referee-promoted. `QEC-CIRCUIT-003`, `QLDPC-FORGE`, and every later node remain separately gated.
+The first two qLDPC fixtures, the first four bounded TCM-QDEC experiments, the bounded single-instance `QLDPC-SCALE-001A` feasibility result, the bounded finite-ladder `QLDPC-SCALE-001B` structural/cap-exhaustion result, the bounded `TCM-QDEC-COMPARE-001` finite shared-interface comparison, the bounded `QEC-CIRCUIT-001` three-round phenomenological temporal result, the bounded `QEC-CIRCUIT-002` predeclared exact representation-family exhaustion result, and the bounded `QTR-C90-EXACT-REQUAL-001` deterministic pre-calibration resource-ledger result are Referee-promoted. `QEC-CIRCUIT-003`, `QLDPC-FORGE`, and every later node remain separately gated.
 
 ## Authority state
 
@@ -51,6 +51,7 @@ The first two qLDPC fixtures, the first four bounded TCM-QDEC experiments, the b
 - `QTR-TCM-QDEC-COMPARE-001`: Referee-promoted only for the frozen C18 matched shared-interface comparison, its finite exact totals and pairwise outcome relations, and the explicit C72/C90 reach/status and undefined-TCM-quality boundaries. The deterministic/default min-plus result retains its certified tie envelope `[218,263]`. No cross-surface winner, decoder-family ordering, runtime/memory, family-scaling, threshold, circuit, hardware, learned-decoder, or autonomous-search claim follows.
 - `QTR-QEC-CIRCUIT-001`: Referee-promoted only for the frozen three-round phenomenological repeated-syndrome C18 X-error temporal substrate, the exact 2851-history weight-`0..2` corpus, retained detector-fiber ambiguity, the three frozen conventional outcome rows and pairwise relations, and the exact temporal TCM reach/status `TEMPORAL_TCM_EXACT_BOUND_EXHAUSTED` under the frozen resource envelope. TCM quality remains undefined; no TCM-vs-conventional quality ordering, gate-level, hardware, threshold, runtime/memory, family-scaling, learned-decoder, autonomous-search, or later-circuit claim follows.
 - `QTR-QEC-CIRCUIT-002`: Referee-promoted only for exact semantic equivalence of the three predeclared auxiliary-state rewrites and exhaustion of the finite `R0/R1/R2/R3` representation family under the unchanged deterministic min-fill policy and `2^20` peak-table cap. Primary widths are `34/36/36/36`; no successor representation compiles. TCM quality remains undefined. This is not global-treewidth, intrinsic-intractability, runtime/memory, scaling, physics-model, downstream-circuit, or Forge authority.
+- `QTR-C90-EXACT-REQUAL-001`: Referee-promoted only for the finite C90 deterministic pre-calibration resource-ledger result under the single C90 peak-joint amendment from `2^20` to `100 * 2^20`. The `2^26 = 67,108,864` peak-joint gate passes, but exact factor-table evaluations `201,384,562 > 2^27` and the mandatory compilation-AOP lower bound `3,410,023,338 > 2^31` fail. The first exact crossing is elimination step `15`, variable `0`, with `2^26` joint assignments. Host-memory calibration was not performed; the physical-memory question was not reached; Phase X and frozen-307 validation were not reached. This is not a physical-memory, runtime, hardware, global-complexity, scaling, accelerator, circuit, or Forge result.
 - `QLDPC-FORGE`: gated.
 
 The signal-lane downstream promotion was reviewed at `c6d3c460804bcc414226cac3700a864773ba2fdf` and merged as `f96452e3eeb1688bf8eb60c7b22e3adf500bae39`. Its exact candidate registry and evidence snapshot remain immutable; authority is recorded in `reviews/QTR-SIG-NEXT-001/promotion-record.json`.
@@ -76,6 +77,8 @@ The second qLDPC fixture was reviewed at `e7b2eb0060e51d4157a6666f2e857c1fb19aaf
 `QEC-CIRCUIT-001` was reviewed at `32bbb7117670a30fad70ee9969e2699239678a09` and scientifically merged as `da820411b45f2e23fe961ed9fb4597a3b3d3e774`. Its exact manifest, pre-outcome amendment, registry, and evidence snapshot remain immutable; bounded three-round phenomenological temporal authority is recorded in `reviews/QTR-QEC-CIRCUIT-REVIEW-001/promotion-record.json`. The quarantined workflow run `32085478805` contributes no admitted result. TCM quality remains undefined, and `QLDPC-FORGE` remains separately gated.
 
 `QEC-CIRCUIT-002` was reviewed at `695ea1da951cd2b4f9d5a6a07c30b090cfd37709` and scientifically merged as `e85d67619a0d739fe039cca8f271f9a32ae2f3db`. Its exact pre-outcome manifest, registry, compact evidence, evaluator, evidence projector, and exact-replay workflow remain immutable; bounded representation-family promotion authority is recorded only in `reviews/QTR-QEC-CIRCUIT-REVIEW-002/promotion-record.json`. The earlier QTR timeout attempts remain diagnostic/non-authoritative provenance. TCM quality remains undefined, and no TCM-vs-conventional quality ordering is defined. `QEC-CIRCUIT-003` and `QLDPC-FORGE` remain separately gated.
+
+`QTR-C90-EXACT-REQUAL-001` was reviewed at `d3215db1b22a95ba90c8e8901cc78dec83716e82` and scientifically merged as `42e644571172f895025a819d9e91cd8fcd78cbb8`. Its exact manifest, scientific registry, evidence, evaluator, and exact-replay workflow remain immutable; bounded documentary promotion authority is recorded only in `reviews/QTR-C90-EXACT-REQUAL-REVIEW-001/promotion-record.json`. The protected scientific status remains `candidate_executable_not_promoted`. The durable interpretation is that ×100 clears the historical peak-joint gate but remains insufficient under the unchanged cumulative exact-compilation ledger; the physical-memory question was not reached. `QEC-CIRCUIT-003` and `QLDPC-FORGE` remain separately gated.
 
 The adoption and promotion records do not certify a general theorem, prove quantum advantage, validate hardware evidence, establish practical resource superiority, certify a qLDPC threshold, establish bounded tensor width for a code family, or authorize later qLDPC decoder/search stages.
 
@@ -119,6 +122,10 @@ The selector-independent compiled descriptor materializes zero selector answers 
 
 The unchanged Level-C primary peak-table cap is `2^20`. The first post-anchor rung, `n=90`, has min-fill width `25`, hence predicted peak joint table `2^26`, and compilation stops before materialization. Every later post-anchor rung also exceeds that same frozen primary cap. No post-anchor 001B compiled object or selector semantic validation is therefore reached. The promoted result is the exact structural/cap-exhaustion boundary itself; it does not imply intrinsic intractability, runtime or memory behavior, practical decoder performance, or conventional-baseline superiority or inferiority. The Council maturity criterion for considering a future `TCM-QDEC-COMPARE-001` referral is met.
 
+`QTR-C90-EXACT-REQUAL-001` reopens only the finite C90 resource envelope after the hosted-compute preparation, without changing the protected C90 representation or min-fill order. Its single deterministic-cap amendment raises only the peak-joint allowance from `2^20` to `100 * 2^20 = 104,857,600`; the existing C90 `2^26` peak therefore passes. Exact non-materializing ledger replay nevertheless gives `201,384,562` factor-table entry evaluations against the unchanged `2^27` cap and a mandatory compilation-AOP lower bound of `3,410,023,338` against the unchanged `2^31` cap. Both cross first at elimination step `15`, variable `0`, on the `2^26` joint step.
+
+The promoted outcome is therefore a deterministic pre-calibration cap failure under the unchanged compilation ledger. Host-memory calibration was not performed, the physical-memory question was not reached, Phase X was mechanically unreachable, and frozen-307 semantic validation was not reached. This finite result says that the ×100 peak-entry amendment alone is insufficient under the complete inherited exact-compilation ledger; it does not establish physical-memory insufficiency, intrinsic intractability, performance ordering, family scaling, or accelerator behavior.
+
 `TCM-QDEC-COMPARE-001` freezes one shared X-error code-capacity interface, exact stabilizer-equivalence correctness oracle, precommitted C18/C72/C90 corpora, and source/configuration-pinned historical BP/min-sum/BP-OSD implementations. C18 is the only matched TCM-versus-conventional quality surface. On its 4048 protected inputs, conventional exact-oracle totals are `145`, `244`, and `19` for min-sum, BP-OSD-CS-7, and product-sum, while the protected TCM rows remain `263`, `262`, and deterministic/default `226`. The default BP-OSD-versus-min-plus difference is `+18`, but the promoted min-plus tie envelope remains `[218,263]`; no unconditional ordering follows.
 
 On C72 the conventional rows record `161`, `161`, and `144` successes over 329 frozen inputs, while TCM quality remains undefined because the shared decoder interface was not certified. On C90 they record `200`, `211`, and `171` over 347 inputs, while the inherited exact TCM path remains `NOT_REACHED_EXACT_COMPILATION_BOUND`. These larger surfaces are reach/status evidence only. The promotion does not create a cross-surface winner, decoder-family ordering, runtime/memory result, asymptotic scaling law, intrinsic-intractability claim, threshold, circuit/hardware claim, learned-decoder authority, autonomous-search authority, or `QLDPC-FORGE` authority.
@@ -131,7 +138,7 @@ All three frozen conventional rows return corrections on all 2,851 histories. Ex
 
 Under the unchanged deterministic min-fill rule, primary induced widths are `34`, `36`, `36`, and `36`, with predicted peak tables `2^35`, `2^37`, `2^37`, and `2^37` against the unchanged `2^20` cap. Every row stops before inadmissible materialization and no successor representation compiles. The promoted classification is therefore only `TEMPORAL_PREDECLARED_DECOMPOSITION_FAMILY_EXHAUSTED`. TCM quality remains undefined. This result does not establish global treewidth, intrinsic intractability, runtime or memory behavior, scaling, a changed physics model, or any downstream circuit claim.
 
-The reviewed registry and evidence files for all eleven qLDPC/QEC stages retain `candidate_executable_not_promoted` because they are immutable scientific snapshots. Promotion authority is recorded in separate documentary overlays. This prevents later governance changes from rewriting the evidence that was actually reviewed.
+The reviewed registry and evidence files for all twelve qLDPC/QEC stages retain `candidate_executable_not_promoted` because they are immutable scientific snapshots. Promotion authority is recorded in separate documentary overlays. This prevents later governance changes from rewriting the evidence that was actually reviewed.
 
 ## Key files
 
@@ -148,6 +155,7 @@ The reviewed registry and evidence files for all eleven qLDPC/QEC stages retain 
 - `work-packages/QTR-TCM-QDEC-004.md`: promoted bounded exact selector-parametric shared-compilation audit.
 - `work-packages/QTR-QLDPC-SCALE-001A.md`: promoted bounded first-larger-BB single-instance feasibility audit.
 - `work-packages/QTR-QLDPC-SCALE-001B.md`: promoted bounded finite-ladder source/structural and compilation-cap-exhaustion audit.
+- `work-packages/QTR-C90-EXACT-REQUAL-001.md`: promoted bounded finite C90 deterministic resource-ledger requalification.
 - `work-packages/QTR-TCM-QDEC-COMPARE-001.md`: promoted bounded finite shared-interface decoder comparison.
 - `work-packages/QTR-QEC-CIRCUIT-001.md`: promoted bounded three-round phenomenological temporal decoding fixture.
 - `work-packages/QTR-QEC-CIRCUIT-002.md`: promoted bounded exact temporal representation-decomposition audit.
@@ -160,6 +168,8 @@ The reviewed registry and evidence files for all eleven qLDPC/QEC stages retain 
 - `registry/qldpc-scale-001a.json`: immutable QLDPC-SCALE-001A larger-instance candidate snapshot.
 - `registry/qldpc-scale-001b-ladder-manifest.json`: immutable QLDPC-SCALE-001B pre-measurement finite-ladder manifest.
 - `registry/qldpc-scale-001b.json`: immutable QLDPC-SCALE-001B candidate registry snapshot.
+- `registry/qtr-c90-exact-requal-001-manifest.json`: immutable QTR-C90-EXACT-REQUAL-001 pre-outcome manifest.
+- `registry/qtr-c90-exact-requal-001.json`: immutable QTR-C90-EXACT-REQUAL-001 candidate registry snapshot.
 - `registry/tcm-qdec-compare-001-manifest.json`: immutable TCM-QDEC-COMPARE-001 pre-measurement manifest.
 - `registry/tcm-qdec-compare-001.json`: immutable TCM-QDEC-COMPARE-001 candidate registry snapshot.
 - `registry/qec-circuit-001-manifest.json`: immutable QEC-CIRCUIT-001 pre-decoder manifest.
@@ -179,6 +189,7 @@ The reviewed registry and evidence files for all eleven qLDPC/QEC stages retain 
 - `reference/qldpc_scale_001a_symbolic.py`: exact symbolic compilation certificate backend.
 - `reference/qldpc_scale_001b.py`: exact dependency-free finite-ladder source/structural evaluator.
 - `reference/qldpc_scale_001b_report.py`: compact canonical QLDPC-SCALE-001B evidence projection.
+- `reference/qtr_c90_exact_requal_001.py`: exact QTR-C90-EXACT-REQUAL-001 non-materializing resource-ledger evaluator and conditional executor.
 - `reference/tcm_qdec_compare_001.py`: COMPARE-001 manifest/corpus and comparison orchestration.
 - `reference/tcm_qdec_compare_001_exact_cell.py`: exact basis-reduction conventional cell evaluator.
 - `reference/tcm_qdec_compare_001_evidence.py`: deterministic compact evidence projector.
@@ -195,6 +206,7 @@ The reviewed registry and evidence files for all eleven qLDPC/QEC stages retain 
 - `evidence/TCM-QDEC-004-report.json`: immutable TCM-QDEC-004 exact shared-compilation report.
 - `evidence/QLDPC-SCALE-001A-report.json`: immutable QLDPC-SCALE-001A exact single-instance feasibility report.
 - `evidence/QLDPC-SCALE-001B-report.json`: immutable QLDPC-SCALE-001B finite-ladder structural/cap-exhaustion report.
+- `evidence/QTR-C90-EXACT-REQUAL-001-report.json`: immutable QTR-C90-EXACT-REQUAL-001 candidate resource-ledger evidence.
 - `evidence/TCM-QDEC-COMPARE-001-report.json`: immutable compact COMPARE-001 candidate evidence binding the full exact report payload.
 - `evidence/QEC-CIRCUIT-001-report.json`: immutable compact QEC-CIRCUIT-001 candidate evidence binding the full exact report payload.
 - `evidence/QEC-CIRCUIT-002-report.json`: immutable compact QEC-CIRCUIT-002 candidate evidence binding the full exact report payload.
@@ -206,6 +218,7 @@ The reviewed registry and evidence files for all eleven qLDPC/QEC stages retain 
 - `reviews/QTR-TCM-QDEC-REVIEW-004/`: TCM-QDEC-004 review-cycle closure and promotion authority records.
 - `reviews/QTR-QLDPC-SCALE-REVIEW-001A/`: QLDPC-SCALE-001A review-cycle closure and bounded promotion authority records.
 - `reviews/QTR-QLDPC-SCALE-REVIEW-001B/`: QLDPC-SCALE-001B review-cycle closure and bounded promotion authority records.
+- `reviews/QTR-C90-EXACT-REQUAL-REVIEW-001/`: QTR-C90-EXACT-REQUAL-001 scientific review closure and bounded promotion authority records.
 - `reviews/QTR-TCM-QDEC-COMPARE-REVIEW-001/`: TCM-QDEC-COMPARE-001 review-cycle closure and bounded promotion authority records.
 - `reviews/QTR-QEC-CIRCUIT-REVIEW-001/`: QEC-CIRCUIT-001 review-cycle closure and bounded promotion authority records.
 - `reviews/QTR-QEC-CIRCUIT-REVIEW-002/`: QEC-CIRCUIT-002 review-cycle closure and bounded promotion authority records.
@@ -233,6 +246,7 @@ python reference/tcm_qdec_003.py
 python reference/tcm_qdec_004.py
 python reference/qldpc_scale_001a.py
 python reference/qldpc_scale_001b_report.py --output /tmp/qldpc-scale-001b.json
+python reference/qtr_c90_exact_requal_001.py static --output /tmp/qtr-c90-exact-requal-001-static.json
 python reference/tcm_qdec_compare_001.py --static-only --output /tmp/tcm-qdec-compare-001-static.json
 python reference/qec_circuit_001_exact.py --static-only --output /tmp/qec-circuit-001-static.json
 python reference/qec_circuit_002.py --output /tmp/qec-circuit-002-full.json
