@@ -1,13 +1,20 @@
 # QTR-C90-EXACT-REQUAL-001 — C90 exact resource requalification
 
-Status: `AUTHORIZED_MANIFEST_FIRST__CANDIDATE_ONLY`
+Status: `REFEREE_PROMOTED_BOUNDED_DOCUMENTARY_OVERLAY`
 
 Authority:
 - Council contract: Issue #91.
 - Referee recommendation: #91 comment `5336617970`.
-- Human Steward authorization: #91 comment `5336703933`.
-- Execution docket: Issue #92.
-- Protected starting `main`: `8b52c71c916e9eea4a4c76309846cdb2b4a7d55a`.
+- Human Steward scientific authorization: #91 comment `5336703933`.
+- Execution docket: Issue #92, closed completed.
+- Scientific review: Issue #94.
+- Scientific Referee disposition: #94 comment `5337343405` — `APPROVE_BOUNDED_SCIENTIFIC_MERGE__QTR_C90_EXACT_REQUAL_001`.
+- Reviewed scientific head: `d3215db1b22a95ba90c8e8901cc78dec83716e82`.
+- Protected scientific merge: `42e644571172f895025a819d9e91cd8fcd78cbb8`.
+- Protected merge tree: `746913221f20cc0e90011832e29fd41623500918`.
+- Documentary referral: Issue #95.
+- Documentary Referee recommendation: #95 comment `5337365156`.
+- Human Steward documentary authorization: #95 comment `5337464530` — `ADOPT_WITH_AMENDMENTS__AUTHORIZE_QTR_C90_EXACT_REQUAL_001_DOCUMENTARY_PROMOTION_ONLY`.
 
 ## Question
 
@@ -21,71 +28,57 @@ The experiment consumes the protected `QLDPC-SCALE-001B` C90 rung without changi
 
 The source-reported object remains `[[90,8,10]]`; distance 10 is provenance only. The protected deterministic min-fill width is 25, with predicted peak joint table `2^26 = 67,108,864`.
 
-The protected disabled preparation candidate `configs/compute/qtr_c90_exact_candidate_matrix.json` is not edited. It remains an immutable provenance object. Scientific execution, if reachable, is controlled by the new manifest-first state machine.
+The protected disabled preparation candidate `configs/compute/qtr_c90_exact_candidate_matrix.json` was not edited. It remains an immutable provenance object.
 
 ## Resource amendment
 
-Exactly one inherited deterministic cap is changed for this finite C90 experiment:
+Exactly one inherited deterministic cap changed for this finite C90 experiment:
 
 - historical peak joint table: `2^20`;
 - authorized C90-only peak joint table: `100 * 2^20 = 104,857,600`.
 
-The following remain unchanged:
+The following remained unchanged:
 
-- factor-table entry evaluations per algebra: `2^27`;
-- retained canonical nodes/entries per algebra: `2^22`;
+- factor-table entry evaluations per algebra: `2^27 = 134,217,728`;
+- retained canonical nodes/entries per algebra: `2^22 = 4,194,304`;
 - canonical serialized compiled object per algebra: `512 MiB`;
-- compilation AOP events per algebra: `2^31`.
+- compilation AOP events per algebra: `2^31 = 2,147,483,648`.
 
-Passing the amended peak-entry cap does not override any unchanged cap.
+Passing the amended peak-entry cap did not override any unchanged cap.
 
-## Phase M
+## Protected bounded result
 
-The first operation is non-materializing structural replay. It reconstructs the protected C90 object, verifies all protected source/basis/scope/order digests, verifies the frozen 307-selector set, computes exact structural counts implied by the existing compiler, computes an exact mandatory lower bound on compilation AOP events, and checks deterministic caps decidable without full compilation.
+The exact non-materializing Phase-M ledger established:
 
-Quantities remain separated as exact structural counts, conservative engineering byte bounds, and observed runtime measurements.
+- amended peak-joint gate: `67,108,864 <= 104,857,600` — pass;
+- unchanged factor-table entry-evaluation gate: `201,384,562 > 134,217,728` — fail;
+- unchanged compilation-AOP gate: mandatory exact lower bound `3,410,023,338 > 2,147,483,648` — definite fail;
+- first exact crossing for both unchanged caps: zero-based elimination step `15`, variable `0`, with `2^26 = 67,108,864` joint assignments.
 
-If an unchanged deterministic cap is already crossed exactly, Phase M terminates as `C90_MEMORY_STORAGE_QUALIFICATION_FAILED` before host-memory calibration. This is a resource-envelope result, not a claim that the C90 representation is intrinsically intractable.
+Primary outcome:
 
-If exact structural accounting does not terminate the experiment, bounded CPython calibration runs in a child process that exits before Phase X. Any material byte term that cannot be conservatively bounded yields `C90_MEMORY_STORAGE_QUALIFICATION_INDETERMINATE`.
+`C90_MEMORY_STORAGE_QUALIFICATION_FAILED`
 
-A memory pass additionally requires predicted peak resident bytes <= 70% of fresh total host RAM, at least 2 GiB total-RAM reserve, fresh `MemAvailable >= predicted_peak + 2 GiB`, no device memory, and no assumed swap, compression, allocator reuse, or GC timing.
+Mandatory reason:
 
-## Phase X
+`EXACT_DETERMINISTIC_COMPILATION_CAP_CROSSED_PRECALIBRATION`
 
-Phase X is mechanically unreachable unless the exact Phase-M pass receipt is bound to the same source commit, manifest digest, and hosted session.
+Secondary interpretation:
 
-Fixed algebra order:
+`C90_X100_PEAK_ENTRY_REQUALIFICATION_INSUFFICIENT_UNDER_UNCHANGED_COMPILATION_LEDGER`
 
-1. `sum_product_bsc_p_0_1`;
-2. `soft_tropical_base_2`;
-3. `min_plus_hamming`.
+This is a deterministic pre-calibration cap failure under the unchanged compilation ledger. It is **not** a statement that C90 does not fit in RAM.
 
-Each algebra runs in its own fresh subprocess. `MemAvailable` is reread immediately before each materializing subprocess. Failure stops the sequence. There is no order switch, representation rewrite, approximation, answer cache, backend change, retry, or post-outcome cap increase.
+Host-memory calibration was not performed. The physical-memory question was not reached. Phase X exact materialization was mechanically unreachable, and the frozen 307-selector semantic validation was not reached.
 
-The scientific backend is CPU reference. T4 availability from the preparation stage does not enter the memory budget and does not authorize accelerator execution.
+## Scientific snapshot preservation
 
-## Frozen validation
+The protected scientific manifest, registry, evidence, evaluator, and exact-replay workflow remain byte-for-byte scientific objects. In particular:
 
-Validation can begin only if all three exact compilation receipts are green.
-
-The selector set is zero, 49 unit selectors, all-ones, and 256 distinct non-reserved hash-generated selectors. The seed is exactly `QLDPC-SCALE-001B::90::selector-validation::v1`; total 307 selectors.
-
-Equality is checked against the independent fixed-selector oracle for all three exact algebras. A success is exact only on this frozen set; it is not an all-`2^49` selector theorem.
-
-## Hosted execution
-
-The complete hosted path is:
-
-```bash
-bash scripts/bootstrap_colab_runner_env.sh --rebuild
-bash scripts/run_qtr_c90_exact_requal_colab.sh
-```
-
-The host script uses a fresh CPU Colab session, deterministic source payload, rendered session-bound job receipt, authoritative artifact readback, and teardown.
-
-Do not run the hosted command merely because the static artifact exists. Inspect the static Phase-M adjudication first. A terminal static failure or indeterminate result makes physical calibration and Phase X unnecessary and prohibited.
+- scientific registry status remains `candidate_executable_not_promoted`;
+- scientific evidence status remains `candidate_executable_not_promoted`;
+- documentary promotion authority is recorded only in `reviews/QTR-C90-EXACT-REQUAL-REVIEW-001/promotion-record.json`.
 
 ## Claim boundary
 
-This experiment does not authorize or imply decoder-quality evidence, runtime/memory/hardware superiority, global treewidth or asymptotic/family scaling, C108/C144/C288/C784 reruns, approximation or representation search, accelerator-native QEC, conventional-decoder rebenchmarking, threshold or circuit-level work, `QEC-CIRCUIT-003`, learned/autonomous decoder or code search, or `QLDPC-FORGE`.
+This bounded promotion does not authorize or imply physical-memory insufficiency, decoder-quality evidence, runtime/memory/hardware superiority or inferiority, global treewidth, intrinsic intractability, asymptotic/family scaling, C108/C144/C288/C784 reruns, approximation or representation search, accelerator-native QEC, conventional-decoder rebenchmarking, threshold or circuit-level work, `QEC-CIRCUIT-003`, learned/autonomous decoder or code search, or `QLDPC-FORGE`.
