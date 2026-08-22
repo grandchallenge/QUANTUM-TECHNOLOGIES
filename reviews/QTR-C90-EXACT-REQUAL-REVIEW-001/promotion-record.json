@@ -1,0 +1,123 @@
+{
+  "documentary_base_at_creation": "42e644571172f895025a819d9e91cd8fcd78cbb8",
+  "documentary_issue": 95,
+  "execution_issue": 92,
+  "excluded_scope": [
+    "physical-RAM insufficiency claim",
+    "runtime, memory, throughput, energy, or hardware superiority/inferiority",
+    "global treewidth or intrinsic intractability",
+    "family or asymptotic scaling",
+    "C108/C144/C288/C784 reruns",
+    "approximation or representation search",
+    "accelerator-native QEC",
+    "threshold or circuit-level claims",
+    "QEC-CIRCUIT-003",
+    "learned or autonomous decoder/code search",
+    "QLDPC-FORGE"
+  ],
+  "office_records": {
+    "Axiomatist": 5337334202,
+    "Cartographer": 5337335140,
+    "Grammarian": 5337336218,
+    "Verifier": 5337337593,
+    "Adversary": 5337338864,
+    "Formalist": 5337339999,
+    "Amanuensis": 5337341116,
+    "Referee": 5337343405
+  },
+  "promotion_authorization": {
+    "comment": 5337464530,
+    "disposition": "ADOPT_WITH_AMENDMENTS__AUTHORIZE_QTR_C90_EXACT_REQUAL_001_DOCUMENTARY_PROMOTION_ONLY",
+    "issue": 95
+  },
+  "promotion_authority_location": "documentary_overlay_only",
+  "promoted_scope": {
+    "classification": "C90_X100_PEAK_ENTRY_REQUALIFICATION_INSUFFICIENT_UNDER_UNCHANGED_COMPILATION_LEDGER",
+    "primary_outcome": "C90_MEMORY_STORAGE_QUALIFICATION_FAILED",
+    "mandatory_reason": "EXACT_DETERMINISTIC_COMPILATION_CAP_CROSSED_PRECALIBRATION",
+    "amended_peak_joint_table": {
+      "value": 67108864,
+      "cap": 104857600,
+      "pass": true
+    },
+    "unchanged_factor_table_entry_evaluations": {
+      "value": 201384562,
+      "cap": 134217728,
+      "pass": false
+    },
+    "unchanged_compilation_aop": {
+      "mandatory_lower_bound": 3410023338,
+      "cap": 2147483648,
+      "definite_fail": true
+    },
+    "first_exact_crossing": {
+      "step_zero_based": 15,
+      "variable": 0,
+      "joint_assignments": 67108864
+    },
+    "host_memory_calibration_performed": false,
+    "physical_memory_question_reached": false,
+    "phase_x_reached": false,
+    "frozen_307_validation_reached": false,
+    "systems_boundary": "finite C90 deterministic pre-calibration resource-ledger result only; not a physical-memory, performance, scaling, global-complexity, accelerator, circuit, or Forge result"
+  },
+  "protected_merge": {
+    "main_base_at_scientific_merge": "8b52c71c916e9eea4a4c76309846cdb2b4a7d55a",
+    "merge_commit": "42e644571172f895025a819d9e91cd8fcd78cbb8",
+    "merge_parent_candidate": "d3215db1b22a95ba90c8e8901cc78dec83716e82",
+    "merge_parent_protected_base": "8b52c71c916e9eea4a4c76309846cdb2b4a7d55a",
+    "merge_tree": "746913221f20cc0e90011832e29fd41623500918",
+    "verified_signature": true
+  },
+  "pull_request": 93,
+  "record_id": "QTR-C90-EXACT-REQUAL-REVIEW-001-PROMOTION",
+  "record_version": "0.1.0",
+  "referee": {
+    "disposition": "APPROVE_BOUNDED_SCIENTIFIC_MERGE__QTR_C90_EXACT_REQUAL_001",
+    "record": 5337343405
+  },
+  "referral_office_records": {
+    "Axiomatist": 5337359188,
+    "Cartographer": 5337360003,
+    "Grammarian": 5337360780,
+    "Verifier": 5337361597,
+    "Adversary": 5337362381,
+    "Formalist": 5337363306,
+    "Amanuensis": 5337364136,
+    "Referee": 5337365156
+  },
+  "review_issue": 94,
+  "reviewed_head": "d3215db1b22a95ba90c8e8901cc78dec83716e82",
+  "reviewed_snapshot": {
+    "evidence_blob_sha": "064b7ab32147f329a3893fd603cda501c7db641d",
+    "evidence_path": "evidence/QTR-C90-EXACT-REQUAL-001-report.json",
+    "evidence_payload_sha256": "5b7740eef2d5b9e8f95cbf487c3841223b7e1350d7b0f9558c9629c78357dc0c",
+    "evidence_status_at_review": "candidate_executable_not_promoted",
+    "evaluator_blob_sha": "70050138adca79468bb4b21920c3ef68b3145c39",
+    "evaluator_path": "reference/qtr_c90_exact_requal_001.py",
+    "manifest_blob_sha": "ca70abb3424e111d22282872b8bc9483e4cdf6ed",
+    "manifest_path": "registry/qtr-c90-exact-requal-001-manifest.json",
+    "manifest_payload_sha256": "870202c16fe1d5edea69e9af845fd306964557b6edcd4e3902a203af9820cd33",
+    "registry_blob_sha": "b9a4866f6239634b973dfd22bda86e7ff87772bf",
+    "registry_path": "registry/qtr-c90-exact-requal-001.json",
+    "registry_status_at_review": "candidate_executable_not_promoted",
+    "snapshot_preserved_byte_for_byte": true,
+    "workflow_blob_sha": "3fe30828f74e11fad037ca185bfa216b1f52fbfb",
+    "workflow_path": ".github/workflows/qtr-c90-exact-requal-001.yml"
+  },
+  "scientific_merge_commit": "42e644571172f895025a819d9e91cd8fcd78cbb8",
+  "scientific_status_strings_intentionally_unchanged": true,
+  "status": "referee_promoted_bounded",
+  "workflow_evidence": {
+    "authenticated_codeql_receipt_comment": 5337328273,
+    "codeql_exact_head_analyses": 2,
+    "codeql_open_exact_head_alerts": 0,
+    "qtr_validation_run": 32210316182,
+    "c90_exact_requalification_run": 32210316162,
+    "gcl_conformance_run": 32210316518,
+    "qec_circuit_002_regression_run": 32210316171,
+    "measurement_run": 32209429648,
+    "measurement_artifact": 9350225619,
+    "measurement_artifact_digest": "sha256:6aacd245d661890bfb2b779163c1212de5507765a75afba6f504294f0c88feda"
+  }
+}
