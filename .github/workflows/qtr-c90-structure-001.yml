@@ -57,19 +57,13 @@ jobs:
           assert r["status"]=="candidate_executable_not_promoted"
           assert r["s0_replay"]["matches_protected_predecessor"] is True
           assert r["s1_eligibility"]["hard_affine_factor_count"]==0
-          assert list(r["control_certification"])==[
-              "S0_BASELINE",
-              "S1_GF2_CONSTRAINT_ELIMINATION",
-              "S2_SEPARATOR_INTERFACE_COMPILATION",
-              "S3_GF2_PLUS_SEPARATOR",
-          ]
+          assert list(r["control_certification"])==["S0_BASELINE","S1_GF2_CONSTRAINT_ELIMINATION","S2_SEPARATOR_INTERFACE_COMPILATION","S3_GF2_PLUS_SEPARATOR"]
           assert list(r["c90_methods"])==list(r["control_certification"])
           assert r["phase_d_reached"] is False
           assert r["phase_e_reached"] is False
           print("phase_c_disposition=",r["phase_c_disposition"])
           print("overall_outcome=",r["overall_outcome"])
-          for name,row in r["c90_methods"].items():
-              print(name,row["control_status"],row["c90_status"])
+          for name,row in r["c90_methods"].items(): print(name,row["control_status"],row["c90_status"])
           print("payload_sha256=",r["payload_sha256"])
           PY
       - name: Verify committed candidate evidence when present
@@ -90,11 +84,33 @@ jobs:
           assert ev["manifest_payload_sha256"]==static["manifest_payload_sha256"]
           assert ev["s0_replay"]==static["s0_replay"]
           assert ev["s1_eligibility"]==static["s1_eligibility"]
-          assert ev["control_certification"]==static["control_certification"]
-          assert ev["c90_methods"]==static["c90_methods"]
           assert ev["phase_c_disposition"]==static["phase_c_disposition"]
           assert ev["overall_outcome"]==static["overall_outcome"]
+          assert ev["phase_d_reached"]==static["phase_d_reached"] is False
+          assert ev["phase_e_reached"]==static["phase_e_reached"] is False
+          assert ev["claim_boundary"]==static["claim_boundary"]
+          summary={}
+          for name,row in static["control_certification"].items():
+              cell={"status":row["status"]}
+              if "hard_affine_factor_count" in row: cell["hard_affine_factor_count"]=row["hard_affine_factor_count"]
+              if name in {"S2_SEPARATOR_INTERFACE_COMPILATION","S3_GF2_PLUS_SEPARATOR"}:
+                  for key in ("validation_count","validation_outputs_sha256","protected_validation_outputs_sha256","transformation_receipt_sha256","compiled_descriptor_sha256"): cell[key]=row.get(key)
+              summary[name]=cell
+          assert ev["control_certification_summary"]==summary
+          for name,row in static["c90_methods"].items():
+              cell=ev["c90_methods"][name]
+              assert cell["control_status"]==row["control_status"]
+              assert cell["c90_status"]==row["c90_status"]
+              assert cell["transformation_receipt_sha256"]==row["transformation_receipt_sha256"]
+              assert cell["order_sha256"]==row["order_sha256"]
+              assert cell["factor_or_constraint_evaluations"]==row["cap_checks"]["factor_or_constraint_evaluations"]
+              assert cell["peak_joint_or_interface"]==row["cap_checks"]["peak_joint_or_interface"]
+              assert cell["aop"]==row["cap_checks"]["aop"]
+              assert cell["retained"]==row["cap_checks"]["retained"]
+              assert cell["normalized_ledger"]==row["normalized_ledger"]
+              assert cell["first_crossed_step_zero_based"]==row["first_crossed_step_zero_based"]
           print("candidate_evidence_payload_sha256=",claimed)
+          print("measurement_static_report_payload_sha256=",ev["measurement"]["static_report_payload_sha256"])
           PY
       - name: Preserve exact-head structural candidate artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

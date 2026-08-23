@@ -1,0 +1,78 @@
+{
+  "authority": {
+    "council_issue": 97,
+    "execution_issue": 98,
+    "human_steward_comment": 5383415686,
+    "protected_start_main": "4182946ec5bdfda9de1443124624bd084a5acfda",
+    "referee_comment": 5383330531
+  },
+  "c90_methods": {
+    "S0_BASELINE": {
+      "aop": {"cap": 2147483648, "certified_pass": false, "definite_fail": true, "lower": 3410023338, "upper": 4212183237},
+      "c90_status": "C90_STATIC_CAP_EXHAUSTED",
+      "control_status": "CONTROL_CERTIFIED",
+      "factor_or_constraint_evaluations": {"cap": 134217728, "pass": false, "value": 201384562},
+      "first_crossed_step_zero_based": {"factor_table_entry_evaluations": 15, "mandatory_compilation_aop_lower_bound": 15, "peak_joint_table_entries": null},
+      "normalized_ledger": {"compilation_aop_upper_bound_if_every_intern_is_unique": 4212183237, "conservative_serialized_upper_bound_bytes_if_32_bytes_per_retained_entry": 25669116768, "factor_or_constraint_entry_evaluations": 201384562, "mandatory_compilation_aop_lower_bound": 3410023338, "retained_node_or_entry_upper_bound": 802159899, "separator_or_gf2_preprocess_aop": 0},
+      "order_sha256": "579c83be655d3b90c15d79bcedde8ba629b240e88ae76a910093006a69691db4",
+      "peak_joint_or_interface": {"cap": 104857600, "pass": true, "value": 67108864},
+      "retained": {"cap": 4194304, "certified_pass": false, "upper": 802159899},
+      "transformation_receipt_sha256": "cf5ec36845f435e95c97fe17612c33ca636045ed40fe100a173ae2429318179a"
+    },
+    "S1_GF2_CONSTRAINT_ELIMINATION": {
+      "aop": {"cap": 2147483648, "certified_pass": false, "definite_fail": true, "lower": 3410023338, "upper": 4212183237},
+      "c90_status": "C90_STATIC_CAP_EXHAUSTED",
+      "control_status": "CONTROL_CERTIFIED",
+      "factor_or_constraint_evaluations": {"cap": 134217728, "pass": false, "value": 201384562},
+      "first_crossed_step_zero_based": {"factor_table_entry_evaluations": 15, "mandatory_compilation_aop_lower_bound": 15, "peak_joint_table_entries": null},
+      "normalized_ledger": {"compilation_aop_upper_bound_if_every_intern_is_unique": 4212183237, "conservative_serialized_upper_bound_bytes_if_32_bytes_per_retained_entry": 25669116768, "factor_or_constraint_entry_evaluations": 201384562, "mandatory_compilation_aop_lower_bound": 3410023338, "retained_node_or_entry_upper_bound": 802159899, "separator_or_gf2_preprocess_aop": 0},
+      "order_sha256": "579c83be655d3b90c15d79bcedde8ba629b240e88ae76a910093006a69691db4",
+      "peak_joint_or_interface": {"cap": 104857600, "pass": true, "value": 67108864},
+      "retained": {"cap": 4194304, "certified_pass": false, "upper": 802159899},
+      "transformation_receipt_sha256": "48322460406e7b97938db5f6b06e151069d0f64687209a34d9d007dea87e6bae"
+    },
+    "S2_SEPARATOR_INTERFACE_COMPILATION": {
+      "aop": {"cap": 2147483648, "certified_pass": false, "definite_fail": true, "lower": 3643429748, "upper": 4503940239},
+      "c90_status": "C90_STATIC_CAP_EXHAUSTED",
+      "control_status": "CONTROL_CERTIFIED",
+      "factor_or_constraint_evaluations": {"cap": 134217728, "pass": false, "value": 201384562},
+      "first_crossed_step_zero_based": {"factor_table_entry_evaluations": 15, "mandatory_compilation_aop_lower_bound": 15, "peak_joint_table_entries": null},
+      "normalized_ledger": {"compilation_aop_upper_bound_if_every_intern_is_unique": 4503940239, "conservative_serialized_upper_bound_bytes_if_32_bytes_per_retained_entry": 27536335712, "factor_or_constraint_entry_evaluations": 201384562, "mandatory_compilation_aop_lower_bound": 3643429748, "retained_node_or_entry_upper_bound": 860510491, "separator_or_gf2_preprocess_aop": 4042},
+      "order_sha256": "cf8b97d5be06da77efdf771b4079c7b1b29b08947157cda8868bdce431e05144",
+      "peak_joint_or_interface": {"cap": 104857600, "pass": true, "value": 67108864},
+      "retained": {"cap": 4194304, "certified_pass": false, "upper": 860510491},
+      "transformation_receipt_sha256": "8c6feb275444161ca6ff8fae5d5e358bdfe59101aee1d9486e3d49ee834d181e"
+    },
+    "S3_GF2_PLUS_SEPARATOR": {
+      "aop": {"cap": 2147483648, "certified_pass": false, "definite_fail": true, "lower": 3643429748, "upper": 4503940239},
+      "c90_status": "C90_STATIC_CAP_EXHAUSTED",
+      "control_status": "CONTROL_CERTIFIED",
+      "factor_or_constraint_evaluations": {"cap": 134217728, "pass": false, "value": 201384562},
+      "first_crossed_step_zero_based": {"factor_table_entry_evaluations": 15, "mandatory_compilation_aop_lower_bound": 15, "peak_joint_table_entries": null},
+      "normalized_ledger": {"compilation_aop_upper_bound_if_every_intern_is_unique": 4503940239, "conservative_serialized_upper_bound_bytes_if_32_bytes_per_retained_entry": 27536335712, "factor_or_constraint_entry_evaluations": 201384562, "mandatory_compilation_aop_lower_bound": 3643429748, "retained_node_or_entry_upper_bound": 860510491, "separator_or_gf2_preprocess_aop": 4042},
+      "order_sha256": "cf8b97d5be06da77efdf771b4079c7b1b29b08947157cda8868bdce431e05144",
+      "peak_joint_or_interface": {"cap": 104857600, "pass": true, "value": 67108864},
+      "retained": {"cap": 4194304, "certified_pass": false, "upper": 860510491},
+      "transformation_receipt_sha256": "8c6feb275444161ca6ff8fae5d5e358bdfe59101aee1d9486e3d49ee834d181e"
+    }
+  },
+  "claim_boundary": {"accelerator_native_qec_authorized": false, "adaptive_or_learned_search_authorized": false, "approximation_authorized": false, "asymptotic_claim": false, "caps_relaxed": false, "global_treewidth_or_intrinsic_intractability_claim": false, "larger_rungs_authorized": false, "more_hardware_as_substitute_authorized": false, "qec_circuit_003_authorized": false, "qldpc_forge_authorized": false, "runtime_or_memory_performance_claim": false, "single_finite_c90_problem_only": true},
+  "control_certification_summary": {
+    "S0_BASELINE": {"status": "CONTROL_CERTIFIED"},
+    "S1_GF2_CONSTRAINT_ELIMINATION": {"hard_affine_factor_count": 0, "status": "CONTROL_CERTIFIED"},
+    "S2_SEPARATOR_INTERFACE_COMPILATION": {"compiled_descriptor_sha256": "d12e64fb25a9a23a49727e618da2d815777702ad525f44f320ba7fa326ea95f0", "protected_validation_outputs_sha256": "b5e168d3c8f4b420c8f2c1129ea23a3a4c5d6be946053aac7f1650cc4dd79189", "status": "CONTROL_CERTIFIED", "transformation_receipt_sha256": "d2201e0bb4c3a25a1b692adea3497f67cfb8dc9797c68c9132c2a845cb1c0362", "validation_count": 300, "validation_outputs_sha256": "b5e168d3c8f4b420c8f2c1129ea23a3a4c5d6be946053aac7f1650cc4dd79189"},
+    "S3_GF2_PLUS_SEPARATOR": {"compiled_descriptor_sha256": "d12e64fb25a9a23a49727e618da2d815777702ad525f44f320ba7fa326ea95f0", "protected_validation_outputs_sha256": "b5e168d3c8f4b420c8f2c1129ea23a3a4c5d6be946053aac7f1650cc4dd79189", "status": "CONTROL_CERTIFIED", "transformation_receipt_sha256": "d2201e0bb4c3a25a1b692adea3497f67cfb8dc9797c68c9132c2a845cb1c0362", "validation_count": 300, "validation_outputs_sha256": "b5e168d3c8f4b420c8f2c1129ea23a3a4c5d6be946053aac7f1650cc4dd79189"}
+  },
+  "experiment_id": "QTR-C90-STRUCTURE-001",
+  "manifest_payload_sha256": "205ecca612ae366694d4c17b6ce518727abf80114b6e52598073b238946f2a6a",
+  "measurement": {"artifact_digest": "sha256:f09a9283cde331b93d7d611dbe541c97f7d5900e9c27e7f8cc7bebccf09740e6", "artifact_id": 9485128135, "artifact_name": "qtr-c90-structure-001-static", "source_commit": "cf5dc16c96c56b560e661486853dfda79cde77f3", "static_report_payload_sha256": "b27122eb11eade8774f488f8d75eca76d1d940a32c2e6692ff8a9214cfd6151c", "workflow_run_id": 32609223764},
+  "overall_outcome": "C90_PREDECLARED_EXACT_STRUCTURAL_FAMILY_EXHAUSTED",
+  "payload_sha256": "ade245552af2f88d5ecb8c0b7f8eb363510ed678908fb80462b911255dd63d67",
+  "phase_c_disposition": "PHASE_C_TERMINAL_FAMILY_EXHAUSTED",
+  "phase_d_reached": false,
+  "phase_e_reached": false,
+  "s0_replay": {"factor_table_entry_evaluations": 201384562, "mandatory_compilation_aop_lower_bound": 3410023338, "matches_protected_predecessor": true, "peak_joint_table_entries": 67108864},
+  "s1_eligibility": {"hard_affine_factor_count": 0, "per_algebra_full_support": {"min_plus_hamming": true, "soft_tropical_base_2": true, "sum_product_bsc_p_0_1": true}, "s1_action": "IDENTITY_NO_ELIGIBLE_HARD_AFFINE_FACTORS"},
+  "schema_version": 1,
+  "status": "candidate_executable_not_promoted"
+}
