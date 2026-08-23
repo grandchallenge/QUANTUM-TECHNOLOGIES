@@ -1,0 +1,164 @@
+{
+  "admissible_method_statuses": [
+    "CONTROL_CERTIFIED",
+    "CONTROL_SEMANTICS_REJECTED",
+    "CONTROL_RESOURCE_BOUND_EXHAUSTED",
+    "C90_STATIC_ALL_CAPS_PASS",
+    "C90_STATIC_CAP_EXHAUSTED",
+    "C90_STATIC_RESOURCE_INDETERMINATE",
+    "C90_MATERIALIZATION_COMPLETED",
+    "C90_MATERIALIZATION_RESOURCE_BOUND_EXHAUSTED",
+    "C90_FROZEN_307_VALIDATED",
+    "C90_SEMANTIC_VALIDATION_FAILED"
+  ],
+  "admissible_overall_outcomes": [
+    "C90_EXACT_STRUCTURAL_WORK_REDUCTION_CERTIFIED",
+    "C90_PREDECLARED_EXACT_STRUCTURAL_FAMILY_EXHAUSTED",
+    "C90_PREDECLARED_EXACT_STRUCTURAL_FAMILY_INDETERMINATE",
+    "C90_STRUCTURAL_METHOD_SEMANTICS_REJECTED",
+    "OPERATIONAL_EXECUTION_INCOMPLETE"
+  ],
+  "authority": {
+    "council_issue": 97,
+    "execution_issue": 98,
+    "human_steward_comment": 5383415686,
+    "protected_start_main": "4182946ec5bdfda9de1443124624bd084a5acfda",
+    "referee_comment": 5383330531
+  },
+  "claim_boundary": {
+    "accelerator_native_qec_authorized": false,
+    "adaptive_or_learned_search_authorized": false,
+    "approximation_authorized": false,
+    "asymptotic_claim": false,
+    "caps_relaxed": false,
+    "global_treewidth_or_intrinsic_intractability_claim": false,
+    "larger_rungs_authorized": false,
+    "more_hardware_as_substitute_authorized": false,
+    "qec_circuit_003_authorized": false,
+    "qldpc_forge_authorized": false,
+    "runtime_or_memory_performance_claim": false,
+    "single_finite_c90_problem_only": true
+  },
+  "controls": {
+    "c18": {
+      "new_interface_authority_created": false,
+      "role": "auxiliary exhaustive control only when invoked"
+    },
+    "c72": {
+      "n": 72,
+      "random_distinct_non_reserved": 256,
+      "registry_blob_sha": "9cf5ed39bd51c3e4f920e4b5b4687fc4eacec386",
+      "registry_path": "registry/qldpc-scale-001a.json",
+      "scope": "protected exact C72 semantic surface only",
+      "validation_seed_ascii": "QLDPC-SCALE-001A::selector-validation::v1"
+    }
+  },
+  "experiment_id": "QTR-C90-STRUCTURE-001",
+  "manifest_payload_sha256": "205ecca612ae366694d4c17b6ce518727abf80114b6e52598073b238946f2a6a",
+  "method_selection_policy": "run every method that passes required control certification; never drop a method based on diagnostic favorability",
+  "methods": {
+    "S0_BASELINE": {
+      "kind": "protected_control",
+      "order": "deterministic_min_fill",
+      "representation": "protected sequential exact variable elimination"
+    },
+    "S1_GF2_CONSTRAINT_ELIMINATION": {
+      "eligible_factor_rule": "factor must be a hard affine/parity indicator under every protected algebra; weighted factors are ineligible",
+      "free_variable_order": "ascending_original_variable_index",
+      "kind": "exact_preprocessor",
+      "multiplicity_rule": "pivot variables uniquely reconstructed from free variables; otherwise explicit multiplicity required",
+      "no_eligible_factor_behavior": "identity_transformation",
+      "pivot_rule": "lowest_original_variable_index_then_lowest_factor_index",
+      "row_reduction": "canonical_full_rref_GF2"
+    },
+    "S2_SEPARATOR_INTERFACE_COMPILATION": {
+      "bag_rule": "for each eliminated variable, bag = variable union current later-neighbors",
+      "control_evaluation": "junction-tree contraction compared to independent protected variable-elimination oracle",
+      "factor_assignment_rule": "smallest bag-id containing factor scope",
+      "interface_representation": "exact full boundary-state table; no truncation or lossy compression",
+      "kind": "exact_junction_tree_interface_compiler",
+      "maximal_bag_rule": "drop strict-subset bags; retain first lexicographic representative of equal bags",
+      "message_schedule": "postorder children by bag-id then root contraction",
+      "root_rule": "lexicographically smallest maximum-cardinality bag",
+      "separator": "exact bag intersection",
+      "tree_rule": "deterministic maximum-weight spanning tree on bag intersections; ties by sorted bag-id pair",
+      "triangulation_order": "protected deterministic_min_fill"
+    },
+    "S3_GF2_PLUS_SEPARATOR": {
+      "composition": [
+        "S1_GF2_CONSTRAINT_ELIMINATION",
+        "S2_SEPARATOR_INTERFACE_COMPILATION"
+      ],
+      "hybrid_specific_choices_allowed": false,
+      "kind": "fixed_composition"
+    }
+  },
+  "normalized_ledger": {
+    "categories": [
+      "GF2_ROW_XOR",
+      "GF2_PIVOT_TEST",
+      "AFFINE_SUBSTITUTION",
+      "GRAPH_NEIGHBOR_READ",
+      "GRAPH_EDGE_WRITE",
+      "SEPARATOR_INTERSECTION",
+      "FACTOR_ENTRY_EVALUATION",
+      "INTERFACE_ASSIGNMENT_EVALUATION",
+      "TABLE_READ",
+      "TABLE_WRITE",
+      "EXACT_INT_ADD",
+      "EXACT_INT_MUL",
+      "EXACT_COMPARE",
+      "NODE_INTERN",
+      "INDEX_PROJECT",
+      "BITSET_OR",
+      "RECONSTRUCTION",
+      "VALIDATION"
+    ],
+    "preprocessing_counted": true,
+    "renaming_work_does_not_remove_work": true,
+    "validation_counted": true
+  },
+  "phase_rules": {
+    "A": "pre-outcome manifest/evaluator/workflow freeze",
+    "B": "machine-check control semantic certification; control resource failure rejects method before C90 adjudication",
+    "C": "non-materializing C90 native and normalized ledger for all control-certified methods",
+    "D": "fresh CPU-reference Colab materialization only if every inherited cap has certified pass; unknown blocks",
+    "E": "same frozen 307 selectors only after admissible exact materialization"
+  },
+  "predecessor": {
+    "documentary_merge": "4182946ec5bdfda9de1443124624bd084a5acfda",
+    "evidence_blob_sha": "064b7ab32147f329a3893fd603cda501c7db641d",
+    "evidence_path": "evidence/QTR-C90-EXACT-REQUAL-001-report.json",
+    "evidence_payload_sha256": "5b7740eef2d5b9e8f95cbf487c3841223b7e1350d7b0f9558c9629c78357dc0c",
+    "experiment_id": "QTR-C90-EXACT-REQUAL-001",
+    "manifest_blob_sha": "ca70abb3424e111d22282872b8bc9483e4cdf6ed",
+    "manifest_path": "registry/qtr-c90-exact-requal-001-manifest.json",
+    "scientific_merge": "42e644571172f895025a819d9e91cd8fcd78cbb8"
+  },
+  "resource_envelope": {
+    "max_canonical_serialized_compiled_bytes_per_algebra": 536870912,
+    "max_compilation_aop_events_per_algebra": 2147483648,
+    "max_factor_or_constraint_entry_evaluations_per_algebra": 134217728,
+    "max_peak_joint_or_interface_entries": 104857600,
+    "max_retained_canonical_structural_nodes_or_entries_per_algebra": 4194304
+  },
+  "schema_version": 1,
+  "status": "frozen_execution_manifest",
+  "target": {
+    "hx_rank": 41,
+    "n": 90,
+    "selector_rank": 49,
+    "source_and_basis_digests": {
+      "factor_scope_sha256": "8dd0b2849491df78376a7f7eb8940efa142737caf45df1fe2104fe4929da50da",
+      "hx_sha256": "31af739c5854bd3287b3e1319fc99e4c5f220fdd5c1486420d0cb17d6fce86af",
+      "hz_sha256": "c79c2c8c3373fbc4b46b43364f403b07c1b093f98f0be1832fac0f1f571fd7ca",
+      "independent_bases_sha256": "377fae0d662372aa53372deaac9e602d4a97919150bcb3b3de65ecf714c598a8",
+      "logical_basis_sha256": "6cf0007ae20507fbd34163362e96c0e4741cc7ce0437debb542f565b151aeb8a",
+      "order_record_sha256": "a612ced5cb6adce4d4dab40800e48bb80b7dd1542dc5cd89d4667cb56ae6c468",
+      "selector_basis_sha256": "257809cb3c37594e5d19b6f8a79018680f84bdec06ed898be45e4d1c504fb716",
+      "source_record_sha256": "f99851301f0fce2970d20ef2e4d1f054b7efbfec294de8937ec4d9e2993a04ae"
+    },
+    "validation_selector_count": 307,
+    "validation_set_sha256": "c0a675e3124ed96de66a516a2d679923b8c230c7530b80d5d431df66d781a85c"
+  }
+}

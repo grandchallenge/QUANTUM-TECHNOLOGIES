@@ -1,0 +1,32 @@
+{
+  "algebra_order": [
+    "sum_product_bsc_p_0_1",
+    "soft_tropical_base_2",
+    "min_plus_hamming"
+  ],
+  "claim_boundary": {
+    "accelerator_native_qec_authorized": false,
+    "adaptive_or_learned_search_authorized": false,
+    "approximation_authorized": false,
+    "asymptotic_claim": false,
+    "global_treewidth_or_intrinsic_intractability_claim": false,
+    "larger_rungs_authorized": false,
+    "qec_circuit_003_authorized": false,
+    "qldpc_forge_authorized": false,
+    "runtime_or_memory_performance_claim": false,
+    "single_finite_c90_problem_only": true
+  },
+  "experiment_id": "QTR-C90-STRUCTURE-001",
+  "hosted_session_identity": "__HOST_RENDERED__",
+  "manifest_payload_sha256": "205ecca612ae366694d4c17b6ce518727abf80114b6e52598073b238946f2a6a",
+  "predeclared_methods": [
+    "S0_BASELINE",
+    "S1_GF2_CONSTRAINT_ELIMINATION",
+    "S2_SEPARATOR_INTERFACE_COMPILATION",
+    "S3_GF2_PLUS_SEPARATOR"
+  ],
+  "remote_timeout_seconds": 7200,
+  "scientific_backend": "cpu_reference",
+  "scientific_execution_authorized": true,
+  "workload": "c90_structure_conditional"
+}
