@@ -1,0 +1,41 @@
+{
+  "experiment_id": "TCM-C72-INTERFACE-001",
+  "source_policy": {
+    "require_exact_branch_head": true,
+    "branch": "agent/tcm-c72-interface-001",
+    "protected_base": "53e2ac281eb8738e711f75b0d6be525eafab48a3"
+  },
+  "execution": {
+    "preflight_required": true,
+    "full_c72_execution_is_manual_or_hosted_only": true,
+    "sharding": {
+      "unit": "complete_corpus_input",
+      "assignment": "input_index mod shard_count == shard_index",
+      "worker_count_is_operational_not_scientific": true,
+      "all_4096_logical_classes_per_owned_input_required": true
+    },
+    "aggregation_requires_every_shard": true
+  },
+  "hardware": {
+    "cpu_only_required_by_scientific_semantics": false,
+    "accelerator_required": false,
+    "actual_host_inventory_must_be_recorded": true,
+    "historical_experimental_caps_are_scientific_stop_rules": false,
+    "oom_timeout_storage_unavailable_compute": "OPERATIONAL_EXECUTION_INCOMPLETE"
+  },
+  "scientific_invariants": {
+    "c72_corpus_size": 329,
+    "c72_corpus_sha256": "23b49e39eafd70c9619f8837dfcb0046e13a1600cd7176d42a6018814f518050",
+    "logical_classes_per_syndrome": 4096,
+    "algebras": 3,
+    "approximation": false,
+    "pruning": false,
+    "post_outcome_tuning": false,
+    "injected_error_available_to_decoder": false
+  },
+  "output": {
+    "preflight": "TCM-C72-INTERFACE-001-preflight.json",
+    "shard_pattern": "TCM-C72-INTERFACE-001-shard-<index>-of-<count>.json",
+    "aggregate": "TCM-C72-INTERFACE-001-report.json"
+  }
+}
