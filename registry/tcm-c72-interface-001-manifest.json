@@ -1,0 +1,164 @@
+{
+  "authority": {
+    "council_issue": 109,
+    "execution_issue": 110,
+    "human_steward_authorization_comment": 5392408266,
+    "protected_start_main": "53e2ac281eb8738e711f75b0d6be525eafab48a3",
+    "referee_comment": 5392099960
+  },
+  "c18_control": {
+    "backend": "TCM-QDEC-003 exact stabilizer-degeneracy contraction through the same outer syndrome/logical-class bridge",
+    "expected_decision_sha256": {
+      "min_plus_hamming": "88a9a766b64c7e476ac5bb4da877a2b1f6d4e88cee88cde6ea7461cc74179f3f",
+      "soft_tropical_base_2": "ea2a96e3878758cd2daebd28673d943c27740a3e1c3579d8429a8a658e567393",
+      "sum_product_bsc_p_0_1": "05dd32573ee965ce96caf707de3541f8be74b49317ad46b7929ef7dcf3bf64fc"
+    },
+    "expected_success_totals": {
+      "min_plus_hamming": 226,
+      "soft_tropical_base_2": 262,
+      "sum_product_bsc_p_0_1": 263
+    },
+    "expected_tie_envelopes": {
+      "min_plus_hamming": [
+        218,
+        263
+      ],
+      "soft_tropical_base_2": [
+        262,
+        262
+      ],
+      "sum_product_bsc_p_0_1": [
+        263,
+        263
+      ]
+    }
+  },
+  "c72_corpus": {
+    "channel": "BSC p=0.1",
+    "order": "zero, 72 unit errors, 256 frozen SHA-derived BSC errors",
+    "sha256": "23b49e39eafd70c9619f8837dfcb0046e13a1600cd7176d42a6018814f518050",
+    "size": 329,
+    "source_manifest": "registry/tcm-qdec-compare-001-manifest.json",
+    "source_manifest_payload_sha256": "c68830f40733cde6957713060cec35adf317c75572cc960610c07c4d0e24d1e2"
+  },
+  "c72_protected": {
+    "distance_status": "SOURCE_REPORTED_DISTANCE",
+    "qldpc_scale_001a": {
+      "evidence_blob_sha": "268a5bfa9ed35ad3cd5984031de20487835643d0",
+      "evidence_path": "evidence/QLDPC-SCALE-001A-report.json",
+      "evidence_payload_sha256": "198bb28f47844aa98efa20d8c838c48870a8aef41ccfda266b16661677e363e1",
+      "factor_scope_sha256": "c4b54c5ed2da67753608d13777ac02ff43872ca0688598a6b6cfc74502531c47",
+      "hx_sha256": "6c01bd1eceb703a1afbd9897c9ce3810d951bc0d1284588607775e9f875740f2",
+      "hz_sha256": "01f8c7d756f3056faaa40cbe20e2c68091f65b582de5abb42e99d0e5b07a5c3d",
+      "logical_rank": 12,
+      "primary_induced_width": 18,
+      "primary_order": "deterministic_min_fill",
+      "promotion_record_path": "reviews/QTR-QLDPC-SCALE-REVIEW-001A/promotion-record.json",
+      "reviewed_head": "1bf76b536d9cd59d8a4b6b3518764df8e526986e",
+      "scientific_merge_commit": "e30e64adcbd67ab015b04415135bb167b3132a02",
+      "selector_basis_sha256": "26a3b1ded24edbd0498eb915b7c3209db309be4a1cff8446149d2f78e0f7e524",
+      "selector_rank": 42,
+      "syndrome_rank": 30,
+      "validation_outputs_sha256": "b5e168d3c8f4b420c8f2c1129ea23a3a4c5d6be946053aac7f1650cc4dd79189",
+      "validation_selector_count": 300,
+      "validation_set_sha256": "2eabc60f4ea2d64be6e4fea5ee33e527de46b115e727a8607b5332b19ba1e1bf"
+    },
+    "source_parameters": [
+      72,
+      12,
+      6
+    ]
+  },
+  "candidate_outcomes": [
+    "C72_TCM_SHARED_DECODER_INTERFACE_CERTIFIED",
+    "C72_TCM_INTERFACE_SEMANTIC_EQUIVALENCE_FAILED",
+    "C72_TCM_INTERFACE_CONSTRUCTION_NOT_CERTIFIED",
+    "OPERATIONAL_EXECUTION_INCOMPLETE"
+  ],
+  "claim_boundary": {
+    "approximation_authorized": false,
+    "autonomous_search_authorized": false,
+    "c72_exact_interface_only": true,
+    "c72_finite_quality_facts_allowed": true,
+    "c90_execution_authorized": false,
+    "code_order_semiring_corpus_tuning_authorized": false,
+    "family_or_asymptotic_claim": false,
+    "hardware_superiority_claim": false,
+    "learned_decoding_authorized": false,
+    "new_c90_bound_refinement_authorized": false,
+    "qec_circuit_003_authorized": false,
+    "qldpc_forge_authorized": false,
+    "threshold_or_circuit_claim": false
+  },
+  "correctness_oracle": {
+    "scoring_stage_only": true,
+    "success": "e XOR c is in Row(H_X)",
+    "syndrome_consistency": "H_Z c = H_Z e mod 2"
+  },
+  "decision_rule": {
+    "class_tie_break": "lowest_canonical_stabilizer_coset_key",
+    "representative_within_class": "lowest_hamming_weight_then_integer",
+    "winning_class": "exact_semiring_optimum"
+  },
+  "decoder_interface": {
+    "full_syndrome_rows": 36,
+    "independent_syndrome_rows": 30,
+    "injected_error_available_to_decoder": false,
+    "logical_classes_per_syndrome": 4096,
+    "selector_coordinate_rule": "construct exact invertible GF(2) map from the protected 42 selector-basis coordinates to 30 independent Z-check functional values plus 12 protected logical-Z functional values",
+    "selector_map_assumed_identity": false,
+    "signature": "decode(full_HZ_syndrome, channel_metadata) -> correction | declared_failure"
+  },
+  "execution_method": {
+    "class_score_stream_digest_required": true,
+    "class_scorer": "protected C72 deterministic-min-fill fixed-selector exact contraction; sum-product, soft-tropical and min-plus payloads evaluated together",
+    "name": "EXACT_EXHAUSTIVE_LOGICAL_CLASS_SHARDED",
+    "order_search": false,
+    "parallelism": "deterministic input-level sharding only; each shard owns complete inputs and evaluates all 4096 classes for each owned input",
+    "per_input_policy": "evaluate every one of the 4096 logical classes exactly; no pruning, approximation, early stopping, or outcome-dependent restriction",
+    "post_outcome_tuning": false,
+    "retry_changes_scientific_result": false,
+    "shard_assignment": "input_index mod shard_count == shard_index"
+  },
+  "experiment_id": "TCM-C72-INTERFACE-001",
+  "manifest_payload_sha256": "35e3715fa9b1d0d44cad63c8cafbee01a42c3426c7db21c37d3ff68073506ddf",
+  "manifest_version": "0.1.0",
+  "resource_policy": {
+    "historical_caps": [
+      "2^20 peak entries",
+      "2^27 factor evaluations",
+      "2^22 retained nodes",
+      "512 MiB serialization",
+      "2^31 AOP"
+    ],
+    "historical_deterministic_caps_are_scientific_stop_rules": false,
+    "host_allocation_recorded": true,
+    "oom_timeout_storage_or_unavailable_compute": "OPERATIONAL_EXECUTION_INCOMPLETE",
+    "resource_failure_is_infeasibility_claim": false
+  },
+  "scientific_question": "Can the protected C72 exact TCM class scorer be exposed as a correction-valued syndrome decoder without changing TCM score, class-tie, representative, channel, or correctness semantics?",
+  "semirings": {
+    "min_plus_hamming": {
+      "direction": "minimize",
+      "local_bit_costs": [
+        0,
+        1
+      ]
+    },
+    "soft_tropical_base_2": {
+      "direction": "maximize",
+      "local_bit_weights": [
+        2,
+        1
+      ]
+    },
+    "sum_product_bsc_p_0_1": {
+      "direction": "maximize",
+      "local_bit_weights": [
+        9,
+        1
+      ]
+    }
+  },
+  "status": "frozen_pre_measurement_manifest"
+}
