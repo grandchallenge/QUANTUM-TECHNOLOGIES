@@ -1,0 +1,123 @@
+{
+  "adjudications": [
+    "C90_HISTORICAL_CAPS_CONSERVATIVE__PHYSICAL_ENVELOPE_CANDIDATE_IDENTIFIED",
+    "C90_HISTORICAL_CAPS_APPROXIMATELY_ALIGNED_WITH_PHYSICAL_FRONTIER",
+    "C90_REPRESENTATION_BOUND_DOMINATES_AFTER_WORK_CAP_RELAXATION",
+    "C90_RESOURCE_ENVELOPE_CALIBRATION_INDETERMINATE",
+    "C90_CPU_REFERENCE_PHYSICAL_ENVELOPE_REJECTS_EXACT_MATERIALIZATION",
+    "OPERATIONAL_EXECUTION_INCOMPLETE"
+  ],
+  "authority": {
+    "council_issue": 100,
+    "council_referee_comment": 5389473992,
+    "execution_issue": 102,
+    "human_steward_comment": 5389645111,
+    "protected_predecessor_merge": "c5719a623310432c4e97a5863428176ff739cbd7",
+    "protected_predecessor_readback_comment": 5389715147
+  },
+  "candidate_envelope_gate": {
+    "absolute_reserve_bytes": 2147483648,
+    "fresh_memavailable_must_cover_predicted_plus_reserve": true,
+    "max_predicted_peak_fraction_total_ram": 0.7,
+    "runtime_index_support_required": true,
+    "sensitivity_coordinate_must_be_explicit": true,
+    "serialized_storage_must_be_conservatively_bounded": true,
+    "unknown_result": "C90_RESOURCE_ENVELOPE_CALIBRATION_INDETERMINATE"
+  },
+  "claim_boundary": {
+    "accelerator_native_qec_authorized": false,
+    "adaptive_order_search_authorized": false,
+    "adopt_larger_cap_authorized": false,
+    "approximation_authorized": false,
+    "asymptotic_or_family_scaling_claim": false,
+    "frozen_307_validation_authorized": false,
+    "full_c90_materialization_authorized": false,
+    "intrinsic_intractability_claim": false,
+    "learned_decoding_authorized": false,
+    "new_structural_method_authorized": false,
+    "qec_circuit_003_authorized": false,
+    "qldpc_forge_authorized": false,
+    "runtime_or_memory_superiority_claim": false,
+    "single_finite_c90_problem_only": true
+  },
+  "experiment_id": "QTR-C90-RESOURCE-ENVELOPE-001",
+  "frozen_methods": [
+    "S0_BASELINE",
+    "S1_GF2_CONSTRAINT_ELIMINATION",
+    "S2_SEPARATOR_INTERFACE_COMPILATION",
+    "S3_GF2_PLUS_SEPARATOR"
+  ],
+  "manifest_payload_sha256": "d64b770f5cc1fb4c8a0ca8e89dad6d8020a01ae38f2c6868ff3028f53c441651",
+  "physical_probe": {
+    "allocation_limit_rule": "min(512 MiB, 5% MemTotal)",
+    "backend": "cpu_reference",
+    "gpu_tpu_memory_budgeted": false,
+    "object_forms": [
+      "node_list_plus_intern_dict",
+      "factor_table_list_slots",
+      "node_tuple_T",
+      "node_tuple_I",
+      "node_tuple_binary"
+    ],
+    "probe_entry_counts": [
+      4096,
+      16384,
+      65536
+    ],
+    "required_runtime_fields": [
+      "MemTotal",
+      "MemAvailable",
+      "python_implementation",
+      "python_version",
+      "pointer_width_bits"
+    ],
+    "rss_required": true
+  },
+  "predecessor": {
+    "evidence_blob_sha": "b40ccb272da93afd5d43b00501fbd6be2bed0d7c",
+    "evidence_payload_sha256": "ade245552af2f88d5ecb8c0b7f8eb363510ed678908fb80462b911255dd63d67",
+    "experiment_id": "QTR-C90-STRUCTURE-001",
+    "manifest_blob_sha": "251953cc74ddc26d6ad46a11b92bb0ce05ad59dc",
+    "manifest_payload_sha256": "205ecca612ae366694d4c17b6ce518727abf80114b6e52598073b238946f2a6a",
+    "overall_outcome": "C90_PREDECLARED_EXACT_STRUCTURAL_FAMILY_EXHAUSTED",
+    "registry_blob_sha": "15161fb993d1e12e8bbb8c60ae9e37bf5d489579",
+    "scientific_merge": "c5719a623310432c4e97a5863428176ff739cbd7",
+    "terminal_measurement_payload_sha256": "b27122eb11eade8774f488f8d75eca76d1d940a32c2e6692ff8a9214cfd6151c"
+  },
+  "representation_audit": {
+    "intern_attempt_upper_is_not_retained_count": true,
+    "liveness_method": "deterministic scope-only simulation of protected elimination order; no value table or node materialization",
+    "quantity_types": [
+      "exact",
+      "lower_bound",
+      "upper_bound",
+      "unknown"
+    ],
+    "required_quantities": [
+      "retained_canonical_nodes_or_entries",
+      "live_factor_table_entries",
+      "intern_attempts",
+      "canonical_serialized_bytes",
+      "maximum_individual_table_entries"
+    ],
+    "unknown_fails_closed": true
+  },
+  "schema_version": 1,
+  "sensitivity": {
+    "compilation_aop_base": 2147483648,
+    "factor_evaluation_base": 134217728,
+    "multipliers": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "retroactive_cap_amendment": false,
+    "semantics": {
+      "CERTIFIED_PASS": "exact factor count <= coordinate and conservative AOP upper bound <= coordinate",
+      "DEFINITE_FAIL": "exact factor count > coordinate or mandatory AOP lower bound > coordinate",
+      "INDETERMINATE": "no definite fail but conservative AOP upper bound exceeds coordinate"
+    }
+  },
+  "status": "frozen_execution_manifest"
+}
