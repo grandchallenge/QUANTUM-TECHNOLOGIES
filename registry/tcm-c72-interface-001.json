@@ -1,0 +1,45 @@
+{
+  "registry_version": "0.1.0",
+  "experiments": [
+    {
+      "experiment_id": "TCM-C72-INTERFACE-001",
+      "programme": "QTR",
+      "status": "candidate_executable_not_promoted",
+      "authority": {
+        "council_issue": 109,
+        "execution_issue": 110,
+        "human_steward_authorization_comment": 5392408266,
+        "protected_start_main": "53e2ac281eb8738e711f75b0d6be525eafab48a3",
+        "referee_comment": 5392099960
+      },
+      "manifest": {
+        "path": "registry/tcm-c72-interface-001-manifest.json",
+        "payload_sha256": "35e3715fa9b1d0d44cad63c8cafbee01a42c3426c7db21c37d3ff68073506ddf"
+      },
+      "surface": {
+        "code": "source-bound [[72,12,6]] BB instance",
+        "corpus_size": 329,
+        "corpus_sha256": "23b49e39eafd70c9619f8837dfcb0046e13a1600cd7176d42a6018814f518050",
+        "decoder_signature": "decode(full_HZ_syndrome, channel_metadata) -> correction | declared_failure",
+        "logical_classes_per_syndrome": 4096,
+        "algebras": [
+          "sum_product_bsc_p_0_1",
+          "soft_tropical_base_2",
+          "min_plus_hamming"
+        ]
+      },
+      "resource_policy": {
+        "historical_caps_are_scientific_stop_rules": false,
+        "host_limits_are_operational": true,
+        "operational_failure_class": "OPERATIONAL_EXECUTION_INCOMPLETE"
+      },
+      "claim_boundary": {
+        "c72_exact_interface_only": true,
+        "c90_execution_authorized": false,
+        "new_c90_bound_refinement_authorized": false,
+        "approximation_authorized": false,
+        "qldpc_forge_authorized": false
+      }
+    }
+  ]
+}
