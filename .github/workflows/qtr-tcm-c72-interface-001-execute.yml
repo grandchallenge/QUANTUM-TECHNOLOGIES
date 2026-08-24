@@ -21,22 +21,25 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 1
+          fetch-depth: 2
 
       - name: Verify activation binding
         env:
           SUBJECT_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
-          python - "$SUBJECT_SHA" <<'PY'
+          PACKAGE_HEAD="$(git rev-parse HEAD^)"
+          python - "$SUBJECT_SHA" "$PACKAGE_HEAD" <<'PY'
           import json,sys
           from pathlib import Path
+          subject,package_head=sys.argv[1:]
           a=json.loads(Path('execution/TCM-C72-INTERFACE-001.activate').read_text())
           assert a['experiment_id']=='TCM-C72-INTERFACE-001'
           assert a['manifest_payload_sha256']=='35e3715fa9b1d0d44cad63c8cafbee01a42c3426c7db21c37d3ff68073506ddf'
-          assert a['package_head']=='__PACKAGE_HEAD__'
+          assert a['package_head']==package_head
           assert a['activation_head_expected_after_commit'] is None
           assert a['c72_quality_outcome_observed_before_activation'] is False
+          assert subject != package_head
           PY
 
       - name: Set up Python
