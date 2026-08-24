@@ -1,0 +1,21 @@
+{
+  "experiments": [
+    {
+      "authority": {"council_issue": 97, "execution_issue": 98, "human_steward_comment": 5383415686, "protected_start_main": "4182946ec5bdfda9de1443124624bd084a5acfda", "referee_comment": 5383330531},
+      "claim_boundary": {"accelerator_native_qec_authorized": false, "adaptive_or_learned_search_authorized": false, "approximation_authorized": false, "asymptotic_claim": false, "caps_relaxed": false, "global_treewidth_or_intrinsic_intractability_claim": false, "larger_rungs_authorized": false, "more_hardware_as_substitute_authorized": false, "qec_circuit_003_authorized": false, "qldpc_forge_authorized": false, "runtime_or_memory_performance_claim": false, "single_finite_c90_problem_only": true},
+      "evidence_payload_sha256": "ade245552af2f88d5ecb8c0b7f8eb363510ed678908fb80462b911255dd63d67",
+      "experiment_id": "QTR-C90-STRUCTURE-001",
+      "manifest_payload_sha256": "205ecca612ae366694d4c17b6ce518727abf80114b6e52598073b238946f2a6a",
+      "measurement_static_report_payload_sha256": "b27122eb11eade8774f488f8d75eca76d1d940a32c2e6692ff8a9214cfd6151c",
+      "overall_outcome": "C90_PREDECLARED_EXACT_STRUCTURAL_FAMILY_EXHAUSTED",
+      "phase_c_disposition": "PHASE_C_TERMINAL_FAMILY_EXHAUSTED",
+      "phase_d_reached": false,
+      "phase_e_reached": false,
+      "predeclared_family": ["S0_BASELINE", "S1_GF2_CONSTRAINT_ELIMINATION", "S2_SEPARATOR_INTERFACE_COMPILATION", "S3_GF2_PLUS_SEPARATOR"],
+      "programme": "QTR",
+      "source_commit": "cf5dc16c96c56b560e661486853dfda79cde77f3",
+      "status": "candidate_executable_not_promoted"
+    }
+  ],
+  "registry_version": "0.1.0"
+}
