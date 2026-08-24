@@ -13,6 +13,7 @@ on:
       - 'tests/test_tcm_c72_interface_001_parallel.py'
       - 'work-packages/QTR-TCM-C72-INTERFACE-001.md'
       - '.github/workflows/qtr-tcm-c72-interface-001.yml'
+      - '.github/workflows/qtr-tcm-c72-interface-001-execute.yml'
   workflow_dispatch:
 
 permissions:
