@@ -29,17 +29,16 @@
         "semantic_simplification_authorized": false,
         "single_finite_c90_problem_only": true
       },
+      "control_payload_sha256": "5952da57d779b3a0ac6fadb149307b9d086942874a862baa75333757067b5f8f",
+      "evidence_payload_sha256": "2e8f9e0c33a11d253db4a07ea967321ba4996ce5d7b6e46721cca4becf175f38",
       "experiment_id": "QTR-C90-RETAINED-BOUND-001",
+      "first_scientific_source_commit": "fe366e9863af7937a837ad2909a39ebeaf78dc63",
+      "full_c90_materialization_authorized": false,
       "manifest_payload_sha256": "d9072de9631901a0b97df61c14b8c5dc9d5de7d21ad9d7e181765c69fad223c2",
-      "predecessor_evidence_payload_sha256": "0ea802c6ce9c584c52bbc5608ac4a94abec5f29c2939e5c226386c4581205195",
+      "outcome": "C90_CANONICAL_NODE_BOUND_TIGHTENED__PHYSICAL_GATE_STILL_UNCERTIFIED",
       "programme": "QTR",
-      "refinements": [
-        "B0_ATTEMPT_UPPER_CONTROL",
-        "B1_TYPED_CANONICAL_KEY_BOUND",
-        "B2_STAGE_OPERAND_DOMAIN_BOUND",
-        "B3_PROVENANCE_PARTITION_BOUND"
-      ],
-      "status": "frozen_execution_manifest"
+      "report_payload_sha256": "f711a96cc009a70d3334332222b5dbf0723689ba256b66cdbe7867002a885f62",
+      "status": "candidate_executable_not_promoted"
     }
   ],
   "registry_version": "0.1.0"
