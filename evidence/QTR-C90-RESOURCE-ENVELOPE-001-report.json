@@ -1,0 +1,201 @@
+{
+  "authority": {
+    "council_issue": 100,
+    "council_referee_comment": 5389473992,
+    "execution_issue": 102,
+    "hosted_console_receipt_comment": 5389842987,
+    "human_steward_comment": 5389645111,
+    "protected_predecessor_readback_comment": 5389715147
+  },
+  "claim_boundary": {
+    "accelerator_native_qec_authorized": false,
+    "adaptive_order_search_authorized": false,
+    "adopt_larger_cap_authorized": false,
+    "approximation_authorized": false,
+    "asymptotic_or_family_scaling_claim": false,
+    "frozen_307_validation_authorized": false,
+    "full_c90_materialization_authorized": false,
+    "intrinsic_intractability_claim": false,
+    "learned_decoding_authorized": false,
+    "new_structural_method_authorized": false,
+    "qec_circuit_003_authorized": false,
+    "qldpc_forge_authorized": false,
+    "runtime_or_memory_superiority_claim": false,
+    "single_finite_c90_problem_only": true
+  },
+  "experiment_id": "QTR-C90-RESOURCE-ENVELOPE-001",
+  "frozen_307_validation_performed": false,
+  "frozen_preoutcome_head": "aabcdb4c6e54e35a56368e0acf3e32bc8d8ac7a5",
+  "hosted_execution": {
+    "bundle_sha256": "eb45e30e0cd1064743ce978897e92f22e1d75735c8092924be773cfb01b7f12b",
+    "finished_at": "2026-08-24T01:57:06.623507+00:00",
+    "full_c90_materialization_authorized": false,
+    "hosted_result_payload_sha256": "9908251d70843f6dd1a5d0533e5f02e7c7de9fba921db8591212a7e16503a774",
+    "hosted_result_source_commit_field": "UNKNOWN",
+    "hosted_static_payload_sha256": "c588d19b88762e97a5de09322e07c48650dd1b7cd2283aa7441d368c4f8930fb",
+    "job_sha256": "4a8d19ac14504458fba9ec7e8748f693a3ce5e1065c60e12f68e8186b8b9aee9",
+    "manifest_file_sha256": "4d76dc0cf70771c6c523bc007966a463ad1edd1d2a21b36e2f56f1ea0275bcc1",
+    "promotion_claim": false,
+    "provenance_note": "The extracted hosted source payload is not a Git worktree, so gcl_result.json records source_commit as UNKNOWN. The independently generated experiment receipt binds the exact source commit and source payload digest; the UNKNOWN field is preserved rather than rewritten.",
+    "provenance_source_commit_from_receipt": "aabcdb4c6e54e35a56368e0acf3e32bc8d8ac7a5",
+    "receipt_file_sha256": "d9e7a89d47501a9719fb06a5b22eb4de5e7c9d3d2804c62935b5beda06d6586c",
+    "receipt_status": "GREEN_SCIENTIFIC_CANDIDATE",
+    "result_file_sha256": "31622065385e780f900197fe9a896803ce7b8dab136924aed188d490c262c550",
+    "returncode": 0,
+    "scientific_backend": "cpu_reference",
+    "session": "gcl-qtr-c90-env-20260824t015639z-28258",
+    "source_payload_sha256": "43cc14cb6a7c4f01cb7d194fa9d8e0bf70cfd7e013b1bc6e481a20186998bba1",
+    "started_at": "2026-08-24T01:57:00.275412+00:00"
+  },
+  "interpretation": {
+    "actual_physical_infeasibility_established": false,
+    "historical_work_caps_conservative_for_s0_s1": true,
+    "historical_work_caps_conservative_for_s2_s3_at_certified_coordinate": true,
+    "physical_envelope_candidate_identified": false,
+    "reason": "Conservative representation upper bounds exceed the fresh CPU host gates; those upper bounds do not certify actual retained size or intrinsic infeasibility."
+  },
+  "manifest_payload_sha256": "d64b770f5cc1fb4c8a0ca8e89dad6d8020a01ae38f2c6868ff3028f53c441651",
+  "materialization_performed": false,
+  "methods": {
+    "S0_BASELINE": {
+      "candidate_envelope": false,
+      "canonical_serialized_upper_bound_bytes": 56151193186,
+      "cumulative_work_sensitivity_coordinate": 2,
+      "gates": {
+        "absolute_2gib_reserve": false,
+        "fresh_memavailable_covers_peak_plus_reserve": false,
+        "predicted_peak_le_70pct_total": false,
+        "runtime_index_support": true,
+        "serialized_storage_bounded": true
+      },
+      "physical_feasibility_if_not_candidate": "indeterminate_from_upper_bound",
+      "predicted_peak_resident_upper_proxy_bytes": 272606736106,
+      "status": "REPRESENTATION_UPPER_BOUND_DOES_NOT_CERTIFY_PHYSICAL_GATE"
+    },
+    "S1_GF2_CONSTRAINT_ELIMINATION": {
+      "candidate_envelope": false,
+      "canonical_serialized_upper_bound_bytes": 56151193186,
+      "cumulative_work_sensitivity_coordinate": 2,
+      "gates": {
+        "absolute_2gib_reserve": false,
+        "fresh_memavailable_covers_peak_plus_reserve": false,
+        "predicted_peak_le_70pct_total": false,
+        "runtime_index_support": true,
+        "serialized_storage_bounded": true
+      },
+      "physical_feasibility_if_not_candidate": "indeterminate_from_upper_bound",
+      "predicted_peak_resident_upper_proxy_bytes": 272606736106,
+      "status": "REPRESENTATION_UPPER_BOUND_DOES_NOT_CERTIFY_PHYSICAL_GATE"
+    },
+    "S2_SEPARATOR_INTERFACE_COMPILATION": {
+      "candidate_envelope": false,
+      "canonical_serialized_upper_bound_bytes": 60235734626,
+      "cumulative_work_sensitivity_coordinate": 4,
+      "gates": {
+        "absolute_2gib_reserve": false,
+        "fresh_memavailable_covers_peak_plus_reserve": false,
+        "predicted_peak_le_70pct_total": false,
+        "runtime_index_support": true,
+        "serialized_storage_bounded": true
+      },
+      "physical_feasibility_if_not_candidate": "indeterminate_from_upper_bound",
+      "predicted_peak_resident_upper_proxy_bytes": 292329273066,
+      "status": "REPRESENTATION_UPPER_BOUND_DOES_NOT_CERTIFY_PHYSICAL_GATE"
+    },
+    "S3_GF2_PLUS_SEPARATOR": {
+      "candidate_envelope": false,
+      "canonical_serialized_upper_bound_bytes": 60235734626,
+      "cumulative_work_sensitivity_coordinate": 4,
+      "gates": {
+        "absolute_2gib_reserve": false,
+        "fresh_memavailable_covers_peak_plus_reserve": false,
+        "predicted_peak_le_70pct_total": false,
+        "runtime_index_support": true,
+        "serialized_storage_bounded": true
+      },
+      "physical_feasibility_if_not_candidate": "indeterminate_from_upper_bound",
+      "predicted_peak_resident_upper_proxy_bytes": 292329273066,
+      "status": "REPRESENTATION_UPPER_BOUND_DOES_NOT_CERTIFY_PHYSICAL_GATE"
+    }
+  },
+  "overall_outcome": "C90_REPRESENTATION_BOUND_DOMINATES_AFTER_WORK_CAP_RELAXATION",
+  "payload_sha256": "0ea802c6ce9c584c52bbc5608ac4a94abec5f29c2939e5c226386c4581205195",
+  "phase_a_b_static": {
+    "artifact_digest": "sha256:255c0566da2db46227eed99bce39fb1668092cedc648429a89ceaf78d488036d",
+    "artifact_id": 9504042345,
+    "artifact_name": "qtr-c90-resource-envelope-001-static",
+    "job_id": 97296662189,
+    "report_payload_sha256": "a1577d7bd8f294aa68991f82cccf272ab92d3ff38d952d087a59324df54fd1a5",
+    "workflow_run_id": 32680656678
+  },
+  "physical_probe": {
+    "allocation_limit_bytes": 536870912,
+    "node_store_bytes_per_retained_node_engineering_upper_proxy": 338,
+    "pointer_width_bits": 64,
+    "predeclared_probe_safety_factor": 2,
+    "probe_is_bounded_and_non_materializing": true,
+    "python_implementation": "CPython",
+    "python_version": "3.13.15",
+    "runtime": {
+      "cpu_count": 2,
+      "cuda_available": false,
+      "disk_free_bytes": 94102450176,
+      "disk_total_bytes": 115658190848,
+      "jax_version": "0.7.2",
+      "machine": "x86_64",
+      "memory_available_bytes": 12660047872,
+      "memory_total_bytes": 13605830656,
+      "observed_accelerator": null,
+      "observed_variant": "CPU",
+      "platform": "Linux-6.6.122+-x86_64-with-glibc2.35",
+      "torch_version": "2.11.0+cpu"
+    },
+    "samples": [
+      {
+        "combined_probe_deep_bytes": 805370,
+        "combined_rss_delta_bytes": 1622016,
+        "entries": 4096,
+        "node_store_bytes_per_entry_ceiling": 163,
+        "node_store_deep_bytes": 665046,
+        "node_store_rss_bytes_per_entry_ceiling": 140,
+        "node_store_rss_delta_bytes": 573440,
+        "table_list_shallow_bytes": 32824,
+        "table_slot_bytes_per_entry_ceiling": 9
+      },
+      {
+        "combined_probe_deep_bytes": 3268250,
+        "combined_rss_delta_bytes": 3276800,
+        "entries": 16384,
+        "node_store_bytes_per_entry_ceiling": 164,
+        "node_store_deep_bytes": 2685558,
+        "node_store_rss_bytes_per_entry_ceiling": 72,
+        "node_store_rss_delta_bytes": 1171456,
+        "table_list_shallow_bytes": 131128,
+        "table_slot_bytes_per_entry_ceiling": 9
+      },
+      {
+        "combined_probe_deep_bytes": 13393434,
+        "combined_rss_delta_bytes": 8433664,
+        "entries": 65536,
+        "node_store_bytes_per_entry_ceiling": 169,
+        "node_store_deep_bytes": 11041270,
+        "node_store_rss_bytes_per_entry_ceiling": 97,
+        "node_store_rss_delta_bytes": 6332416,
+        "table_list_shallow_bytes": 524344,
+        "table_slot_bytes_per_entry_ceiling": 9
+      }
+    ],
+    "sys_getsizeof": {
+      "empty_dict": 64,
+      "empty_list": 56,
+      "int_zero": 28,
+      "node_I": 72,
+      "node_T": 56,
+      "node_binary": 64
+    },
+    "table_slot_bytes_per_live_entry_engineering_upper_proxy": 18
+  },
+  "protected_base": "c5719a623310432c4e97a5863428176ff739cbd7",
+  "source_commit": "aabcdb4c6e54e35a56368e0acf3e32bc8d8ac7a5",
+  "status": "candidate_executable_not_promoted"
+}

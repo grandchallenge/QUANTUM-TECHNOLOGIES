@@ -1,0 +1,37 @@
+{
+  "claim_boundary": {
+    "accelerator_native_qec_authorized": false,
+    "adaptive_order_search_authorized": false,
+    "adopt_larger_cap_authorized": false,
+    "approximation_authorized": false,
+    "asymptotic_or_family_scaling_claim": false,
+    "frozen_307_validation_authorized": false,
+    "full_c90_materialization_authorized": false,
+    "intrinsic_intractability_claim": false,
+    "learned_decoding_authorized": false,
+    "new_structural_method_authorized": false,
+    "qec_circuit_003_authorized": false,
+    "qldpc_forge_authorized": false,
+    "runtime_or_memory_superiority_claim": false,
+    "single_finite_c90_problem_only": true
+  },
+  "experiment_id": "QTR-C90-RESOURCE-ENVELOPE-001",
+  "full_c90_materialization_authorized": false,
+  "hosted_session_identity": "__HOST_RENDERED__",
+  "manifest_payload_sha256": "d64b770f5cc1fb4c8a0ca8e89dad6d8020a01ae38f2c6868ff3028f53c441651",
+  "remote_timeout_seconds": 1200,
+  "required_authorization": {
+    "council_issue": 100,
+    "execution_issue": 102,
+    "human_steward_comment": 5389645111,
+    "protected_predecessor_merge": "c5719a623310432c4e97a5863428176ff739cbd7"
+  },
+  "resource": {
+    "accelerator": null,
+    "variant": "CPU"
+  },
+  "schema_version": 1,
+  "scientific_backend": "cpu_reference",
+  "scientific_execution_authorized": true,
+  "workload": "c90_resource_envelope_calibration"
+}
