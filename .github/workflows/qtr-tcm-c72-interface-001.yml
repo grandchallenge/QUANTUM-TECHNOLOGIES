@@ -6,9 +6,11 @@ on:
       - 'registry/tcm-c72-interface-001-manifest.json'
       - 'registry/tcm-c72-interface-001.json'
       - 'reference/tcm_c72_interface_001.py'
+      - 'reference/tcm_c72_interface_001_parallel.py'
       - 'colab/tcm_c72_interface_001_remote_job.py'
       - 'configs/compute/tcm_c72_interface_001_job.json'
       - 'tests/test_tcm_c72_interface_001.py'
+      - 'tests/test_tcm_c72_interface_001_parallel.py'
       - 'work-packages/QTR-TCM-C72-INTERFACE-001.md'
       - '.github/workflows/qtr-tcm-c72-interface-001.yml'
   workflow_dispatch:
@@ -40,7 +42,10 @@ jobs:
 
       - name: Static and adversarial interface tests
         run: |
-          python -m unittest tests.test_tcm_c72_interface_001 -v
+          python -m unittest \
+            tests.test_tcm_c72_interface_001 \
+            tests.test_tcm_c72_interface_001_parallel \
+            -v
 
       - name: Exact C18 control and C72 interface preflight only
         run: |
