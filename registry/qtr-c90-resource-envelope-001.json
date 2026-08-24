@@ -25,13 +25,17 @@
         "runtime_or_memory_superiority_claim": false,
         "single_finite_c90_problem_only": true
       },
+      "evidence_payload_sha256": "0ea802c6ce9c584c52bbc5608ac4a94abec5f29c2939e5c226386c4581205195",
       "experiment_id": "QTR-C90-RESOURCE-ENVELOPE-001",
       "full_c90_materialization_authorized": false,
+      "hosted_result_file_sha256": "31622065385e780f900197fe9a896803ce7b8dab136924aed188d490c262c550",
+      "hosted_result_payload_sha256": "9908251d70843f6dd1a5d0533e5f02e7c7de9fba921db8591212a7e16503a774",
       "manifest_payload_sha256": "d64b770f5cc1fb4c8a0ca8e89dad6d8020a01ae38f2c6868ff3028f53c441651",
-      "outcome": null,
+      "outcome": "C90_REPRESENTATION_BOUND_DOMINATES_AFTER_WORK_CAP_RELAXATION",
       "programme": "QTR",
       "protected_base": "c5719a623310432c4e97a5863428176ff739cbd7",
-      "status": "frozen_preoutcome_registered"
+      "source_commit": "aabcdb4c6e54e35a56368e0acf3e32bc8d8ac7a5",
+      "status": "candidate_executable_not_promoted"
     }
   ],
   "registry_version": "0.1.0"
