@@ -1,0 +1,218 @@
+{
+  "abstract_state": {
+    "forbidden_key_material": [
+      "concrete_c90_node_id",
+      "concrete_c90_node_tuple",
+      "node_hash_or_fingerprint",
+      "table_assignment",
+      "selector_assignment",
+      "runtime_derived_value"
+    ],
+    "max_abstract_state_records": 8192,
+    "overflow_outcome": "C90_CANONICAL_NODE_BOUND_AUDIT_INDETERMINATE",
+    "permitted_dimensions": [
+      "method",
+      "algebra",
+      "elimination_stage",
+      "factor_or_output_scope",
+      "operator_kind",
+      "branch_bit",
+      "source_factor_provenance",
+      "selector_support_signature",
+      "separator_or_interface_provenance"
+    ],
+    "schema_id": "QTR-C90-RETAINED-BOUND-001::STRUCTURAL-ABSTRACT-STATE::v1",
+    "state_scaling_forbidden": [
+      "node_intern_attempts",
+      "unique_canonical_nodes",
+      "joint_table_assignments",
+      "output_table_entries",
+      "selector_assignments"
+    ]
+  },
+  "adjudications": [
+    "C90_CANONICAL_NODE_BOUND_CERTIFIES_PHYSICAL_ENVELOPE_CANDIDATE",
+    "C90_CANONICAL_NODE_BOUND_TIGHTENED__PHYSICAL_GATE_STILL_UNCERTIFIED",
+    "C90_CANONICAL_NODE_BOUND_NO_MATERIAL_TIGHTENING",
+    "C90_CANONICAL_NODE_BOUND_AUDIT_INDETERMINATE",
+    "OPERATIONAL_EXECUTION_INCOMPLETE"
+  ],
+  "authority": {
+    "council_issue": 105,
+    "council_referee_comment": 5390019257,
+    "execution_issue": 106,
+    "human_steward_comment": 5391086069,
+    "protected_predecessor_merge": "b7e5127fed532a8bc6dc6703bfcac3f58882477f"
+  },
+  "bound_invariant": {
+    "c90_soundness_source": "structural_recurrence_not_control_empiricism",
+    "control_ratio_extrapolation_forbidden": true,
+    "formula": "|K_reachable| <= U_Bk <= U_B0",
+    "strict_tightening_requires": "U_Bk < U_B0"
+  },
+  "canonicalization_semantics": {
+    "commutative_binary_operand_order_canonicalized": true,
+    "hash_collision_assumption_forbidden": true,
+    "intern_existing_key_returns_existing_id": true,
+    "ite_low_equals_high_returns_low_without_intern": true,
+    "only_absent_key_appends_retained_node": true,
+    "semantic_expression_equality_beyond_tuple_identity_forbidden": true
+  },
+  "claim_boundary": {
+    "accelerator_native_qec_authorized": false,
+    "adaptive_order_search_authorized": false,
+    "approximation_authorized": false,
+    "asymptotic_or_family_scaling_claim": false,
+    "canonical_node_set_construction_authorized": false,
+    "cap_amendment_authorized": false,
+    "empirical_deduplication_extrapolation_authorized": false,
+    "factor_or_aop_coordinate_change_authorized": false,
+    "frozen_307_validation_authorized": false,
+    "full_c90_materialization_authorized": false,
+    "intrinsic_intractability_claim": false,
+    "new_structural_method_authorized": false,
+    "physical_model_change_authorized": false,
+    "probabilistic_distinct_count_certification_authorized": false,
+    "qec_circuit_003_authorized": false,
+    "qldpc_forge_authorized": false,
+    "runtime_or_memory_superiority_claim": false,
+    "semantic_simplification_authorized": false,
+    "single_finite_c90_problem_only": true
+  },
+  "control_certification": {
+    "algebras": [
+      "sum_product_bsc_p_0_1",
+      "soft_tropical_base_2",
+      "min_plus_hamming"
+    ],
+    "auxiliary": null,
+    "failed_refinement_is_rejected_before_c90_use": true,
+    "primary": "C72",
+    "requirements": [
+      "exact_control_node_count <= claimed_bound",
+      "claimed_bound <= B0",
+      "deterministic_replay",
+      "no_empirical_deduplication_ratio_used_for_c90"
+    ]
+  },
+  "evidence_schema": {
+    "per_method_refinement_required": [
+      "bound_type",
+      "bound_value",
+      "protected_b0_value",
+      "tightening_factor_numerator",
+      "tightening_factor_denominator",
+      "soundness_receipt_sha256",
+      "control_certification",
+      "abstract_state_count",
+      "abstract_state_schema_id",
+      "c90_materialization_performed",
+      "gate_compatible_node_ceiling",
+      "physical_model_components",
+      "physical_gate_booleans",
+      "historical_cap_comparisons_diagnostic_only"
+    ],
+    "sections": [
+      "source_facts",
+      "control_certification",
+      "proof_objects",
+      "derived_targets",
+      "c90_bounds",
+      "adjudication"
+    ]
+  },
+  "experiment_id": "QTR-C90-RETAINED-BOUND-001",
+  "frozen_methods": [
+    "S0_BASELINE",
+    "S1_GF2_CONSTRAINT_ELIMINATION",
+    "S2_SEPARATOR_INTERFACE_COMPILATION",
+    "S3_GF2_PLUS_SEPARATOR"
+  ],
+  "gate_compatible_node_targets": {
+    "S0_BASELINE": 23808849,
+    "S1_GF2_CONSTRAINT_ELIMINATION": 23808849,
+    "S2_SEPARATOR_INTERFACE_COMPILATION": 23808740,
+    "S3_GF2_PLUS_SEPARATOR": 23808740,
+    "status": "derived_certificate_targets_not_caps"
+  },
+  "historical_diagnostics": {
+    "canonical_serialized_artifact_cap_bytes": 536870912,
+    "diagnostic_only_not_reactivated_or_amended": true,
+    "retained_node_cap": 4194304
+  },
+  "manifest_payload_sha256": "d9072de9631901a0b97df61c14b8c5dc9d5de7d21ad9d7e181765c69fad223c2",
+  "physical_model": {
+    "absolute_reserve_bytes": 2147483648,
+    "accelerator": null,
+    "engineering_safety_factor_frozen": 2,
+    "fixed_process_overhead_bytes": 268435456,
+    "gate_arithmetic": "integer_only",
+    "max_predicted_peak_fraction_total_ram_percent": 70,
+    "memory_available_bytes": 12660047872,
+    "memory_total_bytes": 13605830656,
+    "model_may_not_be_amended_here": true,
+    "node_store_bytes_per_retained_node_engineering_upper_proxy": 338,
+    "runtime_index_support_required": true,
+    "source": "protected_QTR-C90-RESOURCE-ENVELOPE-001_hosted_probe",
+    "table_slot_bytes_per_live_entry_engineering_upper_proxy": 18
+  },
+  "predecessors": {
+    "c72_control": {
+      "evidence_path": "evidence/QLDPC-SCALE-001A-report.json",
+      "evidence_payload_sha256": "198bb28f47844aa98efa20d8c838c48870a8aef41ccfda266b16661677e363e1",
+      "exact_control_required": true,
+      "experiment_id": "QLDPC-SCALE-001A"
+    },
+    "resource_envelope": {
+      "evidence_path": "evidence/QTR-C90-RESOURCE-ENVELOPE-001-report.json",
+      "evidence_payload_sha256": "0ea802c6ce9c584c52bbc5608ac4a94abec5f29c2939e5c226386c4581205195",
+      "experiment_id": "QTR-C90-RESOURCE-ENVELOPE-001",
+      "overall_outcome": "C90_REPRESENTATION_BOUND_DOMINATES_AFTER_WORK_CAP_RELAXATION"
+    },
+    "structure": {
+      "evidence_path": "evidence/QTR-C90-STRUCTURE-001-report.json",
+      "evidence_payload_sha256": "ade245552af2f88d5ecb8c0b7f8eb363510ed678908fb80462b911255dd63d67",
+      "experiment_id": "QTR-C90-STRUCTURE-001",
+      "overall_outcome": "C90_PREDECLARED_EXACT_STRUCTURAL_FAMILY_EXHAUSTED"
+    }
+  },
+  "proof_hierarchy": {
+    "B0_ATTEMPT_UPPER_CONTROL": {
+      "rule": "protected_node_intern_attempt_upper_bound"
+    },
+    "B1_TYPED_CANONICAL_KEY_BOUND": {
+      "binary_operator_partition": true,
+      "binary_unique_bound": "min(operator_attempts, typed_key_universe_bound)",
+      "ite_parameter_domain_exact": true,
+      "semantic_simplification": false,
+      "terminal_domain_exact": true
+    },
+    "B2_STAGE_OPERAND_DOMAIN_BOUND": {
+      "binary_pair_bound": "min(bucket_attempts, L*R)",
+      "cross_stage_duplicates_may_be_overcounted": true,
+      "factor_support_state": "scope_plus_support_cardinality_only",
+      "inductive_over_frozen_elimination_stages": true,
+      "marginal_same_pool_bound": "min(bucket_attempts, N*(N+1)//2)"
+    },
+    "B3_PROVENANCE_PARTITION_BOUND": {
+      "branch_partition": [
+        0,
+        1
+      ],
+      "conditioned_factor_support_bound": "min(unconditional_support, 2^(arity-1))",
+      "cross_bucket_duplicate_overcounting_allowed": true,
+      "different_signatures_do_not_imply_different_nodes": true,
+      "extends": "B2_STAGE_OPERAND_DOMAIN_BOUND",
+      "marginal_cross_branch_bound": "min(bucket_attempts, L*R)",
+      "signature_depends_only_on_frozen_structural_metadata": true
+    }
+  },
+  "refinements": [
+    "B0_ATTEMPT_UPPER_CONTROL",
+    "B1_TYPED_CANONICAL_KEY_BOUND",
+    "B2_STAGE_OPERAND_DOMAIN_BOUND",
+    "B3_PROVENANCE_PARTITION_BOUND"
+  ],
+  "schema_version": 1,
+  "status": "frozen_execution_manifest"
+}

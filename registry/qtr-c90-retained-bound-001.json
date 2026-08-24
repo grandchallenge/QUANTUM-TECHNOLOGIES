@@ -1,0 +1,46 @@
+{
+  "experiments": [
+    {
+      "authority": {
+        "council_issue": 105,
+        "council_referee_comment": 5390019257,
+        "execution_issue": 106,
+        "human_steward_comment": 5391086069,
+        "protected_predecessor_merge": "b7e5127fed532a8bc6dc6703bfcac3f58882477f"
+      },
+      "claim_boundary": {
+        "accelerator_native_qec_authorized": false,
+        "adaptive_order_search_authorized": false,
+        "approximation_authorized": false,
+        "asymptotic_or_family_scaling_claim": false,
+        "canonical_node_set_construction_authorized": false,
+        "cap_amendment_authorized": false,
+        "empirical_deduplication_extrapolation_authorized": false,
+        "factor_or_aop_coordinate_change_authorized": false,
+        "frozen_307_validation_authorized": false,
+        "full_c90_materialization_authorized": false,
+        "intrinsic_intractability_claim": false,
+        "new_structural_method_authorized": false,
+        "physical_model_change_authorized": false,
+        "probabilistic_distinct_count_certification_authorized": false,
+        "qec_circuit_003_authorized": false,
+        "qldpc_forge_authorized": false,
+        "runtime_or_memory_superiority_claim": false,
+        "semantic_simplification_authorized": false,
+        "single_finite_c90_problem_only": true
+      },
+      "experiment_id": "QTR-C90-RETAINED-BOUND-001",
+      "manifest_payload_sha256": "d9072de9631901a0b97df61c14b8c5dc9d5de7d21ad9d7e181765c69fad223c2",
+      "predecessor_evidence_payload_sha256": "0ea802c6ce9c584c52bbc5608ac4a94abec5f29c2939e5c226386c4581205195",
+      "programme": "QTR",
+      "refinements": [
+        "B0_ATTEMPT_UPPER_CONTROL",
+        "B1_TYPED_CANONICAL_KEY_BOUND",
+        "B2_STAGE_OPERAND_DOMAIN_BOUND",
+        "B3_PROVENANCE_PARTITION_BOUND"
+      ],
+      "status": "frozen_execution_manifest"
+    }
+  ],
+  "registry_version": "0.1.0"
+}
