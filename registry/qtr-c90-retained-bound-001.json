@@ -1,0 +1,45 @@
+{
+  "experiments": [
+    {
+      "authority": {
+        "council_issue": 105,
+        "council_referee_comment": 5390019257,
+        "execution_issue": 106,
+        "human_steward_comment": 5391086069,
+        "protected_predecessor_merge": "b7e5127fed532a8bc6dc6703bfcac3f58882477f"
+      },
+      "claim_boundary": {
+        "accelerator_native_qec_authorized": false,
+        "adaptive_order_search_authorized": false,
+        "approximation_authorized": false,
+        "asymptotic_or_family_scaling_claim": false,
+        "canonical_node_set_construction_authorized": false,
+        "cap_amendment_authorized": false,
+        "empirical_deduplication_extrapolation_authorized": false,
+        "factor_or_aop_coordinate_change_authorized": false,
+        "frozen_307_validation_authorized": false,
+        "full_c90_materialization_authorized": false,
+        "intrinsic_intractability_claim": false,
+        "new_structural_method_authorized": false,
+        "physical_model_change_authorized": false,
+        "probabilistic_distinct_count_certification_authorized": false,
+        "qec_circuit_003_authorized": false,
+        "qldpc_forge_authorized": false,
+        "runtime_or_memory_superiority_claim": false,
+        "semantic_simplification_authorized": false,
+        "single_finite_c90_problem_only": true
+      },
+      "control_payload_sha256": "5952da57d779b3a0ac6fadb149307b9d086942874a862baa75333757067b5f8f",
+      "evidence_payload_sha256": "2e8f9e0c33a11d253db4a07ea967321ba4996ce5d7b6e46721cca4becf175f38",
+      "experiment_id": "QTR-C90-RETAINED-BOUND-001",
+      "first_scientific_source_commit": "fe366e9863af7937a837ad2909a39ebeaf78dc63",
+      "full_c90_materialization_authorized": false,
+      "manifest_payload_sha256": "d9072de9631901a0b97df61c14b8c5dc9d5de7d21ad9d7e181765c69fad223c2",
+      "outcome": "C90_CANONICAL_NODE_BOUND_TIGHTENED__PHYSICAL_GATE_STILL_UNCERTIFIED",
+      "programme": "QTR",
+      "report_payload_sha256": "f711a96cc009a70d3334332222b5dbf0723689ba256b66cdbe7867002a885f62",
+      "status": "candidate_executable_not_promoted"
+    }
+  ],
+  "registry_version": "0.1.0"
+}
