@@ -292,7 +292,13 @@ def run_c18_control() -> dict[str, Any]:
     context = load_c18_context()
     decisions: dict[str, dict[int, int]] = {algebra: {} for algebra in C18_EXPECTED_DECISION}
     ties: dict[str, dict[int, list[int]]] = {algebra: {} for algebra in C18_EXPECTED_DECISION}
-    for syndrome in range(1 << len(context["rows"])):
+    syndrome_mask = (1 << len(context["rows"])) - 1
+    reachable_syndromes = sorted(
+        {int(selector) & syndrome_mask for selector in context["seed_map"]}
+    )
+    if len(reachable_syndromes) != 128:
+        raise AssertionError("unexpected C18 reachable-syndrome count")
+    for syndrome in reachable_syndromes:
         result = decode_c18_syndrome(context, syndrome)
         for algebra, cell in result.items():
             decisions[algebra][syndrome] = int(cell["correction"])
