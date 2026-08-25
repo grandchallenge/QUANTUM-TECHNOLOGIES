@@ -16,6 +16,19 @@
         "path": "registry/tcm-c72-interface-001-manifest.json",
         "payload_sha256": "35e3715fa9b1d0d44cad63c8cafbee01a42c3426c7db21c37d3ff68073506ddf"
       },
+      "evidence": {
+        "path": "evidence/TCM-C72-INTERFACE-001-report.json",
+        "source_run_id": 32709539233,
+        "source_shard_count": 64,
+        "frozen_package_head": "775586d32756463932e7c2717bdbbe8478186c89",
+        "activation_head": "299e74f762b745986d2c930a875606660065d5af",
+        "aggregate_run_id": 32797057625,
+        "aggregate_artifact_id": 9545199159,
+        "aggregate_artifact_digest": "sha256:715e4ab49498eca87bded7b2ded7708ba53c8d842aca4886fddebbc583f1ad29",
+        "aggregate_payload_sha256": "b6caf79df378ac2a4b78e7bcdd360aa24548492d33e4e82189239372aac75de7",
+        "scored_rows_sha256": "d2a8f9fa8eb89e5db24d0db9e2cef66ccd91f58488f12f69f8d1767ecc928327",
+        "outcome": "C72_TCM_SHARED_DECODER_INTERFACE_CERTIFIED"
+      },
       "surface": {
         "code": "source-bound [[72,12,6]] BB instance",
         "corpus_size": 329,
@@ -28,13 +41,24 @@
           "min_plus_hamming"
         ]
       },
+      "finite_quality": {
+        "soft_tropical_base_2": {"oracle_success": 167, "oracle_failure": 162},
+        "sum_product_bsc_p_0_1": {"oracle_success": 166, "oracle_failure": 163},
+        "min_plus_hamming": {"oracle_success": 152, "oracle_failure": 177}
+      },
       "resource_policy": {
         "historical_caps_are_scientific_stop_rules": false,
         "host_limits_are_operational": true,
         "operational_failure_class": "OPERATIONAL_EXECUTION_INCOMPLETE"
       },
+      "adjudication": {
+        "c72_tcm_quality_defined": true,
+        "c90_exact_decoder_campaign_eligible": true,
+        "c90_execution_authorized_here": false
+      },
       "claim_boundary": {
         "c72_exact_interface_only": true,
+        "c72_finite_quality_facts_allowed": true,
         "c90_execution_authorized": false,
         "new_c90_bound_refinement_authorized": false,
         "approximation_authorized": false,
