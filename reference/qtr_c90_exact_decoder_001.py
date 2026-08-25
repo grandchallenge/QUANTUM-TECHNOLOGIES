@@ -213,12 +213,9 @@ def frozen_validation_coordinates() -> list[int]:
 def c90_corpus_records() -> list[dict[str, Any]]:
     compare_manifest = CMP.load_manifest(ROOT / "registry" / "tcm-qdec-compare-001-manifest.json")
     generated = CMP.generate_large_corpus_records(90, compare_manifest)
-    stored = load_json(ROOT / "evidence" / "corpora" / "TCM-QDEC-COMPARE-001-C90-corpus.json")
-    if generated != stored:
-        raise ValueError("stored C90 corpus differs from deterministic regeneration")
-    if len(stored) != 347 or digest(stored) != C90_CORPUS_SHA:
-        raise ValueError("frozen C90 corpus drift")
-    return stored
+    if len(generated) != 347 or digest(generated) != C90_CORPUS_SHA:
+        raise ValueError("frozen C90 deterministic corpus drift")
+    return generated
 
 
 def verify_c72_predecessor() -> dict[str, Any]:
