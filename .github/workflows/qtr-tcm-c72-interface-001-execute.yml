@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   c72-exact-shards:
+    if: ${{ github.event.pull_request.head.sha == '299e74f762b745986d2c930a875606660065d5af' }}
     runs-on: ubuntu-latest
     timeout-minutes: 360
     strategy:
