@@ -1,0 +1,117 @@
+name: TCM C72 frozen aggregate and score
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/qtr-tcm-c72-interface-001-aggregate.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  aggregate-c72:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SOURCE_RUN: '32709539233'
+      ACTIVATION_HEAD: '299e74f762b745986d2c930a875606660065d5af'
+      FROZEN_PACKAGE_HEAD: '775586d32756463932e7c2717bdbbe8478186c89'
+      MANIFEST_PAYLOAD: '35e3715fa9b1d0d44cad63c8cafbee01a42c3426c7db21c37d3ff68073506ddf'
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout evidence executor
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+
+      - name: Verify source run and complete 64-shard inventory
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN" > "$RUNNER_TEMP/run.json"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN/artifacts?per_page=100" > "$RUNNER_TEMP/artifacts.json"
+          python - "$RUNNER_TEMP/run.json" "$RUNNER_TEMP/artifacts.json" <<'PY'
+          import json,sys
+          run=json.load(open(sys.argv[1],encoding='utf-8'))
+          inv=json.load(open(sys.argv[2],encoding='utf-8'))
+          assert run['head_sha']=='299e74f762b745986d2c930a875606660065d5af', run['head_sha']
+          assert run['id']==32709539233
+          assert inv['total_count']==64, inv['total_count']
+          arts=inv['artifacts']
+          names=[a['name'] for a in arts]
+          expected={f'tcm-c72-interface-001-shard-{i}' for i in range(64)}
+          assert set(names)==expected
+          assert len(names)==len(set(names))==64
+          for a in arts:
+              assert not a['expired']
+              assert a.get('workflow_run',{}).get('head_sha')=='299e74f762b745986d2c930a875606660065d5af'
+          print('source_run=',run['id'])
+          print('source_status=',run['status'])
+          print('artifact_count=',inv['total_count'])
+          print('artifact_inventory=EXACT_0_THROUGH_63')
+          PY
+
+      - name: Materialize frozen executable package
+        run: |
+          git cat-file -e "$FROZEN_PACKAGE_HEAD^{commit}"
+          git worktree add --detach "$RUNNER_TEMP/frozen" "$FROZEN_PACKAGE_HEAD"
+          test "$(git -C "$RUNNER_TEMP/frozen" rev-parse HEAD)" = "$FROZEN_PACKAGE_HEAD"
+
+      - name: Download exact shard artifacts
+        run: |
+          mkdir -p "$RUNNER_TEMP/zips" "$RUNNER_TEMP/shards"
+          python - "$RUNNER_TEMP/artifacts.json" > "$RUNNER_TEMP/artifact.tsv" <<'PY'
+          import json,sys
+          inv=json.load(open(sys.argv[1],encoding='utf-8'))
+          for a in sorted(inv['artifacts'], key=lambda x:int(x['name'].rsplit('-',1)[1])):
+              print(f"{a['id']}\t{a['name']}")
+          PY
+          while IFS=$'\t' read -r aid name; do
+            curl --fail --silent --show-error --location \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$aid/zip" \
+              --output "$RUNNER_TEMP/zips/$name.zip"
+            unzip -q "$RUNNER_TEMP/zips/$name.zip" -d "$RUNNER_TEMP/shards/$name"
+          done < "$RUNNER_TEMP/artifact.tsv"
+          find "$RUNNER_TEMP/shards" -type f -name '*.json' | sort > "$RUNNER_TEMP/shard-files.txt"
+          test "$(wc -l < "$RUNNER_TEMP/shard-files.txt")" -eq 64
+
+      - name: Aggregate and independently score all 329 frozen inputs
+        run: |
+          ARGS=()
+          while IFS= read -r f; do ARGS+=(--shard "$f"); done < "$RUNNER_TEMP/shard-files.txt"
+          cd "$RUNNER_TEMP/frozen"
+          python reference/tcm_c72_interface_001.py \
+            --mode aggregate \
+            --output "$RUNNER_TEMP/TCM-C72-INTERFACE-001-aggregate.json" \
+            "${ARGS[@]}"
+
+      - name: Assert frozen aggregate certification schema
+        run: |
+          python - "$RUNNER_TEMP/TCM-C72-INTERFACE-001-aggregate.json" <<'PY'
+          import json,sys
+          r=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert r['manifest_payload_sha256']=='35e3715fa9b1d0d44cad63c8cafbee01a42c3426c7db21c37d3ff68073506ddf'
+          assert r['c72_corpus']['size']==329
+          assert r['aggregate']['shard_count']==64
+          assert r['aggregate']['input_coverage_complete'] is True
+          assert r['aggregate']['all_4096_logical_classes_evaluated_per_input'] is True
+          for algebra,cell in r['aggregate']['totals'].items():
+              assert cell['inputs']==329
+              assert cell['correction_valued']==329
+              assert cell['syndrome_inconsistent']==0
+              print(algebra, json.dumps(cell,sort_keys=True))
+          print('OUTCOME=',r['adjudication']['outcome'])
+          print('C72_TCM_QUALITY_DEFINED=',r['adjudication']['c72_tcm_quality_defined'])
+          print('C90_EXACT_DECODER_CAMPAIGN_ELIGIBLE=',r['adjudication']['c90_exact_decoder_campaign_eligible'])
+          print('PAYLOAD_SHA256=',r['payload_sha256'])
+          PY
+
+      - name: Preserve aggregate evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: tcm-c72-interface-001-aggregate
+          path: ${{ runner.temp }}/TCM-C72-INTERFACE-001-aggregate.json
+          if-no-files-found: error
+          retention-days: 90
