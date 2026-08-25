@@ -1,0 +1,80 @@
+name: TCM C72 exact decoder execution
+
+on:
+  pull_request:
+    paths:
+      - 'execution/TCM-C72-INTERFACE-001.activate'
+
+permissions:
+  contents: read
+
+jobs:
+  c72-exact-shards:
+    if: ${{ github.event.pull_request.head.sha == '299e74f762b745986d2c930a875606660065d5af' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63]
+    steps:
+      - name: Checkout activated exact subject
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 2
+
+      - name: Verify activation binding
+        env:
+          SUBJECT_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+          PACKAGE_HEAD="$(git rev-parse HEAD^)"
+          python - "$SUBJECT_SHA" "$PACKAGE_HEAD" <<'PY'
+          import json,sys
+          from pathlib import Path
+          subject,package_head=sys.argv[1:]
+          a=json.loads(Path('execution/TCM-C72-INTERFACE-001.activate').read_text())
+          assert a['experiment_id']=='TCM-C72-INTERFACE-001'
+          assert a['manifest_payload_sha256']=='35e3715fa9b1d0d44cad63c8cafbee01a42c3426c7db21c37d3ff68073506ddf'
+          assert a['package_head']==package_head
+          assert a['activation_head_expected_after_commit'] is None
+          assert a['c72_quality_outcome_observed_before_activation'] is False
+          assert subject != package_head
+          PY
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12'
+
+      - name: Run exact C72 shard
+        env:
+          TCM_C72_WORKERS: '4'
+        run: |
+          python reference/tcm_c72_interface_001_parallel.py \
+            --shard-index ${{ matrix.shard }} \
+            --shard-count 64 \
+            --output "$RUNNER_TEMP/TCM-C72-INTERFACE-001-shard-${{ matrix.shard }}.json"
+
+      - name: Assert bounded shard schema
+        run: |
+          python - "$RUNNER_TEMP/TCM-C72-INTERFACE-001-shard-${{ matrix.shard }}.json" <<'PY'
+          import json,sys
+          r=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert r['status']=='C72_SHARD_COMPLETE'
+          assert r['manifest_payload_sha256']=='35e3715fa9b1d0d44cad63c8cafbee01a42c3426c7db21c37d3ff68073506ddf'
+          assert r['shard']['count']==64
+          assert r['c18_control_status']=='PASS'
+          assert r['engineering_diagnostics']['historical_caps_used_as_scientific_stop_rules'] is False
+          assert all(row['logical_classes_evaluated']==4096 for row in r['rows'])
+          print('shard=',r['shard']['index'],'inputs=',r['shard']['owned_input_count'])
+          PY
+
+      - name: Preserve exact shard
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: tcm-c72-interface-001-shard-${{ matrix.shard }}
+          path: ${{ runner.temp }}/TCM-C72-INTERFACE-001-shard-${{ matrix.shard }}.json
+          if-no-files-found: error
+          retention-days: 90

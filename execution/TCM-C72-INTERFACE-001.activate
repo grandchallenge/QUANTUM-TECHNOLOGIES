@@ -1,0 +1,17 @@
+{
+  "experiment_id": "TCM-C72-INTERFACE-001",
+  "package_head": "775586d32756463932e7c2717bdbbe8478186c89",
+  "manifest_payload_sha256": "35e3715fa9b1d0d44cad63c8cafbee01a42c3426c7db21c37d3ff68073506ddf",
+  "activation_head_expected_after_commit": null,
+  "c72_quality_outcome_observed_before_activation": false,
+  "execution_shape": {
+    "corpus_size": 329,
+    "shard_count": 64,
+    "logical_classes_per_syndrome": 4096,
+    "cpu_workers_per_shard": 4
+  },
+  "resource_policy": {
+    "historical_deterministic_caps_are_scientific_stop_rules": false,
+    "operational_failure_is_infeasibility_evidence": false
+  }
+}
