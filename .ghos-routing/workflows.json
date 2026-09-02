@@ -1,0 +1,144 @@
+{
+  "record_type": "GHOS_EXECUTION_ROUTING_REGISTRY",
+  "schema_version": "1.0.0",
+  "repository": "grandchallenge/QUANTUM-TECHNOLOGIES",
+  "controllers": [
+    {
+      "controller_id": "GITHUB_ACTIONS",
+      "executor_class": "PERSISTENT_CONTROLLER",
+      "provider": "github",
+      "durable_wake_mechanism": "repository-bound GitHub Actions event queue",
+      "state_store": "GitHub Actions workflow run and job records bound to repository and commit SHA",
+      "supported_features": [
+        "AUTONOMOUS_WAKE",
+        "EXTERNAL_REUSABLE_JOB",
+        "EXTERNAL_WAIT",
+        "NON_RECONCILABLE_MUTATION",
+        "OPAQUE_EXECUTION",
+        "SCHEDULED",
+        "SECRET_CREDENTIAL",
+        "UNATTENDED_DISPATCH",
+        "WRITE_CAPABLE"
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "path": ".github/workflows/gcl-conformance.yml",
+      "observed_features": [
+        "EXTERNAL_REUSABLE_JOB",
+        "OPAQUE_EXECUTION"
+      ],
+      "topology": "PERSISTENT_CONTROLLER_REQUIRED",
+      "controller_id": "GITHUB_ACTIONS"
+    },
+    {
+      "path": ".github/workflows/ghos-routing-enforcement-v2.yml",
+      "observed_features": [
+        "OPAQUE_EXECUTION"
+      ],
+      "topology": "PERSISTENT_CONTROLLER_REQUIRED",
+      "controller_id": "GITHUB_ACTIONS"
+    },
+    {
+      "path": ".github/workflows/qtr-c90-exact-requal-001.yml",
+      "observed_features": [
+        "OPAQUE_EXECUTION"
+      ],
+      "topology": "PERSISTENT_CONTROLLER_REQUIRED",
+      "controller_id": "GITHUB_ACTIONS"
+    },
+    {
+      "path": ".github/workflows/qtr-c90-resource-envelope-001.yml",
+      "observed_features": [
+        "OPAQUE_EXECUTION"
+      ],
+      "topology": "PERSISTENT_CONTROLLER_REQUIRED",
+      "controller_id": "GITHUB_ACTIONS"
+    },
+    {
+      "path": ".github/workflows/qtr-c90-retained-bound-001.yml",
+      "observed_features": [
+        "OPAQUE_EXECUTION"
+      ],
+      "topology": "PERSISTENT_CONTROLLER_REQUIRED",
+      "controller_id": "GITHUB_ACTIONS"
+    },
+    {
+      "path": ".github/workflows/qtr-c90-structure-001.yml",
+      "observed_features": [
+        "OPAQUE_EXECUTION"
+      ],
+      "topology": "PERSISTENT_CONTROLLER_REQUIRED",
+      "controller_id": "GITHUB_ACTIONS"
+    },
+    {
+      "path": ".github/workflows/qtr-qec-circuit-001.yml",
+      "observed_features": [
+        "OPAQUE_EXECUTION"
+      ],
+      "topology": "PERSISTENT_CONTROLLER_REQUIRED",
+      "controller_id": "GITHUB_ACTIONS"
+    },
+    {
+      "path": ".github/workflows/qtr-qec-circuit-002.yml",
+      "observed_features": [
+        "OPAQUE_EXECUTION"
+      ],
+      "topology": "PERSISTENT_CONTROLLER_REQUIRED",
+      "controller_id": "GITHUB_ACTIONS"
+    },
+    {
+      "path": ".github/workflows/qtr-tcm-c72-interface-001-aggregate.yml",
+      "observed_features": [
+        "OPAQUE_EXECUTION",
+        "SECRET_CREDENTIAL",
+        "WRITE_CAPABLE"
+      ],
+      "topology": "PERSISTENT_CONTROLLER_REQUIRED",
+      "controller_id": "GITHUB_ACTIONS"
+    },
+    {
+      "path": ".github/workflows/qtr-tcm-c72-interface-001-execute.yml",
+      "observed_features": [
+        "OPAQUE_EXECUTION"
+      ],
+      "topology": "PERSISTENT_CONTROLLER_REQUIRED",
+      "controller_id": "GITHUB_ACTIONS"
+    },
+    {
+      "path": ".github/workflows/qtr-tcm-c72-interface-001.yml",
+      "observed_features": [
+        "OPAQUE_EXECUTION"
+      ],
+      "topology": "PERSISTENT_CONTROLLER_REQUIRED",
+      "controller_id": "GITHUB_ACTIONS"
+    },
+    {
+      "path": ".github/workflows/qtr-tcm-qdec-compare-001.yml",
+      "observed_features": [
+        "OPAQUE_EXECUTION"
+      ],
+      "topology": "PERSISTENT_CONTROLLER_REQUIRED",
+      "controller_id": "GITHUB_ACTIONS"
+    },
+    {
+      "path": ".github/workflows/qtr-validation.yml",
+      "observed_features": [
+        "OPAQUE_EXECUTION"
+      ],
+      "topology": "PERSISTENT_CONTROLLER_REQUIRED",
+      "controller_id": "GITHUB_ACTIONS"
+    }
+  ],
+  "claim_boundaries": {
+    "constitutional": false,
+    "merge": false,
+    "certification": false,
+    "production": false,
+    "publication": false,
+    "mathematical_claim": false,
+    "claim_promotion": false,
+    "commercial": false
+  }
+}
