@@ -1,0 +1,56 @@
+name: QTR C90 exact decoder preflight
+
+on:
+  pull_request:
+    paths:
+      - "registry/qtr-c90-exact-decoder-001-manifest.json"
+      - "work-packages/QTR-C90-EXACT-DECODER-001.md"
+      - "reference/qtr_c90_exact_decoder_001.py"
+      - "tests/test_qtr_c90_exact_decoder_001.py"
+      - ".github/workflows/qtr-c90-exact-decoder-001-preflight.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  c90-exact-decoder-preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.8"
+      - name: Assert exact subject checkout
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+      - name: Run bounded C90 preflight tests
+        run: python -m unittest discover -s tests -p "test_qtr_c90_exact_decoder_001.py" -v
+      - name: Emit quality-blind C90 preflight receipt
+        run: |
+          python reference/qtr_c90_exact_decoder_001.py \
+            --mode preflight \
+            --output /tmp/QTR-C90-EXACT-DECODER-001-preflight.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path("/tmp/QTR-C90-EXACT-DECODER-001-preflight.json").read_text())
+          if report["status"] != "PREFLIGHT_PASS__NO_C90_DECODER_QUALITY":
+              raise SystemExit("unexpected C90 preflight status")
+          if report["quality_exposed"] is not False:
+              raise SystemExit("C90 quality was exposed during preflight")
+          print(report["manifest_payload_sha256"])
+          print(report["c90_static"]["selector_map_sha256"])
+          PY
+      - name: Preserve exact-head preflight receipt
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-EXACT-DECODER-001-preflight
+          path: /tmp/QTR-C90-EXACT-DECODER-001-preflight.json
+          if-no-files-found: error
+          retention-days: 90
