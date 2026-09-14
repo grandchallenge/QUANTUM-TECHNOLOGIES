@@ -4,7 +4,6 @@ on:
   pull_request:
     paths:
       - "registry/qtr-c90-exact-decoder-001-manifest.json"
-      - "registry/qtr-c90-exact-decoder-001-conventional-outcomes.json"
       - "work-packages/QTR-C90-EXACT-DECODER-001.md"
       - "reference/qtr_c90_exact_decoder_001.py"
       - "reference/qtr_c90_exact_dag_001.py"
@@ -17,6 +16,7 @@ on:
 permissions:
   contents: read
   issues: read
+  actions: read
 
 jobs:
   quality-blind-compile:
@@ -34,11 +34,39 @@ jobs:
           python-version: "3.12.8"
       - name: Assert exact subject checkout
         run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+      - name: Restore promoted conventional comparison artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: TCM-QDEC-COMPARE-001-exact-head
+          path: /tmp/tcm-qdec-compare-001
+          github-token: ${{ github.token }}
+          repository: grandchallenge/QUANTUM-TECHNOLOGIES
+          run-id: 32079738866
       - name: Run exact-decoder bounded controls
         run: |
           python -m unittest discover -s tests -p "test_qtr_c90_exact_decoder_001.py" -v
           python -m unittest discover -s tests -p "test_qtr_c90_exact_engine_001.py" -v
-      - name: Compile and semantically validate without C90 quality
+      - name: Verify original protected conventional per-input cells
+        run: |
+          python reference/qtr_c90_exact_execute_001.py \
+            --mode verify-conventional \
+            --conventional-artifact-dir /tmp/tcm-qdec-compare-001 \
+            --output /tmp/QTR-C90-EXACT-DECODER-001-conventional-replay.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/QTR-C90-EXACT-DECODER-001-conventional-replay.json').read_text())
+          assert r['status']=='PROTECTED_CONVENTIONAL_C90_OUTCOMES_VERIFIED'
+          assert r['quality_exposed'] is False
+          assert r['new_c90_tcm_quality_exposed'] is False
+          assert {k:v['oracle_success'] for k,v in r['methods'].items()} == {
+              'BP_MIN_SUM': 200,
+              'BP_OSD_CS_7': 211,
+              'BP_SUM_PRODUCT': 171,
+          }
+          print('PROTECTED_CONVENTIONAL_C90_OUTCOMES_VERIFIED')
+          PY
+      - name: Compile and semantically validate without C90 TCM quality
         run: |
           python reference/qtr_c90_exact_execute_001.py \
             --mode compile-validate \
@@ -62,6 +90,7 @@ jobs:
           path: |
             /tmp/QTR-C90-EXACT-DECODER-001-compiled.json.gz
             /tmp/QTR-C90-EXACT-DECODER-001-quality-blind.json
+            /tmp/QTR-C90-EXACT-DECODER-001-conventional-replay.json
           if-no-files-found: error
           retention-days: 90
 
@@ -118,6 +147,14 @@ jobs:
         with:
           name: QTR-C90-EXACT-DECODER-001-activation-candidate
           path: /tmp/qtr-c90-activation
+      - name: Restore original promoted conventional comparison artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: TCM-QDEC-COMPARE-001-exact-head
+          path: /tmp/tcm-qdec-compare-001
+          github-token: ${{ github.token }}
+          repository: grandchallenge/QUANTUM-TECHNOLOGIES
+          run-id: 32079738866
       - name: Execute 347 x 3 exact campaign and independently score
         run: |
           python reference/qtr_c90_exact_execute_001.py \
@@ -125,6 +162,7 @@ jobs:
             --activation-head "$SUBJECT_SHA" \
             --compiled /tmp/qtr-c90-activation/QTR-C90-EXACT-DECODER-001-compiled.json.gz \
             --validation-receipt /tmp/qtr-c90-activation/QTR-C90-EXACT-DECODER-001-quality-blind.json \
+            --conventional-artifact-dir /tmp/tcm-qdec-compare-001 \
             --output /tmp/QTR-C90-EXACT-DECODER-001-result.json
           python - <<'PY'
           import json
