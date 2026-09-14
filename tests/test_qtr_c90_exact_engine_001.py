@@ -11,6 +11,7 @@ if str(REFERENCE) not in sys.path:
 
 import qtr_c90_exact_dag_001 as DAG
 import qtr_c90_exact_execute_001 as Execute
+import qtr_c90_exact_fused_001 as Fused
 
 
 class QTRC90ExactEngine001Tests(unittest.TestCase):
@@ -93,6 +94,72 @@ class QTRC90ExactEngine001Tests(unittest.TestCase):
                     dag.evaluate(root, coordinate, algebra),
                     brute(algebra, coordinate),
                 )
+
+    def test_fused_bucket_elimination_equals_full_joint_then_marginalize(self) -> None:
+        scopes = [(0, 1), (0, 2), (0, 1, 2), (1, 2)]
+        selector_qubits = [0, 2, 3]
+        order = [0, 1, 2]
+
+        def build(algebra: str):
+            dag = DAG.ExpressionDAG()
+            dd = DAG.DecisionDiagram(order)
+            selector_parameter = {q: i for i, q in enumerate(selector_qubits)}
+            roots = [
+                DAG._local_symbolic_factor(q, scope, selector_parameter, algebra, dag, dd)
+                for q, scope in enumerate(scopes[:3])
+            ]
+            return dag, dd, roots
+
+        def evaluate_dd(dag, dd, root: int, assignment: dict[int, int], coordinate: int, algebra: str):
+            node_id = root
+            while dd.nodes[node_id][0] != "T":
+                node = dd.nodes[node_id]
+                bit = assignment[int(node[1])]
+                node_id = int(node[3] if bit else node[2])
+            expression = int(dd.nodes[node_id][1])
+            return dag.evaluate(expression, coordinate, algebra)
+
+        for algebra in DAG.ALGEBRAS:
+            multiply = "MPMUL" if algebra == "min_plus_hamming" else "MUL"
+            marginal = "MPMIN" if algebra == "min_plus_hamming" else "ADD"
+
+            standard_dag, standard_dd, standard_roots = build(algebra)
+            joint = standard_roots[0]
+            for root in standard_roots[1:]:
+                joint = standard_dd.apply(multiply, joint, root, standard_dag)
+            standard = standard_dd.sum_out(joint, 0, marginal, standard_dag)
+
+            fused_dag, fused_dd, fused_roots = build(algebra)
+            fused, _stats = Fused.fused_marginalized_product(
+                fused_dd,
+                fused_dag,
+                fused_roots,
+                0,
+                multiply,
+                marginal,
+            )
+
+            for coordinate in range(1 << len(selector_qubits)):
+                for assignment_value in range(4):
+                    assignment = {1: assignment_value & 1, 2: (assignment_value >> 1) & 1}
+                    self.assertEqual(
+                        evaluate_dd(
+                            standard_dag,
+                            standard_dd,
+                            standard,
+                            assignment,
+                            coordinate,
+                            algebra,
+                        ),
+                        evaluate_dd(
+                            fused_dag,
+                            fused_dd,
+                            fused,
+                            assignment,
+                            coordinate,
+                            algebra,
+                        ),
+                    )
 
     def test_execution_preflight_remains_quality_blind(self) -> None:
         report = Execute.preflight()
