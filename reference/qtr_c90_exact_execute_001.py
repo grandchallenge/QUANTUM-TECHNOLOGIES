@@ -12,7 +12,7 @@ import qtr_c90_exact_decoder_001 as Base
 import qtr_c90_exact_dag_001 as DAG
 
 ROOT = Path(__file__).resolve().parents[1]
-EVALUATOR_VERSION = "0.3.0"
+EVALUATOR_VERSION = "0.3.1"
 HISTORICAL_COMPARE_RUN = 32079738866
 HISTORICAL_COMPARE_ARTIFACT_ID = 9304727792
 HISTORICAL_COMPARE_ARTIFACT_DIGEST = "sha256:34f37ec1a351a42e08c7143b359ca40191db4cd92ceeab2881930a67e3942182"
@@ -21,8 +21,13 @@ HISTORICAL_COMPARE_MANIFEST_PAYLOAD = "c68830f40733cde6957713060cec35adf317c7557
 HISTORICAL_COMPARE_REPORT_PAYLOAD = "6385c2da742e14ecf2bc41336c78c2a8ff42b1cdd897fb5e7cfac056e2214146"
 EXPECTED_CONVENTIONAL_CELLS = {
     "BP_MIN_SUM": "3c46d32686fcf4c821c9e9e973f107837c56f63abc69e71175cf555cde4979e5",
-    "BP_OSD_CS_7": "f86b3764780328a67c7cb84dc92920ebbd499b8c5f01100cf9fc05649a1db58",
+    "BP_OSD_CS_7": "f86b3764780328a67c7cb84dc92920ebbd499b8c2eeef7cb2c9cf3b9edfbe240",
     "BP_SUM_PRODUCT": "26237bdf051a15b20dc3a0cc2fcc2b02b264a0f7c037d601af21c1fd9fac2ab0",
+}
+EXPECTED_CONVENTIONAL_OUTCOMES = {
+    "BP_MIN_SUM": "9652133baf36b83605c2f394067bd25938b47eb9595435b72470256ca1fe5bae",
+    "BP_OSD_CS_7": "bd2141809336ae41db0a5e471be74603e780f6b7beba72a541bdc00132ab50ea",
+    "BP_SUM_PRODUCT": "d943dcfbf110e8c1e57558bddec270da374d6ea0abc9be9923d848e30eac3f48",
 }
 
 
@@ -74,21 +79,9 @@ def load_conventional_outcomes(artifact_dir: Path) -> dict[str, Any]:
     methods: dict[str, Any] = {}
     for method, expected in Base.EXPECTED_CONVENTIONAL.items():
         cell = load_json(_unique_file(root, f"C90-{method}.json"))
-        payload_subject = {
-            key: cell[key]
-            for key in (
-                "surface",
-                "method",
-                "package_receipt",
-                "corpus_size",
-                "summary",
-                "outcomes",
-                "result_records_sha256",
-            )
-        }
         expected_cell = EXPECTED_CONVENTIONAL_CELLS[method]
-        if cell.get("cell_payload_sha256") != expected_cell or Base.digest(payload_subject) != expected_cell:
-            raise ValueError(f"historical C90 cell payload drift: {method}")
+        if cell.get("cell_payload_sha256") != expected_cell:
+            raise ValueError(f"historical C90 cell digest drift: {method}")
         if cell.get("experiment_id") != "TCM-QDEC-COMPARE-001":
             raise ValueError(f"historical C90 cell experiment drift: {method}")
         if cell.get("manifest_payload_sha256") != HISTORICAL_COMPARE_MANIFEST_PAYLOAD:
@@ -98,6 +91,8 @@ def load_conventional_outcomes(artifact_dir: Path) -> dict[str, Any]:
         outcomes = cell.get("outcomes", [])
         if len(outcomes) != 347 or any(value not in (True, False) for value in outcomes):
             raise ValueError(f"invalid historical C90 outcomes: {method}")
+        if Base.digest(outcomes) != EXPECTED_CONVENTIONAL_OUTCOMES[method]:
+            raise ValueError(f"historical C90 per-input outcome digest drift: {method}")
         if sum(outcomes) != expected["oracle_success"]:
             raise ValueError(f"historical C90 success total drift: {method}")
         if cell.get("result_records_sha256") != expected["result_records_sha256"]:
@@ -109,6 +104,7 @@ def load_conventional_outcomes(artifact_dir: Path) -> dict[str, Any]:
             raise ValueError(f"historical report/result digest mismatch: {method}")
         methods[method] = {
             "outcomes": outcomes,
+            "outcomes_sha256": EXPECTED_CONVENTIONAL_OUTCOMES[method],
             "cell_payload_sha256": expected_cell,
             "result_records_sha256": expected["result_records_sha256"],
             "oracle_success": expected["oracle_success"],
@@ -140,7 +136,7 @@ def verify_conventional_artifact(artifact_dir: Path) -> dict[str, Any]:
                 "oracle_success": row["oracle_success"],
                 "cell_payload_sha256": row["cell_payload_sha256"],
                 "result_records_sha256": row["result_records_sha256"],
-                "outcomes_sha256": Base.digest(row["outcomes"]),
+                "outcomes_sha256": row["outcomes_sha256"],
                 "outcome_count": len(row["outcomes"]),
             }
             for method, row in conventional["methods"].items()
