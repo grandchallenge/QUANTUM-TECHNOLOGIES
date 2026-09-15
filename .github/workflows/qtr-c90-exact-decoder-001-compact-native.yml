@@ -1,0 +1,126 @@
+name: QTR C90 exact decoder compact native compile
+
+on:
+  pull_request:
+    paths:
+      - "registry/qtr-c90-exact-decoder-001-manifest.json"
+      - "reference/qtr_c90_exact_decoder_001.py"
+      - "reference/qtr_c90_exact_dag_001.py"
+      - "reference/qtr_c90_exact_execute_001.py"
+      - "reference/qtr_c90_exact_symbolic_001.py"
+      - "reference/qtr_c90_exact_compact_native_001.cpp"
+      - "reference/qtr_c90_exact_compact_native_001.py"
+      - "tests/test_qtr_c90_exact_decoder_001.py"
+      - "tests/test_qtr_c90_exact_engine_001.py"
+      - "tests/test_qtr_c90_exact_symbolic_001.py"
+      - "tests/test_qtr_c90_exact_compact_native_001.py"
+      - ".github/workflows/qtr-c90-exact-decoder-001-compact-native.yml"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  quality-blind-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.8"
+      - name: Assert exact subject checkout
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+      - name: Restore promoted conventional comparison artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: TCM-QDEC-COMPARE-001-exact-head
+          path: /tmp/tcm-qdec-compare-001
+          github-token: ${{ github.token }}
+          repository: grandchallenge/QUANTUM-TECHNOLOGIES
+          run-id: 32079738866
+      - name: Run compact-native semantic equivalence controls
+        run: |
+          python -m unittest discover -s tests -p "test_qtr_c90_exact_decoder_001.py" -v
+          python -m unittest discover -s tests -p "test_qtr_c90_exact_engine_001.py" -v
+          python -m unittest discover -s tests -p "test_qtr_c90_exact_symbolic_001.py" -v
+          python -m unittest discover -s tests -p "test_qtr_c90_exact_compact_native_001.py" -v
+          python -m py_compile reference/qtr_c90_exact_compact_native_001.py
+          g++ -std=c++17 -O3 -DNDEBUG reference/qtr_c90_exact_compact_native_001.cpp -o /tmp/qtr-c90-compact-native
+          python reference/qtr_c90_exact_execute_001.py \
+            --mode verify-conventional \
+            --conventional-artifact-dir /tmp/tcm-qdec-compare-001 \
+            --output /tmp/QTR-C90-conventional-replay.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/QTR-C90-conventional-replay.json').read_text())
+          assert r['status']=='PROTECTED_CONVENTIONAL_C90_OUTCOMES_VERIFIED'
+          assert r['quality_exposed'] is False
+          assert r['new_c90_tcm_quality_exposed'] is False
+          print('QUALITY_BLIND_COMPACT_NATIVE_NODE_STREAM_EQUIVALENCE_PASS')
+          PY
+
+  compile-algebra:
+    needs: quality-blind-controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        algebra:
+          - sum_product_bsc_p_0_1
+          - soft_tropical_base_2
+          - min_plus_hamming
+    env:
+      ALGEBRA: ${{ matrix.algebra }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.8"
+      - name: Assert exact subject checkout
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+      - name: Build compact-native exact engine
+        run: g++ -std=c++17 -O3 -DNDEBUG reference/qtr_c90_exact_compact_native_001.cpp -o /tmp/qtr-c90-compact-native
+      - name: Compile frozen algebra with compact-native hash-cons backend
+        run: |
+          mkdir -p /tmp/c90-compact-native
+          python reference/qtr_c90_exact_compact_native_001.py \
+            --algebra "$ALGEBRA" \
+            --native-executable /tmp/qtr-c90-compact-native \
+            --native-output "/tmp/c90-compact-native/compiled-$ALGEBRA.qtrbin" \
+            --receipt-output "/tmp/c90-compact-native/compile-$ALGEBRA.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          a=os.environ['ALGEBRA']
+          r=json.loads(Path(f'/tmp/c90-compact-native/compile-{a}.json').read_text())
+          assert r['status']=='C90_EXACT_ALGEBRA_COMPILED_QUALITY_BLIND'
+          assert r['quality_exposed'] is False
+          assert r['scientific_semantics_changed'] is False
+          assert r['selector_enumeration_performed'] is False
+          assert r['compiled']['backend']=='EXACT_COMPACT_NATIVE_HASH_CONS'
+          assert r['compiled']['storage_backend']=='memory_hash_cons'
+          assert r['compiled']['temporary_stabilizer_nodes_final']==0
+          print(a, r['compiled']['canonical_node_stream_sha256'], r['compiled']['reachable_nodes'], r['compiled']['native_binary_bytes'])
+          PY
+      - name: Preserve compact-native compiled algebra
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-compact-native-${{ matrix.algebra }}
+          path: |
+            /tmp/c90-compact-native/compiled-${{ matrix.algebra }}.qtrbin
+            /tmp/c90-compact-native/compile-${{ matrix.algebra }}.json
+          if-no-files-found: error
+          retention-days: 90
