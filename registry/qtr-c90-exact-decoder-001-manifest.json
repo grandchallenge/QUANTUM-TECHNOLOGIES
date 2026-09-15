@@ -1,0 +1,201 @@
+{
+  "authority": {
+    "council_issue": 113,
+    "execution_issue": 114,
+    "human_steward_authorization_comment": 5405533756,
+    "protected_start_main": "aa53dc3c0e99c39f766f4ccb0c0d0629cd9093db",
+    "referee_comment": 5405192097
+  },
+  "c90_corpus": {
+    "channel": "BSC p=0.1",
+    "order": "zero, 90 unit errors, 256 frozen SHA-derived BSC errors",
+    "path": "evidence/corpora/TCM-QDEC-COMPARE-001-C90-corpus.json",
+    "sha256": "b053a27a9c346832d6008987e204c88162dc1797e0367b38705861049059e086",
+    "size": 347
+  },
+  "candidate_outcomes": [
+    "C90_TCM_MATCHED_COMPARISON_COMPLETED",
+    "C90_EXACT_SEMANTIC_VALIDATION_FAILED",
+    "OPERATIONAL_EXECUTION_INCOMPLETE"
+  ],
+  "claim_boundary": {
+    "adaptive_post_outcome_search_authorized": false,
+    "approximation_authorized": false,
+    "autonomous_search_authorized": false,
+    "family_or_asymptotic_claim": false,
+    "finite_c90_quality_facts_allowed": true,
+    "general_decoder_superiority_claim": false,
+    "learned_decoding_authorized": false,
+    "qec_circuit_003_authorized": false,
+    "qldpc_forge_authorized": false,
+    "runtime_or_memory_superiority_claim": false,
+    "threshold_or_circuit_claim": false
+  },
+  "conventional_anchors": {
+    "BP_MIN_SUM": {
+      "inputs": 347,
+      "oracle_success": 200,
+      "result_records_sha256": "8d06d07779a61d8ec305e46bd7479f30dc773b84e2d3fe76da054500fc7f6bff"
+    },
+    "BP_OSD_CS_7": {
+      "inputs": 347,
+      "oracle_success": 211,
+      "result_records_sha256": "2195de2fe9af00cc340a551ec0a01f9f54ffaca8c5f01100cf9fc05649a1db58"
+    },
+    "BP_SUM_PRODUCT": {
+      "inputs": 347,
+      "oracle_success": 171,
+      "result_records_sha256": "9b5c120d8e5170a5694dd016c1f2502df216f91e72024a02cbf37e3d5a27b7ac"
+    },
+    "source_evidence_path": "evidence/TCM-QDEC-COMPARE-001-report.json"
+  },
+  "correctness_oracle": {
+    "scoring_stage_only": true,
+    "success": "e XOR c is in Row(H_X)",
+    "syndrome_consistency": "H_Z c = H_Z e mod 2"
+  },
+  "decision_rule": {
+    "class_tie_break": "lowest_canonical_stabilizer_coset_key",
+    "representative_within_class": "lowest_hamming_weight_then_integer",
+    "winning_class": "exact_semiring_optimum"
+  },
+  "decoder_interface": {
+    "full_syndrome_rows": 45,
+    "independent_syndrome_rows": 41,
+    "injected_error_available_to_decoder": false,
+    "logical_classes_per_syndrome": 256,
+    "selector_coordinate_rule": "invert exact GF(2) map from 49 protected selector-basis coordinates to 41 independent Z-check functionals plus 8 protected logical-Z functionals",
+    "selector_map_assumed_identity": false,
+    "signature": "decode(full_HZ_syndrome, channel_metadata) -> correction | declared_failure"
+  },
+  "execution_method": {
+    "all_inputs_required": true,
+    "caching_policy": "memoization of exact DAG node evaluations within a selector is allowed; complete selector-answer caching is not the primary compiled object",
+    "partial_corpus_quality_claim": false,
+    "per_input_policy": "evaluate the complete 256 logical classes exactly under all three protected algebras via the frozen reusable representation",
+    "post_outcome_tuning": false,
+    "primary_shard_count": 347,
+    "retry_policy": "retry only an identical scientific shard; host capacity and parallelism may change after operational interruption, scientific inputs and representation may not",
+    "route": "compile -> validate -> decode -> independent score -> matched compare",
+    "shard_assignment": "one frozen corpus input per primary shard, shard index equals corpus index"
+  },
+  "experiment_id": "QTR-C90-EXACT-DECODER-001",
+  "manifest_payload_sha256": "8c0fd54d9131434e17273f8c9aea407cb132c4511aad38dda8c5cb66a6441294",
+  "manifest_version": "0.1.0",
+  "matched_comparison": {
+    "deterministic_join_key": "frozen corpus index",
+    "finite_c90_only": true,
+    "per_pair_fields": [
+      "both_success",
+      "tcm_only_success",
+      "conventional_only_success",
+      "neither_success"
+    ],
+    "rerun_conventional_decoders": false,
+    "reuse_protected_conventional_records": true
+  },
+  "protected_c72_predecessor": {
+    "aggregate_artifact_digest": "sha256:715e4ab49498eca87bded7b2ded7708ba53c8d842aca4886fddebbc583f1ad29",
+    "aggregate_payload_sha256": "b6caf79df378ac2a4b78e7bcdd360aa24548492d33e4e82189239372aac75de7",
+    "durable_evidence_path": "evidence/TCM-C72-INTERFACE-001-report.json",
+    "outcome": "C72_TCM_SHARED_DECODER_INTERFACE_CERTIFIED",
+    "protected_merge": "aa53dc3c0e99c39f766f4ccb0c0d0629cd9093db",
+    "protected_tree": "5935e8475a84973066f2e392adf6da5a3ecc22ea",
+    "scored_rows_sha256": "d2a8f9fa8eb89e5db24d0db9e2cef66ccd91f58488f12f69f8d1767ecc928327",
+    "selector_map_sha256": "60b1857e1973e0acd1f4087bf1883fdc322b33932ea0d112f6a53f294cf9720b"
+  },
+  "protected_c90": {
+    "digests": {
+      "factor_scope_sha256": "8dd0b2849491df78376a7f7eb8940efa142737caf45df1fe2104fe4929da50da",
+      "full_order_record_sha256": "a612ced5cb6adce4d4dab40800e48bb80b7dd1542dc5cd89d4667cb56ae6c468",
+      "hx_sha256": "31af739c5854bd3287b3e1319fc99e4c5f220fdd5c1486420d0cb17d6fce86af",
+      "hz_sha256": "c79c2c8c3373fbc4b46b43364f403b07c1b093f98f0be1832fac0f1f571fd7ca",
+      "independent_bases_sha256": "377fae0d662372aa53372deaac9e602d4a97919150bcb3b3de65ecf714c598a8",
+      "logical_basis_sha256": "6cf0007ae20507fbd34163362e96c0e4741cc7ce0437debb542f565b151aeb8a",
+      "min_fill_order_sha256": "579c83be655d3b90c15d79bcedde8ba629b240e88ae76a910093006a69691db4",
+      "selector_basis_sha256": "257809cb3c37594e5d19b6f8a79018680f84bdec06ed898be45e4d1c504fb716",
+      "source_record_sha256": "f99851301f0fce2970d20ef2e4d1f054b7efbfec294de8937ec4d9e2993a04ae"
+    },
+    "distance_status": "SOURCE_REPORTED_DISTANCE",
+    "hx_rank": 41,
+    "hz_rank": 41,
+    "logical_classes_per_syndrome": 256,
+    "logical_dimension": 8,
+    "primary_induced_width": 25,
+    "primary_order": "deterministic_min_fill",
+    "primary_peak_joint_entries": 67108864,
+    "selector_rank": 49,
+    "source_configuration": {
+      "A": "x^9+y^1+y^2",
+      "B": "y^0+x^2+x^7",
+      "a_exponents": [9, 1, 2],
+      "b_exponents": [0, 2, 7],
+      "ell": 15,
+      "m": 3
+    },
+    "source_parameters": [90, 8, 10]
+  },
+  "representation": {
+    "algebra_policy": "one exact canonical DAG per protected algebra",
+    "approximation_or_pruning": false,
+    "backend_equivalence_rule": "same canonical semantic node records and root digest under the frozen node encoding; storage location is not scientific state",
+    "canonicalization": "hash-cons exact terminals, parameter-choice nodes, and commutative semiring binary nodes with deterministic operand order",
+    "compile_policy": "symbolically eliminate 41 protected independent X-stabilizer variables in protected deterministic min-fill order while retaining 49 selector coordinates as Boolean parameters",
+    "full_selector_enumeration_during_compilation": false,
+    "historical_retained_node_cap_is_scientific_stop_rule": false,
+    "kind": "exact_selector_parametric_hash_consed_expression_dag",
+    "name": "EXACT_SELECTOR_PARAMETRIC_HASH_CONSED_DAG_C90",
+    "order_search": false,
+    "selector_answer_cache_primary_object_allowed": false,
+    "storage_backends": ["memory_hash_cons", "disk_backed_hash_cons"]
+  },
+  "resource_policy": {
+    "historical_caps": [
+      "2^20 peak entries",
+      "2^27 factor evaluations",
+      "2^22 retained nodes",
+      "512 MiB serialization",
+      "2^31 AOP",
+      "x100 peak-entry amendment",
+      "small-host retained-bound target"
+    ],
+    "historical_deterministic_caps_are_scientific_stop_rules": false,
+    "host_allocation_recorded": true,
+    "oom_timeout_storage_or_unavailable_compute": "OPERATIONAL_EXECUTION_INCOMPLETE",
+    "resource_failure_is_infeasibility_claim": false
+  },
+  "semantic_validation": {
+    "c18_control": "reproduce protected C18 decision, tie, and finite-success identities through the certified generic bridge",
+    "c72_control": "verify protected C72 durable receipt and certified selector bridge; no C72 scientific rerun required",
+    "c90_static_controls": [
+      "source and basis digests",
+      "rank and quotient dimensions",
+      "protected min-fill order digest and width",
+      "49x49 selector-functional map full rank and exact inverse roundtrip",
+      "frozen 347-input corpus digest",
+      "protected conventional result-record digests"
+    ],
+    "compiled_representation_controls": [
+      "deterministic canonical root and node-stream digest per algebra",
+      "repeat compile produces identical canonical digest on an independent execution route when resources permit",
+      "predeclared selector evaluations agree across memory and disk-backed backends when both are used"
+    ],
+    "injected_error_success_used_for_validation": false,
+    "quality_blind": true,
+    "selector_control_generator": {
+      "provenance": "protected QTR-C90-EXACT-REQUAL-001 frozen validation set; previously not reached",
+      "random_distinct_non_reserved": 256,
+      "reserved": "zero, every unit selector, all-ones",
+      "rule": "SHA256(seed || uint64_be(counter)); digest bits MSB-first; first bit maps to selector coordinate 0; truncate to selector rank; reject reserved/duplicates",
+      "seed": "QLDPC-SCALE-001B::90::selector-validation::v1",
+      "total_frozen_selectors": 307,
+      "validation_set_sha256": "c0a675e3124ed96de66a516a2d679923b8c230c7530b80d5d431df66d781a85c"
+    }
+  },
+  "semirings": {
+    "min_plus_hamming": {"direction": "minimize", "local_bit_costs": [0, 1]},
+    "soft_tropical_base_2": {"direction": "maximize", "local_bit_weights": [2, 1]},
+    "sum_product_bsc_p_0_1": {"direction": "maximize", "local_bit_weights": [9, 1]}
+  },
+  "status": "frozen_pre_measurement_manifest"
+}

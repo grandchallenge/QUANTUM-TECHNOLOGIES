@@ -1,0 +1,180 @@
+name: QTR C90 compact native semantic validation
+
+on:
+  pull_request:
+    paths:
+      - "reference/qtr_c90_exact_native_eval_001.cpp"
+      - "reference/qtr_c90_exact_native_validate_001.py"
+      - "reference/qtr_c90_exact_native_aggregate_001.py"
+      - ".github/workflows/qtr-c90-exact-decoder-001-native-validation.yml"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  COMPILED_RUN_ID: "34947590855"
+
+jobs:
+  full-scale-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.8"
+      - name: Assert exact validation subject
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+      - name: Restore successful compact-native sum-product artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-compact-native-sum_product_bsc_p_0_1
+          path: /tmp/c90-compiled
+          github-token: ${{ github.token }}
+          repository: grandchallenge/QUANTUM-TECHNOLOGIES
+          run-id: ${{ env.COMPILED_RUN_ID }}
+      - name: Build exact compact-native evaluator
+        run: g++ -std=c++17 -O3 -DNDEBUG reference/qtr_c90_exact_native_eval_001.cpp -o /tmp/qtr-c90-native-eval
+      - name: Validate frozen selector index zero exactly
+        run: |
+          mkdir -p /tmp/c90-smoke
+          /usr/bin/time -v python reference/qtr_c90_exact_native_validate_001.py \
+            --algebra sum_product_bsc_p_0_1 \
+            --native-executable /tmp/qtr-c90-native-eval \
+            --native-binary /tmp/c90-compiled/compiled-sum_product_bsc_p_0_1.qtrbin \
+            --compiled-receipt /tmp/c90-compiled/compile-sum_product_bsc_p_0_1.json \
+            --start 0 \
+            --stop 1 \
+            --output /tmp/c90-smoke/validate-smoke.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-smoke/validate-smoke.json').read_text())
+          assert r['status']=='C90_EXACT_ALGEBRA_VALIDATION_SHARD_PASSED'
+          assert r['selector_count']==1
+          assert r['all_exact_equal'] is True
+          assert r['quality_exposed'] is False
+          print('C90_FULL_SCALE_NATIVE_SEMANTIC_SMOKE_PASS', r['rows_sha256'])
+          PY
+
+  validate-shard:
+    needs: full-scale-smoke
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        algebra:
+          - sum_product_bsc_p_0_1
+          - soft_tropical_base_2
+          - min_plus_hamming
+        shard:
+          - { id: "00", start: 0, stop: 39 }
+          - { id: "01", start: 39, stop: 78 }
+          - { id: "02", start: 78, stop: 117 }
+          - { id: "03", start: 117, stop: 156 }
+          - { id: "04", start: 156, stop: 195 }
+          - { id: "05", start: 195, stop: 234 }
+          - { id: "06", start: 234, stop: 273 }
+          - { id: "07", start: 273, stop: 307 }
+    env:
+      ALGEBRA: ${{ matrix.algebra }}
+      SHARD_ID: ${{ matrix.shard.id }}
+      SHARD_START: ${{ matrix.shard.start }}
+      SHARD_STOP: ${{ matrix.shard.stop }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.8"
+      - name: Assert exact validation subject
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+      - name: Restore matching successful compact-native algebra artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-compact-native-${{ matrix.algebra }}
+          path: /tmp/c90-compiled
+          github-token: ${{ github.token }}
+          repository: grandchallenge/QUANTUM-TECHNOLOGIES
+          run-id: ${{ env.COMPILED_RUN_ID }}
+      - name: Build exact compact-native evaluator
+        run: g++ -std=c++17 -O3 -DNDEBUG reference/qtr_c90_exact_native_eval_001.cpp -o /tmp/qtr-c90-native-eval
+      - name: Validate complete frozen selector shard exactly
+        run: |
+          mkdir -p /tmp/c90-validation
+          /usr/bin/time -v python reference/qtr_c90_exact_native_validate_001.py \
+            --algebra "$ALGEBRA" \
+            --native-executable /tmp/qtr-c90-native-eval \
+            --native-binary "/tmp/c90-compiled/compiled-$ALGEBRA.qtrbin" \
+            --compiled-receipt "/tmp/c90-compiled/compile-$ALGEBRA.json" \
+            --start "$SHARD_START" \
+            --stop "$SHARD_STOP" \
+            --output "/tmp/c90-validation/validate-$ALGEBRA-$SHARD_ID.json"
+      - name: Preserve quality-blind validation shard
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-native-validation-${{ matrix.algebra }}-${{ matrix.shard.id }}
+          path: /tmp/c90-validation/validate-${{ matrix.algebra }}-${{ matrix.shard.id }}.json
+          if-no-files-found: error
+          retention-days: 90
+
+  aggregate-quality-blind:
+    needs: validate-shard
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.8"
+      - name: Assert exact validation subject
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+      - name: Restore all validation shard receipts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: QTR-C90-native-validation-*
+          path: /tmp/c90-validation-all
+          merge-multiple: true
+      - name: Aggregate complete frozen quality-blind semantic validation
+        run: |
+          mapfile -t VALIDATION < <(find /tmp/c90-validation-all -type f -name 'validate-*.json' | sort)
+          test "${#VALIDATION[@]}" -eq 24
+          ARGS=()
+          for f in "${VALIDATION[@]}"; do ARGS+=(--validation "$f"); done
+          python reference/qtr_c90_exact_native_aggregate_001.py \
+            "${ARGS[@]}" \
+            --output /tmp/QTR-C90-EXACT-DECODER-001-native-quality-blind.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/QTR-C90-EXACT-DECODER-001-native-quality-blind.json').read_text())
+          assert r['status']=='C90_EXACT_IMPLEMENTATION_QUALITY_BLIND_VALIDATED'
+          assert r['semantic_validation']['status']=='C90_EXACT_SEMANTIC_VALIDATION_PASSED'
+          assert r['semantic_validation']['selector_count_per_algebra']==307
+          assert r['semantic_validation']['algebra_count']==3
+          assert r['semantic_validation']['all_exact_equal'] is True
+          assert r['quality_exposed'] is False
+          assert r['activation_eligible'] is False
+          print('C90_COMPLETE_NATIVE_SEMANTIC_VALIDATION_PASS')
+          print(r['semantic_validation']['validation_outputs_sha256'])
+          PY
+      - name: Preserve complete diagnostic validation receipt
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-EXACT-DECODER-001-native-quality-blind-validation
+          path: /tmp/QTR-C90-EXACT-DECODER-001-native-quality-blind.json
+          if-no-files-found: error
+          retention-days: 90
