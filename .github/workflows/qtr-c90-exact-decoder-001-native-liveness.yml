@@ -37,7 +37,7 @@ jobs:
           github-token: ${{ github.token }}
           repository: grandchallenge/QUANTUM-TECHNOLOGIES
           run-id: ${{ env.COMPILED_RUN_ID }}
-      - name: Generate frozen 307-selector liveness set
+      - name: Generate frozen selector batch probes
         run: |
           python - <<'PY'
           import sys
@@ -47,16 +47,38 @@ jobs:
           coordinates = Base.frozen_validation_coordinates()
           assert len(coordinates) == 307
           assert Base.digest(coordinates) == Base.C90_VALIDATION_SET_SHA
-          Path('/tmp/c90-selectors.txt').write_text(''.join(f'{x}\n' for x in coordinates), encoding='utf-8')
-          print('selector_count', len(coordinates), 'sha256', Base.C90_VALIDATION_SET_SHA)
+          batches = {
+              'single_zero': [coordinates[0]],
+              'single_random': [coordinates[-1]],
+              'random_2': coordinates[-2:],
+              'random_4': coordinates[-4:],
+              'random_8': coordinates[-8:],
+              'random_16': coordinates[-16:],
+              'random_32': coordinates[-32:],
+              'random_64': coordinates[-64:],
+              'all_307': coordinates,
+          }
+          for name, values in batches.items():
+              Path(f'/tmp/c90-selectors-{name}.txt').write_text(
+                  ''.join(f'{x}\n' for x in values), encoding='utf-8'
+              )
+          print('validation_set_sha256', Base.C90_VALIDATION_SET_SHA)
+          print('batch_sizes', {k: len(v) for k, v in batches.items()})
           PY
       - name: Build quality-blind liveness probe
         run: g++ -std=c++17 -O3 -DNDEBUG reference/qtr_c90_exact_native_liveness_001.cpp -o /tmp/qtr-c90-native-liveness
-      - name: Characterize exact 307-selector live frontier
+      - name: Characterize exact selector-batch live frontiers
         run: |
-          /tmp/qtr-c90-native-liveness \
-            --native /tmp/c90-compact-native/compiled-sum_product_bsc_p_0_1.qtrbin \
-            --selectors /tmp/c90-selectors.txt \
-            | tee /tmp/QTR-C90-native-liveness.jsonl
-          grep -q '"quality_exposed":false' /tmp/QTR-C90-native-liveness.jsonl
-          grep -q '"selector_count":307' /tmp/QTR-C90-native-liveness.jsonl
+          : > /tmp/QTR-C90-native-liveness.jsonl
+          for name in single_zero single_random random_2 random_4 random_8 random_16 random_32 random_64 all_307; do
+            printf '{"batch":"%s","measurement":' "$name" >> /tmp/QTR-C90-native-liveness.jsonl
+            /tmp/qtr-c90-native-liveness \
+              --native /tmp/c90-compact-native/compiled-sum_product_bsc_p_0_1.qtrbin \
+              --selectors "/tmp/c90-selectors-$name.txt" \
+              | tr -d '\n' >> /tmp/QTR-C90-native-liveness.jsonl
+            printf '}\n' >> /tmp/QTR-C90-native-liveness.jsonl
+          done
+          cat /tmp/QTR-C90-native-liveness.jsonl
+          grep -q '"batch":"single_zero"' /tmp/QTR-C90-native-liveness.jsonl
+          grep -q '"batch":"all_307"' /tmp/QTR-C90-native-liveness.jsonl
+          test "$(grep -c '"quality_exposed":false' /tmp/QTR-C90-native-liveness.jsonl)" -eq 9
