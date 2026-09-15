@@ -85,10 +85,18 @@ class QTRC90ExactCompactNative001Tests(unittest.TestCase):
         header = struct.Struct("<8sIQI")
         node_struct = struct.Struct("<BIII")
         magic, algebra_id, count, root = header.unpack_from(raw, 0)
-        cls.assertEqual(cls, magic, b"QTRC90N1")
-        cls.assertEqual(cls, algebra_id, cls._algebra_id(algebra))
+        if magic != b"QTRC90N1":
+            raise AssertionError(f"compact-native magic drift: {magic!r}")
+        expected_algebra_id = cls._algebra_id(algebra)
+        if algebra_id != expected_algebra_id:
+            raise AssertionError(
+                f"compact-native algebra drift: {algebra_id} != {expected_algebra_id}"
+            )
         expected_size = header.size + count * node_struct.size
-        cls.assertEqual(cls, len(raw), expected_size)
+        if len(raw) != expected_size:
+            raise AssertionError(
+                f"compact-native size drift: {len(raw)} != {expected_size}"
+            )
 
         kinds = {
             1: "I",
@@ -109,8 +117,10 @@ class QTRC90ExactCompactNative001Tests(unittest.TestCase):
                 nodes.append(("I", int(a), int(b), int(c)))
             elif kind == 2:
                 nodes.append(("S", int(a), int(b), int(c)))
-            else:
+            elif kind in kinds:
                 nodes.append((kinds[kind], int(a), int(b)))
+            else:
+                raise AssertionError(f"unknown compact-native node kind: {kind}")
         return nodes, int(root)
 
     def _compile_native(self, algebra: str) -> tuple[list[tuple], int]:
