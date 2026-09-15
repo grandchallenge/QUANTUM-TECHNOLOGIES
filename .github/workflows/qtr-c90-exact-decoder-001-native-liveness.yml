@@ -1,0 +1,62 @@
+name: QTR C90 compact native validation liveness
+
+on:
+  pull_request:
+    paths:
+      - "reference/qtr_c90_exact_native_liveness_001.cpp"
+      - ".github/workflows/qtr-c90-exact-decoder-001-native-liveness.yml"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  COMPILED_RUN_ID: "34947590855"
+
+jobs:
+  liveness:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.8"
+      - name: Assert quality-blind benchmark subject
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+      - name: Restore successful compact-native sum-product artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-compact-native-sum_product_bsc_p_0_1
+          path: /tmp/c90-compact-native
+          github-token: ${{ github.token }}
+          repository: grandchallenge/QUANTUM-TECHNOLOGIES
+          run-id: ${{ env.COMPILED_RUN_ID }}
+      - name: Generate frozen 307-selector liveness set
+        run: |
+          python - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, 'reference')
+          import qtr_c90_exact_decoder_001 as Base
+          coordinates = Base.frozen_validation_coordinates()
+          assert len(coordinates) == 307
+          assert Base.digest(coordinates) == Base.C90_VALIDATION_SET_SHA
+          Path('/tmp/c90-selectors.txt').write_text(''.join(f'{x}\n' for x in coordinates), encoding='utf-8')
+          print('selector_count', len(coordinates), 'sha256', Base.C90_VALIDATION_SET_SHA)
+          PY
+      - name: Build quality-blind liveness probe
+        run: g++ -std=c++17 -O3 -DNDEBUG reference/qtr_c90_exact_native_liveness_001.cpp -o /tmp/qtr-c90-native-liveness
+      - name: Characterize exact 307-selector live frontier
+        run: |
+          /tmp/qtr-c90-native-liveness \
+            --native /tmp/c90-compact-native/compiled-sum_product_bsc_p_0_1.qtrbin \
+            --selectors /tmp/c90-selectors.txt \
+            | tee /tmp/QTR-C90-native-liveness.jsonl
+          grep -q '"quality_exposed":false' /tmp/QTR-C90-native-liveness.jsonl
+          grep -q '"selector_count":307' /tmp/QTR-C90-native-liveness.jsonl
