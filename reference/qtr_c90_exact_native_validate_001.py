@@ -24,7 +24,7 @@ import qtr_c90_exact_decoder_001 as Base
 import qtr_c90_exact_dag_001 as DAG
 
 EXPERIMENT_ID = Base.EXPERIMENT_ID
-EVALUATOR_VERSION = "0.1.0"
+EVALUATOR_VERSION = "0.2.0"
 COMPILED_HEAD = "c4e1d757bdf89fa5eceaf2e38b8a34ff3ee3a78c"
 ALGEBRA_IDS = {
     "sum_product_bsc_p_0_1": 0,
@@ -89,6 +89,21 @@ def _parse_native_value(algebra: str, row: dict[str, Any]) -> Any:
         (int(row["minimum_weight"]), int(row["minimum_representative_hex"], 16)),
         int(row["canonical_hex"], 16),
     )
+
+
+def _canonical_value_encoding(algebra: str, value: Any) -> dict[str, Any]:
+    if algebra != "min_plus_hamming":
+        return {
+            "encoding": "exact_nonnegative_integer_hex",
+            "value_hex": hex(int(value)),
+        }
+    ((weight, representative), canonical) = value
+    return {
+        "encoding": "exact_min_plus_hamming_v1",
+        "minimum_weight": int(weight),
+        "minimum_representative_hex": hex(int(representative)),
+        "canonical_hex": hex(int(canonical)),
+    }
 
 
 def validate_shard(
@@ -160,9 +175,11 @@ def validate_shard(
             {
                 "selector_index": expected_index,
                 "selector_coordinate": coordinate,
+                "value_encoding": _canonical_value_encoding(algebra, observed),
                 "value_sha256": Base.digest({"value": observed}),
                 "reachable_nodes": int(native_row["reachable_nodes"]),
                 "peak_live_values": int(native_row["peak_live_values"]),
+                "exact_equal": True,
             }
         )
 

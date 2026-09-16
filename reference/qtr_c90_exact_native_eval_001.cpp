@@ -4,11 +4,13 @@
 // the selected I-node branches, and evaluates the retained exact semiring DAG
 // in topological order. It does not alter the compiled representation. Storage
 // is reusable across selectors; reference counts release scalar slots at last
-// use. No approximation, pruning of a selected branch, decoder outcome, or
-// injected-error information is used.
+// use. Optional checkpoint/resume persists only execution state. It does not
+// alter node order, selector coordinates, arithmetic, canonical tie-breaking,
+// traversal semantics, the compiled representation, or quality boundaries.
 
 #include <algorithm>
 #include <array>
+#include <cctype>
 #include <cstdint>
 #include <cstring>
 #include <fstream>
@@ -36,9 +38,10 @@ constexpr uint8_t K_MUL = 3;
 constexpr uint8_t K_ADD = 4;
 constexpr uint8_t K_MPMUL = 5;
 constexpr uint8_t K_MPMIN = 6;
-constexpr uint32_t VALUE_CHUNK_BITS = 18; // 262144 x 48 B = 12 MiB/chunk.
+constexpr uint32_t VALUE_CHUNK_BITS = 18;
 constexpr uint32_t VALUE_CHUNK_SIZE = 1U << VALUE_CHUNK_BITS;
 constexpr uint32_t VALUE_CHUNK_MASK = VALUE_CHUNK_SIZE - 1U;
+constexpr uint32_t CHECKPOINT_VERSION = 1;
 
 #pragma pack(push, 1)
 struct Node {
@@ -65,8 +68,41 @@ struct Value {
 };
 static_assert(sizeof(Value) == 48, "exact scalar slot size drift");
 
+#pragma pack(push, 1)
+struct CheckpointHeader {
+    char magic[8];
+    uint32_t version;
+    uint32_t algebra_id;
+    uint64_t count;
+    uint32_t root;
+    uint64_t coordinate;
+    uint64_t next_node;
+    uint64_t reachable_nodes;
+    uint64_t peak_live_values;
+    uint64_t live_count;
+    char binding[64];
+};
+#pragma pack(pop)
+static_assert(sizeof(CheckpointHeader) == 132, "checkpoint header size drift");
+
+#pragma pack(push, 1)
+struct CheckpointEntry {
+    uint32_t node_id;
+    Value value;
+};
+#pragma pack(pop)
+static_assert(sizeof(CheckpointEntry) == 52, "checkpoint entry size drift");
+
 bool is_binary(uint8_t kind) {
     return kind == K_MUL || kind == K_ADD || kind == K_MPMUL || kind == K_MPMIN;
+}
+
+bool valid_binding(const std::string& binding) {
+    if (binding.size() != 64) return false;
+    for (char ch : binding) {
+        if (!std::isxdigit(static_cast<unsigned char>(ch))) return false;
+    }
+    return true;
 }
 
 class MappedFile {
@@ -181,6 +217,7 @@ public:
     uint64_t peak_live() const { return peak_live_; }
     uint64_t allocated() const { return allocated_; }
     void reset_peak() { peak_live_ = live_; }
+    void preserve_peak(uint64_t prior_peak) { peak_live_ = std::max<uint64_t>(peak_live_, prior_peak); }
 private:
     std::vector<std::unique_ptr<Value[]>> chunks_;
     std::vector<uint32_t> free_;
@@ -205,8 +242,7 @@ void big_mul(const Value& x, const Value& y, Value& out) {
         unsigned __int128 carry = 0;
         for (size_t j = 0; j < 6; ++j) {
             const size_t k = i + j;
-            const unsigned __int128 cur = static_cast<unsigned __int128>(x.limb[i]) * y.limb[j]
-                + tmp[k] + carry;
+            const unsigned __int128 cur = static_cast<unsigned __int128>(x.limb[i]) * y.limb[j] + tmp[k] + carry;
             tmp[k] = static_cast<uint64_t>(cur);
             carry = cur >> 64;
         }
@@ -253,7 +289,7 @@ Value terminal_value(uint32_t algebra, uint32_t code) {
         if (code == 0) return out;
         const uint32_t qubit = code - 1;
         if (qubit >= 90) throw std::runtime_error("min-plus terminal code drift");
-        out.limb[0] = 1; // weight
+        out.limb[0] = 1;
         if (qubit < 64) {
             out.limb[1] = 1ULL << qubit;
             out.limb[3] = 1ULL << qubit;
@@ -297,11 +333,18 @@ std::string hex_limbs(const uint64_t* limbs, size_t count) {
     if (top == 0) return "0x0";
     std::ostringstream out;
     out << "0x" << std::hex << std::nouppercase << limbs[top - 1];
-    for (size_t i = top - 1; i-- > 0;) {
-        out << std::setw(16) << std::setfill('0') << limbs[i];
-    }
+    for (size_t i = top - 1; i-- > 0;) out << std::setw(16) << std::setfill('0') << limbs[i];
     return out.str();
 }
+
+struct EvalResult {
+    bool completed = false;
+    Value value{};
+    uint64_t reachable = 0;
+    uint64_t peak_live = 0;
+    uint64_t next_node = 0;
+    uint64_t live_count = 0;
+};
 
 class Evaluator {
 public:
@@ -313,19 +356,75 @@ public:
 
     const Header& header() const { return header_; }
 
-    Value evaluate(uint64_t coordinate, uint64_t& reachable, uint64_t& peak_live) {
+    EvalResult evaluate(
+        uint64_t coordinate,
+        uint64_t stop_node,
+        const std::string& checkpoint_in,
+        const std::string& checkpoint_out,
+        const std::string& checkpoint_binding
+    ) {
         if (coordinate >= (1ULL << 49)) throw std::runtime_error("selector coordinate exceeds frozen rank");
         if (pool_.live() != 0) throw std::runtime_error("value pool not empty at selector start");
+        if ((!checkpoint_in.empty() || !checkpoint_out.empty()) && !valid_binding(checkpoint_binding)) {
+            throw std::runtime_error("checkpoint binding must be 64 hex characters");
+        }
+
+        build_reachability(coordinate);
+        uint64_t start_node = 0;
+        uint64_t prior_peak = 0;
+        if (!checkpoint_in.empty()) {
+            load_checkpoint(checkpoint_in, coordinate, checkpoint_binding, start_node, prior_peak);
+        }
+        pool_.preserve_peak(prior_peak);
+
+        const uint64_t effective_stop = stop_node == 0 ? count_ : std::min<uint64_t>(stop_node, count_);
+        if (effective_stop < start_node) throw std::runtime_error("checkpoint stop precedes resume point");
+
+        for (uint64_t raw_id = start_node; raw_id < effective_stop; ++raw_id) {
+            const uint32_t id = static_cast<uint32_t>(raw_id);
+            if (!bit_get(seen_, id)) continue;
+            evaluate_node(id, coordinate);
+        }
+
+        EvalResult result{};
+        result.reachable = reachable_;
+        result.peak_live = pool_.peak_live();
+        result.next_node = effective_stop;
+        result.live_count = pool_.live();
+
+        if (effective_stop < count_) {
+            if (checkpoint_out.empty()) throw std::runtime_error("partial evaluation requires --checkpoint-out");
+            write_checkpoint(checkpoint_out, coordinate, effective_stop, checkpoint_binding);
+            return result;
+        }
+
+        const uint32_t root_slot = slots_[header_.root];
+        if (root_slot == NONE) throw std::runtime_error("root value missing");
+        result.value = pool_.value(root_slot);
+        if (refs_[header_.root] != 0) throw std::runtime_error("root reference count drift");
+        pool_.release(root_slot);
+        slots_[header_.root] = NONE;
+        if (pool_.live() != 0) throw std::runtime_error("live values remain after selector evaluation");
+        result.completed = true;
+        result.live_count = 0;
+        clear_execution_state();
+        return result;
+    }
+
+private:
+    void build_reachability(uint64_t coordinate) {
+        std::fill(seen_.begin(), seen_.end(), 0);
+        std::fill(refs_.begin(), refs_.end(), 0);
+        std::fill(slots_.begin(), slots_.end(), NONE);
         stack_.clear();
         stack_.push_back(header_.root);
-        reachable = 0;
-
+        reachable_ = 0;
         while (!stack_.empty()) {
             const uint32_t id = stack_.back();
             stack_.pop_back();
             if (bit_get(seen_, id)) continue;
             bit_set(seen_, id);
-            ++reachable;
+            ++reachable_;
             const Node n = read_node(file_, id);
             if (n.kind == K_T) {
                 continue;
@@ -346,64 +445,160 @@ public:
                 throw std::runtime_error("unknown node kind");
             }
         }
-
         pool_.reset_peak();
-        for (size_t word_index = 0; word_index < seen_.size(); ++word_index) {
-            uint64_t word = seen_[word_index];
-            while (word != 0) {
-                const uint32_t bit = static_cast<uint32_t>(__builtin_ctzll(word));
-                const uint64_t raw_id = static_cast<uint64_t>(word_index) * 64ULL + bit;
-                if (raw_id >= count_) break;
-                const uint32_t id = static_cast<uint32_t>(raw_id);
-                const Node n = read_node(file_, id);
-                const uint32_t slot = pool_.allocate();
-                Value& out = pool_.value(slot);
-                if (n.kind == K_T) {
-                    out = terminal_value(header_.algebra_id, n.a);
-                } else if (n.kind == K_I) {
-                    const uint32_t child = ((coordinate >> n.a) & 1ULL) ? n.c : n.b;
-                    const uint32_t child_slot = slots_[child];
-                    if (child_slot == NONE) throw std::runtime_error("selector child value missing");
-                    out = pool_.value(child_slot);
-                    release_edge(child);
-                } else if (n.kind == K_S) {
-                    throw std::runtime_error("temporary stabilizer node reached evaluation");
-                } else if (is_binary(n.kind)) {
-                    const uint32_t left_slot = slots_[n.a];
-                    const uint32_t right_slot = slots_[n.b];
-                    if (left_slot == NONE || right_slot == NONE) throw std::runtime_error("binary child value missing");
-                    const Value left = pool_.value(left_slot);
-                    const Value right = pool_.value(right_slot);
-                    if (header_.algebra_id < 2) {
-                        if (n.kind == K_MUL) big_mul(left, right, out);
-                        else if (n.kind == K_ADD) big_add(left, right, out);
-                        else throw std::runtime_error("numeric algebra operation drift");
-                    } else {
-                        if (n.kind == K_MPMUL) minplus_mul(left, right, out);
-                        else if (n.kind == K_MPMIN) minplus_min(left, right, out);
-                        else throw std::runtime_error("min-plus algebra operation drift");
-                    }
-                    release_edge(n.a);
-                    release_edge(n.b);
-                }
-                slots_[id] = slot;
-                word &= word - 1;
-            }
-            seen_[word_index] = 0;
-        }
-
-        const uint32_t root_slot = slots_[header_.root];
-        if (root_slot == NONE) throw std::runtime_error("root value missing");
-        Value result = pool_.value(root_slot);
-        if (refs_[header_.root] != 0) throw std::runtime_error("root reference count drift");
-        pool_.release(root_slot);
-        slots_[header_.root] = NONE;
-        if (pool_.live() != 0) throw std::runtime_error("live values remain after selector evaluation");
-        peak_live = pool_.peak_live();
-        return result;
     }
 
-private:
+    void reconstruct_prefix_refs(uint64_t coordinate, uint64_t next_node) {
+        for (uint64_t raw_id = 0; raw_id < next_node; ++raw_id) {
+            const uint32_t id = static_cast<uint32_t>(raw_id);
+            if (!bit_get(seen_, id)) continue;
+            const Node n = read_node(file_, id);
+            if (n.kind == K_I) {
+                const uint32_t child = ((coordinate >> n.a) & 1ULL) ? n.c : n.b;
+                if (refs_[child] == 0) throw std::runtime_error("checkpoint prefix reference underflow");
+                --refs_[child];
+            } else if (is_binary(n.kind)) {
+                if (refs_[n.a] == 0 || refs_[n.b] == 0) throw std::runtime_error("checkpoint prefix reference underflow");
+                --refs_[n.a];
+                --refs_[n.b];
+            }
+        }
+    }
+
+    void load_checkpoint(
+        const std::string& path,
+        uint64_t coordinate,
+        const std::string& binding,
+        uint64_t& next_node,
+        uint64_t& prior_peak
+    ) {
+        std::ifstream in(path, std::ios::binary);
+        if (!in) throw std::runtime_error("cannot open checkpoint");
+        CheckpointHeader h{};
+        in.read(reinterpret_cast<char*>(&h), sizeof(h));
+        if (!in) throw std::runtime_error("checkpoint header truncated");
+        const char expected[8] = {'Q','T','R','C','9','0','E','1'};
+        if (std::memcmp(h.magic, expected, 8) != 0) throw std::runtime_error("checkpoint magic drift");
+        if (h.version != CHECKPOINT_VERSION) throw std::runtime_error("checkpoint version drift");
+        if (h.algebra_id != header_.algebra_id || h.count != header_.count || h.root != header_.root) {
+            throw std::runtime_error("checkpoint native identity drift");
+        }
+        if (h.coordinate != coordinate) throw std::runtime_error("checkpoint selector coordinate drift");
+        if (h.next_node > count_) throw std::runtime_error("checkpoint next-node overflow");
+        if (h.reachable_nodes != reachable_) throw std::runtime_error("checkpoint reachable-node drift");
+        if (std::memcmp(h.binding, binding.data(), 64) != 0) throw std::runtime_error("checkpoint binding drift");
+        next_node = h.next_node;
+        prior_peak = h.peak_live_values;
+        reconstruct_prefix_refs(coordinate, next_node);
+
+        uint64_t expected_live = 0;
+        for (uint64_t raw_id = 0; raw_id < next_node; ++raw_id) {
+            const uint32_t id = static_cast<uint32_t>(raw_id);
+            if (bit_get(seen_, id) && refs_[id] > 0) ++expected_live;
+        }
+        if (expected_live != h.live_count) throw std::runtime_error("checkpoint live-count drift");
+
+        uint32_t previous = 0;
+        bool have_previous = false;
+        for (uint64_t i = 0; i < h.live_count; ++i) {
+            CheckpointEntry entry{};
+            in.read(reinterpret_cast<char*>(&entry), sizeof(entry));
+            if (!in) throw std::runtime_error("checkpoint entry truncated");
+            if (entry.node_id >= next_node || !bit_get(seen_, entry.node_id) || refs_[entry.node_id] == 0) {
+                throw std::runtime_error("checkpoint live-node drift");
+            }
+            if (have_previous && entry.node_id <= previous) throw std::runtime_error("checkpoint entry order drift");
+            if (slots_[entry.node_id] != NONE) throw std::runtime_error("checkpoint duplicate live node");
+            const uint32_t slot = pool_.allocate();
+            pool_.value(slot) = entry.value;
+            slots_[entry.node_id] = slot;
+            previous = entry.node_id;
+            have_previous = true;
+        }
+        char extra = 0;
+        if (in.read(&extra, 1)) throw std::runtime_error("checkpoint trailing bytes");
+        if (pool_.live() != h.live_count) throw std::runtime_error("checkpoint live-state restore drift");
+        pool_.preserve_peak(prior_peak);
+    }
+
+    void write_checkpoint(
+        const std::string& path,
+        uint64_t coordinate,
+        uint64_t next_node,
+        const std::string& binding
+    ) {
+        uint64_t live_count = 0;
+        for (uint64_t raw_id = 0; raw_id < next_node; ++raw_id) {
+            const uint32_t id = static_cast<uint32_t>(raw_id);
+            if (slots_[id] != NONE) ++live_count;
+        }
+        if (live_count != pool_.live()) throw std::runtime_error("checkpoint live-state accounting drift");
+
+        CheckpointHeader h{};
+        const char magic[8] = {'Q','T','R','C','9','0','E','1'};
+        std::memcpy(h.magic, magic, 8);
+        h.version = CHECKPOINT_VERSION;
+        h.algebra_id = header_.algebra_id;
+        h.count = header_.count;
+        h.root = header_.root;
+        h.coordinate = coordinate;
+        h.next_node = next_node;
+        h.reachable_nodes = reachable_;
+        h.peak_live_values = pool_.peak_live();
+        h.live_count = live_count;
+        std::memcpy(h.binding, binding.data(), 64);
+
+        std::ofstream out(path, std::ios::binary | std::ios::trunc);
+        if (!out) throw std::runtime_error("cannot create checkpoint");
+        out.write(reinterpret_cast<const char*>(&h), sizeof(h));
+        for (uint64_t raw_id = 0; raw_id < next_node; ++raw_id) {
+            const uint32_t id = static_cast<uint32_t>(raw_id);
+            const uint32_t slot = slots_[id];
+            if (slot == NONE) continue;
+            CheckpointEntry entry{};
+            entry.node_id = id;
+            entry.value = pool_.value(slot);
+            out.write(reinterpret_cast<const char*>(&entry), sizeof(entry));
+        }
+        out.flush();
+        if (!out) throw std::runtime_error("checkpoint write failed");
+    }
+
+    void evaluate_node(uint32_t id, uint64_t coordinate) {
+        const Node n = read_node(file_, id);
+        const uint32_t slot = pool_.allocate();
+        Value& out = pool_.value(slot);
+        if (n.kind == K_T) {
+            out = terminal_value(header_.algebra_id, n.a);
+        } else if (n.kind == K_I) {
+            const uint32_t child = ((coordinate >> n.a) & 1ULL) ? n.c : n.b;
+            const uint32_t child_slot = slots_[child];
+            if (child_slot == NONE) throw std::runtime_error("selector child value missing");
+            out = pool_.value(child_slot);
+            release_edge(child);
+        } else if (n.kind == K_S) {
+            throw std::runtime_error("temporary stabilizer node reached evaluation");
+        } else if (is_binary(n.kind)) {
+            const uint32_t left_slot = slots_[n.a];
+            const uint32_t right_slot = slots_[n.b];
+            if (left_slot == NONE || right_slot == NONE) throw std::runtime_error("binary child value missing");
+            const Value left = pool_.value(left_slot);
+            const Value right = pool_.value(right_slot);
+            if (header_.algebra_id < 2) {
+                if (n.kind == K_MUL) big_mul(left, right, out);
+                else if (n.kind == K_ADD) big_add(left, right, out);
+                else throw std::runtime_error("numeric algebra operation drift");
+            } else {
+                if (n.kind == K_MPMUL) minplus_mul(left, right, out);
+                else if (n.kind == K_MPMIN) minplus_min(left, right, out);
+                else throw std::runtime_error("min-plus algebra operation drift");
+            }
+            release_edge(n.a);
+            release_edge(n.b);
+        }
+        slots_[id] = slot;
+    }
+
     void release_edge(uint32_t child) {
         if (refs_[child] == 0) throw std::runtime_error("reference underflow");
         --refs_[child];
@@ -415,6 +610,14 @@ private:
         }
     }
 
+    void clear_execution_state() {
+        if (pool_.live() != 0) throw std::runtime_error("execution state clear with live values");
+        std::fill(seen_.begin(), seen_.end(), 0);
+        std::fill(refs_.begin(), refs_.end(), 0);
+        std::fill(slots_.begin(), slots_.end(), NONE);
+        stack_.clear();
+    }
+
     MappedFile file_;
     Header header_{};
     uint32_t count_ = 0;
@@ -423,6 +626,7 @@ private:
     std::vector<uint32_t> slots_;
     std::vector<uint32_t> stack_;
     ValuePool pool_;
+    uint64_t reachable_ = 0;
 };
 
 void print_result(const Header& h, const SelectorRow& row, const Value& value, uint64_t reachable, uint64_t peak_live) {
@@ -442,14 +646,41 @@ void print_result(const Header& h, const SelectorRow& row, const Value& value, u
     std::cout << ",\"quality_exposed\":false}" << std::endl;
 }
 
-void run(const std::string& native_path, const std::string& selectors_path) {
+void print_checkpoint(const Header& h, const SelectorRow& row, const EvalResult& result, const std::string& path) {
+    std::cout << "{\"status\":\"C90_COMPACT_NATIVE_SELECTOR_CHECKPOINTED\""
+              << ",\"algebra_id\":" << h.algebra_id
+              << ",\"selector_index\":" << row.index
+              << ",\"selector_coordinate\":" << row.coordinate
+              << ",\"reachable_nodes\":" << result.reachable
+              << ",\"peak_live_values\":" << result.peak_live
+              << ",\"next_node\":" << result.next_node
+              << ",\"live_values\":" << result.live_count
+              << ",\"checkpoint_path\":\"" << path << "\""
+              << ",\"quality_exposed\":false}" << std::endl;
+}
+
+void run(
+    const std::string& native_path,
+    const std::string& selectors_path,
+    const std::string& checkpoint_in,
+    const std::string& checkpoint_out,
+    const std::string& checkpoint_binding,
+    uint64_t stop_node
+) {
     Evaluator evaluator(native_path);
     const std::vector<SelectorRow> rows = read_selectors(selectors_path);
+    if ((!checkpoint_in.empty() || !checkpoint_out.empty() || stop_node != 0) && rows.size() != 1) {
+        throw std::runtime_error("checkpoint execution requires exactly one selector row");
+    }
     for (const SelectorRow& row : rows) {
-        uint64_t reachable = 0;
-        uint64_t peak_live = 0;
-        const Value value = evaluator.evaluate(row.coordinate, reachable, peak_live);
-        print_result(evaluator.header(), row, value, reachable, peak_live);
+        const EvalResult result = evaluator.evaluate(
+            row.coordinate, stop_node, checkpoint_in, checkpoint_out, checkpoint_binding
+        );
+        if (result.completed) {
+            print_result(evaluator.header(), row, result.value, result.reachable, result.peak_live);
+        } else {
+            print_checkpoint(evaluator.header(), row, result, checkpoint_out);
+        }
     }
 }
 
@@ -459,16 +690,27 @@ int main(int argc, char** argv) {
     try {
         std::string native_path;
         std::string selectors_path;
+        std::string checkpoint_in;
+        std::string checkpoint_out;
+        std::string checkpoint_binding;
+        uint64_t stop_node = 0;
         for (int i = 1; i < argc; ++i) {
             const std::string arg = argv[i];
             if (arg == "--native" && i + 1 < argc) native_path = argv[++i];
             else if (arg == "--selectors" && i + 1 < argc) selectors_path = argv[++i];
-            else throw std::runtime_error("usage: --native PATH --selectors PATH");
+            else if (arg == "--checkpoint-in" && i + 1 < argc) checkpoint_in = argv[++i];
+            else if (arg == "--checkpoint-out" && i + 1 < argc) checkpoint_out = argv[++i];
+            else if (arg == "--checkpoint-binding" && i + 1 < argc) checkpoint_binding = argv[++i];
+            else if (arg == "--stop-node" && i + 1 < argc) stop_node = std::stoull(argv[++i]);
+            else throw std::runtime_error("usage: --native PATH --selectors PATH [--checkpoint-in PATH] [--checkpoint-out PATH] [--checkpoint-binding SHA256] [--stop-node NODE]");
         }
         if (native_path.empty() || selectors_path.empty()) {
-            throw std::runtime_error("usage: --native PATH --selectors PATH");
+            throw std::runtime_error("usage: --native PATH --selectors PATH [--checkpoint-in PATH] [--checkpoint-out PATH] [--checkpoint-binding SHA256] [--stop-node NODE]");
         }
-        run(native_path, selectors_path);
+        if ((!checkpoint_in.empty() || !checkpoint_out.empty() || stop_node != 0) && !valid_binding(checkpoint_binding)) {
+            throw std::runtime_error("checkpoint execution requires --checkpoint-binding SHA256");
+        }
+        run(native_path, selectors_path, checkpoint_in, checkpoint_out, checkpoint_binding, stop_node);
         return 0;
     } catch (const std::exception& e) {
         std::cerr << "QTR_C90_NATIVE_EVAL_ERROR: " << e.what() << std::endl;

@@ -5,7 +5,7 @@ on:
     paths:
       - "reference/qtr_c90_exact_native_eval_001.cpp"
       - "reference/qtr_c90_exact_native_validate_001.py"
-      - "reference/qtr_c90_exact_native_aggregate_001.py"
+      - "tests/test_qtr_c90_exact_native_eval_001.py"
       - ".github/workflows/qtr-c90-exact-decoder-001-native-validation.yml"
   workflow_dispatch:
 
@@ -16,120 +16,13 @@ permissions:
 env:
   SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
   COMPILED_RUN_ID: "34947590855"
+  COMPILED_ARTIFACT_ID: "10388753864"
+  COMPILED_ARTIFACT_NAME: "QTR-C90-compact-native-sum_product_bsc_p_0_1"
+  COMPILED_ARTIFACT_DIGEST: "sha256:1d852e71b93a9b1dcff7eba43b29a3f37e3095f63059ed26ab3c512b5d00fc4c"
+  COMPILED_SOURCE_HEAD: "c4e1d757bdf89fa5eceaf2e38b8a34ff3ee3a78c"
 
 jobs:
-  full-scale-smoke:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 120
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ env.SUBJECT_SHA }}
-          fetch-depth: 0
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12.8"
-      - name: Assert exact validation subject
-        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
-      - name: Restore successful compact-native sum-product artifact
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: QTR-C90-compact-native-sum_product_bsc_p_0_1
-          path: /tmp/c90-compiled
-          github-token: ${{ github.token }}
-          repository: grandchallenge/QUANTUM-TECHNOLOGIES
-          run-id: ${{ env.COMPILED_RUN_ID }}
-      - name: Build exact compact-native evaluator
-        run: g++ -std=c++17 -O3 -DNDEBUG reference/qtr_c90_exact_native_eval_001.cpp -o /tmp/qtr-c90-native-eval
-      - name: Validate frozen selector index zero exactly
-        run: |
-          mkdir -p /tmp/c90-smoke
-          /usr/bin/time -v python reference/qtr_c90_exact_native_validate_001.py \
-            --algebra sum_product_bsc_p_0_1 \
-            --native-executable /tmp/qtr-c90-native-eval \
-            --native-binary /tmp/c90-compiled/compiled-sum_product_bsc_p_0_1.qtrbin \
-            --compiled-receipt /tmp/c90-compiled/compile-sum_product_bsc_p_0_1.json \
-            --start 0 \
-            --stop 1 \
-            --output /tmp/c90-smoke/validate-smoke.json
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          r=json.loads(Path('/tmp/c90-smoke/validate-smoke.json').read_text())
-          assert r['status']=='C90_EXACT_ALGEBRA_VALIDATION_SHARD_PASSED'
-          assert r['selector_count']==1
-          assert r['all_exact_equal'] is True
-          assert r['quality_exposed'] is False
-          print('C90_FULL_SCALE_NATIVE_SEMANTIC_SMOKE_PASS', r['rows_sha256'])
-          PY
-
-  validate-shard:
-    needs: full-scale-smoke
-    runs-on: ubuntu-24.04
-    timeout-minutes: 360
-    strategy:
-      fail-fast: false
-      max-parallel: 6
-      matrix:
-        algebra:
-          - sum_product_bsc_p_0_1
-          - soft_tropical_base_2
-          - min_plus_hamming
-        shard:
-          - { id: "00", start: 0, stop: 39 }
-          - { id: "01", start: 39, stop: 78 }
-          - { id: "02", start: 78, stop: 117 }
-          - { id: "03", start: 117, stop: 156 }
-          - { id: "04", start: 156, stop: 195 }
-          - { id: "05", start: 195, stop: 234 }
-          - { id: "06", start: 234, stop: 273 }
-          - { id: "07", start: 273, stop: 307 }
-    env:
-      ALGEBRA: ${{ matrix.algebra }}
-      SHARD_ID: ${{ matrix.shard.id }}
-      SHARD_START: ${{ matrix.shard.start }}
-      SHARD_STOP: ${{ matrix.shard.stop }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ env.SUBJECT_SHA }}
-          fetch-depth: 0
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12.8"
-      - name: Assert exact validation subject
-        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
-      - name: Restore matching successful compact-native algebra artifact
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: QTR-C90-compact-native-${{ matrix.algebra }}
-          path: /tmp/c90-compiled
-          github-token: ${{ github.token }}
-          repository: grandchallenge/QUANTUM-TECHNOLOGIES
-          run-id: ${{ env.COMPILED_RUN_ID }}
-      - name: Build exact compact-native evaluator
-        run: g++ -std=c++17 -O3 -DNDEBUG reference/qtr_c90_exact_native_eval_001.cpp -o /tmp/qtr-c90-native-eval
-      - name: Validate complete frozen selector shard exactly
-        run: |
-          mkdir -p /tmp/c90-validation
-          /usr/bin/time -v python reference/qtr_c90_exact_native_validate_001.py \
-            --algebra "$ALGEBRA" \
-            --native-executable /tmp/qtr-c90-native-eval \
-            --native-binary "/tmp/c90-compiled/compiled-$ALGEBRA.qtrbin" \
-            --compiled-receipt "/tmp/c90-compiled/compile-$ALGEBRA.json" \
-            --start "$SHARD_START" \
-            --stop "$SHARD_STOP" \
-            --output "/tmp/c90-validation/validate-$ALGEBRA-$SHARD_ID.json"
-      - name: Preserve quality-blind validation shard
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: QTR-C90-native-validation-${{ matrix.algebra }}-${{ matrix.shard.id }}
-          path: /tmp/c90-validation/validate-${{ matrix.algebra }}-${{ matrix.shard.id }}.json
-          if-no-files-found: error
-          retention-days: 90
-
-  aggregate-quality-blind:
-    needs: validate-shard
+  bounded-checkpoint-control:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -142,39 +35,410 @@ jobs:
           python-version: "3.12.8"
       - name: Assert exact validation subject
         run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
-      - name: Restore all validation shard receipts
+      - name: Prove uninterrupted equals checkpoint-resumed on bounded exact controls
+        run: python -m unittest tests.test_qtr_c90_exact_native_eval_001 -v
+
+  smoke-050m:
+    needs: bounded-checkpoint-control
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.8"
+      - name: Assert exact validation subject
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+      - name: Restore preserved compact-native sum-product artifact
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          pattern: QTR-C90-native-validation-*
-          path: /tmp/c90-validation-all
-          merge-multiple: true
-      - name: Aggregate complete frozen quality-blind semantic validation
+          name: ${{ env.COMPILED_ARTIFACT_NAME }}
+          path: /tmp/c90-compiled
+          github-token: ${{ github.token }}
+          repository: grandchallenge/QUANTUM-TECHNOLOGIES
+          run-id: ${{ env.COMPILED_RUN_ID }}
+      - name: Verify artifact, binary, receipt, and frozen selector zero
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          mapfile -t VALIDATION < <(find /tmp/c90-validation-all -type f -name 'validate-*.json' | sort)
-          test "${#VALIDATION[@]}" -eq 24
-          ARGS=()
-          for f in "${VALIDATION[@]}"; do ARGS+=(--validation "$f"); done
-          python reference/qtr_c90_exact_native_aggregate_001.py \
-            "${ARGS[@]}" \
-            --output /tmp/QTR-C90-EXACT-DECODER-001-native-quality-blind.json
+          mkdir -p /tmp/c90-smoke
+          python - <<'PY'
+          import json, os, sys, urllib.request
+          from pathlib import Path
+          sys.path.insert(0, 'reference')
+          import qtr_c90_exact_decoder_001 as Base
+          import qtr_c90_exact_native_validate_001 as V
+          req=urllib.request.Request(
+              f"https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/actions/artifacts/{os.environ['COMPILED_ARTIFACT_ID']}",
+              headers={"Authorization": f"Bearer {os.environ['GH_TOKEN']}", "Accept":"application/vnd.github+json"},
+          )
+          with urllib.request.urlopen(req) as response:
+              meta=json.load(response)
+          assert str(meta['id']) == os.environ['COMPILED_ARTIFACT_ID']
+          assert meta['name'] == os.environ['COMPILED_ARTIFACT_NAME']
+          assert meta['digest'] == os.environ['COMPILED_ARTIFACT_DIGEST']
+          assert meta['expired'] is False
+          receipt=Path('/tmp/c90-compiled/compile-sum_product_bsc_p_0_1.json')
+          binary=Path('/tmp/c90-compiled/compiled-sum_product_bsc_p_0_1.qtrbin')
+          r=V._load_receipt(receipt, 'sum_product_bsc_p_0_1')
+          assert r['source_commit'] == os.environ['COMPILED_SOURCE_HEAD']
+          sha=V._file_sha256(binary)
+          assert sha == r['compiled']['native_binary_sha256']
+          coords=Base.frozen_validation_coordinates()
+          assert Base.digest(coords) == Base.C90_VALIDATION_SET_SHA
+          Path('/tmp/c90-smoke/selector0.txt').write_text(f"0 {coords[0]}\n", encoding='utf-8')
+          Path('/tmp/c90-smoke/binding.txt').write_text(sha+'\n', encoding='utf-8')
+          print('C90_COMPILED_ARTIFACT_IDENTITY_PASS', meta['id'], meta['digest'], sha, coords[0])
+          PY
+      - name: Build exact checkpoint-capable evaluator
+        run: g++ -std=c++17 -O3 -DNDEBUG reference/qtr_c90_exact_native_eval_001.cpp -o /tmp/qtr-c90-native-eval
+      - name: Evaluate selector zero through node 50M
+        run: |
+          BINDING="$(cat /tmp/c90-smoke/binding.txt)"
+          /usr/bin/time -v /tmp/qtr-c90-native-eval \
+            --native /tmp/c90-compiled/compiled-sum_product_bsc_p_0_1.qtrbin \
+            --selectors /tmp/c90-smoke/selector0.txt \
+            --checkpoint-out /tmp/c90-smoke/checkpoint-050m.bin \
+            --checkpoint-binding "$BINDING" \
+            --stop-node 50000000 | tee /tmp/c90-smoke/checkpoint-050m.jsonl
           python - <<'PY'
           import json
           from pathlib import Path
-          r=json.loads(Path('/tmp/QTR-C90-EXACT-DECODER-001-native-quality-blind.json').read_text())
-          assert r['status']=='C90_EXACT_IMPLEMENTATION_QUALITY_BLIND_VALIDATED'
-          assert r['semantic_validation']['status']=='C90_EXACT_SEMANTIC_VALIDATION_PASSED'
-          assert r['semantic_validation']['selector_count_per_algebra']==307
-          assert r['semantic_validation']['algebra_count']==3
-          assert r['semantic_validation']['all_exact_equal'] is True
+          r=json.loads(Path('/tmp/c90-smoke/checkpoint-050m.jsonl').read_text())
+          assert r['status']=='C90_COMPACT_NATIVE_SELECTOR_CHECKPOINTED'
+          assert r['next_node']==50000000
           assert r['quality_exposed'] is False
-          assert r['activation_eligible'] is False
-          print('C90_COMPLETE_NATIVE_SEMANTIC_VALIDATION_PASS')
-          print(r['semantic_validation']['validation_outputs_sha256'])
           PY
-      - name: Preserve complete diagnostic validation receipt
+      - name: Preserve 50M exact execution checkpoint
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: QTR-C90-EXACT-DECODER-001-native-quality-blind-validation
-          path: /tmp/QTR-C90-EXACT-DECODER-001-native-quality-blind.json
+          name: QTR-C90-selector0-checkpoint-050m
+          path: |
+            /tmp/c90-smoke/checkpoint-050m.bin
+            /tmp/c90-smoke/checkpoint-050m.jsonl
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  smoke-100m:
+    needs: smoke-050m
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Assert exact validation subject
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+      - name: Restore preserved compact-native sum-product artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ env.COMPILED_ARTIFACT_NAME }}
+          path: /tmp/c90-compiled
+          github-token: ${{ github.token }}
+          repository: grandchallenge/QUANTUM-TECHNOLOGIES
+          run-id: ${{ env.COMPILED_RUN_ID }}
+      - name: Restore 50M checkpoint
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with: { name: QTR-C90-selector0-checkpoint-050m, path: /tmp/c90-resume }
+      - name: Verify binary and prepare frozen selector zero
+        run: |
+          mkdir -p /tmp/c90-smoke
+          python - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0,'reference')
+          import qtr_c90_exact_decoder_001 as Base
+          import qtr_c90_exact_native_validate_001 as V
+          receipt=Path('/tmp/c90-compiled/compile-sum_product_bsc_p_0_1.json')
+          binary=Path('/tmp/c90-compiled/compiled-sum_product_bsc_p_0_1.qtrbin')
+          r=V._load_receipt(receipt,'sum_product_bsc_p_0_1')
+          sha=V._file_sha256(binary); assert sha==r['compiled']['native_binary_sha256']
+          coords=Base.frozen_validation_coordinates(); assert Base.digest(coords)==Base.C90_VALIDATION_SET_SHA
+          Path('/tmp/c90-smoke/selector0.txt').write_text(f"0 {coords[0]}\n",encoding='utf-8')
+          Path('/tmp/c90-smoke/binding.txt').write_text(sha+'\n',encoding='utf-8')
+          PY
+      - name: Build exact checkpoint-capable evaluator
+        run: g++ -std=c++17 -O3 -DNDEBUG reference/qtr_c90_exact_native_eval_001.cpp -o /tmp/qtr-c90-native-eval
+      - name: Resume selector zero through node 100M
+        run: |
+          BINDING="$(cat /tmp/c90-smoke/binding.txt)"
+          /usr/bin/time -v /tmp/qtr-c90-native-eval \
+            --native /tmp/c90-compiled/compiled-sum_product_bsc_p_0_1.qtrbin \
+            --selectors /tmp/c90-smoke/selector0.txt \
+            --checkpoint-in /tmp/c90-resume/checkpoint-050m.bin \
+            --checkpoint-out /tmp/c90-smoke/checkpoint-100m.bin \
+            --checkpoint-binding "$BINDING" \
+            --stop-node 100000000 | tee /tmp/c90-smoke/checkpoint-100m.jsonl
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-smoke/checkpoint-100m.jsonl').read_text()); assert r['status']=='C90_COMPACT_NATIVE_SELECTOR_CHECKPOINTED'; assert r['next_node']==100000000; assert r['quality_exposed'] is False
+          PY
+      - name: Preserve 100M exact execution checkpoint
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-selector0-checkpoint-100m
+          path: |
+            /tmp/c90-smoke/checkpoint-100m.bin
+            /tmp/c90-smoke/checkpoint-100m.jsonl
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  smoke-150m:
+    needs: smoke-100m
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Assert exact validation subject
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+      - name: Restore preserved compact-native sum-product artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ env.COMPILED_ARTIFACT_NAME }}
+          path: /tmp/c90-compiled
+          github-token: ${{ github.token }}
+          repository: grandchallenge/QUANTUM-TECHNOLOGIES
+          run-id: ${{ env.COMPILED_RUN_ID }}
+      - name: Restore 100M checkpoint
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with: { name: QTR-C90-selector0-checkpoint-100m, path: /tmp/c90-resume }
+      - name: Verify binary and prepare frozen selector zero
+        run: |
+          mkdir -p /tmp/c90-smoke
+          python - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0,'reference')
+          import qtr_c90_exact_decoder_001 as Base
+          import qtr_c90_exact_native_validate_001 as V
+          receipt=Path('/tmp/c90-compiled/compile-sum_product_bsc_p_0_1.json'); binary=Path('/tmp/c90-compiled/compiled-sum_product_bsc_p_0_1.qtrbin')
+          r=V._load_receipt(receipt,'sum_product_bsc_p_0_1'); sha=V._file_sha256(binary); assert sha==r['compiled']['native_binary_sha256']
+          coords=Base.frozen_validation_coordinates(); assert Base.digest(coords)==Base.C90_VALIDATION_SET_SHA
+          Path('/tmp/c90-smoke/selector0.txt').write_text(f"0 {coords[0]}\n",encoding='utf-8'); Path('/tmp/c90-smoke/binding.txt').write_text(sha+'\n',encoding='utf-8')
+          PY
+      - name: Build exact checkpoint-capable evaluator
+        run: g++ -std=c++17 -O3 -DNDEBUG reference/qtr_c90_exact_native_eval_001.cpp -o /tmp/qtr-c90-native-eval
+      - name: Resume selector zero through node 150M
+        run: |
+          BINDING="$(cat /tmp/c90-smoke/binding.txt)"
+          /usr/bin/time -v /tmp/qtr-c90-native-eval --native /tmp/c90-compiled/compiled-sum_product_bsc_p_0_1.qtrbin --selectors /tmp/c90-smoke/selector0.txt --checkpoint-in /tmp/c90-resume/checkpoint-100m.bin --checkpoint-out /tmp/c90-smoke/checkpoint-150m.bin --checkpoint-binding "$BINDING" --stop-node 150000000 | tee /tmp/c90-smoke/checkpoint-150m.jsonl
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-smoke/checkpoint-150m.jsonl').read_text()); assert r['status']=='C90_COMPACT_NATIVE_SELECTOR_CHECKPOINTED'; assert r['next_node']==150000000; assert r['quality_exposed'] is False
+          PY
+      - name: Preserve 150M exact execution checkpoint
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-selector0-checkpoint-150m
+          path: |
+            /tmp/c90-smoke/checkpoint-150m.bin
+            /tmp/c90-smoke/checkpoint-150m.jsonl
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  smoke-200m:
+    needs: smoke-150m
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Assert exact validation subject
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+      - name: Restore preserved compact-native sum-product artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ env.COMPILED_ARTIFACT_NAME }}
+          path: /tmp/c90-compiled
+          github-token: ${{ github.token }}
+          repository: grandchallenge/QUANTUM-TECHNOLOGIES
+          run-id: ${{ env.COMPILED_RUN_ID }}
+      - name: Restore 150M checkpoint
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with: { name: QTR-C90-selector0-checkpoint-150m, path: /tmp/c90-resume }
+      - name: Verify binary and prepare frozen selector zero
+        run: |
+          mkdir -p /tmp/c90-smoke
+          python - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0,'reference')
+          import qtr_c90_exact_decoder_001 as Base
+          import qtr_c90_exact_native_validate_001 as V
+          receipt=Path('/tmp/c90-compiled/compile-sum_product_bsc_p_0_1.json'); binary=Path('/tmp/c90-compiled/compiled-sum_product_bsc_p_0_1.qtrbin')
+          r=V._load_receipt(receipt,'sum_product_bsc_p_0_1'); sha=V._file_sha256(binary); assert sha==r['compiled']['native_binary_sha256']
+          coords=Base.frozen_validation_coordinates(); assert Base.digest(coords)==Base.C90_VALIDATION_SET_SHA
+          Path('/tmp/c90-smoke/selector0.txt').write_text(f"0 {coords[0]}\n",encoding='utf-8'); Path('/tmp/c90-smoke/binding.txt').write_text(sha+'\n',encoding='utf-8')
+          PY
+      - name: Build exact checkpoint-capable evaluator
+        run: g++ -std=c++17 -O3 -DNDEBUG reference/qtr_c90_exact_native_eval_001.cpp -o /tmp/qtr-c90-native-eval
+      - name: Resume selector zero through node 200M
+        run: |
+          BINDING="$(cat /tmp/c90-smoke/binding.txt)"
+          /usr/bin/time -v /tmp/qtr-c90-native-eval --native /tmp/c90-compiled/compiled-sum_product_bsc_p_0_1.qtrbin --selectors /tmp/c90-smoke/selector0.txt --checkpoint-in /tmp/c90-resume/checkpoint-150m.bin --checkpoint-out /tmp/c90-smoke/checkpoint-200m.bin --checkpoint-binding "$BINDING" --stop-node 200000000 | tee /tmp/c90-smoke/checkpoint-200m.jsonl
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-smoke/checkpoint-200m.jsonl').read_text()); assert r['status']=='C90_COMPACT_NATIVE_SELECTOR_CHECKPOINTED'; assert r['next_node']==200000000; assert r['quality_exposed'] is False
+          PY
+      - name: Preserve 200M exact execution checkpoint
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-selector0-checkpoint-200m
+          path: |
+            /tmp/c90-smoke/checkpoint-200m.bin
+            /tmp/c90-smoke/checkpoint-200m.jsonl
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  full-scale-smoke:
+    needs: smoke-200m
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.8"
+      - name: Assert exact validation subject
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+      - name: Restore preserved compact-native sum-product artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ env.COMPILED_ARTIFACT_NAME }}
+          path: /tmp/c90-compiled
+          github-token: ${{ github.token }}
+          repository: grandchallenge/QUANTUM-TECHNOLOGIES
+          run-id: ${{ env.COMPILED_RUN_ID }}
+      - name: Restore 200M checkpoint
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with: { name: QTR-C90-selector0-checkpoint-200m, path: /tmp/c90-resume }
+      - name: Verify artifact and native-binary identities
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/c90-smoke
+          python - <<'PY'
+          import json, os, sys, urllib.request
+          from pathlib import Path
+          sys.path.insert(0,'reference')
+          import qtr_c90_exact_native_validate_001 as V
+          req=urllib.request.Request(f"https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/actions/artifacts/{os.environ['COMPILED_ARTIFACT_ID']}",headers={"Authorization":f"Bearer {os.environ['GH_TOKEN']}","Accept":"application/vnd.github+json"})
+          with urllib.request.urlopen(req) as response: meta=json.load(response)
+          assert str(meta['id'])==os.environ['COMPILED_ARTIFACT_ID']; assert meta['name']==os.environ['COMPILED_ARTIFACT_NAME']; assert meta['digest']==os.environ['COMPILED_ARTIFACT_DIGEST']; assert meta['expired'] is False
+          receipt=Path('/tmp/c90-compiled/compile-sum_product_bsc_p_0_1.json'); binary=Path('/tmp/c90-compiled/compiled-sum_product_bsc_p_0_1.qtrbin')
+          r=V._load_receipt(receipt,'sum_product_bsc_p_0_1'); assert r['source_commit']==os.environ['COMPILED_SOURCE_HEAD']
+          sha=V._file_sha256(binary); assert sha==r['compiled']['native_binary_sha256']; Path('/tmp/c90-smoke/binding.txt').write_text(sha+'\n',encoding='utf-8')
+          print('C90_COMPILED_ARTIFACT_IDENTITY_PASS', meta['id'], meta['digest'], sha)
+          PY
+      - name: Build exact checkpoint-capable evaluator
+        run: g++ -std=c++17 -O3 -DNDEBUG reference/qtr_c90_exact_native_eval_001.cpp -o /tmp/qtr-c90-native-eval
+      - name: Bind validator to 200M checkpoint-resume evaluator
+        run: |
+          cat > /tmp/qtr-c90-native-eval-resume <<'SH'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          exec /tmp/qtr-c90-native-eval "$@" \
+            --checkpoint-in /tmp/c90-resume/checkpoint-200m.bin \
+            --checkpoint-binding "$(cat /tmp/c90-smoke/binding.txt)"
+          SH
+          chmod +x /tmp/qtr-c90-native-eval-resume
+      - name: Complete selector zero and compare against independent direct contraction
+        run: |
+          /usr/bin/time -v python reference/qtr_c90_exact_native_validate_001.py \
+            --algebra sum_product_bsc_p_0_1 \
+            --native-executable /tmp/qtr-c90-native-eval-resume \
+            --native-binary /tmp/c90-compiled/compiled-sum_product_bsc_p_0_1.qtrbin \
+            --compiled-receipt /tmp/c90-compiled/compile-sum_product_bsc_p_0_1.json \
+            --start 0 \
+            --stop 1 \
+            --output /tmp/c90-smoke/validate-smoke.json
+          python - <<'PY'
+          import hashlib, json, os, platform, subprocess, sys
+          from datetime import datetime, timezone
+          from pathlib import Path
+          sys.path.insert(0,'reference')
+          import qtr_c90_exact_decoder_001 as Base
+          r=json.loads(Path('/tmp/c90-smoke/validate-smoke.json').read_text())
+          assert r['status']=='C90_EXACT_ALGEBRA_VALIDATION_SHARD_PASSED'
+          assert r['selector_count']==1 and r['all_exact_equal'] is True and r['quality_exposed'] is False
+          row=r['rows'][0]; assert row['selector_index']==0 and row['exact_equal'] is True
+          def fsha(path):
+              h=hashlib.sha256(); h.update(Path(path).read_bytes()); return h.hexdigest()
+          gate={
+              'experiment_id': r['experiment_id'],
+              'phase': 'QUALITY_BLIND_FULL_SCALE_SELECTOR_ZERO_GATE',
+              'status': 'C90_FULL_SCALE_NATIVE_SEMANTIC_SMOKE_PASS',
+              'validation_subject_commit': os.environ['SUBJECT_SHA'],
+              'compiled_source_commit': r['compiled_source_commit'],
+              'compiled_artifact': {
+                  'workflow_run_id': int(os.environ['COMPILED_RUN_ID']),
+                  'artifact_id': int(os.environ['COMPILED_ARTIFACT_ID']),
+                  'artifact_name': os.environ['COMPILED_ARTIFACT_NAME'],
+                  'artifact_digest': os.environ['COMPILED_ARTIFACT_DIGEST'],
+                  'native_binary_sha256': r['compiled_native_binary_sha256'],
+                  'canonical_node_stream_sha256': r['compiled_canonical_node_stream_sha256'],
+              },
+              'selector_index': row['selector_index'],
+              'selector_coordinate': row['selector_coordinate'],
+              'native_exact_value': row['value_encoding'],
+              'direct_oracle_exact_value': row['value_encoding'],
+              'exact_equal': True,
+              'reachable_nodes': row['reachable_nodes'],
+              'peak_live_values': row['peak_live_values'],
+              'checkpoint_resume': {
+                  'format': 'QTRC90E1',
+                  'boundaries': [50000000,100000000,150000000,200000000],
+                  'scientific_semantics_changed': False,
+              },
+              'execution_metadata': {
+                  'github_run_id': int(os.environ['GITHUB_RUN_ID']),
+                  'github_run_attempt': int(os.environ['GITHUB_RUN_ATTEMPT']),
+                  'github_job': os.environ['GITHUB_JOB'],
+                  'runner_os': os.environ.get('RUNNER_OS'),
+                  'runner_arch': os.environ.get('RUNNER_ARCH'),
+                  'platform': platform.platform(),
+                  'python': sys.version.split()[0],
+                  'compiler': subprocess.check_output(['g++','--version'],text=True).splitlines()[0],
+                  'evaluator_source_sha256': fsha('reference/qtr_c90_exact_native_eval_001.cpp'),
+                  'validator_source_sha256': fsha('reference/qtr_c90_exact_native_validate_001.py'),
+                  'completed_at_utc': datetime.now(timezone.utc).isoformat(),
+              },
+              'quality_exposed': False,
+              'injected_error_success_used': False,
+          }
+          gate['payload_sha256']=Base.digest(gate)
+          Path('/tmp/c90-smoke/QTR-C90-selector0-quality-blind-gate.json').write_text(json.dumps(gate,indent=2,sort_keys=True)+'\n',encoding='utf-8')
+          print('C90_FULL_SCALE_NATIVE_SEMANTIC_SMOKE_PASS', gate['payload_sha256'])
+          PY
+      - name: Preserve durable quality-blind selector-zero receipt
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-selector0-quality-blind-gate
+          path: |
+            /tmp/c90-smoke/validate-smoke.json
+            /tmp/c90-smoke/QTR-C90-selector0-quality-blind-gate.json
           if-no-files-found: error
           retention-days: 90
+
+# The 307-selector / three-algebra matrix is intentionally not launched from
+# this head. It is enabled only after the selector-zero gate above completes,
+# its durable receipt is inspected, and the current exact head is reverified.

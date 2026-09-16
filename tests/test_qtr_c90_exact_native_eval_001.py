@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import shutil
+import struct
 import subprocess
 import sys
 import tempfile
@@ -23,6 +24,7 @@ class QTRC90ExactNativeEval001Tests(unittest.TestCase):
     ORDER = [0, 1]
     COMPILER_CPP = REFERENCE / "qtr_c90_exact_compact_native_001.cpp"
     EVALUATOR_CPP = REFERENCE / "qtr_c90_exact_native_eval_001.cpp"
+    NATIVE_HEADER = struct.Struct("<8sIQI")
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -173,6 +175,82 @@ class QTRC90ExactNativeEval001Tests(unittest.TestCase):
                         brute = self._brute_force(algebra, coordinate)
                         self.assertEqual(observed, symbolic)
                         self.assertEqual(observed, brute)
+
+    def test_native_checkpoint_resume_matches_uninterrupted_every_algebra(self) -> None:
+        binding = "0123456789abcdef" * 4
+        with tempfile.TemporaryDirectory(prefix="qtr-c90-native-checkpoint-") as tmp:
+            directory = Path(tmp)
+            for algebra in DAG.ALGEBRAS:
+                with self.subTest(algebra=algebra):
+                    native_path = self._compile_native(algebra, directory)
+                    selector_path = directory / f"{algebra}.selector0.txt"
+                    selector_path.write_text("0 0\n", encoding="utf-8")
+                    uninterrupted = subprocess.run(
+                        [
+                            str(self.native_evaluator),
+                            "--native",
+                            str(native_path),
+                            "--selectors",
+                            str(selector_path),
+                        ],
+                        cwd=ROOT,
+                        check=True,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        text=True,
+                    )
+                    full_row = json.loads(uninterrupted.stdout.strip())
+                    with native_path.open("rb") as handle:
+                        magic, algebra_id, count, root = self.NATIVE_HEADER.unpack(handle.read(self.NATIVE_HEADER.size))
+                    self.assertEqual(magic, b"QTRC90N1")
+                    self.assertEqual(algebra_id, self._algebra_id(algebra))
+                    self.assertLess(root, count)
+                    stop_node = max(1, min(count - 1, count // 2))
+                    checkpoint = directory / f"{algebra}.checkpoint.bin"
+                    partial = subprocess.run(
+                        [
+                            str(self.native_evaluator),
+                            "--native",
+                            str(native_path),
+                            "--selectors",
+                            str(selector_path),
+                            "--checkpoint-out",
+                            str(checkpoint),
+                            "--checkpoint-binding",
+                            binding,
+                            "--stop-node",
+                            str(stop_node),
+                        ],
+                        cwd=ROOT,
+                        check=True,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        text=True,
+                    )
+                    partial_row = json.loads(partial.stdout.strip())
+                    self.assertEqual(partial_row["status"], "C90_COMPACT_NATIVE_SELECTOR_CHECKPOINTED")
+                    self.assertEqual(partial_row["next_node"], stop_node)
+                    self.assertFalse(partial_row["quality_exposed"])
+                    resumed = subprocess.run(
+                        [
+                            str(self.native_evaluator),
+                            "--native",
+                            str(native_path),
+                            "--selectors",
+                            str(selector_path),
+                            "--checkpoint-in",
+                            str(checkpoint),
+                            "--checkpoint-binding",
+                            binding,
+                        ],
+                        cwd=ROOT,
+                        check=True,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        text=True,
+                    )
+                    resumed_row = json.loads(resumed.stdout.strip())
+                    self.assertEqual(resumed_row, full_row)
 
     def test_native_evaluator_repeat_is_deterministic(self) -> None:
         with tempfile.TemporaryDirectory(prefix="qtr-c90-native-eval-repeat-") as tmp:
