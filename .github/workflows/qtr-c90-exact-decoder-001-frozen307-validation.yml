@@ -1,0 +1,220 @@
+name: QTR C90 same-head frozen-307 semantic validation
+
+on:
+  pull_request:
+    paths:
+      - "reference/qtr_c90_exact_dense_batch_validate_001.py"
+      - "reference/qtr_c90_exact_dense_aggregate_001.py"
+      - "tests/test_qtr_c90_exact_dense_batch_validate_001.py"
+      - ".github/workflows/qtr-c90-exact-decoder-001-frozen307-validation.yml"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  VALIDATION_BASE_HEAD: "a6a64184d4b68800f349b005cfeaf2dc23c73196"
+  COMPILE_DRIVER_BLOB_SHA1: "1386cbedbc9a192968861969daaadb3031e8109c"
+  NATIVE_EVALUATOR_BLOB_SHA1: "92022fa89ceff9cf4ac0c9b6ce8613617664e1a6"
+  DENSE_CPP_BLOB_SHA1: "362f2580a188047032a33eba516e26461c96eba3"
+  DENSE_PY_BLOB_SHA1: "b1369543df32af80e428e5ba7d7bc4b0afa41b8d"
+  DAG_BLOB_SHA1: "bb2576ea17beb43f1a188eb4a77a280869d0c954"
+  DECODER_BLOB_SHA1: "7a275cd40b7ee8861ac1675791490b50d0266c50"
+
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Assert exact validation head and unchanged scientific implementations
+        run: |
+          test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+          test "$(git rev-parse HEAD^)" = "$VALIDATION_BASE_HEAD"
+          mapfile -t CHANGED < <(git diff --name-only "$VALIDATION_BASE_HEAD" "$SUBJECT_SHA" | sort)
+          EXPECTED=(
+            ".github/workflows/qtr-c90-exact-decoder-001-frozen307-validation.yml"
+            "reference/qtr_c90_exact_dense_aggregate_001.py"
+            "reference/qtr_c90_exact_dense_batch_validate_001.py"
+            "tests/test_qtr_c90_exact_dense_batch_validate_001.py"
+          )
+          test "${#CHANGED[@]}" -eq "${#EXPECTED[@]}"
+          for i in "${!EXPECTED[@]}"; do test "${CHANGED[$i]}" = "${EXPECTED[$i]}"; done
+          test "$(git hash-object reference/qtr_c90_exact_compact_native_001.py)" = "$COMPILE_DRIVER_BLOB_SHA1"
+          test "$(git hash-object reference/qtr_c90_exact_native_eval_001.cpp)" = "$NATIVE_EVALUATOR_BLOB_SHA1"
+          test "$(git hash-object reference/qtr_c90_exact_dense_oracle_001.cpp)" = "$DENSE_CPP_BLOB_SHA1"
+          test "$(git hash-object reference/qtr_c90_exact_dense_oracle_001.py)" = "$DENSE_PY_BLOB_SHA1"
+          test "$(git hash-object reference/qtr_c90_exact_dag_001.py)" = "$DAG_BLOB_SHA1"
+          test "$(git hash-object reference/qtr_c90_exact_decoder_001.py)" = "$DECODER_BLOB_SHA1"
+      - name: Prove frozen shard partition and fail-closed aggregate controls
+        run: python -m unittest tests.test_qtr_c90_exact_dense_batch_validate_001 -v
+      - name: Assert frozen validation-set identity
+        run: |
+          python - <<'PY'
+          import sys
+          sys.path.insert(0,'reference')
+          import qtr_c90_exact_decoder_001 as Base
+          import qtr_c90_exact_dense_batch_validate_001 as Batch
+          coords=Base.frozen_validation_coordinates()
+          assert len(coords)==307
+          assert Base.digest(coords)==Base.C90_VALIDATION_SET_SHA=='c0a675e3124ed96de66a516a2d679923b8c230c7530b80d5d431df66d781a85c'
+          assert Batch.SHARD_SIZE==4 and Batch.SHARD_COUNT==77
+          print('C90_FROZEN_307_VALIDATION_PREFLIGHT_PASS', len(coords), Base.C90_VALIDATION_SET_SHA)
+          PY
+
+  compile-algebra:
+    needs: preflight
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        algebra: [sum_product_bsc_p_0_1, soft_tropical_base_2, min_plus_hamming]
+    env:
+      ALGEBRA: ${{ matrix.algebra }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Assert exact compile subject
+        run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+      - name: Build unchanged compact-native exact compiler
+        run: g++ -std=c++17 -O3 -DNDEBUG reference/qtr_c90_exact_compact_native_001.cpp -o /tmp/qtr-c90-compact-native
+      - name: Compile exact canonical DAG at validation head
+        run: |
+          mkdir -p /tmp/c90-compile
+          python reference/qtr_c90_exact_compact_native_001.py \
+            --algebra "$ALGEBRA" \
+            --native-executable /tmp/qtr-c90-compact-native \
+            --native-output "/tmp/c90-compile/compiled-$ALGEBRA.qtrbin" \
+            --receipt-output "/tmp/c90-compile/compile-$ALGEBRA.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          expected={
+            'sum_product_bsc_p_0_1':'e6d34ddfdadb19af9bda02c36997a8c2dd767f4610b178f4cf3d74407445ebb4',
+            'soft_tropical_base_2':'4d8859535f7a3ce814eb6ea459a80870fd645f57af487e5b8a9f99de3d5dccb0',
+            'min_plus_hamming':'3aa3f0c1d97f7428623a034b6baa20e9c7f113e830b715040dc9e1e62967b4e8',
+          }
+          a=os.environ['ALGEBRA']
+          r=json.loads(Path(f'/tmp/c90-compile/compile-{a}.json').read_text())
+          assert r['status']=='C90_EXACT_ALGEBRA_COMPILED_QUALITY_BLIND'
+          assert r['source_commit']==os.environ['SUBJECT_SHA']
+          assert r['compiled']['canonical_node_stream_sha256']==expected[a]
+          assert r['quality_exposed'] is False and r['selector_enumeration_performed'] is False
+          assert r['scientific_semantics_changed'] is False and r['injected_error_success_used'] is False
+          print('C90_SAME_HEAD_CANONICAL_COMPILE_PASS', a, r['compiled']['canonical_node_stream_sha256'], r['compiled']['reachable_nodes'])
+          PY
+      - name: Preserve same-head canonical compile
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-same-head-compile-${{ matrix.algebra }}
+          path: /tmp/c90-compile/
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 6
+
+  validate:
+    needs: compile-algebra
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 24
+      matrix:
+        algebra: [sum_product_bsc_p_0_1, soft_tropical_base_2, min_plus_hamming]
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76]
+    env:
+      ALGEBRA: ${{ matrix.algebra }}
+      SHARD: ${{ matrix.shard }}
+      OMP_NUM_THREADS: "4"
+      OMP_PROC_BIND: "close"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore same-head compiled algebra
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-same-head-compile-${{ matrix.algebra }}
+          path: /tmp/c90-compiled
+      - name: Build unchanged exact evaluators
+        run: |
+          g++ -O3 -DNDEBUG -std=c++20 -Wall -Wextra -Werror \
+            reference/qtr_c90_exact_native_eval_001.cpp -o /tmp/qtr-c90-native-eval
+          g++ -O3 -DNDEBUG -std=c++20 -fopenmp -Wall -Wextra -Werror \
+            reference/qtr_c90_exact_dense_oracle_001.cpp -o /tmp/qtr-c90-dense-oracle
+      - name: Validate frozen selector shard against independent dense oracle
+        run: |
+          mkdir -p /tmp/c90-report
+          python reference/qtr_c90_exact_dense_batch_validate_001.py \
+            --algebra "$ALGEBRA" --shard-index "$SHARD" --subject-sha "$SUBJECT_SHA" \
+            --native-executable /tmp/qtr-c90-native-eval \
+            --native-binary "/tmp/c90-compiled/compiled-$ALGEBRA.qtrbin" \
+            --compile-receipt "/tmp/c90-compiled/compile-$ALGEBRA.json" \
+            --dense-executable /tmp/qtr-c90-dense-oracle \
+            --output "/tmp/c90-report/validation-$ALGEBRA-shard-$SHARD.json"
+      - name: Preserve exact quality-blind validation shard
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-validation-${{ matrix.algebra }}-shard-${{ matrix.shard }}
+          path: /tmp/c90-report/validation-${{ matrix.algebra }}-shard-${{ matrix.shard }}.json
+          if-no-files-found: error
+          retention-days: 30
+
+  aggregate:
+    needs: validate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore all exact validation shards
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: QTR-C90-validation-*
+          path: /tmp/c90-reports
+          merge-multiple: true
+      - name: Require complete same-head frozen-307 three-algebra validation
+        run: |
+          mkdir -p /tmp/c90-validation
+          python reference/qtr_c90_exact_dense_aggregate_001.py \
+            --input-dir /tmp/c90-reports --subject-sha "$SUBJECT_SHA" \
+            --output /tmp/c90-validation/QTR-C90-quality-blind-semantic-validation.json
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-validation/QTR-C90-quality-blind-semantic-validation.json').read_text())
+          assert r['status']=='C90_EXACT_IMPLEMENTATION_QUALITY_BLIND_VALIDATED'
+          assert r['semantic_validation_status']=='C90_EXACT_SEMANTIC_VALIDATION_PASSED'
+          assert r['validation_subject_commit']==r['compiled_source_commit']==os.environ['SUBJECT_SHA']
+          assert r['exact_comparison_count']==921 and r['expected_exact_comparison_count']==921
+          assert r['same_head_compile_and_validation'] is True
+          assert r['canonical_compile_identity_reproduced'] is True
+          assert r['quality_exposed'] is False and r['decoder_execution_performed'] is False
+          assert r['activation_eligible'] is True
+          print('C90_FROZEN_307_THREE_ALGEBRA_VALIDATION_PASS', r['payload_sha256'])
+          PY
+      - name: Preserve durable activation-eligible quality-blind validation receipt
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-quality-blind-semantic-validation
+          path: /tmp/c90-validation/QTR-C90-quality-blind-semantic-validation.json
+          if-no-files-found: error
+          retention-days: 90
+
+# No injected C90 error is supplied anywhere in this workflow.
+# Decoder-quality execution remains closed until this exact-head receipt is
+# durably frozen on execution issue #114.
