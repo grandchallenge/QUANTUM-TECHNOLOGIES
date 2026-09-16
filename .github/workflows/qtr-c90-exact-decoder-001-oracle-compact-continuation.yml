@@ -1,0 +1,967 @@
+name: QTR C90 selector-zero oracle compact continuation
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/qtr-c90-exact-decoder-001-oracle-compact-continuation.yml"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  RECOVERY_BASE_HEAD: "c1cf845d9e36e1d6dee489f5bc3752a0302da12d"
+  STEP20_RUN_ID: "35048121598"
+  STEP20_ARTIFACT_ID: "10428160711"
+  STEP20_ARTIFACT_NAME: "QTR-C90-oracle-selector0-step-20-compact"
+  STEP20_ARTIFACT_DIGEST: "sha256:630169189457dd4ff31ea8a14284a02ba1ccefcbf05007b1bc3d15256355e5f3"
+  ORACLE_BLOB_SHA1: "c48e738b25d336137d3e48b944bde4a9abd08e27"
+  DAG_BLOB_SHA1: "bb2576ea17beb43f1a188eb4a77a280869d0c954"
+  COMPACTOR_BLOB_SHA1: "5d8fdc115d25af70465a0ad3635eb558f60d90f8"
+
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.8"
+      - name: Assert exact continuation subject
+        run: |
+          test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+          test "$(git hash-object reference/qtr_c90_exact_oracle_checkpoint_001.py)" = "$ORACLE_BLOB_SHA1"
+          test "$(git hash-object reference/qtr_c90_exact_dag_001.py)" = "$DAG_BLOB_SHA1"
+          test "$(git hash-object reference/qtr_c90_exact_oracle_compact_001.py)" = "$COMPACTOR_BLOB_SHA1"
+          mapfile -t CHANGED < <(git diff --name-only "$RECOVERY_BASE_HEAD" "$SUBJECT_SHA")
+          test "${#CHANGED[@]}" -eq 1
+          test "${CHANGED[0]}" = ".github/workflows/qtr-c90-exact-decoder-001-oracle-compact-continuation.yml"
+      - name: Verify durable exact step-20 checkpoint identity
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request
+          req=urllib.request.Request(
+              f"https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/actions/artifacts/{os.environ['STEP20_ARTIFACT_ID']}",
+              headers={"Authorization":f"Bearer {os.environ['GH_TOKEN']}","Accept":"application/vnd.github+json"},
+          )
+          with urllib.request.urlopen(req) as response:
+              meta=json.load(response)
+          assert str(meta['id']) == os.environ['STEP20_ARTIFACT_ID']
+          assert meta['name'] == os.environ['STEP20_ARTIFACT_NAME']
+          assert meta['digest'] == os.environ['STEP20_ARTIFACT_DIGEST']
+          assert meta['expired'] is False
+          assert str(meta['workflow_run']['id']) == os.environ['STEP20_RUN_ID']
+          assert meta['workflow_run']['head_sha'] == os.environ['RECOVERY_BASE_HEAD']
+          print('C90_STEP20_CONTINUATION_IDENTITY_PASS', meta['id'], meta['digest'])
+          PY
+
+  advance-21:
+    needs: preflight
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 20
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-20-compact
+          path: /tmp/c90-prev
+          github-token: ${{ github.token }}
+          repository: grandchallenge/QUANTUM-TECHNOLOGIES
+          run-id: ${{ env.STEP20_RUN_ID }}
+      - name: Advance 20 to 21 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 21 \
+            --checkpoint-in /tmp/c90-prev/oracle-20-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-20-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-21-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-21-compact.json \
+            --report-out /tmp/c90-next/oracle-21-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-21-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==20 and r['output_next_step']==21
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP21_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 21
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-21-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-22:
+    needs: advance-21
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 21
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-21-compact
+          path: /tmp/c90-prev
+      - name: Advance 21 to 22 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 22 \
+            --checkpoint-in /tmp/c90-prev/oracle-21-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-21-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-22-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-22-compact.json \
+            --report-out /tmp/c90-next/oracle-22-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-22-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==21 and r['output_next_step']==22
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP22_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 22
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-22-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-23:
+    needs: advance-22
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 22
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-22-compact
+          path: /tmp/c90-prev
+      - name: Advance 22 to 23 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 23 \
+            --checkpoint-in /tmp/c90-prev/oracle-22-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-22-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-23-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-23-compact.json \
+            --report-out /tmp/c90-next/oracle-23-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-23-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==22 and r['output_next_step']==23
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP23_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 23
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-23-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-24:
+    needs: advance-23
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 23
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-23-compact
+          path: /tmp/c90-prev
+      - name: Advance 23 to 24 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 24 \
+            --checkpoint-in /tmp/c90-prev/oracle-23-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-23-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-24-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-24-compact.json \
+            --report-out /tmp/c90-next/oracle-24-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-24-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==23 and r['output_next_step']==24
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP24_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 24
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-24-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-25:
+    needs: advance-24
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 24
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-24-compact
+          path: /tmp/c90-prev
+      - name: Advance 24 to 25 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 25 \
+            --checkpoint-in /tmp/c90-prev/oracle-24-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-24-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-25-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-25-compact.json \
+            --report-out /tmp/c90-next/oracle-25-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-25-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==24 and r['output_next_step']==25
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP25_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 25
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-25-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-26:
+    needs: advance-25
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 25
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-25-compact
+          path: /tmp/c90-prev
+      - name: Advance 25 to 26 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 26 \
+            --checkpoint-in /tmp/c90-prev/oracle-25-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-25-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-26-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-26-compact.json \
+            --report-out /tmp/c90-next/oracle-26-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-26-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==25 and r['output_next_step']==26
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP26_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 26
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-26-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-27:
+    needs: advance-26
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 26
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-26-compact
+          path: /tmp/c90-prev
+      - name: Advance 26 to 27 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 27 \
+            --checkpoint-in /tmp/c90-prev/oracle-26-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-26-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-27-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-27-compact.json \
+            --report-out /tmp/c90-next/oracle-27-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-27-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==26 and r['output_next_step']==27
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP27_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 27
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-27-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-28:
+    needs: advance-27
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 27
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-27-compact
+          path: /tmp/c90-prev
+      - name: Advance 27 to 28 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 28 \
+            --checkpoint-in /tmp/c90-prev/oracle-27-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-27-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-28-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-28-compact.json \
+            --report-out /tmp/c90-next/oracle-28-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-28-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==27 and r['output_next_step']==28
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP28_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 28
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-28-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-29:
+    needs: advance-28
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 28
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-28-compact
+          path: /tmp/c90-prev
+      - name: Advance 28 to 29 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 29 \
+            --checkpoint-in /tmp/c90-prev/oracle-28-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-28-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-29-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-29-compact.json \
+            --report-out /tmp/c90-next/oracle-29-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-29-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==28 and r['output_next_step']==29
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP29_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 29
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-29-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-30:
+    needs: advance-29
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 29
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-29-compact
+          path: /tmp/c90-prev
+      - name: Advance 29 to 30 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 30 \
+            --checkpoint-in /tmp/c90-prev/oracle-29-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-29-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-30-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-30-compact.json \
+            --report-out /tmp/c90-next/oracle-30-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-30-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==29 and r['output_next_step']==30
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP30_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 30
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-30-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-31:
+    needs: advance-30
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 30
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-30-compact
+          path: /tmp/c90-prev
+      - name: Advance 30 to 31 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 31 \
+            --checkpoint-in /tmp/c90-prev/oracle-30-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-30-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-31-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-31-compact.json \
+            --report-out /tmp/c90-next/oracle-31-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-31-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==30 and r['output_next_step']==31
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP31_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 31
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-31-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-32:
+    needs: advance-31
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 31
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-31-compact
+          path: /tmp/c90-prev
+      - name: Advance 31 to 32 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 32 \
+            --checkpoint-in /tmp/c90-prev/oracle-31-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-31-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-32-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-32-compact.json \
+            --report-out /tmp/c90-next/oracle-32-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-32-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==31 and r['output_next_step']==32
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP32_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 32
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-32-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-33:
+    needs: advance-32
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 32
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-32-compact
+          path: /tmp/c90-prev
+      - name: Advance 32 to 33 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 33 \
+            --checkpoint-in /tmp/c90-prev/oracle-32-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-32-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-33-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-33-compact.json \
+            --report-out /tmp/c90-next/oracle-33-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-33-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==32 and r['output_next_step']==33
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP33_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 33
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-33-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-34:
+    needs: advance-33
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 33
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-33-compact
+          path: /tmp/c90-prev
+      - name: Advance 33 to 34 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 34 \
+            --checkpoint-in /tmp/c90-prev/oracle-33-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-33-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-34-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-34-compact.json \
+            --report-out /tmp/c90-next/oracle-34-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-34-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==33 and r['output_next_step']==34
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP34_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 34
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-34-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-35:
+    needs: advance-34
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 34
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-34-compact
+          path: /tmp/c90-prev
+      - name: Advance 34 to 35 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 35 \
+            --checkpoint-in /tmp/c90-prev/oracle-34-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-34-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-35-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-35-compact.json \
+            --report-out /tmp/c90-next/oracle-35-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-35-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==34 and r['output_next_step']==35
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP35_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 35
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-35-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-36:
+    needs: advance-35
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 35
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-35-compact
+          path: /tmp/c90-prev
+      - name: Advance 35 to 36 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 36 \
+            --checkpoint-in /tmp/c90-prev/oracle-35-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-35-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-36-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-36-compact.json \
+            --report-out /tmp/c90-next/oracle-36-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-36-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==35 and r['output_next_step']==36
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP36_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 36
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-36-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-37:
+    needs: advance-36
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 36
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-36-compact
+          path: /tmp/c90-prev
+      - name: Advance 36 to 37 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 37 \
+            --checkpoint-in /tmp/c90-prev/oracle-36-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-36-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-37-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-37-compact.json \
+            --report-out /tmp/c90-next/oracle-37-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-37-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==36 and r['output_next_step']==37
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP37_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 37
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-37-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-38:
+    needs: advance-37
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 37
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-37-compact
+          path: /tmp/c90-prev
+      - name: Advance 37 to 38 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 38 \
+            --checkpoint-in /tmp/c90-prev/oracle-37-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-37-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-38-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-38-compact.json \
+            --report-out /tmp/c90-next/oracle-38-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-38-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==37 and r['output_next_step']==38
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP38_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 38
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-38-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-39:
+    needs: advance-38
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 38
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-38-compact
+          path: /tmp/c90-prev
+      - name: Advance 38 to 39 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 39 \
+            --checkpoint-in /tmp/c90-prev/oracle-38-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-38-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-39-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-39-compact.json \
+            --report-out /tmp/c90-next/oracle-39-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-39-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==38 and r['output_next_step']==39
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP39_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 39
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-39-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  advance-40:
+    needs: advance-39
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore compact step 39
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-39-compact
+          path: /tmp/c90-prev
+      - name: Advance 39 to 40 and compact exact state
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_compact_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 \
+            --advance-to 40 \
+            --checkpoint-in /tmp/c90-prev/oracle-39-compact.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-39-compact.json \
+            --checkpoint-out /tmp/c90-next/oracle-40-compact.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-40-compact.json \
+            --report-out /tmp/c90-next/oracle-40-compact-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-next/oracle-40-compact-report.json').read_text())
+          assert r['status']=='C90_NUMERIC_ORACLE_EXACT_GC_PASS'
+          assert r['input_next_step']==39 and r['output_next_step']==40
+          assert r['reachable_semantics_changed'] is False
+          assert r['quality_exposed'] is False
+          assert r['injected_error_success_used'] is False
+          print('C90_STEP40_EXACT_GC_PASS', r['source_node_count'], r['retained_node_count'], r['removed_node_count'])
+          PY
+      - name: Preserve compact exact step 40
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-40-compact
+          path: /tmp/c90-next/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
