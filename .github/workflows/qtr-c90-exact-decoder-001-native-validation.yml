@@ -5,7 +5,9 @@ on:
     paths:
       - "reference/qtr_c90_exact_native_eval_001.cpp"
       - "reference/qtr_c90_exact_native_validate_001.py"
+      - "reference/qtr_c90_exact_oracle_checkpoint_001.py"
       - "tests/test_qtr_c90_exact_native_eval_001.py"
+      - "tests/test_qtr_c90_exact_oracle_checkpoint_001.py"
       - ".github/workflows/qtr-c90-exact-decoder-001-native-validation.yml"
   workflow_dispatch:
 
@@ -15,21 +17,17 @@ permissions:
 
 env:
   SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-  COMPILED_RUN_ID: "34947590855"
-  COMPILED_ARTIFACT_ID: "10388753864"
-  COMPILED_ARTIFACT_NAME: "QTR-C90-compact-native-sum_product_bsc_p_0_1"
-  COMPILED_ARTIFACT_DIGEST: "sha256:1d852e71b93a9b1dcff7eba43b29a3f37e3095f63059ed26ab3c512b5d00fc4c"
-  COMPILED_SOURCE_HEAD: "c4e1d757bdf89fa5eceaf2e38b8a34ff3ee3a78c"
-  CHECKPOINT_RUN_ID: "35038181203"
-  CHECKPOINT_ARTIFACT_ID: "10424531306"
-  CHECKPOINT_ARTIFACT_NAME: "QTR-C90-selector0-checkpoint-200m"
-  CHECKPOINT_ARTIFACT_DIGEST: "sha256:9442dd0617f336c8c82fe810a35278421a2412de9349eaa6263ac077cf753851"
-  CHECKPOINT_SOURCE_HEAD: "5125f56c58740b9ceaec5276575255824cbf09c7"
+  NATIVE_RESULT_RUN_ID: "35041384347"
+  NATIVE_RESULT_ARTIFACT_ID: "10424824908"
+  NATIVE_RESULT_ARTIFACT_NAME: "QTR-C90-selector0-native-exact-result"
+  NATIVE_RESULT_ARTIFACT_DIGEST: "sha256:0a0544934da4de0820e80fd6d882de5365187edf01f04b214e9558cb02f3c4f3"
+  NATIVE_RESULT_SOURCE_HEAD: "1603533c70f502f416294f61dcaf4973d0bb57ef"
   EVALUATOR_BLOB_SHA1: "92022fa89ceff9cf4ac0c9b6ce8613617664e1a6"
   VALIDATOR_BLOB_SHA1: "364d267f757ab184deaa987ce7a93064314e1c13"
+  DAG_BLOB_SHA1: "bb2576ea17beb43f1a188eb4a77a280869d0c954"
 
 jobs:
-  checkpoint-reuse-preflight:
+  oracle-checkpoint-control:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -40,254 +38,273 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12.8"
-      - name: Assert exact recovery subject and unchanged evaluator semantics
+      - name: Assert exact recovery subject and unchanged scientific implementations
         run: |
           test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
           test "$(git hash-object reference/qtr_c90_exact_native_eval_001.cpp)" = "$EVALUATOR_BLOB_SHA1"
           test "$(git hash-object reference/qtr_c90_exact_native_validate_001.py)" = "$VALIDATOR_BLOB_SHA1"
-          mapfile -t CHANGED < <(git diff --name-only "$CHECKPOINT_SOURCE_HEAD" "$SUBJECT_SHA")
-          test "${#CHANGED[@]}" -eq 1
-          test "${CHANGED[0]}" = ".github/workflows/qtr-c90-exact-decoder-001-native-validation.yml"
-      - name: Verify preserved 200M checkpoint identity
+          test "$(git hash-object reference/qtr_c90_exact_dag_001.py)" = "$DAG_BLOB_SHA1"
+          mapfile -t CHANGED < <(git diff --name-only "$NATIVE_RESULT_SOURCE_HEAD" "$SUBJECT_SHA" | sort)
+          EXPECTED=(
+            ".github/workflows/qtr-c90-exact-decoder-001-native-validation.yml"
+            "reference/qtr_c90_exact_oracle_checkpoint_001.py"
+            "tests/test_qtr_c90_exact_oracle_checkpoint_001.py"
+          )
+          test "${#CHANGED[@]}" -eq "${#EXPECTED[@]}"
+          for i in "${!EXPECTED[@]}"; do test "${CHANGED[$i]}" = "${EXPECTED[$i]}"; done
+      - name: Verify preserved native selector-zero result identity
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           python - <<'PY'
           import json, os, urllib.request
           req=urllib.request.Request(
-              f"https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/actions/artifacts/{os.environ['CHECKPOINT_ARTIFACT_ID']}",
+              f"https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/actions/artifacts/{os.environ['NATIVE_RESULT_ARTIFACT_ID']}",
               headers={"Authorization":f"Bearer {os.environ['GH_TOKEN']}","Accept":"application/vnd.github+json"},
           )
-          with urllib.request.urlopen(req) as response:
-              meta=json.load(response)
-          assert str(meta['id']) == os.environ['CHECKPOINT_ARTIFACT_ID']
-          assert meta['name'] == os.environ['CHECKPOINT_ARTIFACT_NAME']
-          assert meta['digest'] == os.environ['CHECKPOINT_ARTIFACT_DIGEST']
+          with urllib.request.urlopen(req) as response: meta=json.load(response)
+          assert str(meta['id'])==os.environ['NATIVE_RESULT_ARTIFACT_ID']
+          assert meta['name']==os.environ['NATIVE_RESULT_ARTIFACT_NAME']
+          assert meta['digest']==os.environ['NATIVE_RESULT_ARTIFACT_DIGEST']
           assert meta['expired'] is False
-          assert str(meta['workflow_run']['id']) == os.environ['CHECKPOINT_RUN_ID']
-          assert meta['workflow_run']['head_sha'] == os.environ['CHECKPOINT_SOURCE_HEAD']
-          print('C90_200M_CHECKPOINT_REUSE_IDENTITY_PASS', meta['id'], meta['digest'])
+          assert str(meta['workflow_run']['id'])==os.environ['NATIVE_RESULT_RUN_ID']
+          assert meta['workflow_run']['head_sha']==os.environ['NATIVE_RESULT_SOURCE_HEAD']
+          print('C90_NATIVE_RESULT_REUSE_IDENTITY_PASS', meta['id'], meta['digest'])
+          PY
+      - name: Prove checkpointed NumericDD orchestration matches direct contraction on bounded controls
+        run: python -m unittest tests.test_qtr_c90_exact_oracle_checkpoint_001 -v
+      - name: Assert frozen selector-zero coordinate
+        run: |
+          python - <<'PY'
+          import sys
+          sys.path.insert(0,'reference')
+          import qtr_c90_exact_decoder_001 as Base
+          coords=Base.frozen_validation_coordinates()
+          assert Base.digest(coords)==Base.C90_VALIDATION_SET_SHA
+          assert coords[0]==0
+          print('C90_FROZEN_SELECTOR_ZERO_PASS', coords[0])
           PY
 
-  complete-native-suffix:
-    needs: checkpoint-reuse-preflight
+  oracle-08:
+    needs: oracle-checkpoint-control
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ env.SUBJECT_SHA }}
-          fetch-depth: 0
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12.8"
-      - name: Assert exact recovery subject
+        with: { python-version: "3.12.8" }
+      - name: Advance exact NumericDD oracle through elimination step 8
         run: |
-          test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
-          test "$(git hash-object reference/qtr_c90_exact_native_eval_001.cpp)" = "$EVALUATOR_BLOB_SHA1"
-      - name: Restore preserved compact-native sum-product artifact
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: ${{ env.COMPILED_ARTIFACT_NAME }}
-          path: /tmp/c90-compiled
-          github-token: ${{ github.token }}
-          repository: grandchallenge/QUANTUM-TECHNOLOGIES
-          run-id: ${{ env.COMPILED_RUN_ID }}
-      - name: Restore exact 200M checkpoint from prior hardened run
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: ${{ env.CHECKPOINT_ARTIFACT_NAME }}
-          path: /tmp/c90-resume
-          github-token: ${{ github.token }}
-          repository: grandchallenge/QUANTUM-TECHNOLOGIES
-          run-id: ${{ env.CHECKPOINT_RUN_ID }}
-      - name: Verify all immutable inputs and prepare frozen selector zero
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          mkdir -p /tmp/c90-native
-          python - <<'PY'
-          import json, os, sys, urllib.request
-          from pathlib import Path
-          sys.path.insert(0,'reference')
-          import qtr_c90_exact_decoder_001 as Base
-          import qtr_c90_exact_native_validate_001 as V
-          def artifact(artifact_id):
-              req=urllib.request.Request(
-                  f"https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/actions/artifacts/{artifact_id}",
-                  headers={"Authorization":f"Bearer {os.environ['GH_TOKEN']}","Accept":"application/vnd.github+json"},
-              )
-              with urllib.request.urlopen(req) as response:
-                  return json.load(response)
-          compiled_meta=artifact(os.environ['COMPILED_ARTIFACT_ID'])
-          assert compiled_meta['name']==os.environ['COMPILED_ARTIFACT_NAME']
-          assert compiled_meta['digest']==os.environ['COMPILED_ARTIFACT_DIGEST']
-          assert compiled_meta['expired'] is False
-          checkpoint_meta=artifact(os.environ['CHECKPOINT_ARTIFACT_ID'])
-          assert checkpoint_meta['name']==os.environ['CHECKPOINT_ARTIFACT_NAME']
-          assert checkpoint_meta['digest']==os.environ['CHECKPOINT_ARTIFACT_DIGEST']
-          assert checkpoint_meta['expired'] is False
-          assert checkpoint_meta['workflow_run']['head_sha']==os.environ['CHECKPOINT_SOURCE_HEAD']
-          receipt=Path('/tmp/c90-compiled/compile-sum_product_bsc_p_0_1.json')
-          binary=Path('/tmp/c90-compiled/compiled-sum_product_bsc_p_0_1.qtrbin')
-          r=V._load_receipt(receipt,'sum_product_bsc_p_0_1')
-          assert r['source_commit']==os.environ['COMPILED_SOURCE_HEAD']
-          sha=V._file_sha256(binary)
-          assert sha==r['compiled']['native_binary_sha256']
-          coords=Base.frozen_validation_coordinates()
-          assert Base.digest(coords)==Base.C90_VALIDATION_SET_SHA
-          Path('/tmp/c90-native/selector0.txt').write_text(f"0 {coords[0]}\n",encoding='utf-8')
-          Path('/tmp/c90-native/binding.txt').write_text(sha+'\n',encoding='utf-8')
-          print('C90_NATIVE_SUFFIX_INPUT_IDENTITY_PASS', sha, coords[0])
-          PY
-      - name: Build exact checkpoint-capable evaluator
-        run: g++ -std=c++17 -O3 -DNDEBUG reference/qtr_c90_exact_native_eval_001.cpp -o /tmp/qtr-c90-native-eval
-      - name: Complete native selector-zero suffix from exact 200M frontier
-        run: |
-          BINDING="$(cat /tmp/c90-native/binding.txt)"
-          /usr/bin/time -v /tmp/qtr-c90-native-eval \
-            --native /tmp/c90-compiled/compiled-sum_product_bsc_p_0_1.qtrbin \
-            --selectors /tmp/c90-native/selector0.txt \
-            --checkpoint-in /tmp/c90-resume/checkpoint-200m.bin \
-            --checkpoint-binding "$BINDING" \
-            | tee /tmp/c90-native/native-selector0.jsonl
-          python - <<'PY'
-          import json, os, sys
-          from pathlib import Path
-          sys.path.insert(0,'reference')
-          import qtr_c90_exact_decoder_001 as Base
-          import qtr_c90_exact_native_validate_001 as V
-          lines=[line for line in Path('/tmp/c90-native/native-selector0.jsonl').read_text().splitlines() if line.strip()]
-          assert len(lines)==1
-          row=json.loads(lines[0])
-          coords=Base.frozen_validation_coordinates()
-          assert row['status']=='C90_COMPACT_NATIVE_SELECTOR_EVALUATED'
-          assert row['algebra_id']==0
-          assert row['selector_index']==0
-          assert row['selector_coordinate']==coords[0]
-          assert row['quality_exposed'] is False
-          observed=V._parse_native_value('sum_product_bsc_p_0_1',row)
-          receipt={
-              'experiment_id': Base.EXPERIMENT_ID,
-              'phase': 'QUALITY_BLIND_NATIVE_SELECTOR_ZERO_RESULT',
-              'status': 'C90_NATIVE_SELECTOR_ZERO_EXACT_RESULT_PRESERVED',
-              'validation_subject_commit': os.environ['SUBJECT_SHA'],
-              'compiled_source_commit': os.environ['COMPILED_SOURCE_HEAD'],
-              'compiled_artifact_id': int(os.environ['COMPILED_ARTIFACT_ID']),
-              'compiled_artifact_digest': os.environ['COMPILED_ARTIFACT_DIGEST'],
-              'checkpoint_source_commit': os.environ['CHECKPOINT_SOURCE_HEAD'],
-              'checkpoint_run_id': int(os.environ['CHECKPOINT_RUN_ID']),
-              'checkpoint_artifact_id': int(os.environ['CHECKPOINT_ARTIFACT_ID']),
-              'checkpoint_artifact_digest': os.environ['CHECKPOINT_ARTIFACT_DIGEST'],
-              'checkpoint_next_node': 200000000,
-              'evaluator_blob_sha1': os.environ['EVALUATOR_BLOB_SHA1'],
-              'selector_index': 0,
-              'selector_coordinate': coords[0],
-              'native_value_encoding': V._canonical_value_encoding('sum_product_bsc_p_0_1',observed),
-              'native_value_sha256': Base.digest({'value':observed}),
-              'reachable_nodes': int(row['reachable_nodes']),
-              'peak_live_values': int(row['peak_live_values']),
-              'scientific_semantics_changed': False,
-              'quality_exposed': False,
-              'injected_error_success_used': False,
-          }
-          receipt['payload_sha256']=Base.digest(receipt)
-          Path('/tmp/c90-native/native-selector0-receipt.json').write_text(json.dumps(receipt,indent=2,sort_keys=True)+'\n',encoding='utf-8')
-          print('C90_NATIVE_SELECTOR_ZERO_RESULT_PRESERVED', receipt['payload_sha256'])
-          PY
-      - name: Preserve exact native selector-zero result before oracle work
+          mkdir -p /tmp/c90-oracle
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_checkpoint_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 --stop-step 8 \
+            --checkpoint-out /tmp/c90-oracle/oracle-08.pkl \
+            --checkpoint-receipt-out /tmp/c90-oracle/oracle-08.json
+      - name: Preserve exact oracle step-8 checkpoint
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: QTR-C90-selector0-native-exact-result
-          path: |
-            /tmp/c90-native/native-selector0.jsonl
-            /tmp/c90-native/native-selector0-receipt.json
+          name: QTR-C90-oracle-selector0-step-08
+          path: /tmp/c90-oracle/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  oracle-16:
+    needs: oracle-08
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with: { name: QTR-C90-oracle-selector0-step-08, path: /tmp/c90-prev }
+      - name: Advance exact NumericDD oracle through elimination step 16
+        run: |
+          mkdir -p /tmp/c90-oracle
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_checkpoint_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 --stop-step 16 \
+            --checkpoint-in /tmp/c90-prev/oracle-08.pkl --checkpoint-receipt-in /tmp/c90-prev/oracle-08.json \
+            --checkpoint-out /tmp/c90-oracle/oracle-16.pkl --checkpoint-receipt-out /tmp/c90-oracle/oracle-16.json
+      - name: Preserve exact oracle step-16 checkpoint
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with: { name: QTR-C90-oracle-selector0-step-16, path: /tmp/c90-oracle/, if-no-files-found: error, retention-days: 7, compression-level: 0 }
+
+  oracle-24:
+    needs: oracle-16
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with: { name: QTR-C90-oracle-selector0-step-16, path: /tmp/c90-prev }
+      - name: Advance exact NumericDD oracle through elimination step 24
+        run: |
+          mkdir -p /tmp/c90-oracle
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_checkpoint_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 --stop-step 24 \
+            --checkpoint-in /tmp/c90-prev/oracle-16.pkl --checkpoint-receipt-in /tmp/c90-prev/oracle-16.json \
+            --checkpoint-out /tmp/c90-oracle/oracle-24.pkl --checkpoint-receipt-out /tmp/c90-oracle/oracle-24.json
+      - name: Preserve exact oracle step-24 checkpoint
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with: { name: QTR-C90-oracle-selector0-step-24, path: /tmp/c90-oracle/, if-no-files-found: error, retention-days: 7, compression-level: 0 }
+
+  oracle-32:
+    needs: oracle-24
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with: { name: QTR-C90-oracle-selector0-step-24, path: /tmp/c90-prev }
+      - name: Advance exact NumericDD oracle through elimination step 32
+        run: |
+          mkdir -p /tmp/c90-oracle
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_checkpoint_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 --stop-step 32 \
+            --checkpoint-in /tmp/c90-prev/oracle-24.pkl --checkpoint-receipt-in /tmp/c90-prev/oracle-24.json \
+            --checkpoint-out /tmp/c90-oracle/oracle-32.pkl --checkpoint-receipt-out /tmp/c90-oracle/oracle-32.json
+      - name: Preserve exact oracle step-32 checkpoint
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with: { name: QTR-C90-oracle-selector0-step-32, path: /tmp/c90-oracle/, if-no-files-found: error, retention-days: 7, compression-level: 0 }
+
+  oracle-40:
+    needs: oracle-32
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with: { name: QTR-C90-oracle-selector0-step-32, path: /tmp/c90-prev }
+      - name: Advance exact NumericDD oracle through elimination step 40
+        run: |
+          mkdir -p /tmp/c90-oracle
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_checkpoint_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 --stop-step 40 \
+            --checkpoint-in /tmp/c90-prev/oracle-32.pkl --checkpoint-receipt-in /tmp/c90-prev/oracle-32.json \
+            --checkpoint-out /tmp/c90-oracle/oracle-40.pkl --checkpoint-receipt-out /tmp/c90-oracle/oracle-40.json
+      - name: Preserve exact oracle step-40 checkpoint
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with: { name: QTR-C90-oracle-selector0-step-40, path: /tmp/c90-oracle/, if-no-files-found: error, retention-days: 7, compression-level: 0 }
+
+  oracle-final:
+    needs: oracle-40
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with: { name: QTR-C90-oracle-selector0-step-40, path: /tmp/c90-prev }
+      - name: Complete exact NumericDD oracle and preserve scalar result
+        run: |
+          mkdir -p /tmp/c90-oracle
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_checkpoint_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 --stop-step 41 \
+            --checkpoint-in /tmp/c90-prev/oracle-40.pkl --checkpoint-receipt-in /tmp/c90-prev/oracle-40.json \
+            --result-out /tmp/c90-oracle/oracle-selector0-result.json
+      - name: Preserve independent exact oracle result
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-selector0-independent-oracle-result
+          path: /tmp/c90-oracle/oracle-selector0-result.json
           if-no-files-found: error
           retention-days: 90
 
-  oracle-compare:
-    needs: complete-native-suffix
+  selector-zero-gate:
+    needs: oracle-final
     runs-on: ubuntu-24.04
-    timeout-minutes: 120
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ env.SUBJECT_SHA }}
-          fetch-depth: 0
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12.8"
-      - name: Assert exact oracle subject
-        run: |
-          test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
-          test "$(git hash-object reference/qtr_c90_exact_native_eval_001.cpp)" = "$EVALUATOR_BLOB_SHA1"
-          test "$(git hash-object reference/qtr_c90_exact_native_validate_001.py)" = "$VALIDATOR_BLOB_SHA1"
+        with: { python-version: "3.12.8" }
+      - name: Restore independent oracle result
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with: { name: QTR-C90-selector0-independent-oracle-result, path: /tmp/c90-oracle }
       - name: Restore preserved native selector-zero result
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          name: QTR-C90-selector0-native-exact-result
+          name: ${{ env.NATIVE_RESULT_ARTIFACT_NAME }}
           path: /tmp/c90-native
-      - name: Independently contract selector zero and require exact equality
+          github-token: ${{ github.token }}
+          repository: grandchallenge/QUANTUM-TECHNOLOGIES
+          run-id: ${{ env.NATIVE_RESULT_RUN_ID }}
+      - name: Require exact native-oracle equality and write gate receipt
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p /tmp/c90-gate
-          /usr/bin/time -v python - <<'PY'
-          import json, os, platform, sys
+          python - <<'PY'
+          import json, os, platform, sys, urllib.request
           from datetime import datetime, timezone
           from pathlib import Path
           sys.path.insert(0,'reference')
           import qtr_c90_exact_decoder_001 as Base
-          import qtr_c90_exact_dag_001 as DAG
           import qtr_c90_exact_native_validate_001 as V
           native_receipt=json.loads(Path('/tmp/c90-native/native-selector0-receipt.json').read_text())
-          lines=[line for line in Path('/tmp/c90-native/native-selector0.jsonl').read_text().splitlines() if line.strip()]
-          assert len(lines)==1
-          native_row=json.loads(lines[0])
-          assert native_receipt['status']=='C90_NATIVE_SELECTOR_ZERO_EXACT_RESULT_PRESERVED'
-          assert native_receipt['validation_subject_commit']==os.environ['SUBJECT_SHA']
-          assert native_receipt['checkpoint_source_commit']==os.environ['CHECKPOINT_SOURCE_HEAD']
-          assert native_receipt['checkpoint_artifact_id']==int(os.environ['CHECKPOINT_ARTIFACT_ID'])
-          assert native_receipt['checkpoint_artifact_digest']==os.environ['CHECKPOINT_ARTIFACT_DIGEST']
-          assert native_receipt['evaluator_blob_sha1']==os.environ['EVALUATOR_BLOB_SHA1']
-          assert native_receipt['quality_exposed'] is False
-          unsigned=dict(native_receipt); payload=unsigned.pop('payload_sha256')
-          assert Base.digest(unsigned)==payload
-          coords=Base.frozen_validation_coordinates()
-          assert Base.digest(coords)==Base.C90_VALIDATION_SET_SHA
-          coordinate=coords[0]
-          assert native_row['selector_index']==0 and native_row['selector_coordinate']==coordinate
-          assert native_row['quality_exposed'] is False
+          native_row=json.loads(Path('/tmp/c90-native/native-selector0.jsonl').read_text())
+          oracle=json.loads(Path('/tmp/c90-oracle/oracle-selector0-result.json').read_text())
+          for payload in (native_receipt, oracle):
+              unsigned=dict(payload); digest=unsigned.pop('payload_sha256'); assert Base.digest(unsigned)==digest
+          req=urllib.request.Request(
+              f"https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/actions/artifacts/{os.environ['NATIVE_RESULT_ARTIFACT_ID']}",
+              headers={"Authorization":f"Bearer {os.environ['GH_TOKEN']}","Accept":"application/vnd.github+json"},
+          )
+          with urllib.request.urlopen(req) as response: native_meta=json.load(response)
+          assert native_meta['digest']==os.environ['NATIVE_RESULT_ARTIFACT_DIGEST']
+          assert native_meta['workflow_run']['head_sha']==os.environ['NATIVE_RESULT_SOURCE_HEAD']
+          req=urllib.request.Request(
+              f"https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/actions/runs/{os.environ['GITHUB_RUN_ID']}/artifacts?per_page=100",
+              headers={"Authorization":f"Bearer {os.environ['GH_TOKEN']}","Accept":"application/vnd.github+json"},
+          )
+          with urllib.request.urlopen(req) as response: current=json.load(response)
+          matches=[a for a in current['artifacts'] if a['name']=='QTR-C90-selector0-independent-oracle-result']
+          assert len(matches)==1 and matches[0]['expired'] is False
+          oracle_meta=matches[0]
           observed=V._parse_native_value('sum_product_bsc_p_0_1',native_row)
-          context=Base.load_c90_context()
-          expected=DAG.direct_contract_selector(context,'sum_product_bsc_p_0_1',coordinate)
-          assert observed==expected, 'C90 exact semantic mismatch at selector zero'
-          encoding=V._canonical_value_encoding('sum_product_bsc_p_0_1',observed)
-          expected_encoding=V._canonical_value_encoding('sum_product_bsc_p_0_1',expected)
-          assert encoding==expected_encoding
+          native_encoding=V._canonical_value_encoding('sum_product_bsc_p_0_1',observed)
+          assert native_receipt['native_value_encoding']==native_encoding
+          assert oracle['status']=='C90_NUMERIC_ORACLE_EXACT_RESULT_PRESERVED'
+          assert oracle['coordinate']==native_receipt['selector_coordinate']==native_row['selector_coordinate']==0
+          assert oracle['value_encoding']==native_encoding
+          assert oracle['value_sha256']==native_receipt['native_value_sha256']
           gate={
               'experiment_id': Base.EXPERIMENT_ID,
               'phase': 'QUALITY_BLIND_FULL_SCALE_SELECTOR_ZERO_GATE',
               'status': 'C90_FULL_SCALE_NATIVE_SEMANTIC_SMOKE_PASS',
               'validation_subject_commit': os.environ['SUBJECT_SHA'],
-              'compiled_source_commit': os.environ['COMPILED_SOURCE_HEAD'],
-              'compiled_artifact': {
-                  'workflow_run_id': int(os.environ['COMPILED_RUN_ID']),
-                  'artifact_id': int(os.environ['COMPILED_ARTIFACT_ID']),
-                  'artifact_name': os.environ['COMPILED_ARTIFACT_NAME'],
-                  'artifact_digest': os.environ['COMPILED_ARTIFACT_DIGEST'],
+              'native_result': {
+                  'source_commit': os.environ['NATIVE_RESULT_SOURCE_HEAD'],
+                  'workflow_run_id': int(os.environ['NATIVE_RESULT_RUN_ID']),
+                  'artifact_id': int(os.environ['NATIVE_RESULT_ARTIFACT_ID']),
+                  'artifact_digest': os.environ['NATIVE_RESULT_ARTIFACT_DIGEST'],
+                  'receipt_payload_sha256': native_receipt['payload_sha256'],
               },
-              'checkpoint_resume': {
-                  'source_commit': os.environ['CHECKPOINT_SOURCE_HEAD'],
-                  'workflow_run_id': int(os.environ['CHECKPOINT_RUN_ID']),
-                  'artifact_id': int(os.environ['CHECKPOINT_ARTIFACT_ID']),
-                  'artifact_digest': os.environ['CHECKPOINT_ARTIFACT_DIGEST'],
-                  'next_node': 200000000,
-                  'scientific_semantics_changed': False,
+              'independent_oracle_result': {
+                  'workflow_run_id': int(os.environ['GITHUB_RUN_ID']),
+                  'artifact_id': int(oracle_meta['id']),
+                  'artifact_digest': oracle_meta['digest'],
+                  'receipt_payload_sha256': oracle['payload_sha256'],
               },
-              'native_result_receipt_sha256': native_receipt['payload_sha256'],
               'selector_index': 0,
-              'selector_coordinate': coordinate,
-              'native_exact_value': encoding,
-              'direct_oracle_exact_value': expected_encoding,
+              'selector_coordinate': 0,
+              'native_exact_value': native_encoding,
+              'direct_oracle_exact_value': oracle['value_encoding'],
               'exact_equal': True,
               'reachable_nodes': int(native_row['reachable_nodes']),
               'peak_live_values': int(native_row['peak_live_values']),
@@ -301,6 +318,7 @@ jobs:
                   'python': sys.version.split()[0],
                   'evaluator_blob_sha1': os.environ['EVALUATOR_BLOB_SHA1'],
                   'validator_blob_sha1': os.environ['VALIDATOR_BLOB_SHA1'],
+                  'dag_blob_sha1': os.environ['DAG_BLOB_SHA1'],
                   'completed_at_utc': datetime.now(timezone.utc).isoformat(),
               },
               'quality_exposed': False,
@@ -319,6 +337,6 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
-# The 307-selector / three-algebra matrix is intentionally not launched from
-# this head. It is enabled only after the selector-zero gate above completes,
-# its durable receipt is inspected, and the current exact head is reverified.
+# The 307-selector / three-algebra matrix remains disabled. It is enabled only
+# after this exact selector-zero gate receipt is inspected and the current head
+# is reverified. Decoder quality and the 347-case campaign remain unopened.
