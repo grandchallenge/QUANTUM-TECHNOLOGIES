@@ -1,0 +1,163 @@
+name: QTR C90 dense exact selector oracle recovery
+
+on:
+  pull_request:
+    paths:
+      - "reference/qtr_c90_exact_dense_oracle_001.cpp"
+      - "reference/qtr_c90_exact_dense_oracle_001.py"
+      - "tests/test_qtr_c90_exact_dense_oracle_001.py"
+      - ".github/workflows/qtr-c90-exact-decoder-001-dense-oracle-recovery.yml"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  RECOVERY_BASE_HEAD: "0897fbc4c0087468af189ff735a1f5f098a5e72c"
+  FINAL_GATE_RUN_ID: "35081388053"
+  FINAL_GATE_ARTIFACT_ID: "10440336547"
+  FINAL_GATE_ARTIFACT_NAME: "QTR-C90-selector0-quality-blind-gate-final"
+  FINAL_GATE_ARTIFACT_DIGEST: "sha256:27ad98ca6cb5e6ccfa8200ed42aef0b16456689e4c4b76036478ebae928fc1e6"
+  NATIVE_RESULT_RUN_ID: "35041384347"
+  NATIVE_RESULT_ARTIFACT_ID: "10424824908"
+  NATIVE_RESULT_ARTIFACT_NAME: "QTR-C90-selector0-native-exact-result"
+  NATIVE_RESULT_ARTIFACT_DIGEST: "sha256:0a0544934da4de0820e80fd6d882de5365187edf01f04b214e9558cb02f3c4f3"
+  EVALUATOR_BLOB_SHA1: "92022fa89ceff9cf4ac0c9b6ce8613617664e1a6"
+  VALIDATOR_BLOB_SHA1: "364d267f757ab184deaa987ce7a93064314e1c13"
+  DAG_BLOB_SHA1: "bb2576ea17beb43f1a188eb4a77a280869d0c954"
+  DECODER_BLOB_SHA1: "7a275cd40b7ee8861ac1675791490b50d0266c50"
+
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.8"
+      - name: Assert bounded recovery head and unchanged frozen implementations
+        run: |
+          test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+          test "$(git rev-parse HEAD^)" = "$RECOVERY_BASE_HEAD"
+          mapfile -t CHANGED < <(git diff --name-only "$RECOVERY_BASE_HEAD" "$SUBJECT_SHA" | sort)
+          EXPECTED=(
+            ".github/workflows/qtr-c90-exact-decoder-001-dense-oracle-recovery.yml"
+            "reference/qtr_c90_exact_dense_oracle_001.cpp"
+            "reference/qtr_c90_exact_dense_oracle_001.py"
+            "tests/test_qtr_c90_exact_dense_oracle_001.py"
+          )
+          test "${#CHANGED[@]}" -eq "${#EXPECTED[@]}"
+          for i in "${!EXPECTED[@]}"; do test "${CHANGED[$i]}" = "${EXPECTED[$i]}"; done
+          test "$(git hash-object reference/qtr_c90_exact_native_eval_001.cpp)" = "$EVALUATOR_BLOB_SHA1"
+          test "$(git hash-object reference/qtr_c90_exact_native_validate_001.py)" = "$VALIDATOR_BLOB_SHA1"
+          test "$(git hash-object reference/qtr_c90_exact_dag_001.py)" = "$DAG_BLOB_SHA1"
+          test "$(git hash-object reference/qtr_c90_exact_decoder_001.py)" = "$DECODER_BLOB_SHA1"
+      - name: Verify final selector-zero gate identity
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request
+          artifact_id=os.environ['FINAL_GATE_ARTIFACT_ID']
+          req=urllib.request.Request(
+              f"https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/actions/artifacts/{artifact_id}",
+              headers={"Authorization":f"Bearer {os.environ['GH_TOKEN']}","Accept":"application/vnd.github+json"},
+          )
+          with urllib.request.urlopen(req) as response: meta=json.load(response)
+          assert str(meta['id'])==artifact_id
+          assert meta['name']==os.environ['FINAL_GATE_ARTIFACT_NAME']
+          assert meta['digest']==os.environ['FINAL_GATE_ARTIFACT_DIGEST']
+          assert meta['expired'] is False
+          assert str(meta['workflow_run']['id'])==os.environ['FINAL_GATE_RUN_ID']
+          assert meta['workflow_run']['head_sha']==os.environ['RECOVERY_BASE_HEAD']
+          print('C90_FINAL_SELECTOR0_GATE_IDENTITY_PASS', meta['id'], meta['digest'])
+          PY
+      - name: Restore and inspect final selector-zero gate
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ env.FINAL_GATE_ARTIFACT_NAME }}
+          path: /tmp/c90-gate
+          github-token: ${{ github.token }}
+          repository: grandchallenge/QUANTUM-TECHNOLOGIES
+          run-id: ${{ env.FINAL_GATE_RUN_ID }}
+      - name: Require passed quality-blind gate and closed quality boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          gate=json.loads(Path('/tmp/c90-gate/QTR-C90-selector0-quality-blind-gate.json').read_text())
+          assert gate['status']=='C90_FULL_SCALE_NATIVE_SEMANTIC_SMOKE_PASS'
+          assert gate['exact_equal'] is True
+          assert gate['quality_exposed'] is False
+          assert gate['injected_error_success_used'] is False
+          assert gate['activation_eligible'] is False
+          print('C90_DENSE_RECOVERY_GATE_PRECONDITION_PASS', gate['payload_sha256'])
+          PY
+      - name: Compile and run bounded exact dense-oracle tests
+        run: python -m unittest tests.test_qtr_c90_exact_dense_oracle_001 -v
+
+  selector-zero-full-scale:
+    needs: preflight
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    env:
+      OMP_NUM_THREADS: "4"
+      OMP_PROC_BIND: "close"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.8"
+      - name: Restore preserved exact native selector-zero result
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ env.NATIVE_RESULT_ARTIFACT_NAME }}
+          path: /tmp/c90-native
+          github-token: ${{ github.token }}
+          repository: grandchallenge/QUANTUM-TECHNOLOGIES
+          run-id: ${{ env.NATIVE_RESULT_RUN_ID }}
+      - name: Compile independent dense exact projection-plan oracle
+        run: |
+          g++ -O3 -DNDEBUG -std=c++20 -fopenmp -Wall -Wextra -Werror \
+            reference/qtr_c90_exact_dense_oracle_001.cpp \
+            -o /tmp/qtr-c90-dense-oracle
+      - name: Replay full-scale selector zero through independent dense oracle
+        run: |
+          mkdir -p /tmp/c90-dense
+          /usr/bin/time -v python reference/qtr_c90_exact_dense_oracle_001.py \
+            --oracle-executable /tmp/qtr-c90-dense-oracle \
+            --algebra sum_product_bsc_p_0_1 \
+            --coordinate 0 \
+            --native-row /tmp/c90-native/native-selector0.jsonl \
+            --output /tmp/c90-dense/selector0-sum-product-dense-oracle.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-dense/selector0-sum-product-dense-oracle.json').read_text())
+          assert r['status']=='C90_DENSE_EXACT_SELECTOR_ORACLE_PASS'
+          assert r['algebra']=='sum_product_bsc_p_0_1'
+          assert r['selector_coordinate']==0
+          assert r['exact_equal_to_native'] is True
+          assert r['numeric_modulus_product_bit_length'] > r['sum_product_strict_bound_bit_length']
+          assert r['quality_exposed'] is False and r['injected_error_success_used'] is False
+          print('C90_DENSE_FULL_SCALE_SELECTOR0_EXACT_PASS', r['payload_sha256'])
+          PY
+      - name: Preserve dense full-scale selector-zero qualification
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-dense-oracle-selector0-qualification
+          path: /tmp/c90-dense/selector0-sum-product-dense-oracle.json
+          if-no-files-found: error
+          retention-days: 90
+
+# This recovery qualifies an independent quality-blind validation backend only.
+# It does not enable the 347-case decoder-quality campaign.
