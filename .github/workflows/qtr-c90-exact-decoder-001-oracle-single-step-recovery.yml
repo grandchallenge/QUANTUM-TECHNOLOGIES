@@ -1,0 +1,126 @@
+name: QTR C90 selector-zero oracle single-step recovery
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/qtr-c90-exact-decoder-001-oracle-single-step-recovery.yml"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  RECOVERY_BASE_HEAD: "fa0dfc87b55bbb56a470df2fc8573805667c30f5"
+  STEP16_RUN_ID: "35042148520"
+  STEP16_ARTIFACT_ID: "10425736133"
+  STEP16_ARTIFACT_NAME: "QTR-C90-oracle-selector0-step-16"
+  STEP16_ARTIFACT_DIGEST: "sha256:04f40f74558bcd8920efc8cac80afc551014bc199b8c44f0efd5140629f34f15"
+  ORACLE_BLOB_SHA1: "c48e738b25d336137d3e48b944bde4a9abd08e27"
+  DAG_BLOB_SHA1: "bb2576ea17beb43f1a188eb4a77a280869d0c954"
+
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.8"
+      - name: Assert workflow-only recovery head
+        run: |
+          test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+          test "$(git hash-object reference/qtr_c90_exact_oracle_checkpoint_001.py)" = "$ORACLE_BLOB_SHA1"
+          test "$(git hash-object reference/qtr_c90_exact_dag_001.py)" = "$DAG_BLOB_SHA1"
+          mapfile -t CHANGED < <(git diff --name-only "$RECOVERY_BASE_HEAD" "$SUBJECT_SHA")
+          test "${#CHANGED[@]}" -eq 1
+          test "${CHANGED[0]}" = ".github/workflows/qtr-c90-exact-decoder-001-oracle-single-step-recovery.yml"
+      - name: Verify durable exact step-16 checkpoint identity
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request
+          req=urllib.request.Request(
+              f"https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/actions/artifacts/{os.environ['STEP16_ARTIFACT_ID']}",
+              headers={"Authorization":f"Bearer {os.environ['GH_TOKEN']}","Accept":"application/vnd.github+json"},
+          )
+          with urllib.request.urlopen(req) as response:
+              meta=json.load(response)
+          assert str(meta['id']) == os.environ['STEP16_ARTIFACT_ID']
+          assert meta['name'] == os.environ['STEP16_ARTIFACT_NAME']
+          assert meta['digest'] == os.environ['STEP16_ARTIFACT_DIGEST']
+          assert meta['expired'] is False
+          assert str(meta['workflow_run']['id']) == os.environ['STEP16_RUN_ID']
+          assert meta['workflow_run']['head_sha'] == '3c0b05cfd5f9cf163581e5f8b86b7733183e39bb'
+          print('C90_STEP16_SINGLE_RECOVERY_IDENTITY_PASS', meta['id'], meta['digest'])
+          PY
+
+  oracle-17:
+    needs: preflight
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore step 16
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ env.STEP16_ARTIFACT_NAME }}
+          path: /tmp/c90-prev
+          github-token: ${{ github.token }}
+          repository: grandchallenge/QUANTUM-TECHNOLOGIES
+          run-id: ${{ env.STEP16_RUN_ID }}
+      - name: Advance exact oracle 16 to 17
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_checkpoint_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 --stop-step 17 \
+            --checkpoint-in /tmp/c90-prev/oracle-16.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-16.json \
+            --checkpoint-out /tmp/c90-next/oracle-17.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-17.json
+      - name: Preserve step 17
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-17
+          path: /tmp/c90-next/oracle-17.*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  oracle-18:
+    needs: oracle-17
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: "${{ env.SUBJECT_SHA }}", fetch-depth: 0 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with: { name: QTR-C90-oracle-selector0-step-17, path: /tmp/c90-prev }
+      - name: Advance exact oracle 17 to 18
+        run: |
+          mkdir -p /tmp/c90-next
+          /usr/bin/time -v python reference/qtr_c90_exact_oracle_checkpoint_001.py \
+            --algebra sum_product_bsc_p_0_1 --coordinate 0 --stop-step 18 \
+            --checkpoint-in /tmp/c90-prev/oracle-17.pkl \
+            --checkpoint-receipt-in /tmp/c90-prev/oracle-17.json \
+            --checkpoint-out /tmp/c90-next/oracle-18.pkl \
+            --checkpoint-receipt-out /tmp/c90-next/oracle-18.json
+      - name: Preserve step 18
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-oracle-selector0-step-18
+          path: /tmp/c90-next/oracle-18.*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
