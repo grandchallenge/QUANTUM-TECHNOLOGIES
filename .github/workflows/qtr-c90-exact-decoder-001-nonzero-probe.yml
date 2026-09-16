@@ -1,0 +1,166 @@
+name: QTR C90 first nonzero selector exact probe
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/qtr-c90-exact-decoder-001-nonzero-probe.yml"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  PROBE_BASE_HEAD: "6e732b756a1f62c3f8a7228f43ea3ba879122d78"
+  DENSE_QUAL_RUN_ID: "35082993393"
+  DENSE_QUAL_ARTIFACT_ID: "10440508393"
+  DENSE_QUAL_ARTIFACT_NAME: "QTR-C90-dense-oracle-selector0-qualification"
+  DENSE_QUAL_ARTIFACT_DIGEST: "sha256:b183b67413ca607a9146018f1ffac5f6c65cc1b6d882424959ec254151e0af31"
+  COMPILE_RUN_ID: "34947590855"
+  COMPILE_SOURCE_HEAD: "c4e1d757bdf89fa5eceaf2e38b8a34ff3ee3a78c"
+  COMPILE_ARTIFACT_ID: "10388753864"
+  COMPILE_ARTIFACT_NAME: "QTR-C90-compact-native-sum_product_bsc_p_0_1"
+  COMPILE_ARTIFACT_DIGEST: "sha256:1d852e71b93a9b1dcff7eba43b29a3f37e3095f63059ed26ab3c512b5d00fc4c"
+  NATIVE_BINARY_SHA256: "2efe52e17c6d66920b23738987818184657caf479c60c78712dff6db4a306bde"
+  EVALUATOR_BLOB_SHA1: "92022fa89ceff9cf4ac0c9b6ce8613617664e1a6"
+  DENSE_CPP_BLOB_SHA1: "362f2580a188047032a33eba516e26461c96eba3"
+  DENSE_PY_BLOB_SHA1: "b1369543df32af80e428e5ba7d7bc4b0afa41b8d"
+  DAG_BLOB_SHA1: "bb2576ea17beb43f1a188eb4a77a280869d0c954"
+  DECODER_BLOB_SHA1: "7a275cd40b7ee8861ac1675791490b50d0266c50"
+
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Assert workflow-only probe head and unchanged implementations
+        run: |
+          test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
+          test "$(git rev-parse HEAD^)" = "$PROBE_BASE_HEAD"
+          mapfile -t CHANGED < <(git diff --name-only "$PROBE_BASE_HEAD" "$SUBJECT_SHA" | sort)
+          test "${#CHANGED[@]}" -eq 1
+          test "${CHANGED[0]}" = ".github/workflows/qtr-c90-exact-decoder-001-nonzero-probe.yml"
+          test "$(git hash-object reference/qtr_c90_exact_native_eval_001.cpp)" = "$EVALUATOR_BLOB_SHA1"
+          test "$(git hash-object reference/qtr_c90_exact_dense_oracle_001.cpp)" = "$DENSE_CPP_BLOB_SHA1"
+          test "$(git hash-object reference/qtr_c90_exact_dense_oracle_001.py)" = "$DENSE_PY_BLOB_SHA1"
+          test "$(git hash-object reference/qtr_c90_exact_dag_001.py)" = "$DAG_BLOB_SHA1"
+          test "$(git hash-object reference/qtr_c90_exact_decoder_001.py)" = "$DECODER_BLOB_SHA1"
+      - name: Verify dense qualification and compile artifact identities
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request
+          def artifact(aid):
+              req=urllib.request.Request(
+                  f"https://api.github.com/repos/grandchallenge/QUANTUM-TECHNOLOGIES/actions/artifacts/{aid}",
+                  headers={"Authorization":f"Bearer {os.environ['GH_TOKEN']}","Accept":"application/vnd.github+json"},
+              )
+              with urllib.request.urlopen(req) as r: return json.load(r)
+          dense=artifact(os.environ['DENSE_QUAL_ARTIFACT_ID'])
+          assert dense['name']==os.environ['DENSE_QUAL_ARTIFACT_NAME']
+          assert dense['digest']==os.environ['DENSE_QUAL_ARTIFACT_DIGEST'] and dense['expired'] is False
+          assert str(dense['workflow_run']['id'])==os.environ['DENSE_QUAL_RUN_ID']
+          assert dense['workflow_run']['head_sha']==os.environ['PROBE_BASE_HEAD']
+          compiled=artifact(os.environ['COMPILE_ARTIFACT_ID'])
+          assert compiled['name']==os.environ['COMPILE_ARTIFACT_NAME']
+          assert compiled['digest']==os.environ['COMPILE_ARTIFACT_DIGEST'] and compiled['expired'] is False
+          assert str(compiled['workflow_run']['id'])==os.environ['COMPILE_RUN_ID']
+          assert compiled['workflow_run']['head_sha']==os.environ['COMPILE_SOURCE_HEAD']
+          print('C90_NONZERO_PROBE_ARTIFACT_IDENTITIES_PASS', dense['id'], compiled['id'])
+          PY
+      - name: Assert coordinate one is the first frozen nonzero selector
+        run: |
+          python - <<'PY'
+          import sys
+          sys.path.insert(0,'reference')
+          import qtr_c90_exact_decoder_001 as Base
+          coords=Base.frozen_validation_coordinates()
+          assert Base.digest(coords)==Base.C90_VALIDATION_SET_SHA
+          assert coords[0]==0 and coords[1]==1
+          print('C90_FIRST_NONZERO_SELECTOR_FROZEN_PASS', coords[1])
+          PY
+
+  coordinate-one:
+    needs: preflight
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    env:
+      OMP_NUM_THREADS: "4"
+      OMP_PROC_BIND: "close"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12.8" }
+      - name: Restore exact compiled sum-product DAG
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ env.COMPILE_ARTIFACT_NAME }}
+          path: /tmp/c90-compiled
+          github-token: ${{ github.token }}
+          repository: grandchallenge/QUANTUM-TECHNOLOGIES
+          run-id: ${{ env.COMPILE_RUN_ID }}
+      - name: Bind restored native binary and compile frozen evaluators
+        run: |
+          mapfile -t LARGE < <(find /tmp/c90-compiled -type f -size +500M -print)
+          test "${#LARGE[@]}" -eq 1
+          printf '%s\n' "${LARGE[0]}" > /tmp/native-path
+          test "$(sha256sum "${LARGE[0]}" | awk '{print $1}')" = "$NATIVE_BINARY_SHA256"
+          g++ -O3 -DNDEBUG -std=c++20 -Wall -Wextra -Werror \
+            reference/qtr_c90_exact_native_eval_001.cpp -o /tmp/qtr-c90-native-eval
+          g++ -O3 -DNDEBUG -std=c++20 -fopenmp -Wall -Wextra -Werror \
+            reference/qtr_c90_exact_dense_oracle_001.cpp -o /tmp/qtr-c90-dense-oracle
+      - name: Evaluate frozen coordinate one through unchanged native DAG
+        run: |
+          mkdir -p /tmp/c90-probe
+          printf '1 1\n' > /tmp/c90-probe/selectors.txt
+          NATIVE="$(cat /tmp/native-path)"
+          /usr/bin/time -v /tmp/qtr-c90-native-eval \
+            --native "$NATIVE" --selectors /tmp/c90-probe/selectors.txt \
+            > /tmp/c90-probe/native-coordinate-1.jsonl
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          rows=[json.loads(line) for line in Path('/tmp/c90-probe/native-coordinate-1.jsonl').read_text().splitlines() if line.strip()]
+          assert len(rows)==1
+          r=rows[0]
+          assert r['status']=='C90_COMPACT_NATIVE_SELECTOR_EVALUATED'
+          assert r['algebra_id']==0 and r['selector_index']==1 and r['selector_coordinate']==1
+          assert r['quality_exposed'] is False
+          print('C90_NATIVE_COORDINATE_ONE_PASS', r['reachable_nodes'], r['peak_live_values'], r['value_hex'])
+          PY
+      - name: Require independent dense-oracle exact equality at coordinate one
+        run: |
+          /usr/bin/time -v python reference/qtr_c90_exact_dense_oracle_001.py \
+            --oracle-executable /tmp/qtr-c90-dense-oracle \
+            --algebra sum_product_bsc_p_0_1 --coordinate 1 \
+            --native-row /tmp/c90-probe/native-coordinate-1.jsonl \
+            --output /tmp/c90-probe/dense-coordinate-1.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/c90-probe/dense-coordinate-1.json').read_text())
+          assert r['status']=='C90_DENSE_EXACT_SELECTOR_ORACLE_PASS'
+          assert r['selector_coordinate']==1 and r['exact_equal_to_native'] is True
+          assert r['quality_exposed'] is False and r['injected_error_success_used'] is False
+          print('C90_COORDINATE_ONE_NATIVE_DENSE_EXACT_PASS', r['payload_sha256'])
+          PY
+      - name: Preserve first nonzero exact probe
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: QTR-C90-first-nonzero-selector-exact-probe
+          path: /tmp/c90-probe/
+          if-no-files-found: error
+          retention-days: 90
+
+# Quality remains closed. This probe only qualifies matrix execution mechanics.
