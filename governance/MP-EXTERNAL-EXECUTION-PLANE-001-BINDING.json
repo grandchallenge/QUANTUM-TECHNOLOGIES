@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "record_type": "PROGRAMME_EXECUTION_PROFILE_BINDING",
+  "repository": "grandchallenge/QUANTUM-TECHNOLOGIES",
+  "programme_profile": "MP-EXTERNAL-EXECUTION-PLANE-001",
+  "programme_repository": "grandchallenge/MATH-PROGRAMME",
+  "programme_candidate_head": "4e88d03e650b013ca6c4846ad5c1f80f48d1f0a6",
+  "programme_pull_request": 1028,
+  "status": "CANDIDATE_DEPENDENCY_PENDING_PROTECTED_MERGE",
+  "activation_condition": "replace candidate head with exact protected MATH-PROGRAMME merge/readback before this binding may become effective",
+  "applies_to": [
+    "QTR-C90-EXACT-DECODER-001 retry",
+    "QTR-C90-EXACT-DECODER-001 successor execution"
+  ],
+  "current_inflight_execution_grandfathered": true,
+  "claim_boundaries": {
+    "mathematical_certification": false,
+    "scientific_claim_promotion": false,
+    "credential_authority": false,
+    "production_activation": false,
+    "publication_authority": false
+  }
+}
