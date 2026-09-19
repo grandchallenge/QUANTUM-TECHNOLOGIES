@@ -343,12 +343,17 @@ def verify(args: argparse.Namespace) -> None:
     print(json.dumps(result, sort_keys=True))
 
 
+def validate_profile_command(args: argparse.Namespace) -> None:
+    validate_profile(load_json(PROFILE_PATH))
+    print("QTR external execution profile: valid")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
 
     p = sub.add_parser("validate-profile")
-    p.set_defaults(func=lambda args: (validate_profile(load_json(PROFILE_PATH)), print("QTR external execution profile: valid")))
+    p.set_defaults(func=validate_profile_command)
 
     p = sub.add_parser("materialize")
     p.add_argument("--provider-class", required=True, choices=sorted(PROVIDER_CLASSES))
