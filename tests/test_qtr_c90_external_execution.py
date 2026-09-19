@@ -6,6 +6,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 from types import SimpleNamespace
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,9 +28,18 @@ class QTRExternalExecutionTests(unittest.TestCase):
         self.assertIn("sum_product_bsc_p_0_1/class-000", units)
         self.assertIn("min_plus_hamming/class-255", units)
 
-    def test_materialization_is_provider_bound_and_has_768_jobs(self) -> None:
+    def _effective_binding(self, root: Path) -> Path:
+        binding = mod.load_json(mod.BINDING_PATH)
+        binding["status"] = "EFFECTIVE"
+        binding["programme_protected_head"] = "a" * 40
+        binding["programme_profile_blob_sha1"] = "b" * 40
+        path = root / "binding.json"
+        path.write_text(json.dumps(binding, sort_keys=True), encoding="utf-8")
+        return path
+
+    def test_pending_programme_binding_blocks_materialization(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            out = Path(tmp) / "run"
+            out = Path(tmp) / "blocked"
             args = SimpleNamespace(
                 provider_class="slurm",
                 adapter="gcl-slurm-v1",
@@ -37,7 +47,23 @@ class QTRExternalExecutionTests(unittest.TestCase):
                 parallelism=48,
                 output=str(out),
             )
-            mod.materialize(args)
+            with self.assertRaises(mod.ExternalExecutionError):
+                mod.materialize(args)
+
+    def test_materialization_is_provider_bound_and_has_768_jobs(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            out = root / "run"
+            binding = self._effective_binding(root)
+            args = SimpleNamespace(
+                provider_class="slurm",
+                adapter="gcl-slurm-v1",
+                source_payload_sha256="1" * 64,
+                parallelism=48,
+                output=str(out),
+            )
+            with mock.patch.object(mod, "BINDING_PATH", binding):
+                mod.materialize(args)
             manifest = mod.load_json(out / "MANIFEST.json")
             self.assertEqual("slurm", manifest["provider"]["class"])
             self.assertFalse(manifest["provider"]["repository_write_credentials"])
@@ -47,7 +73,9 @@ class QTRExternalExecutionTests(unittest.TestCase):
 
     def test_parallelism_is_capped_by_profile(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            out = Path(tmp) / "run"
+            root = Path(tmp)
+            out = root / "run"
+            binding = self._effective_binding(root)
             args = SimpleNamespace(
                 provider_class="other_external",
                 adapter="provider-neutral-v1",
@@ -55,7 +83,8 @@ class QTRExternalExecutionTests(unittest.TestCase):
                 parallelism=768,
                 output=str(out),
             )
-            mod.materialize(args)
+            with mock.patch.object(mod, "BINDING_PATH", binding):
+                mod.materialize(args)
             manifest = mod.load_json(out / "MANIFEST.json")
             self.assertEqual(48, manifest["operational_parameters"]["parallelism_ceiling"])
 

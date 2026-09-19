@@ -11,6 +11,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE_PATH = ROOT / "execution/external/QTR-C90-EXACT-DECODER-001/PROFILE.json"
+BINDING_PATH = ROOT / "governance/MP-EXTERNAL-EXECUTION-PLANE-001-BINDING.json"
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
 SHA64 = re.compile(r"^[0-9a-f]{64}$")
 PROVIDER_CLASSES = {"cloud_batch", "kubernetes", "slurm", "hosted_session", "local_batch", "other_external"}
@@ -87,6 +88,33 @@ def validate_profile(profile: dict[str, Any]) -> None:
         raise ExternalExecutionError("profile may not widen claim authority")
 
 
+def validate_programme_binding(*, require_effective: bool) -> dict[str, Any]:
+    binding = load_json(BINDING_PATH)
+    if binding.get("record_type") != "PROGRAMME_EXECUTION_PROFILE_BINDING":
+        raise ExternalExecutionError("Programme binding record type drift")
+    if binding.get("repository") != "grandchallenge/QUANTUM-TECHNOLOGIES":
+        raise ExternalExecutionError("Programme binding repository drift")
+    if binding.get("programme_profile") != "MP-EXTERNAL-EXECUTION-PLANE-001":
+        raise ExternalExecutionError("Programme execution profile drift")
+    if binding.get("programme_repository") != "grandchallenge/MATH-PROGRAMME":
+        raise ExternalExecutionError("Programme binding provider repository drift")
+    if not SHA40.fullmatch(str(binding.get("programme_candidate_head", ""))):
+        raise ExternalExecutionError("Programme candidate head is not exact")
+    status = binding.get("status")
+    if status not in {"CANDIDATE_DEPENDENCY_PENDING_PROTECTED_MERGE", "EFFECTIVE"}:
+        raise ExternalExecutionError("Programme binding status drift")
+    if require_effective and status != "EFFECTIVE":
+        raise ExternalExecutionError("Programme external-execution profile is not protected/effective")
+    if status == "EFFECTIVE":
+        if not SHA40.fullmatch(str(binding.get("programme_protected_head", ""))):
+            raise ExternalExecutionError("effective Programme binding lacks exact protected head")
+        if not SHA40.fullmatch(str(binding.get("programme_profile_blob_sha1", ""))):
+            raise ExternalExecutionError("effective Programme binding lacks exact profile blob")
+    if any(bool(v) for v in binding.get("claim_boundaries", {}).values()):
+        raise ExternalExecutionError("Programme binding may not widen authority")
+    return binding
+
+
 def work_unit_id(algebra: str, logical_class: int) -> str:
     return f"{algebra}/class-{logical_class:03d}"
 
@@ -103,6 +131,7 @@ def expected_units(profile: dict[str, Any]) -> dict[str, tuple[str, int]]:
 def materialize(args: argparse.Namespace) -> None:
     profile = load_json(PROFILE_PATH)
     validate_profile(profile)
+    validate_programme_binding(require_effective=True)
     if args.provider_class not in PROVIDER_CLASSES:
         raise ExternalExecutionError(f"unsupported provider class: {args.provider_class}")
     if not args.adapter.strip():
@@ -345,7 +374,8 @@ def verify(args: argparse.Namespace) -> None:
 
 def validate_profile_command(args: argparse.Namespace) -> None:
     validate_profile(load_json(PROFILE_PATH))
-    print("QTR external execution profile: valid")
+    validate_programme_binding(require_effective=False)
+    print("QTR external execution profile and Programme binding: valid")
 
 
 def main() -> int:

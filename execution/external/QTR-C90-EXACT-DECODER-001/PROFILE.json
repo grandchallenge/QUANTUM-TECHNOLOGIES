@@ -6,7 +6,7 @@
   "authority": {
     "execution_docket": "grandchallenge/QUANTUM-TECHNOLOGIES#114",
     "programme_profile": "MP-EXTERNAL-EXECUTION-PLANE-001",
-    "programme_candidate_head": "4e88d03e650b013ca6c4846ad5c1f80f48d1f0a6",
+    "programme_candidate_head": "d5f9d2da3b0ace24d9116a437e097251ab4368b7",
     "programme_pull_request": 1028,
     "programme_protected_pin_required_before_activation": true
   },
