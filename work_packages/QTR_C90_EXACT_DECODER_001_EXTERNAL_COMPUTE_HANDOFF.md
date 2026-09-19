@@ -110,3 +110,68 @@ Permitted GitHub Actions work for this campaign is limited to bounded software-l
 - deterministic recomputation of small receipt predicates.
 
 The scientific outcome is not complete until the external exact run produces the full fixed-correction surface and independent matched-comparison receipt.
+
+## External runner
+
+Runner:
+
+`scripts/run_qtr_c90_exact_decoder_external.py`
+
+The runner uses the host's authenticated `gh` session only to retrieve and verify the frozen compile artifacts and the protected conventional comparison artifact. It does not submit scientific work to GitHub Actions.
+
+It verifies the frozen scientific blob identities before every scientific operation and refuses a source drift.
+
+Inspect the host before launch:
+
+```bash
+python scripts/run_qtr_c90_exact_decoder_external.py plan
+```
+
+The memory guard assumes 7 GiB per active native evaluator plus an 8 GiB host reserve. The runner will refuse a requested worker count above the conservative RAM/CPU limit.
+
+Run one complete algebra surface:
+
+```bash
+python scripts/run_qtr_c90_exact_decoder_external.py evaluate \
+  --algebra min_plus_hamming \
+  --workers 16 \
+  --work-root /data/qtr-c90
+
+python scripts/run_qtr_c90_exact_decoder_external.py evaluate \
+  --algebra soft_tropical_base_2 \
+  --workers 16 \
+  --work-root /data/qtr-c90
+
+python scripts/run_qtr_c90_exact_decoder_external.py evaluate \
+  --algebra sum_product_bsc_p_0_1 \
+  --workers 16 \
+  --work-root /data/qtr-c90
+```
+
+The three algebra surfaces may be run on separate external hosts. Before final aggregation, collect their `external-shards/<algebra>/` trees under one common work root. Every accepted shard has an `external-shard.json` marker with `execution_substrate: external`; the runner will not treat a GitHub-hosted shard artifact as resumable authoritative evidence.
+
+After all three external surfaces are complete:
+
+```bash
+python scripts/run_qtr_c90_exact_decoder_external.py aggregate-score \
+  --work-root /data/qtr-c90
+```
+
+The aggregate step first fixes all 347 corrections with quality still closed. Only then does the separate score step load the protected conventional artifact and expose the authorized matched comparison.
+
+Representative class-0 engineering timings from the retired hosted-runner attempt were:
+
+- `min_plus_hamming`: 4,000 seconds;
+- `soft_tropical_base_2`: 7,038 seconds;
+- `sum_product_bsc_p_0_1`: 7,588 seconds.
+
+These are planning diagnostics only. Assuming similar external CPU throughput, estimated per-algebra wall time is:
+
+| Workers | Conservative RAM floor | min-plus | soft-tropical | sum-product |
+|---:|---:|---:|---:|---:|
+| 8 | 64 GiB | 35.56 h | 62.56 h | 67.45 h |
+| 16 | 120 GiB | 17.78 h | 31.28 h | 33.72 h |
+| 32 | 232 GiB | 8.89 h | 15.64 h | 16.86 h |
+
+The timings are not scientific claims. They only size the external host.
+
