@@ -16,6 +16,9 @@ BINDING_PATH = ROOT / "governance/MP-EXTERNAL-EXECUTION-PLANE-001-BINDING.json"
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
 SHA64 = re.compile(r"^[0-9a-f]{64}$")
 PROVIDER_CLASSES = {"cloud_batch", "kubernetes", "slurm", "hosted_session", "local_batch", "other_external"}
+PROGRAMME_CANDIDATE_HEAD = "d5f9d2da3b0ace24d9116a437e097251ab4368b7"
+PROGRAMME_PROTECTED_HEAD = "c85317b5cdce4e31ea9ba835ef9e27da40f2e2b1"
+PROGRAMME_PROFILE_BLOB_SHA1 = "cb006c2185c9ed7641d89a1c8a9635b8c86977a2"
 
 
 class ExternalExecutionError(ValueError):
@@ -99,18 +102,18 @@ def validate_programme_binding(*, require_effective: bool) -> dict[str, Any]:
         raise ExternalExecutionError("Programme execution profile drift")
     if binding.get("programme_repository") != "grandchallenge/MATH-PROGRAMME":
         raise ExternalExecutionError("Programme binding provider repository drift")
-    if not SHA40.fullmatch(str(binding.get("programme_candidate_head", ""))):
-        raise ExternalExecutionError("Programme candidate head is not exact")
+    if binding.get("programme_candidate_head") != PROGRAMME_CANDIDATE_HEAD:
+        raise ExternalExecutionError("Programme candidate provenance drift")
     status = binding.get("status")
     if status not in {"CANDIDATE_DEPENDENCY_PENDING_PROTECTED_MERGE", "EFFECTIVE"}:
         raise ExternalExecutionError("Programme binding status drift")
     if require_effective and status != "EFFECTIVE":
         raise ExternalExecutionError("Programme external-execution profile is not protected/effective")
     if status == "EFFECTIVE":
-        if not SHA40.fullmatch(str(binding.get("programme_protected_head", ""))):
-            raise ExternalExecutionError("effective Programme binding lacks exact protected head")
-        if not SHA40.fullmatch(str(binding.get("programme_profile_blob_sha1", ""))):
-            raise ExternalExecutionError("effective Programme binding lacks exact profile blob")
+        if binding.get("programme_protected_head") != PROGRAMME_PROTECTED_HEAD:
+            raise ExternalExecutionError("effective Programme protected head drift")
+        if binding.get("programme_profile_blob_sha1") != PROGRAMME_PROFILE_BLOB_SHA1:
+            raise ExternalExecutionError("effective Programme profile blob drift")
     if any(bool(v) for v in binding.get("claim_boundaries", {}).values()):
         raise ExternalExecutionError("Programme binding may not widen authority")
     return binding

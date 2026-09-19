@@ -68,6 +68,12 @@ Aggregation and independent scientific scoring remain downstream operations. Com
 
 ## Programme dependency
 
-The QTR binding currently points to MATH-PROGRAMME PR #1028 exact candidate `d5f9d2da3b0ace24d9116a437e097251ab4368b7`. Before this QTR package can become effective, that candidate must be admitted on protected MATH-PROGRAMME state and this binding must be replaced with the exact protected merge/readback identity and exact Programme profile blob. The materializer enforces this: while the binding is pending, executable manifest generation fails closed.
+The QTR binding is pinned to MATH-PROGRAMME PR #1028 protected merge/readback
+`c85317b5cdce4e31ea9ba835ef9e27da40f2e2b1` and to
+`governance/external_execution_plane_profile.json` blob
+`cb006c2185c9ed7641d89a1c8a9635b8c86977a2` at that revision. The
+materializer requires those exact identities and fails closed on drift.
 
-This dependency is deliberately fail-closed. It does not block the already in-flight C90 execution.
+This protected dependency makes the retry or successor route eligible for
+materialization. It does not launch an execution, select a provider, validate
+returned receipts, or change the disposition of the earlier GitHub-hosted attempt.

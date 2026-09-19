@@ -30,16 +30,20 @@ class QTRExternalExecutionTests(unittest.TestCase):
 
     def _effective_binding(self, root: Path) -> Path:
         binding = mod.load_json(mod.BINDING_PATH)
-        binding["status"] = "EFFECTIVE"
-        binding["programme_protected_head"] = "a" * 40
-        binding["programme_profile_blob_sha1"] = "b" * 40
         path = root / "binding.json"
         path.write_text(json.dumps(binding, sort_keys=True), encoding="utf-8")
         return path
 
     def test_pending_programme_binding_blocks_materialization(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            out = Path(tmp) / "blocked"
+            root = Path(tmp)
+            out = root / "blocked"
+            binding = mod.load_json(mod.BINDING_PATH)
+            binding["status"] = "CANDIDATE_DEPENDENCY_PENDING_PROTECTED_MERGE"
+            binding.pop("programme_protected_head", None)
+            binding.pop("programme_profile_blob_sha1", None)
+            path = root / "binding.json"
+            path.write_text(json.dumps(binding, sort_keys=True), encoding="utf-8")
             args = SimpleNamespace(
                 provider_class="slurm",
                 adapter="gcl-slurm-v1",
@@ -47,8 +51,14 @@ class QTRExternalExecutionTests(unittest.TestCase):
                 parallelism=48,
                 output=str(out),
             )
-            with self.assertRaises(mod.ExternalExecutionError):
-                mod.materialize(args)
+            with mock.patch.object(mod, "BINDING_PATH", path):
+                with self.assertRaises(mod.ExternalExecutionError):
+                    mod.materialize(args)
+
+    def test_effective_binding_is_exactly_protected(self) -> None:
+        binding = mod.validate_programme_binding(require_effective=True)
+        self.assertEqual(mod.PROGRAMME_PROTECTED_HEAD, binding["programme_protected_head"])
+        self.assertEqual(mod.PROGRAMME_PROFILE_BLOB_SHA1, binding["programme_profile_blob_sha1"])
 
     def test_materialization_is_provider_bound_and_has_768_jobs(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

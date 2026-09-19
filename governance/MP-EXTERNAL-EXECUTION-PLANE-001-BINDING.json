@@ -6,8 +6,10 @@
   "programme_repository": "grandchallenge/MATH-PROGRAMME",
   "programme_candidate_head": "d5f9d2da3b0ace24d9116a437e097251ab4368b7",
   "programme_pull_request": 1028,
-  "status": "CANDIDATE_DEPENDENCY_PENDING_PROTECTED_MERGE",
-  "activation_condition": "replace candidate head with exact protected MATH-PROGRAMME merge/readback before this binding may become effective",
+  "programme_protected_head": "c85317b5cdce4e31ea9ba835ef9e27da40f2e2b1",
+  "programme_profile_blob_sha1": "cb006c2185c9ed7641d89a1c8a9635b8c86977a2",
+  "status": "EFFECTIVE",
+  "activation_evidence": "MATH-PROGRAMME PR #1028 protected merge/readback c85317b5cdce4e31ea9ba835ef9e27da40f2e2b1; governance/external_execution_plane_profile.json blob cb006c2185c9ed7641d89a1c8a9635b8c86977a2",
   "applies_to": [
     "QTR-C90-EXACT-DECODER-001 retry",
     "QTR-C90-EXACT-DECODER-001 successor execution"

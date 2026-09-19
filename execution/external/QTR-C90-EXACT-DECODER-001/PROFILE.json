@@ -6,9 +6,10 @@
   "authority": {
     "execution_docket": "grandchallenge/QUANTUM-TECHNOLOGIES#114",
     "programme_profile": "MP-EXTERNAL-EXECUTION-PLANE-001",
-    "programme_candidate_head": "d5f9d2da3b0ace24d9116a437e097251ab4368b7",
     "programme_pull_request": 1028,
-    "programme_protected_pin_required_before_activation": true
+    "programme_protected_head": "c85317b5cdce4e31ea9ba835ef9e27da40f2e2b1",
+    "programme_profile_blob_sha1": "cb006c2185c9ed7641d89a1c8a9635b8c86977a2",
+    "programme_protected_pin_required_before_activation": false
   },
   "migration": {
     "current_github_execution_grandfathered": true,
