@@ -138,6 +138,20 @@ class QTRExternalExecutionTests(unittest.TestCase):
         with self.assertRaises(mod.ExternalExecutionError):
             mod._validate_receipt_common(bad, manifest, "a" * 64)
 
+    def test_artifact_paths_cannot_escape_readmission_root(self) -> None:
+        for value in ("/etc/passwd", "../rows.jsonl", "a/../../rows.jsonl", r"a\\rows.jsonl"):
+            with self.assertRaises(mod.ExternalExecutionError):
+                mod._safe_artifact_path(value)
+        self.assertEqual(
+            "algebra/class-001/rows.jsonl",
+            str(mod._safe_artifact_path("algebra/class-001/rows.jsonl")),
+        )
+
+    def test_receipt_timestamps_require_timezone(self) -> None:
+        with self.assertRaises(mod.ExternalExecutionError):
+            mod._parse_timestamp("2026-09-19T00:00:00", "started_at")
+        self.assertIsNotNone(mod._parse_timestamp("2026-09-19T00:00:00Z", "started_at").tzinfo)
+
     def test_grandfathered_runs_are_not_cancelled_by_profile(self) -> None:
         profile = mod.load_json(mod.PROFILE_PATH)
         self.assertTrue(profile["migration"]["current_github_execution_grandfathered"])

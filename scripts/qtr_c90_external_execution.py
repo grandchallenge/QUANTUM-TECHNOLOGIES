@@ -7,7 +7,7 @@ import json
 import re
 import sys
 from datetime import datetime
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -339,7 +339,10 @@ def _parse_timestamp(value: Any, label: str) -> datetime:
     if not isinstance(value, str) or not value:
         raise ExternalExecutionError(f"receipt missing {label}")
     try:
-        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if parsed.tzinfo is None:
+            raise ExternalExecutionError(f"receipt {label} must be timezone-aware")
+        return parsed
     except ValueError as exc:
         raise ExternalExecutionError(f"receipt invalid {label}") from exc
 
@@ -375,6 +378,15 @@ def _validate_receipt_common(receipt: dict[str, Any], manifest: dict[str, Any], 
         raise ExternalExecutionError("operationally unsuccessful work unit cannot enter complete aggregate")
 
 
+def _safe_artifact_path(value: Any) -> PurePosixPath:
+    if not isinstance(value, str) or not value or "\\" in value:
+        raise ExternalExecutionError("artifact path must be a non-empty POSIX relative path")
+    path = PurePosixPath(value)
+    if path.is_absolute() or any(part in {"", ".", ".."} for part in path.parts):
+        raise ExternalExecutionError(f"unsafe artifact path: {value}")
+    return path
+
+
 def _validate_semantic_receipt(path: Path, profile: dict[str, Any], algebra: str, logical_class: int) -> None:
     row = load_json(path)
     if row.get("status") != "C90_ACTIVATED_SELECTOR_SHARD_EVALUATED":
@@ -408,7 +420,7 @@ def verify(args: argparse.Namespace) -> None:
         raise ExternalExecutionError(f"receipt cardinality mismatch: expected {len(expected)}, observed {len(receipt_paths)}")
 
     observed: set[str] = set()
-    artifact_root = Path(args.artifact_root) if args.artifact_root else None
+    artifact_root = Path(args.artifact_root).resolve() if args.artifact_root else None
     for path in receipt_paths:
         receipt = load_json(path)
         _validate_receipt_common(receipt, manifest, manifest_sha)
@@ -423,7 +435,14 @@ def verify(args: argparse.Namespace) -> None:
         artifacts = receipt.get("output_artifacts")
         if not isinstance(artifacts, list) or len(artifacts) < 3:
             raise ExternalExecutionError(f"{unit_id}: incomplete output artifact receipt")
-        artifact_map = {str(row.get("path")): row for row in artifacts if isinstance(row, dict)}
+        artifact_map: dict[str, dict[str, Any]] = {}
+        for row in artifacts:
+            if not isinstance(row, dict):
+                raise ExternalExecutionError(f"{unit_id}: malformed output artifact receipt")
+            artifact_path = str(_safe_artifact_path(row.get("path")))
+            if artifact_path in artifact_map:
+                raise ExternalExecutionError(f"{unit_id}: duplicate output artifact path: {artifact_path}")
+            artifact_map[artifact_path] = row
         expected_rows = f"rows-{algebra}-class-{logical_class}.jsonl"
         expected_semantic = f"receipt-{algebra}-class-{logical_class}.json"
         expected_runtime = f"runtime-{algebra}-class-{logical_class}.json"
@@ -435,7 +454,10 @@ def verify(args: argparse.Namespace) -> None:
             if int(row.get("bytes", -1)) < 0 or not SHA64.fullmatch(str(row.get("sha256", ""))):
                 raise ExternalExecutionError(f"{unit_id}: invalid artifact identity {required}")
             if artifact_root is not None:
-                local = artifact_root / matches[0]
+                rel = _safe_artifact_path(matches[0])
+                local = (artifact_root / Path(*rel.parts)).resolve()
+                if not local.is_relative_to(artifact_root):
+                    raise ExternalExecutionError(f"{unit_id}: artifact escapes materialized root: {matches[0]}")
                 if not local.is_file():
                     raise ExternalExecutionError(f"{unit_id}: artifact not materialized: {matches[0]}")
                 if local.stat().st_size != int(row["bytes"]) or sha256_file(local) != row["sha256"]:
