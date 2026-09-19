@@ -6,6 +6,7 @@ import hashlib
 import json
 import re
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -256,6 +257,93 @@ def materialize(args: argparse.Namespace) -> None:
     print(json.dumps(index, sort_keys=True))
 
 
+def validate_manifest_against_profile(manifest: dict[str, Any], profile: dict[str, Any]) -> None:
+    if manifest.get("record_type") != "GCL_EXTERNAL_EXECUTION_MANIFEST":
+        raise ExternalExecutionError("manifest record type drift")
+    if manifest.get("campaign") != profile["campaign"] or manifest.get("operation") != profile["operation"]:
+        raise ExternalExecutionError("manifest campaign/operation drift")
+    source = manifest.get("source", {})
+    if source.get("repository") != profile["source"]["repository"]:
+        raise ExternalExecutionError("manifest source repository drift")
+    if source.get("commit") != profile["source"]["orchestration_commit"]:
+        raise ExternalExecutionError("manifest source commit drift")
+    if not SHA64.fullmatch(str(source.get("source_payload_sha256", ""))):
+        raise ExternalExecutionError("manifest source payload identity drift")
+    authority = manifest.get("authority", {})
+    if authority.get("operation_ref") != profile["authority"]["execution_docket"]:
+        raise ExternalExecutionError("manifest authority reference drift")
+    if authority.get("scientific_execution_authorized") is not True:
+        raise ExternalExecutionError("manifest is not authorized for scientific execution")
+    provider = manifest.get("provider", {})
+    if provider.get("class") not in PROVIDER_CLASSES or not str(provider.get("adapter", "")).strip():
+        raise ExternalExecutionError("manifest provider identity incomplete")
+    if provider.get("provider_selection_locked_before_execution") is not True:
+        raise ExternalExecutionError("manifest provider selection is not frozen")
+    if provider.get("repository_write_credentials") is not False:
+        raise ExternalExecutionError("manifest grants repository write credentials")
+
+    units = manifest.get("work_units", {})
+    expected_axes = [
+        {"name": "algebra", "values": profile["source"]["algebras"]},
+        {"name": "logical_class", "integer_range": {"start": 0, "stop_exclusive": 256, "step": 1}},
+    ]
+    if units.get("enumeration") != "cartesian_product" or units.get("axes") != expected_axes:
+        raise ExternalExecutionError("manifest work-unit domain drift")
+    if units.get("expected_total") != 768 or units.get("work_unit_id_template") != "{algebra}/class-{logical_class:03d}":
+        raise ExternalExecutionError("manifest work-unit cardinality/identity drift")
+
+    invariants = manifest.get("scientific_invariants", {})
+    for key, value in profile["scientific_invariants"].items():
+        if invariants.get(key) != value:
+            raise ExternalExecutionError(f"manifest scientific invariant drift: {key}")
+    exact_invariants = {
+        "activation_head": profile["source"]["activation_head"],
+        "orchestration_commit": profile["source"]["orchestration_commit"],
+        "corpus_sha256": profile["source"]["corpus_sha256"],
+        "inputs_per_work_unit": 347,
+        "logical_classes": 256,
+        "compile_identities": profile["compile_identities"],
+    }
+    for key, value in exact_invariants.items():
+        if invariants.get(key) != value:
+            raise ExternalExecutionError(f"manifest frozen identity drift: {key}")
+
+    operational = manifest.get("operational_parameters", {})
+    parallelism = int(operational.get("parallelism_ceiling", 0))
+    if not 1 <= parallelism <= int(profile["operational_defaults"]["external_parallelism_ceiling"]):
+        raise ExternalExecutionError("manifest external parallelism outside profile")
+    if operational.get("github_hosted_scientific_execution") is not False:
+        raise ExternalExecutionError("manifest routes scientific batch back through GitHub")
+
+    retry = manifest.get("retry_policy", {})
+    if retry != {
+        "max_attempts": profile["operational_defaults"]["max_attempts_per_work_unit"],
+        "same_work_unit_identity": True,
+        "same_scientific_inputs": True,
+    }:
+        raise ExternalExecutionError("manifest retry policy drift")
+    outputs = manifest.get("output_contract", {})
+    if outputs.get("receipt_record_type") != "GCL_EXTERNAL_EXECUTION_RECEIPT":
+        raise ExternalExecutionError("manifest receipt contract drift")
+    if outputs.get("required_artifacts") != ["native_rows_jsonl", "semantic_shard_receipt", "runtime_receipt"]:
+        raise ExternalExecutionError("manifest required artifact contract drift")
+    if outputs.get("all_work_units_required_before_aggregation") is not True:
+        raise ExternalExecutionError("manifest permits partial aggregation")
+    if manifest.get("claim_boundaries") != profile["claim_boundaries"] or any(
+        bool(v) for v in manifest.get("claim_boundaries", {}).values()
+    ):
+        raise ExternalExecutionError("manifest claim firewall drift")
+
+
+def _parse_timestamp(value: Any, label: str) -> datetime:
+    if not isinstance(value, str) or not value:
+        raise ExternalExecutionError(f"receipt missing {label}")
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise ExternalExecutionError(f"receipt invalid {label}") from exc
+
+
 def _validate_receipt_common(receipt: dict[str, Any], manifest: dict[str, Any], manifest_sha: str) -> None:
     if receipt.get("record_type") != "GCL_EXTERNAL_EXECUTION_RECEIPT":
         raise ExternalExecutionError("receipt record type drift")
@@ -268,9 +356,15 @@ def _validate_receipt_common(receipt: dict[str, Any], manifest: dict[str, Any], 
     provider = receipt.get("provider", {})
     if provider.get("class") != manifest["provider"]["class"] or provider.get("adapter") != manifest["provider"]["adapter"]:
         raise ExternalExecutionError("receipt provider identity mismatch")
+    if not str(provider.get("execution_id", "")).strip():
+        raise ExternalExecutionError("receipt provider execution identity missing")
     attempt = int(provider.get("attempt", 0))
     if not 1 <= attempt <= int(manifest["retry_policy"]["max_attempts"]):
         raise ExternalExecutionError("receipt attempt outside frozen retry policy")
+    started = _parse_timestamp(receipt.get("started_at"), "started_at")
+    finished = _parse_timestamp(receipt.get("finished_at"), "finished_at")
+    if finished < started:
+        raise ExternalExecutionError("receipt finish precedes start")
     if receipt.get("scientific_semantics_changed") is not False:
         raise ExternalExecutionError("receipt claims scientific semantic change")
     if receipt.get("promotion_claim") is not False:
@@ -301,21 +395,11 @@ def _validate_semantic_receipt(path: Path, profile: dict[str, Any], algebra: str
 def verify(args: argparse.Namespace) -> None:
     profile = load_json(PROFILE_PATH)
     validate_profile(profile)
+    validate_programme_binding(require_effective=True)
     manifest_path = Path(args.manifest)
     manifest = load_json(manifest_path)
     manifest_sha = sha256_file(manifest_path)
-    if manifest.get("record_type") != "GCL_EXTERNAL_EXECUTION_MANIFEST":
-        raise ExternalExecutionError("manifest record type drift")
-    if manifest.get("campaign") != profile["campaign"]:
-        raise ExternalExecutionError("manifest campaign drift")
-    if manifest["source"]["commit"] != profile["source"]["orchestration_commit"]:
-        raise ExternalExecutionError("manifest source drift")
-    if manifest["work_units"].get("expected_total") != 768:
-        raise ExternalExecutionError("manifest work-unit count drift")
-    if manifest["operational_parameters"].get("github_hosted_scientific_execution") is not False:
-        raise ExternalExecutionError("manifest routes scientific batch back through GitHub")
-    if manifest["provider"].get("repository_write_credentials") is not False:
-        raise ExternalExecutionError("manifest grants repository write credentials")
+    validate_manifest_against_profile(manifest, profile)
 
     expected = expected_units(profile)
     receipts_dir = Path(args.receipts)

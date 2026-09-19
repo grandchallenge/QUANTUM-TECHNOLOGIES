@@ -88,6 +88,27 @@ class QTRExternalExecutionTests(unittest.TestCase):
             manifest = mod.load_json(out / "MANIFEST.json")
             self.assertEqual(48, manifest["operational_parameters"]["parallelism_ceiling"])
 
+    def test_manifest_rejects_scientific_invariant_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            out = root / "run"
+            binding = self._effective_binding(root)
+            args = SimpleNamespace(
+                provider_class="slurm",
+                adapter="gcl-slurm-v1",
+                source_payload_sha256="3" * 64,
+                parallelism=48,
+                output=str(out),
+            )
+            with mock.patch.object(mod, "BINDING_PATH", binding):
+                mod.materialize(args)
+            profile = mod.load_json(mod.PROFILE_PATH)
+            manifest = mod.load_json(out / "MANIFEST.json")
+            mod.validate_manifest_against_profile(manifest, profile)
+            manifest["scientific_invariants"]["approximation"] = True
+            with self.assertRaises(mod.ExternalExecutionError):
+                mod.validate_manifest_against_profile(manifest, profile)
+
     def test_receipt_rejects_promotion_and_repository_mutation(self) -> None:
         manifest = {
             "source": {"commit": "0" * 40, "source_payload_sha256": "1" * 64},
@@ -101,6 +122,8 @@ class QTRExternalExecutionTests(unittest.TestCase):
             "source_payload_sha256": "1" * 64,
             "provider": {"class": "slurm", "adapter": "gcl-slurm-v1", "execution_id": "1", "attempt": 1},
             "status": "SUCCESS",
+            "started_at": "2026-09-19T00:00:00Z",
+            "finished_at": "2026-09-19T00:01:00Z",
             "returncode": 0,
             "scientific_semantics_changed": False,
             "promotion_claim": False,
