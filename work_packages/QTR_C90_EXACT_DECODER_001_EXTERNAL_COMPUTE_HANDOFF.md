@@ -54,6 +54,27 @@ GitHub Actions is not used to generate the remaining C90 scientific outcome.
 - native binary SHA-256: `dd58a7e0c59626032d8714827d9f1097a33a78fd426c7d972407b32340890bb0`
 - canonical stream: `3aa3f0c1d97f7428623a034b6baa20e9c7f113e830b715040dc9e1e62967b4e8`
 
+## Authoritative evidence rule
+
+The final C90 scientific outcome must be computed entirely on an external compute substrate.
+
+The GitHub-hosted campaign runs are non-authoritative historical cross-check evidence only:
+
+- min-plus run `35402858866`: completed before the substrate boundary was tightened;
+- sum-product run `35402858883`: force-cancelled, terminal `completed/cancelled`;
+- soft-tropical run `35402858934`: cancelled, terminal `completed/cancelled`.
+
+No selector value, correction, score, success/failure bit, or matched-comparison cell produced by those GitHub-hosted runs may be used as an authoritative input to the final campaign receipt.
+
+The external execution must recompute all three full algebra surfaces from the frozen validated binaries:
+
+- 256 logical-class shards per algebra;
+- exactly 347 frozen selector coordinates per shard;
+- exactly 88,832 selector evaluations per algebra;
+- exactly 266,496 selector evaluations across the three algebras.
+
+The historical GitHub-hosted outputs may be compared against the external outputs after the external results are fixed. Any mismatch is a diagnostic requiring investigation. Agreement is corroboration only; it does not substitute for the external computation.
+
 ## External execution rule
 
 Run the exact native evaluator outside GitHub Actions.
