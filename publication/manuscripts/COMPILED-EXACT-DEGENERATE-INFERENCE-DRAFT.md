@@ -2,7 +2,7 @@
 
 **Draft manuscript — QTR Paper A**
 
-Status: \`DRAFT__REFERENCE_THEOREM_PROVED__INDEPENDENT_REVIEW_PENDING\`
+Status: `DRAFT__REFERENCE_THEOREM_PROVED__INDEPENDENT_REVIEW_PENDING`
 
 Authors: Grand Challenge Labs Quantum Technologies Research contributors  
 Correspondence: to be assigned before submission
@@ -362,7 +362,7 @@ w_q(e_q(a,z)).
 
 **Proof.** Each symbolic local factor specializes to the corresponding fixed-selector numerical factor. Suppose this property holds for every live factor before one elimination step. Specialization commutes with exact semiring multiplication and addition, so it also holds for the factor emitted after eliminating that variable. Induction through the complete elimination order therefore shows that specialization of the final symbolic scalar equals the fixed-selector variable-elimination result. Exact variable elimination itself preserves the full contraction by distributivity. Hash-consing and canonical operand ordering preserve denotation. ∎
 
-A full proof, including the CSS kernel lemma, the min-plus product-semiring argument, and the factor-provenance invariant, is maintained in \`QTR-THEOREM-SELECTOR-PARAMETRIC-COMPILATION-001.md\`.
+A full proof, including the CSS kernel lemma, the min-plus product-semiring argument, and the factor-provenance invariant, is maintained in `QTR-THEOREM-SELECTOR-PARAMETRIC-COMPILATION-001.md`.
 
 ### 5.4 Decision preservation
 
@@ -630,13 +630,13 @@ For C18:
 - the exact fixture and 4,048-case corpus are frozen;
 - the TCM-QDEC-001 through 004 sequence preserves the same semantic target;
 - the TCM-QDEC-004 evidence payload is
-  \`a5c7e59fa849ddc37c070d78d4a4dab8b07ae5ceccfecefeb5a20f4ae0dc83a7\`.
+  `a5c7e59fa849ddc37c070d78d4a4dab8b07ae5ceccfecefeb5a20f4ae0dc83a7`.
 
 For C72:
 
 - the source code construction is pinned to the upstream source revision used by QTR;
 - the QLDPC-SCALE-001A evidence payload is
-  \`198bb28f47844aa98efa20d8c838c48870a8aef41ccfda266b16661677e363e1\`;
+  `198bb28f47844aa98efa20d8c838c48870a8aef41ccfda266b16661677e363e1`;
 - the frozen selector-validation set and output digests are retained in the evidence package.
 
 The theorem proof is maintained separately from executable replay so that a passing implementation test is not presented as the mathematical proof itself.
