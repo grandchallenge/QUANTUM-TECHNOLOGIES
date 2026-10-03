@@ -30,14 +30,18 @@ Likewise, compiling probabilistic inference into reusable arithmetic/decision ci
 
 The publication opportunity is therefore not “tensor-network decoding”, “degenerate decoding”, “variable elimination”, or “compile once, query many” in the abstract.
 
-The strongest currently defensible QTR contribution is the code-specific construction and verification of an exact selector-parametric inference compiler for degenerate qLDPC decoding, including:
+The strongest currently defensible QTR contribution is narrower: the code-specific construction and verification of an exact **selector-parametric compiled query object** for degenerate qLDPC decoding. The 2026 coset-MRF paper uses essentially the same affine coset parameterization at the fixed-class level, so the affine selector/stabilizer factorization itself is no longer treated as a novelty candidate.
 
-- the affine separation of selector coordinates from stabilizer-degeneracy variables;
-- exact symbolic elimination that retains selector variables rather than materializing an answer table;
+The remaining candidate contribution is:
+
+- one unified syndrome-plus-logical selector interface;
+- exact symbolic elimination that retains those selector variables rather than fixing a class before elimination;
 - canonical reusable compiled objects;
 - preservation of full score, canonical-class, minimum-representative, tie-set, and deterministic-decision semantics;
 - cross-checking across several exact algebras;
 - a controlled progression from exhaustive C18 semantics to C72 and the active C90 frontier.
+
+Whether the selector-parametric object is genuinely absent from the closest 2026 work remains an explicit audit question, not an assumed distinction.
 
 A second, potentially stronger publication result is conditional on completion of `QTR-C90-EXACT-DECODER-001`: exact degeneracy-aware logical-class inference on the protected `[[90,8,10]]` bivariate-bicycle instance and frozen C90 corpus. Targeted literature search performed for this audit did not identify a published exact degenerate maximum-likelihood result for this C90 instance. That negative search result is not a priority certificate and must be repeated before submission.
 
@@ -98,7 +102,9 @@ Accordingly, the following claims are not available to QTR:
 - “first graphical-model formulation of degenerate qLDPC decoding”;
 - “first use of elimination clusters for exact qLDPC decoding”.
 
-The QTR C72 representation has different variables and a different deterministic factorization, so its recorded min-fill width 18 must not be presented as directly smaller than the approximately-23 width reported by Krishnamoorthy et al. without a common graph definition and controlled comparison.
+The mathematical overlap is closer than a generic “different graphical model” comparison suggests. Krishnamoorthy et al. write each class as (e_lambdaoplus u^T H_X) and factor its probability into one local potential per qubit over incident X-check variables. QTR writes the same underlying coset object as (L aoplus S z), using an independent stabilizer basis and a unified syndrome/logical selector coordinate. The affine coset factorization and local qubit-factor construction must therefore be treated as overlapping prior art.
+
+The QTR C72 representation has 30 independent stabilizer variables where the published coset MRF reports 36 check variables. Its recorded min-fill width 18 must not be presented as directly smaller than the approximately-23 width reported by Krishnamoorthy et al. without a common graph definition, common preprocessing, and controlled comparison.
 
 ### 3.4 Probabilistic knowledge compilation
 
@@ -126,8 +132,8 @@ Therefore QTR must not claim novelty for arithmetic circuits, hash-consed DAGs, 
 | Exact C72 degenerate ML decoding | preempted | Krishnamoorthy et al. 2026 explicitly report it. |
 | Compile probabilistic inference once, answer many queries later | prior art | Arithmetic-circuit / knowledge-compilation literature. |
 | Evaluate compiled inference under semiring variants | prior art in general | Algebraic model counting and semiring inference. |
-| Exact affine selector/stabilizer reparameterization for BB decoding | potentially differentiated, not established novel | Closely related to coset/check-variable parametrizations. Requires theorem-level comparison. |
-| Canonical selector-parametric QEC compilation preserving full score/tie/correction semantics | **plausible publication contribution** | No close QEC precedent identified in targeted search; general compilation principles are prior art. |
+| Exact affine selector/stabilizer reparameterization for BB decoding | **substantially overlapping prior art** | The 2026 coset-MRF construction uses the same fixed-class affine stabilizer-coset parameterization in different coordinates. |
+| Canonical selector-parametric QEC compilation preserving full score/tie/correction semantics | **plausible publication contribution, audit still open** | General compilation and the underlying coset factorization are prior art; targeted review has not yet identified a QEC construction that retains the unified syndrome/logical selector symbolically through elimination in one reusable exact object. |
 | Exact equivalence chain: exhaustive representatives → transfer → degeneracy VE → compiled selector DAG | **plausible publication contribution** | Strong reference/oracle contribution even if primitives are known. |
 | Exact finite BB structural ladder under one frozen protocol | useful dataset/methodological contribution | Methods are standard; exact controlled cross-instance record may be publishable as supporting evidence. |
 | C90 resource-bound decomposition into peak/work/retained/physical gates | useful methodological contribution | Strong negative/diagnostic result; unlikely headline novelty alone. |
