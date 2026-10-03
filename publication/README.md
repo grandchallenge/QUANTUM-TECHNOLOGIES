@@ -7,6 +7,7 @@ This directory extracts publication candidates from the governed QTR scientific 
 ## Artifacts
 
 - `QTR-NOVELTY-UTILITY-AUDIT-001.md` — conservative prior-art and utility audit through 2026-10-02.
+- `QTR-C72-COSET-MRF-COMPARISON-PLAN-001.md` — explicit overlap map and controlled comparison plan against the 2026 coset-MRF construction.
 - `QTR-PUBLICATION-SPEC-001-COMPILED-EXACT-INFERENCE.md` — method-paper specification.
 - `QTR-THEOREM-SELECTOR-PARAMETRIC-COMPILATION-001.md` — proof draft for the central compile/evaluate identity.
 - `QTR-PUBLICATION-SPEC-002-C90-EXACT-INFERENCE.md` — conditional C90 result-paper specification.
@@ -30,7 +31,7 @@ No C90 result or priority claim is admitted until the authoritative external cam
 
 1. independent mathematical review of the selector-parametric compilation theorem (reference proof now complete);
 2. strengthen the selector-functional/kernel lemma and min-plus product-semiring proof;
-3. reconstruct a controlled C72 comparison with the 2026 coset-MRF/elimination-cluster formulation;
+3. reconstruct a controlled C72 comparison with the 2026 coset-MRF/elimination-cluster formulation; direct fixed-class mathematical overlap is now explicitly acknowledged;
 4. draft Paper A Methods and Related Work around the theorem;
 5. complete external C90 execution independently; do not block Paper A on C90;
 6. refresh literature immediately before any submission.
