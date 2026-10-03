@@ -19,7 +19,7 @@ where \(a\) contains independent syndrome and logical-class selector coordinates
 
 On a protected \([[18,4,4]]\) bivariate-bicycle code, we verify the complete semantic chain from exhaustive physical-error enumeration through quotient inference, local transfer factorization, stabilizer-variable elimination, and selector-parametric compilation. The compiled path reproduces all 6,144 class scores, 2,048 class mappings, 384 winning-class tie sets, and 384 deterministic decisions. The three compiled algebra objects contain 371, 371, and 388 reachable nodes respectively. On a source-bound \([[72,12,6]]\) bivariate-bicycle instance, the corresponding exact representation has 30 stabilizer variables and selector rank 42; deterministic min-fill has induced width 18, and the reusable compiled descriptor agrees exactly with an independent fixed-selector oracle on a precommitted 300-selector validation set.
 
-Our contribution is not the general idea of graphical-model decoding, variable elimination, semiring inference, or arithmetic-circuit compilation. Rather, it is an exact selector/stabilizer decomposition for these quantum decoding objects, a reusable compilation construction with a proof of selector-specialization correctness, and a controlled representation-equivalence record that preserves class scores, degeneracy, ties, and corrections rather than only aggregate logical-error totals.
+Our contribution is not the general idea of graphical-model decoding, affine stabilizer-coset parameterization, variable elimination, semiring inference, or arithmetic-circuit compilation. The closest 2026 qLDPC work uses a mathematically similar fixed-class coset parameterization. The narrower object studied here is a reusable exact compilation in which a unified syndrome-plus-logical selector remains symbolic while stabilizer degeneracy is eliminated, together with a proof of selector-specialization correctness and a controlled equivalence record preserving class scores, degeneracy, ties, and corrections rather than only aggregate logical-error totals.
 
 ## 1. Introduction
 
@@ -27,7 +27,9 @@ Quantum error correction introduces an inference problem with a structural featu
 
 Tensor-network and graphical-model formulations make this aggregation explicit. Ferris and Poulin related quantum decoding to tensor-network contraction. Bravyi, Suchara and Vargo developed exact and approximate maximum-likelihood decoding for the surface code. Subsequent work generalized tensor-network decoding to broader Pauli-code and noisy-syndrome settings. Recent qLDPC work has gone further: Krishnamoorthy et al. formulate logical-class probabilities as partition functions of a positive graphical model and report exact degenerate maximum-likelihood decoding of the \([[72,12,6]]\) bivariate-bicycle code using elimination clusters.
 
-The present work asks a different but related question. Once the local decoding structure has been fixed, how much of the exact inference computation is genuinely specific to one syndrome/logical selector, and how much can be compiled once and reused?
+At the fixed-class level, the resulting coset expression is closely aligned with the coset MRF of Krishnamoorthy et al.: both write a class representative plus a binary stabilizer/check combination and factor the resulting physical error over qubits. We therefore do not claim that affine class factorization as new.
+
+The present work asks a narrower question. Once that local coset structure has been fixed, can the syndrome and logical selector themselves remain symbolic while the stabilizer variables are eliminated, so that one exact compiled object can later answer multiple selector queries without rebuilding the structural elimination?
 
 We separate two kinds of binary variables. The first are **selector coordinates**, which encode independent syndrome and logical-class functionals. The second are **stabilizer-degeneracy variables**, which enumerate representatives inside one fixed class. The physical error takes the affine form
 
@@ -574,7 +576,11 @@ Most directly relevant is the 2026 work of Krishnamoorthy et al., which formulat
 
 Consequently, exact C72 degenerate decoding is not a novelty claim of the present work.
 
-The two constructions use different internal variables and factor definitions. Their quoted induced widths therefore should not be compared numerically as if they were measurements of one common graph. A controlled common-definition comparison is planned before submission.
+At the class-partition level the two constructions are mathematically close. Krishnamoorthy et al. use (e_lambdaoplus u^T H_X), one variable per X-check, and one qubit potential over the incident checks. QTR uses (L aoplus S z), with an independent stabilizer basis and a full-rank selector interface spanning syndrome and logical coordinates.
+
+The reported C72 structures are nevertheless not numerically comparable without reconstruction: the published coset MRF has 36 check variables and induced width approximately 23, whereas the protected QTR graph has 30 independent stabilizer variables and deterministic min-fill width 18. Different redundancy handling, graph definitions, preprocessing, and ordering implementations can change width.
+
+The working differentiation is therefore not the affine coset MRF itself. It is QTR's retention of the syndrome/logical selector as symbolic parameters in one compiled exact object, plus the larger decoder-level semantic payload. A controlled source-level comparison is required before submission.
 
 ### 8.3 Probabilistic knowledge compilation
 
