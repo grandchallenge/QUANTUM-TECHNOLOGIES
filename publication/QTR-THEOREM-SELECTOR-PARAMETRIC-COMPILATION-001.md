@@ -1,13 +1,13 @@
 # QTR-THEOREM-SELECTOR-PARAMETRIC-COMPILATION-001
 
-Status: \`THEOREM_CANDIDATE__REFERENCE_PROOF_COMPLETE__NATIVE_REFINEMENT_SEPARATE\`
+Status: `THEOREM_CANDIDATE__REFERENCE_PROOF_COMPLETE__NATIVE_REFINEMENT_SEPARATE`
 
-Programme: \`GCL Quantum Technologies Research (QTR)\`
+Programme: `GCL Quantum Technologies Research (QTR)`
 
 Applies directly to the mathematical construction implemented by:
 
-- \`reference/tcm_qdec_004.py\`;
-- the generalized symbolic construction in \`reference/qldpc_scale_001a_symbolic.py\`.
+- `reference/tcm_qdec_004.py`;
+- the generalized symbolic construction in `reference/qldpc_scale_001a_symbolic.py`.
 
 This note proves the mathematical compile/evaluate identity. It does not by itself certify that every software implementation is bug-free. Executable equivalence tests and native C90 refinement remain separate obligations.
 
@@ -135,7 +135,7 @@ Therefore the column map is invertible over \(\mathbb F_2\). For every requested
 \Phi(L(a))=f.
 \]
 
-The C72/C90 interface verifies this explicitly through \`functional_columns\`, \`inverse_columns\`, \`apply_inverse\`, and \`selector_lift\`.
+The C72/C90 interface verifies this explicitly through `functional_columns`, `inverse_columns`, `apply_inverse`, and `selector_lift`.
 
 By Lemma 1,
 
@@ -552,9 +552,9 @@ then compiled and fixed-selector execution have identical:
 
 ## 12. C18 complete executable witness
 
-\`TCM-QDEC-004\` evaluates its compiled DAG over the full 2048-selector domain for all three exact algebras.
+`TCM-QDEC-004` evaluates its compiled DAG over the full 2048-selector domain for all three exact algebras.
 
-It separately replays the classwise \`TCM-QDEC-003\` contraction.
+It separately replays the classwise `TCM-QDEC-003` contraction.
 
 Protected evidence records exact equality of:
 
@@ -575,7 +575,7 @@ This is exhaustive finite implementation evidence for C18. It is not substituted
 
 The generalized compiler uses
 
-\`selector_parameter = {qubit: index for index, qubit in enumerate(selector_basis)}\`
+`selector_parameter = {qubit: index for index, qubit in enumerate(selector_basis)}`
 
 and otherwise the same local selector choices and exact elimination construction.
 
@@ -629,7 +629,7 @@ Before Paper A submission:
 
 ## 17. Disposition
 
-\`REFERENCE_THEOREM_PROOF_COMPLETE__READY_FOR_INDEPENDENT_REVIEW\`
+`REFERENCE_THEOREM_PROOF_COMPLETE__READY_FOR_INDEPENDENT_REVIEW`
 
 No mathematical gap remains in the reference selector-parametric compile/evaluate identity identified by this audit.
 
