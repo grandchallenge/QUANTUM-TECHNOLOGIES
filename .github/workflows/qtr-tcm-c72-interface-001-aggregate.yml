@@ -84,7 +84,7 @@ jobs:
           assert r['adjudication']['outcome']=='C72_TCM_SHARED_DECODER_INTERFACE_CERTIFIED'
           PY
       - name: Preserve aggregate evidence
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: tcm-c72-interface-001-aggregate
           path: ${{ runner.temp }}/TCM-C72-INTERFACE-001-aggregate.json
