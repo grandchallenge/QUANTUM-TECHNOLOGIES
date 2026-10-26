@@ -63,10 +63,34 @@ class QECCircuit002PromotionTests(unittest.TestCase):
             "evidence/QEC-CIRCUIT-002-report.json": "90d1f462e8666dbe5f26fbb241e6befa29ef6916",
             "reference/qec_circuit_002.py": "92f8bafbc3460d18d9a3b9d316848d289f4b545f",
             "reference/qec_circuit_002_evidence.py": "9f2d5eaadb8ca948f3e9229fe43cb0e9cc5b4957",
-            ".github/workflows/qtr-qec-circuit-002.yml": "84716388da3004ee658f7c83fba9984c151fb5c1",
         }
         for path, expected in immutable_blobs.items():
             self.assertEqual(self.blob(path), expected, path)
+
+        # The reviewed scientific workflow remains byte-identical after
+        # reversing the narrowly admitted artifact-upload action update.
+        # Do not replace the historical blob identity with today's blob:
+        # changes to the scientific logic must still fail this check.
+        workflow = (ROOT / ".github/workflows/qtr-qec-circuit-002.yml").read_text(
+            encoding="utf-8"
+        )
+        previous_pin = "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1"
+        current_pin = "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2"
+        self.assertEqual(workflow.count(current_pin), 1)
+        self.assertNotIn(previous_pin, workflow)
+        historical_workflow = workflow.replace(current_pin, previous_pin)
+        historical_blob = subprocess.run(
+            ["git", "hash-object", "--stdin"],
+            input=historical_workflow,
+            text=True,
+            capture_output=True,
+            check=True,
+        ).stdout.strip()
+        self.assertEqual(
+            historical_blob,
+            "84716388da3004ee658f7c83fba9984c151fb5c1",
+            "QEC-CIRCUIT-002 historical reviewed workflow, modulo action pin",
+        )
 
         self.assertEqual(
             manifest["manifest_payload_sha256"],
