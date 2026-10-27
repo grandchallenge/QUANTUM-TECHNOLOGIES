@@ -67,10 +67,10 @@ class QECCircuit002PromotionTests(unittest.TestCase):
         for path, expected in immutable_blobs.items():
             self.assertEqual(self.blob(path), expected, path)
 
-        # The reviewed scientific workflow remains byte-identical after
-        # reversing the narrowly admitted artifact-upload action update.
-        # Do not replace the historical blob identity with today's blob:
-        # changes to the scientific logic must still fail this check.
+        # Restore both independently admitted CI action-pin updates before
+        # checking the original reviewed scientific workflow blob. Neither
+        # dependency maintenance change may weaken the scientific snapshot.
+        # Any other workflow change must still fail this exact blob check.
         workflow = (ROOT / ".github/workflows/qtr-qec-circuit-002.yml").read_text(
             encoding="utf-8"
         )
@@ -78,7 +78,13 @@ class QECCircuit002PromotionTests(unittest.TestCase):
         current_pin = "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2"
         self.assertEqual(workflow.count(current_pin), 1)
         self.assertNotIn(previous_pin, workflow)
-        historical_workflow = workflow.replace(current_pin, previous_pin)
+        previous_setup = "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0"
+        current_setup = "actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0"
+        self.assertEqual(workflow.count(current_setup), 1)
+        self.assertNotIn(previous_setup, workflow)
+        historical_workflow = workflow.replace(current_pin, previous_pin).replace(
+            current_setup, previous_setup
+        )
         historical_blob = subprocess.run(
             ["git", "hash-object", "--stdin"],
             input=historical_workflow,
