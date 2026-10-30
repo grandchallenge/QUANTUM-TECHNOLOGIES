@@ -605,7 +605,7 @@ Most directly relevant is the 2026 work of Krishnamoorthy et al., which formulat
 
 Consequently, exact C72 degenerate decoding is not a novelty claim of the present work.
 
-At the class-partition level the two constructions are mathematically close. Krishnamoorthy et al. use (e_lambdaoplus u^T H_X), one variable per X-check, and one qubit potential over the incident checks. QTR uses (L aoplus S z), with an independent stabilizer basis and a full-rank selector interface spanning syndrome and logical coordinates.
+At the class-partition level the two constructions are mathematically close. Krishnamoorthy et al. use $e=e_\lambda\oplus u^T H_X$, one variable per X-check, and one qubit potential over the incident checks. QTR uses $e=La\oplus Sz$, with an independent stabilizer basis and a full-rank selector interface spanning syndrome and logical coordinates.
 
 The reported C72 structures are nevertheless not numerically comparable without reconstruction: the published coset MRF has 36 check variables and induced width approximately 23, whereas the protected QTR graph has 30 independent stabilizer variables and deterministic min-fill width 18. Different redundancy handling, graph definitions, preprocessing, and ordering implementations can change width.
 
