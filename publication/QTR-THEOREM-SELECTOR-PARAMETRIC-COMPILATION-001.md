@@ -1,6 +1,6 @@
 # QTR-THEOREM-SELECTOR-PARAMETRIC-COMPILATION-001
 
-Status: `THEOREM_CANDIDATE__REFERENCE_PROOF_COMPLETE__NATIVE_REFINEMENT_SEPARATE`
+Status: `THEOREM_CANDIDATE__KERNEL_AND_SEMIRING_HYPOTHESES_REPAIRED__NATIVE_REFINEMENT_SEPARATE`
 
 Programme: `GCL Quantum Technologies Research (QTR)`
 
@@ -13,66 +13,66 @@ This note proves the mathematical compile/evaluate identity. It does not by itse
 
 ## 1. Setting
 
-Let there be \(n\) physical binary error coordinates and \(r\) independent X-stabilizer degeneracy variables.
+Let there be $n$ physical binary error coordinates and $r$ independent X-stabilizer degeneracy variables.
 
 Let
 
-\[
+$
 S_1,\ldots,S_r\in\mathbb F_2^n
-\]
+$
 
-be the selected independent X-stabilizer basis. For physical coordinate \(q\), define
+be the selected independent X-stabilizer basis. For physical coordinate $q$, define
 
-\[
+$
 J_q=\{j:(S_j)_q=1\}.
-\]
+$
 
-Let \(b_1,\ldots,b_m\) be distinct selector-basis physical coordinates. Define
+Let $b_1,\ldots,b_m$ be distinct selector-basis physical coordinates. Define
 
-\[
+$
 L(a)=\bigoplus_{i=1}^{m} a_i e_{b_i},
 \qquad
 a\in\mathbb F_2^m,
-\]
+$
 
-where \(e_q\) is the physical unit vector at \(q\).
+where $e_q$ is the physical unit vector at $q$.
 
 For
 
-\[
+$
 z=(z_1,\ldots,z_r)\in\mathbb F_2^r,
-\]
+$
 
 define
 
-\[
+$
 S(z)=\bigoplus_{j=1}^{r} z_jS_j.
-\]
+$
 
 The represented physical error is
 
-\[
+$
 e(a,z)=L(a)\oplus S(z).
-\]
+$
 
 Coordinatewise,
 
-\[
+$
 e_q(a,z)
 =
 \ell_q(a)\oplus
 \bigoplus_{j\in J_q}z_j,
-\]
+$
 
 where
 
-\[
+$
 \ell_q(a)=
 \begin{cases}
 a_i,&q=b_i,\\
 0,&q\notin\{b_1,\ldots,b_m\}.
 \end{cases}
-\]
+$
 
 This is the structural form used by the QTR symbolic compiler.
 
@@ -80,132 +80,168 @@ This is the structural form used by the QTR symbolic compiler.
 
 Let
 
-\[
+$
 \Phi:\mathbb F_2^n\to\mathbb F_2^m
-\]
+$
 
 collect the independent syndrome and logical-class functionals.
 
-For the CSS one-sector construction used by QTR, \(\Phi\) consists of:
+For the CSS one-sector construction used by QTR, $\Phi$ consists of:
 
 1. independent Z-check syndrome parities; and
 2. commutation parities against a chosen logical-Z basis.
 
 ### Lemma 1 — stabilizer kernel
 
-For every X-stabilizer \(s\in\operatorname{rowspace}(H_X)\),
+For every X-stabilizer $s\in\operatorname{rowspace}(H_X)$,
 
-\[
+$
 \Phi(s)=0.
-\]
+$
 
 #### Proof
 
-For every Z-check row \(h\) of \(H_Z\),
+For every Z-check row $h$ of $H_Z$,
 
-\[
+$
 h\cdot s=0
-\]
+$
 
 by CSS commutation,
 
-\[
+$
 H_XH_Z^{T}=0.
-\]
+$
 
-For every logical-Z operator \(\bar Z_\ell\), an X-stabilizer commutes with \(\bar Z_\ell\), so its binary symplectic parity with \(\bar Z_\ell\) is also zero.
+For every logical-Z operator $\bar Z_\ell$, an X-stabilizer commutes with $\bar Z_\ell$, so its binary symplectic parity with $\bar Z_\ell$ is also zero.
 
-Thus every syndrome and logical functional used by \(\Phi\) vanishes on the selected X-stabilizer span. QED.
+Thus every syndrome and logical functional used by $\Phi$ vanishes on the selected X-stabilizer span. QED.
 
 ### Selector-basis condition
 
 The selector basis is required to satisfy
 
-\[
+$
 \operatorname{rank}
 \left[
 \Phi(e_{b_1})\ \cdots\ \Phi(e_{b_m})
 \right]
 =m.
-\]
+$
 
-Therefore the column map is invertible over \(\mathbb F_2\). For every requested functional \(f\in\mathbb F_2^m\), QTR computes a unique coordinate \(a\) in the chosen basis such that
+Therefore the column map is invertible over $\mathbb F_2$. For every requested functional $f\in\mathbb F_2^m$, QTR computes a unique coordinate $a$ in the chosen basis such that
 
-\[
+$
 \Phi(L(a))=f.
-\]
+$
 
 The C72/C90 interface verifies this explicitly through `functional_columns`, `inverse_columns`, `apply_inverse`, and `selector_lift`.
 
-By Lemma 1,
+### Lemma 1b — complete class enumeration
 
-\[
+Assume the selected stabilizer vectors are linearly independent and that
+$r=n-m$, where $\operatorname{rank}\Phi=m$. By Lemma 1,
+$\operatorname{span}\{S_1,\ldots,S_r\}\subseteq\ker\Phi$.
+Rank-nullity gives $\dim\ker\Phi=n-m=r$, hence
+
+$
+\operatorname{span}\{S_1,\ldots,S_r\}=\ker\Phi.
+$
+
+For a CSS code with independent check ranks
+$r_X=\operatorname{rank}H_X$ and $r_Z=\operatorname{rank}H_Z$,
+the logical dimension is $k=n-r_X-r_Z$. The independent
+syndrome-plus-logical selector has $m=r_Z+k=n-r_X$ functionals;
+the independent X-stabilizer basis has $r=r_X$. The selector-basis
+condition above certifies $\operatorname{rank}\Phi=m$, and therefore
+$r=n-m$ and the kernel equality hold in this specialization.
+
+For each $f=\Phi(L(a))$, the map
+$z\mapsto L(a)\oplus S(z)$ is injective by independence of the
+$S_j$. It is surjective onto $\Phi^{-1}(f)$ because every
+$e$ in that fiber has $e\oplus L(a)\in\ker\Phi$ and thus a unique
+stabilizer expansion. Therefore this affine map is a bijection onto
+the entire class, with no omitted or repeated representatives. QED.
+
+By Lemmas 1 and 1b,
+
+$
 \Phi(e(a,z))
 =
 \Phi(L(a))+\Phi(S(z))
 =
 f
-\]
+$
 
-for every \(z\). Thus varying \(z\) enumerates representatives inside one fixed syndrome/logical class.
+for every $z$. Thus varying $z$ enumerates **every** representative in that syndrome/logical class **exactly once**, under the dimension and independence hypotheses of Lemma 1b.
 
 ## 3. Exact local objectives
 
-For every physical coordinate \(q\), let
+For every physical coordinate $q$, let
 
-\[
+$
 w_q:\mathbb F_2\to\mathcal A
-\]
+$
 
 take values in a commutative semiring
 
-\[
+$
 \mathcal S=(\mathcal A,\oplus,\otimes,0_{\mathcal S},1_{\mathcal S}).
-\]
+$
 
 ### Sum-product BSC numerator
 
 Use
 
-\[
+$
 (\mathbb N,+,\times,0,1)
-\]
+$
 
 with
 
-\[
+$
 w_q(0)=9,\qquad w_q(1)=1.
-\]
+$
 
-For an error of Hamming weight \(h\), the product is \(9^{n-h}\), proportional to its BSC \(p=0.1\) likelihood.
+For an error of Hamming weight $h$, the product is $9^{n-h}$, proportional to its BSC $p=0.1$ likelihood.
 
 ### Soft-tropical base 2
 
 Use the same semiring with
 
-\[
+$
 w_q(0)=2,\qquad w_q(1)=1.
-\]
+$
 
 ### Min-plus product payload
 
-Let \(\overline{\mathbb N}=\mathbb N\cup\{\infty\}\).
+Let $\overline{\mathbb N}=\mathbb N\cup\{\infty\}$.
 
-Define the lexicographic tropical semiring
+Define the finite-pair lexicographic tropical semiring with **one**
+absorbing infinity sentinel. Its carrier is
 
-\[
-\mathcal T_{\mathrm{lex}}
-=
-(\overline{\mathbb N}^{\,2},
-\min_{\mathrm{lex}},
-+,
-(\infty,\infty),
-(0,0)).
-\]
+$$
+\mathcal D=\mathbb N^2\cup\{\top\},
+$$
+
+where $\top$ is distinct from every finite pair. Semiring addition
+is lexicographic minimum with $\top$ as the largest element;
+semiring multiplication adds finite pairs coordinatewise and makes
+$\top$ absorbing. Its additive zero is $\top$ and its
+multiplicative unit is $(0,0)$. Write
+
+$$
+\mathcal T_{\mathrm{lex}}=
+(\mathcal D,\min_{\mathrm{lex}},\boxplus,\top,(0,0)).
+$$
+
+The **unrestricted** carrier
+$(\mathbb N\cup\{\infty\})^2$ is not used: partial-infinity
+pairs make lexicographic minimum fail distributivity.
 
 Define the ordinary tropical semiring
 
-\[
+$
 \mathcal T
 =
 (\overline{\mathbb N},
@@ -213,37 +249,44 @@ Define the ordinary tropical semiring
 +,
 \infty,
 0).
-\]
+$
 
 The QTR min-plus payload lives in the direct product
 
-\[
+$
 \mathcal M=\mathcal T_{\mathrm{lex}}\times\mathcal T.
-\]
+$
 
-A local physical bit \(b\in\{0,1\}\) at qubit \(q\) contributes
+A local physical bit $b\in\{0,1\}$ at qubit $q$ contributes
 
-\[
+$
 w_q(b)
 =
 \bigl((b,b2^q),\,b2^q\bigr).
-\]
+$
 
 ### Lemma 2 — the min-plus payload is a commutative semiring
 
-\(\mathcal M\) is a commutative semiring under componentwise tropical addition and multiplication.
+$\mathcal M$ is a commutative semiring under componentwise tropical addition and multiplication.
 
 #### Proof
 
-Integer addition is associative and commutative. Lexicographic order on \(\overline{\mathbb N}^{\,2}\) is translation invariant:
+Coordinatewise addition of **finite** natural-number pairs is
+associative and commutative and preserves lexicographic order:
 
-\[
+$
 x\le_{\mathrm{lex}}y
 \Longrightarrow
-x+c\le_{\mathrm{lex}}y+c.
-\]
+x+c\le_{\mathrm{lex}}y+c
+\qquad (x,y,c\in\mathbb N^2).
+$
 
-Hence addition distributes over lexicographic minimum, so \(\mathcal T_{\mathrm{lex}}\) is a commutative idempotent semiring. The same standard argument gives the ordinary min-plus semiring \(\mathcal T\). A direct product of commutative semirings is a commutative semiring under componentwise operations. QED.
+Thus finite-pair multiplication distributes over lexicographic minimum.
+The cases involving $\top$ satisfy distributivity because $\top$
+is the greatest element for minimum and is absorbing for
+multiplication. Minimum is associative, commutative, and idempotent,
+and $(0,0)$ is the multiplicative identity. Hence
+$\mathcal T_{\mathrm{lex}}$ is a commutative idempotent semiring. The same standard argument gives the ordinary min-plus semiring $\mathcal T$. A direct product of commutative semirings is a commutative semiring under componentwise operations. QED.
 
 ## 4. Factor provenance
 
@@ -251,15 +294,15 @@ The representative payload uses integer addition to combine physical-bit masks. 
 
 ### Lemma 3 — factor provenance remains a partition
 
-Associate each initial local factor at qubit \(q\) with provenance set
+Associate each initial local factor at qubit $q$ with provenance set
 
-\[
+$
 P_q=\{q\}.
-\]
+$
 
 At every variable-elimination step, replace the involved factors by one output factor whose provenance is the union of their provenance sets.
 
-Then at every stage the live factor provenance sets are pairwise disjoint and their union is \(\{0,\ldots,n-1\}\).
+Then at every stage the live factor provenance sets are pairwise disjoint and their union is $\{0,\ldots,n-1\}$.
 
 #### Proof
 
@@ -271,27 +314,27 @@ The invariant follows by induction. QED.
 
 ### Corollary — integer addition equals support union
 
-Within any semiring product, every physical qubit contributes at most one power \(2^q\). Therefore
+Within any semiring product, every physical qubit contributes at most one power $2^q$. Therefore
 
-\[
+$
 \sum_{q:e_q=1}2^q
 =
 \bigvee_{q:e_q=1}2^q.
-\]
+$
 
 Thus the first tropical component tracks
 
-\[
+$
 (\operatorname{wt}(e),\operatorname{int}(e))
-\]
+$
 
 and returns the minimum-weight representative with lowest integer tie break.
 
 The second tropical component independently returns
 
-\[
+$
 \min_{e\text{ in class}}\operatorname{int}(e),
-\]
+$
 
 the canonical class key.
 
@@ -299,17 +342,17 @@ The two minimizers need not be the same representative; the product payload inte
 
 ## 5. Fixed-selector class contraction
 
-For a fixed selector coordinate \(a\), define
+For a fixed selector coordinate $a$, define
 
-\[
+$
 F(a)
 =
 \bigoplus_{z\in\mathbb F_2^r}
 \bigotimes_{q=1}^{n}
 w_q(e_q(a,z)).
-\]
+$
 
-For sum-product, \(F(a)\) is the exact class likelihood numerator under the frozen BSC.
+For sum-product, $F(a)$ is the exact class likelihood numerator under the frozen BSC **provided the full-kernel condition of Lemma 1b holds**. Otherwise it is only the score of the represented affine subset.
 
 For soft-tropical, it is the exact base-2 partition score.
 
@@ -318,7 +361,7 @@ For the min-plus product algebra, it is the exact pair consisting of:
 1. minimum Hamming weight and lowest-integer minimum-weight representative;
 2. minimum physical integer in the class.
 
-Standard exact variable elimination over \(z\) evaluates \(F(a)\).
+Standard exact variable elimination over $z$ evaluates $F(a)$.
 
 ## 6. Symbolic expression language
 
@@ -326,48 +369,48 @@ The compiler replaces numerical table entries by expressions generated from:
 
 - exact terminals;
 - selector-choice nodes
-  \[
+  $
   \operatorname{ITE}(i,x_0,x_1);
-  \]
+  $
 - semiring multiplication nodes;
 - semiring marginal/addition nodes.
 
-For selector assignment \(a\), define \(\operatorname{ev}_a\) recursively:
+For selector assignment $a$, define $\operatorname{ev}_a$ recursively:
 
-\[
+$
 \operatorname{ev}_a(c)=c,
-\]
+$
 
-\[
+$
 \operatorname{ev}_a(\operatorname{ITE}(i,x_0,x_1))
 =
 \begin{cases}
 \operatorname{ev}_a(x_0),&a_i=0,\\
 \operatorname{ev}_a(x_1),&a_i=1,
 \end{cases}
-\]
+$
 
 and
 
-\[
+$
 \operatorname{ev}_a(x\otimes y)
 =
 \operatorname{ev}_a(x)\otimes\operatorname{ev}_a(y),
-\]
+$
 
-\[
+$
 \operatorname{ev}_a(x\oplus y)
 =
 \operatorname{ev}_a(x)\oplus\operatorname{ev}_a(y).
-\]
+$
 
 Thus specialization commutes with every semiring operation represented in the DAG.
 
 ## 7. Lemma 4 — local specialization
 
-For every qubit \(q\), local stabilizer assignment \(u\in\mathbb F_2^{J_q}\), and selector assignment \(a\),
+For every qubit $q$, local stabilizer assignment $u\in\mathbb F_2^{J_q}$, and selector assignment $a$,
 
-\[
+$
 \operatorname{ev}_a(\Psi_q(u))
 =
 w_q
@@ -375,76 +418,76 @@ w_q
 \ell_q(a)\oplus
 \bigoplus_{j\in J_q}u_j
 \right).
-\]
+$
 
 ### Proof
 
 Let
 
-\[
+$
 p(u)=\bigoplus_{j\in J_q}u_j.
-\]
+$
 
-If \(q\) is not a selector-basis qubit, the compiler emits the terminal \(w_q(p(u))\).
+If $q$ is not a selector-basis qubit, the compiler emits the terminal $w_q(p(u))$.
 
-If \(q=b_i\), it emits
+If $q=b_i$, it emits
 
-\[
+$
 \operatorname{ITE}
 \left(
 i,
 w_q(p(u)),
 w_q(p(u)\oplus1)
 \right).
-\]
+$
 
-Specialization at \(a_i\) therefore yields
+Specialization at $a_i$ therefore yields
 
-\[
+$
 w_q(p(u)\oplus a_i),
-\]
+$
 
 which is exactly the claimed local value. QED.
 
 ## 8. Lemma 5 — elimination commutes with selector specialization
 
-Suppose symbolic live factors \(\{\Psi_k\}\) specialize under \(a\) to fixed-selector numerical factors \(\{\psi_k^{(a)}\}\).
+Suppose symbolic live factors $\{\Psi_k\}$ specialize under $a$ to fixed-selector numerical factors $\{\psi_k^{(a)}\}$.
 
-Eliminate degeneracy variable \(z_j\). Let \(I\) be the factors containing \(z_j\).
+Eliminate degeneracy variable $z_j$. Let $I$ be the factors containing $z_j$.
 
 The symbolic output is
 
-\[
+$
 \Psi'(u)
 =
 \bigoplus_{b\in\{0,1\}}
 \bigotimes_{k\in I}
 \Psi_k(u,z_j=b).
-\]
+$
 
 The numerical fixed-selector output is
 
-\[
+$
 \psi'^{(a)}(u)
 =
 \bigoplus_{b\in\{0,1\}}
 \bigotimes_{k\in I}
 \psi_k^{(a)}(u,z_j=b).
-\]
+$
 
 Then
 
-\[
+$
 \operatorname{ev}_a(\Psi'(u))
 =
 \psi'^{(a)}(u).
-\]
+$
 
 ### Proof
 
 By the recursive semantics of specialization,
 
-\[
+$
 \begin{aligned}
 \operatorname{ev}_a(\Psi'(u))
 &=
@@ -464,41 +507,41 @@ By the recursive semantics of specialization,
 &=
 \psi'^{(a)}(u).
 \end{aligned}
-\]
+$
 
 QED.
 
 ## 9. Theorem — selector-parametric compilation correctness
 
-Let \(D\) be the symbolic DAG obtained by:
+Let $D$ be the symbolic DAG obtained by:
 
 1. constructing the symbolic local factors above;
-2. eliminating all \(r\) stabilizer variables in any fixed complete order using exact semiring multiplication and marginalization;
+2. eliminating all $r$ stabilizer variables in any fixed complete order using exact semiring multiplication and marginalization;
 3. multiplying any remaining scalar factors.
 
-Let \(R\) be its root.
+Let $R$ be its root.
 
-Then for every selector assignment \(a\in\mathbb F_2^m\),
+Then for every selector assignment $a\in\mathbb F_2^m$,
 
-\[
+$
 \boxed{
 \operatorname{ev}_a(R)=F(a)
 }.
-\]
+$
 
 ### Proof
 
 By Lemma 4, before elimination every symbolic local factor specializes to its fixed-selector numerical counterpart.
 
-Apply Lemma 5 inductively after each of the \(r\) elimination steps. After the final step, all remaining factors are scalar, and specialization commutes with their final semiring product.
+Apply Lemma 5 inductively after each of the $r$ elimination steps. After the final step, all remaining factors are scalar, and specialization commutes with their final semiring product.
 
 Exact variable elimination preserves the complete contraction by distributivity. Therefore the specialized root equals
 
-\[
+$
 \bigoplus_z\bigotimes_qw_q(e_q(a,z))
 =
 F(a).
-\]
+$
 
 QED.
 
@@ -508,27 +551,27 @@ The implementation:
 
 - hash-conses structurally identical nodes;
 - canonicalizes child order for commutative binary operations;
-- simplifies \(\operatorname{ITE}(i,x,x)\) to \(x\).
+- simplifies $\operatorname{ITE}(i,x,x)$ to $x$.
 
-None changes \(\operatorname{ev}_a\).
+None changes $\operatorname{ev}_a$.
 
 ### Proof
 
 Hash-consing shares an existing subexpression without changing its recursive value.
 
-For a commutative operation \(\star\),
+For a commutative operation $\star$,
 
-\[
+$
 x\star y=y\star x,
-\]
+$
 
 so child reordering preserves value.
 
 Finally,
 
-\[
+$
 \operatorname{ITE}(i,x,x)=x
-\]
+$
 
 under both selector values. QED.
 
@@ -584,7 +627,8 @@ Therefore the theorem applies mathematically whenever:
 1. the selector basis is distinct;
 2. its functional-column map has full rank;
 3. stabilizer scopes are generated from an independent stabilizer basis;
-4. the declared algebra is one of the semirings above.
+4. the basis spans the full kernel, equivalently $r=n-m$ under the rank assumptions of Lemma 1b;
+5. the declared algebra is one of the corrected semirings above.
 
 The C72 package separately records compiled-versus-independent-oracle equality on the frozen 300-selector set.
 
@@ -629,8 +673,6 @@ Before Paper A submission:
 
 ## 17. Disposition
 
-`REFERENCE_THEOREM_PROOF_COMPLETE__READY_FOR_INDEPENDENT_REVIEW`
+`REFERENCE_THEOREM_HYPOTHESES_REPAIRED__PUBLICATION_REVIEW_PENDING`
 
-No mathematical gap remains in the reference selector-parametric compile/evaluate identity identified by this audit.
-
-The open proof boundary is implementation refinement for the native C90 realization, not the reference construction itself.
+The reference compile/evaluate identity now has explicit full-kernel and semiring-domain hypotheses. The previous unrestricted lexicographic-domain assertion and unproved full-class enumeration have been withdrawn. Exact source/implementation conformance, native C90 refinement, and publication review remain separate obligations.
