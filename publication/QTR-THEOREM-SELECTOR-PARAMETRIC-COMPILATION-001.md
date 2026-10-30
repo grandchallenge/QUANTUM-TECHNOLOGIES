@@ -369,9 +369,11 @@ The compiler replaces numerical table entries by expressions generated from:
 
 - exact terminals;
 - selector-choice nodes
-$$
+
+$
   \mathrm{ITE}(i,x_0,x_1);
-$$
+$
+
 - semiring multiplication nodes;
 - semiring marginal/addition nodes.
 
