@@ -75,13 +75,13 @@ $$
 Two X errors are stabilizer-equivalent when their difference lies in
 
 $$
-\operatorname{rowspace}(H_X).
+\mathrm{rowspace}(H_X).
 $$
 
 For a true error $e$ and correction $c$, the exact success predicate is
 
 $$
-e\oplus c\in\operatorname{rowspace}(H_X).
+e\oplus c\in\mathrm{rowspace}(H_X).
 $$
 
 Syndrome consistency is necessary but not sufficient for logical success.
@@ -99,7 +99,7 @@ where $m=r_Z+k$ in the one-sector construction, with $r_Z$ the independent syndr
 Because every X stabilizer commutes with both Z checks and logical-Z operators,
 
 $$
-\operatorname{rowspace}(H_X)\subseteq\ker\Phi.
+\mathrm{rowspace}(H_X)\subseteq\ker\Phi.
 $$
 
 A fixed value
@@ -111,12 +111,12 @@ $$
 therefore labels one syndrome/logical class.
 
 For this class to equal one full stabilizer coset, inclusion is not
-enough. Let $r_X=\operatorname{rank}H_X$,
-$r_Z=\operatorname{rank}H_Z$, and $k=n-r_X-r_Z$.
+enough. Let $r_X=\mathrm{rank}H_X$,
+$r_Z=\mathrm{rank}H_Z$, and $k=n-r_X-r_Z$.
 The independent syndrome and logical functionals give
-$m=r_Z+k=n-r_X$ and $\operatorname{rank}\Phi=m$.
+$m=r_Z+k=n-r_X$ and $\mathrm{rank}\Phi=m$.
 Consequently $\dim\ker\Phi=n-m=r_X$. Since
-$\operatorname{rowspace}(H_X)\subseteq\ker\Phi$ and
+$\mathrm{rowspace}(H_X)\subseteq\ker\Phi$ and
 both spaces have dimension $r_X$, they are equal.
 An independent $r_X$-element stabilizer basis therefore enumerates
 each $\Phi$-fiber exactly once after a selector lift.
@@ -137,7 +137,7 @@ $$
 Z_f
 =
 \sum_{\substack{e\in\mathbb F_2^n\\\Phi(e)=f}}
-9^{n-\operatorname{wt}(e)}.
+9^{n-\mathrm{wt}(e)}.
 $$
 
 We also use two exact diagnostic objectives:
@@ -146,7 +146,7 @@ $$
 Z^{(2)}_f
 =
 \sum_{\Phi(e)=f}
-2^{n-\operatorname{wt}(e)},
+2^{n-\mathrm{wt}(e)},
 $$
 
 and
@@ -154,7 +154,7 @@ and
 $$
 d_f
 =
-\min_{\Phi(e)=f}\operatorname{wt}(e).
+\min_{\Phi(e)=f}\mathrm{wt}(e).
 $$
 
 The first is an exact base-2 partition score. The second is a min-plus objective. For deterministic decoding we additionally retain a minimum-weight physical representative and a canonical integer key for the class.
@@ -289,7 +289,7 @@ $$
 gives the exact class score
 
 $$
-F_2(a)=\sum_z2^{n-\operatorname{wt}(e(a,z))}.
+F_2(a)=\sum_z2^{n-\mathrm{wt}(e(a,z))}.
 $$
 
 ### 4.3 Min-plus product payload
@@ -299,13 +299,13 @@ To recover deterministic representatives as well as minimum weight, define the d
 The first component minimizes lexicographically
 
 $$
-(\operatorname{wt}(e),\operatorname{int}(e)).
+(\mathrm{wt}(e),\mathrm{int}(e)).
 $$
 
 The second independently minimizes
 
 $$
-\operatorname{int}(e).
+\mathrm{int}(e).
 $$
 
 A physical bit $b$ at coordinate $q$ contributes
@@ -335,7 +335,7 @@ same exact variable-elimination proof applies.
 For a qubit whose selector contribution is parameter $a_i$, the local factor table stores
 
 $$
-\operatorname{ITE}
+\mathrm{ITE}
 \left(
 i,
 w_q(p),
@@ -373,10 +373,10 @@ Structurally identical nodes are hash-consed. For commutative operations, operan
 
 ### 5.3 Correctness theorem
 
-Let $D$ be the resulting symbolic DAG and $R$ its root. Let $\operatorname{ev}_a$ specialize its selector choices at coordinate $a$.
+Let $D$ be the resulting symbolic DAG and $R$ its root. Let $\mathrm{ev}_a$ specialize its selector choices at coordinate $a$.
 
 **Theorem 1 (full-kernel and corrected-semiring hypotheses).**
-Assume $\operatorname{rank}\Phi=m$, the independent stabilizer
+Assume $\mathrm{rank}\Phi=m$, the independent stabilizer
 basis has $r=n-m$ elements, its span equals $\ker\Phi$, the
 selector-functional column map is invertible, and the payload
 operations belong to a commutative semiring (including the
@@ -384,7 +384,7 @@ single-sentinel lexicographic carrier of Section 4.3).
 For every selector assignment $a$,
 
 $$
-\operatorname{ev}_a(R)
+\mathrm{ev}_a(R)
 =
 \bigoplus_z
 \bigotimes_q
@@ -525,7 +525,7 @@ The larger case is the source-defined $[[72,12,6]]$ bivariate-bicycle code. QTR 
 
 $$
 n=72,\qquad
-\operatorname{rank}(H_X)=\operatorname{rank}(H_Z)=30,\qquad
+\mathrm{rank}(H_X)=\mathrm{rank}(H_Z)=30,\qquad
 k=12.
 $$
 
