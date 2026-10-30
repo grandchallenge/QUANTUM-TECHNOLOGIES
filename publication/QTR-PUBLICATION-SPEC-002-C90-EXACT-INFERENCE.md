@@ -39,9 +39,10 @@ The manuscript must bind exactly:
   - `soft_tropical_base_2`;
   - `min_plus_hamming`;
 - exact selector evaluations required:
-  \[
-  347\times256\times3=266{,}496.
-  \]
+
+$$
+347\times256\times3=266{,}496.
+$$
 
 The conventional comparison anchors remain:
 
