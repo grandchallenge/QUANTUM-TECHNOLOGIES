@@ -63,10 +63,40 @@ class QECCircuit002PromotionTests(unittest.TestCase):
             "evidence/QEC-CIRCUIT-002-report.json": "90d1f462e8666dbe5f26fbb241e6befa29ef6916",
             "reference/qec_circuit_002.py": "92f8bafbc3460d18d9a3b9d316848d289f4b545f",
             "reference/qec_circuit_002_evidence.py": "9f2d5eaadb8ca948f3e9229fe43cb0e9cc5b4957",
-            ".github/workflows/qtr-qec-circuit-002.yml": "84716388da3004ee658f7c83fba9984c151fb5c1",
         }
         for path, expected in immutable_blobs.items():
             self.assertEqual(self.blob(path), expected, path)
+
+        # Restore both independently admitted CI action-pin updates before
+        # checking the original reviewed scientific workflow blob. Neither
+        # dependency maintenance change may weaken the scientific snapshot.
+        # Any other workflow change must still fail this exact blob check.
+        workflow = (ROOT / ".github/workflows/qtr-qec-circuit-002.yml").read_text(
+            encoding="utf-8"
+        )
+        previous_pin = "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1"
+        current_pin = "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2"
+        self.assertEqual(workflow.count(current_pin), 1)
+        self.assertNotIn(previous_pin, workflow)
+        previous_setup = "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0"
+        current_setup = "actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0"
+        self.assertEqual(workflow.count(current_setup), 1)
+        self.assertNotIn(previous_setup, workflow)
+        historical_workflow = workflow.replace(current_pin, previous_pin).replace(
+            current_setup, previous_setup
+        )
+        historical_blob = subprocess.run(
+            ["git", "hash-object", "--stdin"],
+            input=historical_workflow,
+            text=True,
+            capture_output=True,
+            check=True,
+        ).stdout.strip()
+        self.assertEqual(
+            historical_blob,
+            "84716388da3004ee658f7c83fba9984c151fb5c1",
+            "QEC-CIRCUIT-002 historical reviewed workflow, modulo action pin",
+        )
 
         self.assertEqual(
             manifest["manifest_payload_sha256"],

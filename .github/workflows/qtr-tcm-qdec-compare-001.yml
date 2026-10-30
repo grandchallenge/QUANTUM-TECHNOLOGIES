@@ -55,7 +55,7 @@ jobs:
           ref: ${{ env.SUBJECT_SHA }}
           fetch-depth: 0
 
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.10.14"
 
@@ -104,7 +104,7 @@ jobs:
           PY
 
       - name: Preserve verified package artifacts
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: compare-packages
           path: /tmp/compare-pkgs
@@ -127,7 +127,7 @@ jobs:
           ref: ${{ env.SUBJECT_SHA }}
           fetch-depth: 0
 
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.10.14"
 
@@ -135,7 +135,7 @@ jobs:
         run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
 
       - name: Restore verified package artifacts
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: compare-packages
           path: /tmp/compare-pkgs
@@ -163,7 +163,7 @@ jobs:
             --cell-output "/tmp/compare-cell/${{ matrix.surface }}-${{ matrix.method }}.json"
 
       - name: Preserve cell result
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: compare-cell-${{ matrix.surface }}-${{ matrix.method }}
           path: /tmp/compare-cell
@@ -181,7 +181,7 @@ jobs:
           ref: ${{ env.SUBJECT_SHA }}
           fetch-depth: 0
 
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.10.14"
 
@@ -189,14 +189,14 @@ jobs:
         run: test "$(git rev-parse HEAD)" = "$SUBJECT_SHA"
 
       - name: Restore all frozen cell results
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           pattern: compare-cell-*
           path: /tmp/compare-cells
           merge-multiple: true
 
       - name: Restore verified package artifacts
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: compare-packages
           path: /tmp/compare-pkgs
@@ -254,7 +254,7 @@ jobs:
           PY
 
       - name: Preserve exact comparison artifacts
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: TCM-QDEC-COMPARE-001-exact-head
           path: |
