@@ -134,6 +134,8 @@ in the declared coordinate system, with stabilizer additions lying in the kernel
 
 ### Theorem 2 — class partition/function equivalence
 
+Require $\operatorname{rank}\Phi=m$, an independent X-stabilizer basis of size $r=n-m$, and $\operatorname{span}(S)=\ker\Phi$ by the rank-nullity argument of reference Lemma 1b. Kernel inclusion alone does not establish a complete logical class.
+
 For each selector $a$, the physical representatives in the corresponding logical class are exactly
 
 $$
