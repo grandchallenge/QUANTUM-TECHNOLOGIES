@@ -22,9 +22,9 @@ The paper should make a narrow contribution that remains valid even where the un
 
 For the protected one-sector BB-code constructions considered by QTR, write an error representative in affine form
 
-\[
+$$
 e(a,z)=L a\oplus S z,
-\]
+$$
 
 where (a) carries syndrome/logical selector coordinates and (z) carries stabilizer degeneracy.
 
@@ -94,7 +94,7 @@ Report the protected QTR facts:
 - 30 stabilizer variables;
 - selector rank 42;
 - deterministic min-fill width 18 for the QTR graph;
-- peak table \(2^{19}\);
+- peak table $2^{19}$;
 - reusable descriptor identity;
 - exact equality on the frozen 300-selector independent-oracle validation set.
 
@@ -126,21 +126,21 @@ Given the chosen independent syndrome rows and logical functionals, the selector
 
 Required result:
 
-\[
+$$
 \Phi(L a)=a
-\]
+$$
 
 in the declared coordinate system, with stabilizer additions lying in the kernel of the selector functionals appropriate to the class.
 
 ### Theorem 2 — class partition/function equivalence
 
-For each selector \(a\), the physical representatives in the corresponding logical class are exactly
+For each selector $a$, the physical representatives in the corresponding logical class are exactly
 
-\[
+$$
 \{L a\oplus S z:z\in\mathbb F_2^r\}.
-\]
+$$
 
-Therefore the class score is the declared semiring contraction over \(z\).
+Therefore the class score is the declared semiring contraction over $z$.
 
 For sum-product this is the exact class likelihood numerator under the frozen BSC.
 
@@ -152,15 +152,15 @@ This can use the standard distributive-law proof, but the paper must state it in
 
 ### Theorem 4 — symbolic-compilation correctness
 
-Let \(D\) be the symbolic DAG produced by the same elimination sequence while retaining selector variables.
+Let $D$ be the symbolic DAG produced by the same elimination sequence while retaining selector variables.
 
-For every selector assignment \(a\),
+For every selector assignment $a$,
 
-\[
+$$
 \operatorname{Eval}(D,a)
 =
 \operatorname{VE}(a).
-\]
+$$
 
 Prove this by induction over elimination/compiled-expression construction.
 
