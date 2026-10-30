@@ -118,8 +118,8 @@ $m=r_Z+k=n-r_X$ and $\mathrm{rank}\Phi=m$.
 Consequently $\dim\ker\Phi=n-m=r_X$. Since
 $\mathrm{rowspace}(H_X)\subseteq\ker\Phi$ and
 both spaces have dimension $r_X$, they are equal.
-An independent $r_X$-element stabilizer basis therefore enumerates
-each $\Phi$-fiber exactly once after a selector lift.
+An independent stabilizer basis of $r_X$ elements therefore enumerates
+each fiber of $\Phi$ exactly once after a selector lift.
 This dimension and independence argument is a required hypothesis,
 not a consequence of stabilizer inclusion alone.
 
