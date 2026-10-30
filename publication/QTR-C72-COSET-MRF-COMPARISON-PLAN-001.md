@@ -12,29 +12,29 @@ The coset-MRF construction is mathematically close to the QTR class factorizatio
 
 Krishnamoorthy et al. use a fixed syndrome solution and logical representative,
 
-\[
+$$
 e_\lambda=e_0\oplus\lambda^T L_X,
-\]
+$$
 
 then enumerate its stabilizer coset as
 
-\[
+$$
 e=e_\lambda\oplus u^T H_X,
-\]
+$$
 
 with class partition function
 
-\[
+$$
 Z_\lambda(s)=\sum_u w^{|e_\lambda\oplus u^T H_X|}.
-\]
+$$
 
 They introduce one binary variable per X-check and one local qubit potential whose parity is the class-representative bit XOR the incident check variables.
 
 QTR writes the corresponding affine object as
 
-\[
+$$
 e(a,z)=L a\oplus S z,
-\]
+$$
 
 where a combines independent syndrome/logical functionals and z parameterizes an independent stabilizer basis.
 
