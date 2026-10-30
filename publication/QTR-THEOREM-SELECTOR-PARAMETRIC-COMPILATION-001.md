@@ -93,7 +93,7 @@ For the CSS one-sector construction used by QTR, $\Phi$ consists of:
 
 ### Lemma 1 — stabilizer kernel
 
-For every X-stabilizer $s\in\operatorname{rowspace}(H_X)$,
+For every X-stabilizer $s\in\mathrm{rowspace}(H_X)$,
 
 $$
 \Phi(s)=0.
@@ -122,7 +122,7 @@ Thus every syndrome and logical functional used by $\Phi$ vanishes on the select
 The selector basis is required to satisfy
 
 $$
-\operatorname{rank}
+\mathrm{rank}
 \left[
 \Phi(e_{b_1})\ \cdots\ \Phi(e_{b_m})
 \right]
@@ -140,20 +140,20 @@ The C72/C90 interface verifies this explicitly through `functional_columns`, `in
 ### Lemma 1b — complete class enumeration
 
 Assume the selected stabilizer vectors are linearly independent and that
-$r=n-m$, where $\operatorname{rank}\Phi=m$. By Lemma 1,
-$\operatorname{span}\{S_1,\ldots,S_r\}\subseteq\ker\Phi$.
+$r=n-m$, where $\mathrm{rank}\Phi=m$. By Lemma 1,
+$\mathrm{span}\{S_1,\ldots,S_r\}\subseteq\ker\Phi$.
 Rank-nullity gives $\dim\ker\Phi=n-m=r$, hence
 
 $$
-\operatorname{span}\{S_1,\ldots,S_r\}=\ker\Phi.
+\mathrm{span}\{S_1,\ldots,S_r\}=\ker\Phi.
 $$
 
 For a CSS code with independent check ranks
-$r_X=\operatorname{rank}H_X$ and $r_Z=\operatorname{rank}H_Z$,
+$r_X=\mathrm{rank}H_X$ and $r_Z=\mathrm{rank}H_Z$,
 the logical dimension is $k=n-r_X-r_Z$. The independent
 syndrome-plus-logical selector has $m=r_Z+k=n-r_X$ functionals;
 the independent X-stabilizer basis has $r=r_X$. The selector-basis
-condition above certifies $\operatorname{rank}\Phi=m$, and therefore
+condition above certifies $\mathrm{rank}\Phi=m$, and therefore
 $r=n-m$ and the kernel equality hold in this specialization.
 
 For each $f=\Phi(L(a))$, the map
@@ -325,7 +325,7 @@ $$
 Thus the first tropical component tracks
 
 $$
-(\operatorname{wt}(e),\operatorname{int}(e))
+(\mathrm{wt}(e),\mathrm{int}(e))
 $$
 
 and returns the minimum-weight representative with lowest integer tie break.
@@ -333,7 +333,7 @@ and returns the minimum-weight representative with lowest integer tie break.
 The second tropical component independently returns
 
 $$
-\min_{e\text{ in class}}\operatorname{int}(e),
+\min_{e\text{ in class}}\mathrm{int}(e),
 $$
 
 the canonical class key.
@@ -369,39 +369,39 @@ The compiler replaces numerical table entries by expressions generated from:
 
 - exact terminals;
 - selector-choice nodes
-  $
-  \operatorname{ITE}(i,x_0,x_1);
-  $
+$$
+  \mathrm{ITE}(i,x_0,x_1);
+$$
 - semiring multiplication nodes;
 - semiring marginal/addition nodes.
 
-For selector assignment $a$, define $\operatorname{ev}_a$ recursively:
+For selector assignment $a$, define $\mathrm{ev}_a$ recursively:
 
 $$
-\operatorname{ev}_a(c)=c,
+\mathrm{ev}_a(c)=c,
 $$
 
 $$
-\operatorname{ev}_a(\operatorname{ITE}(i,x_0,x_1))
+\mathrm{ev}_a(\mathrm{ITE}(i,x_0,x_1))
 =
 \begin{cases}
-\operatorname{ev}_a(x_0),&a_i=0,\\
-\operatorname{ev}_a(x_1),&a_i=1,
+\mathrm{ev}_a(x_0),&a_i=0,\\
+\mathrm{ev}_a(x_1),&a_i=1,
 \end{cases}
 $$
 
 and
 
 $$
-\operatorname{ev}_a(x\otimes y)
+\mathrm{ev}_a(x\otimes y)
 =
-\operatorname{ev}_a(x)\otimes\operatorname{ev}_a(y),
+\mathrm{ev}_a(x)\otimes\mathrm{ev}_a(y),
 $$
 
 $$
-\operatorname{ev}_a(x\oplus y)
+\mathrm{ev}_a(x\oplus y)
 =
-\operatorname{ev}_a(x)\oplus\operatorname{ev}_a(y).
+\mathrm{ev}_a(x)\oplus\mathrm{ev}_a(y).
 $$
 
 Thus specialization commutes with every semiring operation represented in the DAG.
@@ -411,7 +411,7 @@ Thus specialization commutes with every semiring operation represented in the DA
 For every qubit $q$, local stabilizer assignment $u\in\mathbb F_2^{J_q}$, and selector assignment $a$,
 
 $$
-\operatorname{ev}_a(\Psi_q(u))
+\mathrm{ev}_a(\Psi_q(u))
 =
 w_q
 \left(
@@ -433,7 +433,7 @@ If $q$ is not a selector-basis qubit, the compiler emits the terminal $w_q(p(u))
 If $q=b_i$, it emits
 
 $$
-\operatorname{ITE}
+\mathrm{ITE}
 \left(
 i,
 w_q(p(u)),
@@ -478,7 +478,7 @@ $$
 Then
 
 $$
-\operatorname{ev}_a(\Psi'(u))
+\mathrm{ev}_a(\Psi'(u))
 =
 \psi'^{(a)}(u).
 $$
@@ -489,9 +489,9 @@ By the recursive semantics of specialization,
 
 $$
 \begin{aligned}
-\operatorname{ev}_a(\Psi'(u))
+\mathrm{ev}_a(\Psi'(u))
 &=
-\operatorname{ev}_a
+\mathrm{ev}_a
 \left(
 \bigoplus_b
 \bigotimes_{k\in I}\Psi_k(u,b)
@@ -499,7 +499,7 @@ $$
 &=
 \bigoplus_b
 \bigotimes_{k\in I}
-\operatorname{ev}_a(\Psi_k(u,b))\\
+\mathrm{ev}_a(\Psi_k(u,b))\\
 &=
 \bigoplus_b
 \bigotimes_{k\in I}
@@ -525,7 +525,7 @@ Then for every selector assignment $a\in\mathbb F_2^m$,
 
 $$
 \boxed{
-\operatorname{ev}_a(R)=F(a)
+\mathrm{ev}_a(R)=F(a)
 }.
 $$
 
@@ -551,9 +551,9 @@ The implementation:
 
 - hash-conses structurally identical nodes;
 - canonicalizes child order for commutative binary operations;
-- simplifies $\operatorname{ITE}(i,x,x)$ to $x$.
+- simplifies $\mathrm{ITE}(i,x,x)$ to $x$.
 
-None changes $\operatorname{ev}_a$.
+None changes $\mathrm{ev}_a$.
 
 ### Proof
 
@@ -570,7 +570,7 @@ so child reordering preserves value.
 Finally,
 
 $$
-\operatorname{ITE}(i,x,x)=x
+\mathrm{ITE}(i,x,x)=x
 $$
 
 under both selector values. QED.
