@@ -1,0 +1,56 @@
+{
+  "contract_id": "GCL-CIR-001",
+  "version": "1.0.0",
+  "repository": "grandchallenge/QUANTUM-TECHNOLOGIES",
+  "mode": "ENFORCE_DISCOVERY_PRESERVE_EXISTING_CI",
+  "checks": [
+    {
+      "id": "quantum-qtr-validation",
+      "test_globs": [
+        "tests/test_*.py"
+      ]
+    }
+  ],
+  "legacy_test_paths": [
+    "tests/test_downstream_atlas.py",
+    "tests/test_gcl_ghos_quantum_owner_controls_receipt.py",
+    "tests/test_gcl_ghos_quantum_post_repair_readback_receipt.py",
+    "tests/test_qec_circuit_001.py",
+    "tests/test_qec_circuit_001_evidence.py",
+    "tests/test_qec_circuit_001_promotion.py",
+    "tests/test_qec_circuit_002.py",
+    "tests/test_qec_circuit_002_promotion.py",
+    "tests/test_qldpc_fixture_001.py",
+    "tests/test_qldpc_fixture_001_promotion.py",
+    "tests/test_qldpc_fixture_002.py",
+    "tests/test_qldpc_fixture_002_promotion.py",
+    "tests/test_qldpc_scale_001a.py",
+    "tests/test_qldpc_scale_001a_promotion.py",
+    "tests/test_qldpc_scale_001b.py",
+    "tests/test_qldpc_scale_001b_promotion.py",
+    "tests/test_qtr_c90_exact_requal_001.py",
+    "tests/test_qtr_c90_exact_requal_001_promotion.py",
+    "tests/test_qtr_c90_external_execution.py",
+    "tests/test_qtr_c90_resource_envelope_001.py",
+    "tests/test_qtr_c90_retained_bound_001.py",
+    "tests/test_qtr_c90_structure_001.py",
+    "tests/test_qtr_colab_compute_001.py",
+    "tests/test_qtr_publication_theorem_regressions.py",
+    "tests/test_schema_validation.py",
+    "tests/test_signal_discovery.py",
+    "tests/test_tcm_c72_interface_001.py",
+    "tests/test_tcm_c72_interface_001_parallel.py",
+    "tests/test_tcm_qdec_001.py",
+    "tests/test_tcm_qdec_001_promotion.py",
+    "tests/test_tcm_qdec_002.py",
+    "tests/test_tcm_qdec_002_promotion.py",
+    "tests/test_tcm_qdec_003.py",
+    "tests/test_tcm_qdec_003_promotion.py",
+    "tests/test_tcm_qdec_004.py",
+    "tests/test_tcm_qdec_004_promotion.py",
+    "tests/test_tcm_qdec_compare_001.py",
+    "tests/test_tcm_qdec_compare_001_evidence.py",
+    "tests/test_tcm_qdec_compare_001_oracle.py",
+    "tests/test_tcm_qdec_compare_001_promotion.py"
+  ]
+}
