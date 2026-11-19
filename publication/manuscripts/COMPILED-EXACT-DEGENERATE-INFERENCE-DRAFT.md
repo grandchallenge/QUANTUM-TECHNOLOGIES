@@ -15,7 +15,7 @@ $$
 e(a,z)=L a\oplus S z,
 $$
 
-where $a$ contains independent syndrome and logical-class selector coordinates and $z$ contains stabilizer-degeneracy variables. We eliminate $z$ symbolically while retaining $a$ as Boolean parameters, producing a canonical reusable expression DAG. We prove that specialization of the compiled DAG at any selector assignment equals fixed-selector exact variable elimination. The construction applies to exact sum-product, a base-2 partition objective, and a min-plus product algebra that simultaneously retains minimum weight, a deterministic minimum-weight representative, and a canonical class key.
+where $a$ contains independent syndrome and logical-class selector coordinates and $z$ contains stabilizer-degeneracy variables. We eliminate $z$ symbolically while retaining $a$ as Boolean parameters, producing a reusable hash-consed expression DAG with deterministic serialization under a frozen elimination order. We prove that specialization of the compiled DAG at any selector assignment equals fixed-selector exact variable elimination. The construction applies to exact sum-product, a base-2 partition objective, and a min-plus product algebra that simultaneously retains minimum weight, a deterministic minimum-weight representative, and a canonical class key.
 
 On a protected $[[18,4,4]]$ bivariate-bicycle code, we verify the complete semantic chain from exhaustive physical-error enumeration through quotient inference, local transfer factorization, stabilizer-variable elimination, and selector-parametric compilation. The compiled path reproduces all 6,144 class scores, 2,048 class mappings, 384 winning-class tie sets, and 384 deterministic decisions. The three compiled algebra objects contain 371, 371, and 388 reachable nodes respectively. On a source-bound $[[72,12,6]]$ bivariate-bicycle instance, the corresponding exact representation has 30 stabilizer variables and selector rank 42; deterministic min-fill has induced width 18, and the reusable compiled descriptor agrees exactly with an independent fixed-selector oracle on a precommitted 300-selector validation set.
 
@@ -369,7 +369,7 @@ Fix an elimination order on $z$. At each step the compiler:
 
 Selector variables are never eliminated. No complete selector answer table is produced during compilation.
 
-Structurally identical nodes are hash-consed. For commutative operations, operand identifiers are ordered canonically before interning.
+Structurally identical nodes are hash-consed. For commutative operations, operand identifiers are ordered canonically before interning. Here *canonical* means deterministic interning and serialization under the declared order and construction rules; it does **not** mean that different elimination orders or algebraically equivalent expression graphs produce a unique globally canonical circuit.
 
 ### 5.3 Correctness theorem
 
