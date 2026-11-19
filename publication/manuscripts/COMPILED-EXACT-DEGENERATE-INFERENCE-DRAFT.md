@@ -556,6 +556,8 @@ Min-fill is frozen as the primary order.
 
 These widths are properties of this specific representation and order policy. They are not global treewidth certificates.
 
+An independently admitted common-policy reconstruction also compares the full 36-check and independent rank-30 versions of the same C72 matrix, yielding min-fill widths 23 and 18 respectively (Section 8.2). The result is structural, not a decoder runtime measurement.
+
 ![C72 induced widths for three declared elimination orders. Source: protected QLDPC-SCALE-001A report (payload `198bb28f...`). The comparison is within the QTR factor graph only and is not a globally minimal treewidth claim.](../figures/paper_a_c72_elimination_width.png)
 
 ### 7.3 Reusable exact representation
@@ -626,7 +628,17 @@ factor. The source-locked check is recorded in
 This verifies a representation normalization, not runtime equivalence
 or access to the other group's implementation.
 
-The reported C72 structures are nevertheless not numerically comparable without reconstruction: the published coset MRF has 36 check variables and induced width approximately 23, whereas the protected QTR graph has 30 independent stabilizer variables and deterministic min-fill width 18. Different redundancy handling, graph definitions, preprocessing, and ordering implementations can change width.
+We have now performed a bounded **common-definition structural reconstruction** on the identical protected C72 X-check matrix (admitted as [QTR PR #131](https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES/pull/131)). Each qubit supplies one parity-factor scope, and the same deterministic min-fill policy, breaking ties by live degree and variable index, is applied to both primal graphs.
+
+| Common structural measure | All 36 X-check coordinates | Independent rank-30 X-stabilizer coordinates |
+|---|---:|---:|
+| Binary latent variables | 36 | 30 |
+| Primal edges | 216 | 151 |
+| Lexicographic induced width | 30 | 24 |
+| Min-degree induced width | 26 | 18 |
+| Min-fill induced width | **23** | **18** |
+
+The source-locked machine-readable report is publication/research/QTR-C72-COMMON-GRAPH-001-report.json (canonical SHA-256 8f09c69b0c86c797b988173f9fedd124e9a1b30cc5bcac61c4d5fb5f2bc6746f). The full-check width 23 agrees numerically with the approximately-23 C72 value reported by Krishnamoorthy et al., but does **not** prove their implementation used the same graph preprocessing or ordering, nor establish comparative decoder runtime/memory. The independent width 18 agrees with protected QTR data, while the exact elimination order differs under tie-breaking. Neither width is a globally optimal treewidth certificate.
 
 The working differentiation is therefore not the affine coset MRF itself. It is QTR's retention of the syndrome/logical selector as symbolic parameters in one compiled exact object, plus the larger decoder-level semantic payload. A controlled source-level comparison is required before submission.
 
@@ -649,7 +661,7 @@ The comparison with Krishnamoorthy et al. is about *documented objects and metho
 | Exact class inference | Fixed-class partition function and junction-tree/bucket elimination; mini-bucket bounds permit certified pruning | Symbolic elimination of stabilizer coordinates with syndrome/logical selector bits retained in one reusable expression DAG |
 | Main additional mode | AIS and Bethe approximation, interval/optimality certificates, noisy-syndrome and circuit-level experiments | Exact sum-product, base-2 partition and deterministic min-plus/key semantics with C18 equivalence and C72 oracle checks |
 | Reported C72 verification | 240 tested syndromes; global 4,096-class optimum checked on a subsample with bounds and exact evaluation | 300 precommitted **selector assignments** checked against independent fixed-selector inference; separate 329-input full-class C72 interface campaign |
-| What is **not** established | A selector-parametric compiled expression DAG is not specified in the inspected manuscript, but may exist in unavailable implementations | No claim of first exact C72 decoding, superior runtime/width, family scaling, or certified novelty |
+| What is **not** established | A selector-parametric compiled expression DAG is not specified in the inspected manuscript, but may exist in unavailable implementations | No claim of first exact C72 decoding, superior complete-decoder runtime/memory, globally optimal width, family scaling, or certified novelty |
 
 The C72 experiments above are not head-to-head tests: the corpora, selectors, noise settings, objectives, graph definitions and evaluation protocols differ. In particular, 300 individual selector checks are **not** 300 complete-syndrome maximum-likelihood decisions. Nor is the 329-input interface campaign a direct comparison to the other paper's 240 syndromes.
 
@@ -749,6 +761,8 @@ Before submission, the public artifact package should include:
 
 All experimental statements in this manuscript are tied to the public [QTR repository](https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES) and the protected reference-evidence paths listed in `publication/QTR-PAPER-A-EVIDENCE-MANIFEST-001.json`. The C18 report is `evidence/TCM-QDEC-004-report.json`; C72 source-bound symbolic validation is `evidence/QLDPC-SCALE-001A-report.json`; the distinct complete-C72 decoder interface report is `evidence/TCM-C72-INTERFACE-001-report.json`. These report payloads and their source commits, selector-set digests and decision hashes must be resolved against the version-locked evidence manifest when reproducing results. A passing manuscript compilation is not scientific replay.
 
+The separately admitted C72 common-policy structural reconstruction is a derived study, not a frozen decoder-quality campaign. Its source, five tests and exact report are in publication/research/qtr_c72_common_graph_001.py, publication/tests/test_qtr_c72_common_graph_001.py and publication/research/QTR-C72-COMMON-GRAPH-001-report.json.
+
 Figures 2 and 3 are generated from the protected JSON fields by `publication/figures/generate_paper_a_figures.py`; Figure 1 is a source-controlled diagram of the theorem construction. The manuscript is currently a **draft** and a complete externally mirrored, independently checked submission artifact package has not yet been released. This provisional statement must be replaced with the final immutable publication archive and access instructions before submission.
 
 ## 11. Conclusion
@@ -781,7 +795,7 @@ This draft is intentionally not yet a submission candidate.
 Required before submission:
 
 - independent mathematical review of Theorem 1 and its supporting lemmas;
-- common-definition technical comparison against the 2026 coset-MRF construction;
+- source-level and common-platform *implementation* comparison against the 2026 coset-MRF construction (the source-locked primal-graph comparison is complete, but it is not a native-code or runtime comparison);
 - complete pre-submission literature/version refresh against new postings;
 - final independent citation review against verified metadata;
 - final figure captions and accessibility review;

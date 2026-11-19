@@ -8,6 +8,7 @@ This directory extracts publication candidates from the governed QTR scientific 
 
 - `QTR-NOVELTY-UTILITY-AUDIT-001.md` — conservative 2026-10-02 prior-art and utility audit with a 2026-11-19 additive update.
 - `QTR-C72-COSET-MRF-COMPARISON-PLAN-001.md` — explicit overlap map and controlled comparison plan against the 2026 coset-MRF construction.
+- QTR-C72-COMMON-GRAPH-AUDIT-001.md — source-locked common-policy 36-check vs rank-30 C72 primal graph audit (min-fill width 23 vs 18), with five tests, no decoder runtime claim.
 - `QTR-PAPER-A-OPEN-RESEARCH-COMPARISON-001.md` — mechanism-level common-C72 replication protocol, provenance boundaries, complementary-method research questions, and collegial exchange proposal.
 - `QTR-PAPER-A-EVIDENCE-MANIFEST-001.json` — protected C18/C72 table-to-evidence SHA bindings and explicit finite-sample claim limits.
 - `QTR-PAPER-A-BIBLIOGRAPHY-AUDIT-001.md` — verification of 12 source records, DOIs/identifiers and bounded comparison claims.
