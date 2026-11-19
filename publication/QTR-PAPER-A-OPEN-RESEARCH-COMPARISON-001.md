@@ -1,10 +1,10 @@
 # QTR-PAPER-A-OPEN-RESEARCH-COMPARISON-001
 
-Status: \`DOCUMENTARY_REPLICATION_PROTOCOL__NO_NEW_EXECUTION_OR_PUBLICATION_AUTHORITY\`
+Status: `DOCUMENTARY_REPLICATION_PROTOCOL__NO_NEW_EXECUTION_OR_PUBLICATION_AUTHORITY`
 
 Date: 2026-11-19
 
-Exact protected starting revision: \`8637d9b7966b58f26334beaaa9630be4f65489c1\`
+Exact protected starting revision: `8637d9b7966b58f26334beaaa9630be4f65489c1`
 
 Programme: Grand Challenge Labs Quantum Technologies Research (QTR)
 
@@ -15,23 +15,23 @@ Make Paper A scientifically accessible, faithfully credit overlapping work, and 
 ## Sources and bounded claims
 
 - GCL C72 structural feasibility: [PR #60](https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES/pull/60), merged 2026-08-17 11:03:17 UTC; source-bound exact compilation/validation on 300 selector assignments under three exact algebras.
-- GCL C72 full interface: [PR #111](https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES/pull/111), merged 2026-08-25 05:02:12 UTC; 329 frozen inputs, all 4,096 logical classes per input, three-algebra correction-valued outcomes. Scientific receipt: \`evidence/TCM-C72-INTERFACE-001-report.json\`.
+- GCL C72 full interface: [PR #111](https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES/pull/111), merged 2026-08-25 05:02:12 UTC; 329 frozen inputs, all 4,096 logical classes per input, three-algebra correction-valued outcomes. Scientific receipt: `evidence/TCM-C72-INTERFACE-001-report.json`.
 - R. Krishnamoorthy *et al.*, "[Certified decoding of quantum LDPC codes](https://arxiv.org/abs/2608.25545)", arXiv:2608.25545v1, submitted 2026-08-26 08:57:01 UTC. Their Proposition 1 and Sections 7.6/8.5 give an exact fixed-class coset MRF, elimination/mini-bucket methods, exact C72 decoding on 240 syndromes and a global 4,096-class check on a subsample. The work also provides AIS, Bethe, and several decision-certification methods.
-- General arithmetic-circuit / exact-inference compilation and semiring inference predate both works. See \`QTR-NOVELTY-UTILITY-AUDIT-001.md\` and the cited literature.
+- General arithmetic-circuit / exact-inference compilation and semiring inference predate both works. See `QTR-NOVELTY-UTILITY-AUDIT-001.md` and the cited literature.
 - GCL's reusable selector-parametric DAG is a potentially useful **specific representation**, not a certified first-of-kind claim. The comparator manuscript inspected does not specify an equivalent symbolic query DAG. The absence in prose does not establish absence in authors' source or the wider literature.
 
 The repository merge records predate the paper's arXiv submission; they do **not** establish the competing team's internal research timeline, access, or influence. Neither a provenance disagreement nor a derivation allegation is made.
 
 ## Mechanism correspondence
 
-For a fixed syndrome/logical class, the comparator's \`e_lambda XOR (u^T H_X)\` and QTR's \`L(a) XOR S(z)\` denote the same **type** of affine stabilizer coset, under consistent basis choices. They do not automatically denote the same numerical partition function unless they use the same code, physical noise model and counting convention.
+For a fixed syndrome/logical class, the comparator's `e_lambda XOR (u^T H_X)` and QTR's `L(a) XOR S(z)` denote the same **type** of affine stabilizer coset, under consistent basis choices. They do not automatically denote the same numerical partition function unless they use the same code, physical noise model and counting convention.
 
 The comparator uses all 36 C72 X checks, including redundancies; QTR uses an independent 30-dimensional X-stabilizer basis. At equal physical error weights and fixed class:
 
-\`\`\`text
+```text
 Z_all_checks = 2^(36 - 30) * Z_independent_basis
              = 64 * Z_independent_basis
-\`\`\`
+```
 
 This identity follows from the linear map from check coefficients onto the rank-30 rowspace, with a kernel of dimension 6. It applies only if all check configurations are included and each physical error contributes the same weight in both formulations. The positive constant does not change logical-class orderings; it **does** change raw partition-function values. If numerical semirings differ, normalizations and conversions must be declared explicitly. The relationship is a mathematical correspondence, not a new execution result.
 
