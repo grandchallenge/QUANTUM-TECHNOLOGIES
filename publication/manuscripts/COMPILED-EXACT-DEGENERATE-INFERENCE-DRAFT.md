@@ -611,6 +611,12 @@ The reported C72 structures are nevertheless not numerically comparable without 
 
 The working differentiation is therefore not the affine coset MRF itself. It is QTR's retention of the syndrome/logical selector as symbolic parameters in one compiled exact object, plus the larger decoder-level semantic payload. A controlled source-level comparison is required before submission.
 
+### 8.3 Probabilistic knowledge compilation
+
+Arithmetic-circuit compilation of probabilistic inference is established. Work by Darwiche, Chavira and Darwiche, and later probabilistic knowledge-compilation research shows that variable-elimination structure can be compiled once and reused under different evidence assignments. Algebraic model counting extends compiled inference to general semiring settings.
+
+Our contribution is consequently not the abstract fact that compilation and later specialization can commute. The theorem in Section 5 instantiates that known principle for the particular selector/stabilizer structure required by degenerate CSS decoding, including the quantum logical-class and tie/correction semantics that the implementation must preserve.
+
 ### 8.4 Mechanism-level comparison and complementary capabilities
 
 The comparison with Krishnamoorthy et al. is about *documented objects and methods*, not claims about who influenced whom. Their arXiv v1 (26 August 2026, [arXiv:2608.25545](https://arxiv.org/abs/2608.25545), Proposition 1 and Sections 7.6 and 8.5) directly supports the following bounded comparison:
@@ -629,12 +635,6 @@ The C72 experiments above are not head-to-head tests: the corpora, selectors, no
 There is an opportunity for complementary research. A shared, version-locked C72 benchmark could use exact QTR class scores as a calibration oracle for interval certificates, AIS and Bethe estimates; conversely, the published certificate constructions suggest principled ways to decide when a costly exact query is necessary. Any such combination requires fresh authorization, a precommitted test protocol and independent verification. It is not an experiment or claim reported in this paper.
 
 We welcome independent reproduction and cross-comparison. Public availability of the work is intentional; the chronology of public evidence establishes provenance, **not** a claim that another group used or derived its methods from GCL.
-
-### 8.3 Probabilistic knowledge compilation
-
-Arithmetic-circuit compilation of probabilistic inference is established. Work by Darwiche, Chavira and Darwiche, and later probabilistic knowledge-compilation research shows that variable-elimination structure can be compiled once and reused under different evidence assignments. Algebraic model counting extends compiled inference to general semiring settings.
-
-Our contribution is consequently not the abstract fact that compilation and later specialization can commute. The theorem in Section 5 instantiates that known principle for the particular selector/stabilizer structure required by degenerate CSS decoding, including the quantum logical-class and tie/correction semantics that the implementation must preserve.
 
 ## 9. Discussion
 
@@ -705,7 +705,7 @@ The following is an explicit map between mathematical obligations and the finite
 | Local factor | $e_q(a,z)=\ell_q(a)\oplus\bigoplus_{j\in J_q}z_j$ | C18 transfer and degeneracy-elimination chain; C72 local-scope construction | Applies to the declared one-sector model |
 | Symbolic query | Selector-choice ITE terminals remain symbolic while only $z$ is eliminated | `reference/tcm_qdec_004.py` and `reference/qldpc_scale_001a_symbolic.py` | No broad general claim of new knowledge-compilation theory |
 | Exact algebra | Natural-number sum-product; base-2 sum-product; **single-sentinel** lexicographic tropical product | C18 three-algebra full-domain validation; C72 three-algebra 300-selector validation | Unrestricted extended-pair tropical carrier is excluded |
-| Payload and decisions | Score, minimum-weight representative, independent canonical key, ties, deterministic correction | C18: 6,144 scores; 2,048 mappings; 384 tie sets and decisions. C72: fixed-selector oracle on 300 selectors | Finite checks are not exhaustive C72 implementation verification |
+| Payload and decisions | Score, minimum-weight representative, independent canonical key, ties, deterministic correction | C18: 6,144 scores; 2,048 mappings; 384 tie sets and 384 decisions. C72: fixed-selector oracle on 300 selectors | Finite checks are not exhaustive C72 implementation verification |
 | Native C90 correspondence | Same terminal, ITE, semiring and root semantics | Pre-outcome frozen structural and selector checks only | **Separate native refinement and authoritative external decoder run remain open** |
 
 For the C72 full-interface quality result, the independent publication anchor is the protected `evidence/TCM-C72-INTERFACE-001-report.json` receipt from PR #111: all 329 frozen inputs, 4,096 logical classes per input, and the three protected decoder algebras. This is not a substitute for the C72 300-selector compiler/oracle validation, nor for the reference proof.
