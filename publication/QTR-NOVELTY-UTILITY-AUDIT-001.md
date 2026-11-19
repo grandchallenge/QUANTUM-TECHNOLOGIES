@@ -10,6 +10,14 @@ Repository: `grandchallenge/QUANTUM-TECHNOLOGIES`
 
 Publication branch: `publication/qtr-exact-inference-001`
 
+## 2026-11-19 literature update (additive, no retrospective priority claim)
+
+The October 2 working audit was refreshed against the 2026-10-20 paper by Michele Banfi, Marco Ferrari, Antonino Favano, Alberto Tarable and Luca Barletta, “[Certified Non-Degenerate Maximum-Likelihood Benchmarking of Quantum LDPC Decoders](https://arxiv.org/abs/2610.28008)” (arXiv:2610.28008).
+
+That work certifies sampled-shot **non-degenerate** maximum-likelihood outcomes with cost intervals and branch-and-bound under circuit-level noise, benchmarking bivariate-bicycle examples. Its objective is the minimum cost of a single syndrome-consistent representative. In general this differs from the **degenerate** maximum likelihood objective, which sums the probabilities of all representatives of each stabilizer class. Hence the paper is relevant prior art for certified min-plus/maximum-pattern decoding and for complementarity with exact oracles, **not evidence of a completed exact C90 degenerate class-partition-function decoder**. No claim of chronological priority or general superiority is inferred.
+
+This targeted addition does not constitute an exhaustive refreshed pre-submission prior-art review. The original October 2 conservative dispositions remain unchanged.
+
 ## 1. Purpose
 
 This audit separates three questions that must not be conflated:
