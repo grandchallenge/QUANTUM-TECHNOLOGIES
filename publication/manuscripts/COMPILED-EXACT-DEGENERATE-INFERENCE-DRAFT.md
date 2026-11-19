@@ -724,7 +724,7 @@ Before submission, the public artifact package should include:
 2. C18 semantic records;
 3. the C72 frozen validation selector set;
 4. independent verification scripts;
-5. a compact manifest connecting manuscript tables to evidence digests.
+5. a compact manifest connecting manuscript tables to evidence digests (the protected C18/C72 numerical provenance is now mapped in `publication/QTR-PAPER-A-EVIDENCE-MANIFEST-001.json`; a submission-ready, independently reviewed artifact bundle remains open).
 
 ## 11. Conclusion
 
