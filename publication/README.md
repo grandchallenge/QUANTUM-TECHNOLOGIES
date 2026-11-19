@@ -6,7 +6,7 @@ This directory extracts publication candidates from the governed QTR scientific 
 
 ## Artifacts
 
-- `QTR-NOVELTY-UTILITY-AUDIT-001.md` — conservative prior-art and utility audit through 2026-10-02.
+- `QTR-NOVELTY-UTILITY-AUDIT-001.md` — conservative 2026-10-02 prior-art and utility audit with a 2026-11-19 additive update.
 - `QTR-C72-COSET-MRF-COMPARISON-PLAN-001.md` — explicit overlap map and controlled comparison plan against the 2026 coset-MRF construction.
 - `QTR-PAPER-A-OPEN-RESEARCH-COMPARISON-001.md` — mechanism-level common-C72 replication protocol, provenance boundaries, complementary-method research questions, and collegial exchange proposal.
 - `QTR-PUBLICATION-SPEC-001-COMPILED-EXACT-INFERENCE.md` — method-paper specification.
