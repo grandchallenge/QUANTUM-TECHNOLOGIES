@@ -615,6 +615,17 @@ Consequently, exact C72 degenerate decoding is not a novelty claim of the presen
 
 At the class-partition level the two constructions are mathematically close. Krishnamoorthy et al. use $e=e_\lambda\oplus u^T H_X$, one variable per X-check, and one qubit potential over the incident checks. QTR uses $e=La\oplus Sz$, with an independent stabilizer basis and a full-rank selector interface spanning syndrome and logical coordinates.
 
+The exact coefficient-redundancy relationship *is* established on the
+protected common C72 check matrix: the 36-row X-check map has rank 30,
+so its six-dimensional coefficient kernel has 64 elements. Thus an
+all-check sum-product class partition is exactly 64 times the
+independent-basis partition after identical physical weights and
+class labels are aligned; a min-plus optimum has no corresponding
+factor. The source-locked check is recorded in
+`publication/QTR-C72-COSET-COORDINATE-CERTIFICATE-001.json`.
+This verifies a representation normalization, not runtime equivalence
+or access to the other group's implementation.
+
 The reported C72 structures are nevertheless not numerically comparable without reconstruction: the published coset MRF has 36 check variables and induced width approximately 23, whereas the protected QTR graph has 30 independent stabilizer variables and deterministic min-fill width 18. Different redundancy handling, graph definitions, preprocessing, and ordering implementations can change width.
 
 The working differentiation is therefore not the affine coset MRF itself. It is QTR's retention of the syndrome/logical selector as symbolic parameters in one compiled exact object, plus the larger decoder-level semantic payload. A controlled source-level comparison is required before submission.

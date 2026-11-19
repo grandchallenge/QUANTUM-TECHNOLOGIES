@@ -11,6 +11,8 @@ This directory extracts publication candidates from the governed QTR scientific 
 - `QTR-PAPER-A-OPEN-RESEARCH-COMPARISON-001.md` — mechanism-level common-C72 replication protocol, provenance boundaries, complementary-method research questions, and collegial exchange proposal.
 - `QTR-PAPER-A-EVIDENCE-MANIFEST-001.json` — protected C18/C72 table-to-evidence SHA bindings and explicit finite-sample claim limits.
 - `QTR-PAPER-A-BIBLIOGRAPHY-AUDIT-001.md` — verification of 12 source records, DOIs/identifiers and bounded comparison claims.
+- `QTR-C72-COSET-COORDINATE-CERTIFICATE-001.json` — protected source-bound 36-row / rank-30 redundancy certificate; matches the verified 64× sum-product factor.
+- `tests/test_paper_a_c72_coordinate_certificate.py` — three independent finite checks of the frozen C72 coordinate map and its six redundancy generators.
 - `figures/generate_paper_a_figures.py` — regenerate the C18/C72 evidence-derived figures and a selector-compilation schematic from protected report commitments.
 - `tests/test_paper_a_math_obligations.py` — six bounded positive/hostile checks of the full-kernel and tropical-semiring hypotheses (not a formal proof).
 - `QTR-PUBLICATION-SPEC-001-COMPILED-EXACT-INFERENCE.md` — method-paper specification.

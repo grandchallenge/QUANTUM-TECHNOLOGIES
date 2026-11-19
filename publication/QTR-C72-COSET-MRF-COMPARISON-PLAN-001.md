@@ -99,6 +99,38 @@ QTR validates the compiled construction under:
 
 General semiring knowledge compilation is prior art. The possible contribution is the exact QEC semantic package and its controlled end-to-end equivalence record.
 
+### 3.5 Completed protected C72 coefficient-redundancy audit (2026-11-19)
+
+QTR independently recomputed the protected C72 X-check matrix from the
+source-locked polynomial shifts. There are 36 declared rows of rank 30.
+The coefficient map from the full 36-dimensional check-variable vector
+onto the physical 30-dimensional X-stabilizer rowspace therefore has an
+exact six-dimensional kernel. Six explicit independent kernel generators
+and an exact rank-nullity argument establish precisely 64 coefficient
+preimages for **every** stabilizer displacement.
+
+For identical code, syndrome/logical class and local weight convention,
+
+$$
+Z_{\mathrm{all\ checks}}(s,\lambda)
+=2^{36-30}Z_{\mathrm{independent}}(s,\lambda)
+=64\,Z_{\mathrm{independent}}(s,\lambda).
+$$
+
+This equality is for ordinary sum-product class-partition functions with
+all check-variable assignments counted. It does **not** scale a min-plus
+minimum, since repeated candidates leave the minimum unchanged.
+
+The source-bound output is
+`publication/QTR-C72-COSET-COORDINATE-CERTIFICATE-001.json`,
+and its three standard-library verification tests are in
+`publication/tests/test_paper_a_c72_coordinate_certificate.py`.
+The check is a coordinate-algebra certificate against the protected QTR
+matrix, **not** a reimplementation of the other group's inference engine.
+A source-level algorithm comparison and controlled head-to-head timing
+remain open; the named-order widths must still not be compared as if
+they shared one primal graph.
+
 ## 4. Width numbers are not directly comparable
 
 Krishnamoorthy et al. report approximately 36 coset variables and induced width about 23 for C72.
