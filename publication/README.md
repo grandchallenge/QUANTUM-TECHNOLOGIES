@@ -59,3 +59,9 @@ It does not:
 - assert publication authority.
 
 All scientific statements must remain traceable to protected QTR evidence or explicitly labelled new theorem/manuscript work.
+
+## Licensing
+
+The GCL default is **MIT unless explicitly decided otherwise**. The repository's [MIT LICENSE](../LICENSE) covers GCL-authored publication material made available here to the extent GCL holds the applicable rights. Any third-party figures, datasets, excerpts, or independently licensed contributions retain their original terms.
+
+Licensing is distinct from manuscript author attribution, independent theorem review, scientific certification and permission to submit a paper; those publication obligations remain governed separately.
