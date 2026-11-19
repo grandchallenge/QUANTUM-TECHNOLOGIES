@@ -310,7 +310,7 @@ def conventional(work: Path) -> Path:
         download_artifact(CONVENTIONAL_RUN_ID, CONVENTIONAL_ARTIFACT_NAME, dest)
     return dest
 
-def aggregate_score(work: Path) -> None:
+def aggregate_score(work: Path, conventional_source: str = "original") -> None:
     verify_source()
     verify_gh()
     final = work / "final"
@@ -329,9 +329,16 @@ def aggregate_score(work: Path) -> None:
         f = json.loads(fixed.read_text())
         if f.get("status") != "C90_EXACT_CORRECTIONS_FIXED" or f.get("quality_exposed") is not False:
             raise RuntimeError("fixed-correction gate failed")
-        run([sys.executable, str(adapter()), "score", "--fixed", str(fixed),
-             "--conventional-artifact-dir", str(conventional(work)),
-             "--orchestration-head", git_head(), "--output", str(report)])
+        if conventional_source == "original":
+            run([sys.executable, str(adapter()), "score", "--fixed", str(fixed),
+                 "--conventional-artifact-dir", str(conventional(work)),
+                 "--orchestration-head", git_head(), "--output", str(report)])
+        elif conventional_source == "verified-replay":
+            run([sys.executable, str(ROOT / "scripts/qtr_c90_conventional_recovery_001.py"),
+                 "score", "--fixed", str(fixed), "--work-root", str(work),
+                 "--orchestration-head", git_head(), "--output", str(report)])
+        else:
+            raise ValueError("unknown conventional source")
         r = json.loads(report.read_text())
         if r.get("status") != "C90_TCM_MATCHED_COMPARISON_COMPLETED":
             raise RuntimeError("terminal comparison predicate failed")
@@ -377,13 +384,14 @@ def main() -> int:
     q = sub.add_parser("evaluate"); q.add_argument("--algebra", choices=tuple(ALGEBRAS), required=True)
     q.add_argument("--workers", type=int); q.add_argument("--work-root", type=Path, default=ROOT / "runs/external" / EXPERIMENT_ID)
     q = sub.add_parser("aggregate-score"); q.add_argument("--work-root", type=Path, default=ROOT / "runs/external" / EXPERIMENT_ID)
+    q.add_argument("--conventional-source", choices=("original", "verified-replay"), default="original")
     args = p.parse_args()
     if args.cmd == "plan":
         plan(args.workers); return 0
     work = args.work_root.resolve()
     if args.cmd == "evaluate":
         evaluate(args.algebra, work, args.workers or safe_worker_limit()); return 0
-    aggregate_score(work); return 0
+    aggregate_score(work, args.conventional_source); return 0
 
 if __name__ == "__main__":
     raise SystemExit(main())
