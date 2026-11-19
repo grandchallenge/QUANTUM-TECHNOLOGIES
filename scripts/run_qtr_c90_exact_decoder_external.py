@@ -330,7 +330,7 @@ def aggregate_score(work: Path, conventional_source: str = "original") -> None:
         if f.get("status") != "C90_EXACT_CORRECTIONS_FIXED" or f.get("quality_exposed") is not False:
             raise RuntimeError("fixed-correction gate failed")
         if conventional_source == "original":
-run([sys.executable, str(adapter()), "score", "--fixed", str(fixed),
+            run([sys.executable, str(adapter()), "score", "--fixed", str(fixed),
                  "--conventional-artifact-dir", str(conventional(work)),
                  "--orchestration-head", git_head(), "--output", str(report)])
         elif conventional_source == "verified-replay":
