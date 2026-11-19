@@ -119,8 +119,10 @@ class TestFullKernelAndTropicalHypotheses(unittest.TestCase):
         for n in range(1, 10):
             parts = [{i} for i in range(n)]
             while len(parts) > 1:
-                merged = parts.pop(0) | parts.pop(-1)
-                self.assertEqual(len(merged), sum(len(s) for s in (parts + [merged])) - sum(len(s) for s in parts))
+                left, right = parts.pop(0), parts.pop(-1)
+                self.assertTrue(left.isdisjoint(right))
+                merged = left | right
+                self.assertEqual(len(merged), len(left) + len(right))
                 parts.insert(0, merged)
                 self.assertEqual(set.union(*parts), set(range(n)))
                 self.assertEqual(sum(len(p) for p in parts), n)

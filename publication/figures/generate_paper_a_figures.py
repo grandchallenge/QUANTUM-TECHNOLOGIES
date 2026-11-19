@@ -8,6 +8,7 @@ Requires: matplotlib, Python 3.10+.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -30,6 +31,11 @@ PAYLOADS = {
 
 def load_report(key: str) -> dict:
     report = json.loads(SOURCE[key].read_text(encoding="utf-8"))
+    unsigned = {k: v for k, v in report.items() if k != "payload_sha256"}
+    encoded = json.dumps(unsigned, sort_keys=True, separators=(",", ":"),
+                         ensure_ascii=True, allow_nan=False).encode()
+    if hashlib.sha256(encoded).hexdigest() != PAYLOADS[key]:
+        raise ValueError("protected canonical evidence digest mismatch: " + key)
     if report.get("payload_sha256") != PAYLOADS[key]:
         raise ValueError("protected report identity mismatch: " + key)
     if report.get("status") != "candidate_executable_not_promoted":

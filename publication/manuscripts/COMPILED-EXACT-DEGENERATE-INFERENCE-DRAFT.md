@@ -328,6 +328,8 @@ The second component is ordinary tropical min-plus.
 Their direct product is therefore a commutative semiring, so the
 same exact variable-elimination proof applies.
 
+The absorbing top element is part of the *mathematical* semiring's closure. In the C18 and C72 finite reference implementations, all constructed local terminals are finite and all instantiated marginals are over nonempty binary assignments. Therefore those finite replays do not exercise a software branch that encodes the top element; they validate the finite-value path. Our formal distributivity argument, not a claim of executed infinity cases, justifies using the restricted semiring in Theorem 1.
+
 ![Selector-parametric exact decoding. A full-rank selector lift gives physical bits (e(a,z)); exact inference eliminates only stabilizer variables (z), retaining selector parameters (a) in a reusable expression DAG. Its specialization is equivalent to fixed-selector elimination under the theorem hypotheses. This is a construction diagram, not a measured runtime claim.](../figures/paper_a_selector_pipeline.png)
 
 ## 5. Selector-parametric compilation
