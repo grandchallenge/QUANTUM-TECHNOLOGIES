@@ -703,16 +703,16 @@ The following is an explicit map between mathematical obligations and the finite
 |---|---|---|---|
 | Complete class fiber | $\operatorname{span}(S)=\ker\Phi$, independent stabilizers and invertible selector functional columns | C18 exhaustive equivalence chain; C72 source-bound basis/rank and selector-map validation | Source-reported distance is not independently recertified |
 | Local factor | $e_q(a,z)=\ell_q(a)\oplus\bigoplus_{j\in J_q}z_j$ | C18 transfer and degeneracy-elimination chain; C72 local-scope construction | Applies to the declared one-sector model |
-| Symbolic query | Selector-choice ITE terminals remain symbolic while only $z$ is eliminated | \`reference/tcm_qdec_004.py\` and \`reference/qldpc_scale_001a_symbolic.py\` | No broad general claim of new knowledge-compilation theory |
+| Symbolic query | Selector-choice ITE terminals remain symbolic while only $z$ is eliminated | `reference/tcm_qdec_004.py` and `reference/qldpc_scale_001a_symbolic.py` | No broad general claim of new knowledge-compilation theory |
 | Exact algebra | Natural-number sum-product; base-2 sum-product; **single-sentinel** lexicographic tropical product | C18 three-algebra full-domain validation; C72 three-algebra 300-selector validation | Unrestricted extended-pair tropical carrier is excluded |
 | Payload and decisions | Score, minimum-weight representative, independent canonical key, ties, deterministic correction | C18: 6,144 scores; 2,048 mappings; 384 tie sets and decisions. C72: fixed-selector oracle on 300 selectors | Finite checks are not exhaustive C72 implementation verification |
 | Native C90 correspondence | Same terminal, ITE, semiring and root semantics | Pre-outcome frozen structural and selector checks only | **Separate native refinement and authoritative external decoder run remain open** |
 
-For the C72 full-interface quality result, the independent publication anchor is the protected \`evidence/TCM-C72-INTERFACE-001-report.json\` receipt from PR #111: all 329 frozen inputs, 4,096 logical classes per input, and the three protected decoder algebras. This is not a substitute for the C72 300-selector compiler/oracle validation, nor for the reference proof.
+For the C72 full-interface quality result, the independent publication anchor is the protected `evidence/TCM-C72-INTERFACE-001-report.json` receipt from PR #111: all 329 frozen inputs, 4,096 logical classes per input, and the three protected decoder algebras. This is not a substitute for the C72 300-selector compiler/oracle validation, nor for the reference proof.
 
 ### 10.2 Public comparison protocol and provenance
 
-The accompanying \`publication/QTR-PAPER-A-OPEN-RESEARCH-COMPARISON-001.md\` records a concrete source-aware, precommitted protocol for common-matrix C72 reproduction, including treatment of redundant stabilizers, normalization of class partition functions, exact tie semantics, error-corpus identity and genuinely comparable costs. It also documents known public milestones without drawing conclusions about independent intellectual origin.
+The accompanying `publication/QTR-PAPER-A-OPEN-RESEARCH-COMPARISON-001.md` records a concrete source-aware, precommitted protocol for common-matrix C72 reproduction, including treatment of redundant stabilizers, normalization of class partition functions, exact tie semantics, error-corpus identity and genuinely comparable costs. It also documents known public milestones without drawing conclusions about independent intellectual origin.
 
 A shared comparison must separate (i) equality of mathematical class scores under aligned physical/noise conventions; (ii) correspondence of correction/tie decisions under aligned rules; and (iii) performance, which requires a controlled common host and instrumentation. No such cross-group experimental comparison is claimed here.
 
