@@ -611,6 +611,8 @@ The reported C72 structures are nevertheless not numerically comparable without 
 
 The working differentiation is therefore not the affine coset MRF itself. It is QTR's retention of the syndrome/logical selector as symbolic parameters in one compiled exact object, plus the larger decoder-level semantic payload. A controlled source-level comparison is required before submission.
 
+A complementary subsequent development is Banfi, Ferrari, Favano, Tarable and Barletta (2026), *Certified Non-Degenerate Maximum-Likelihood Benchmarking of Quantum LDPC Decoders* [arXiv:2610.28008](https://arxiv.org/abs/2610.28008). It constructs valid upper/lower cost intervals and branch-and-bound certificates for **non-degenerate** maximum-likelihood correction under circuit-level noise. That objective minimizes the cost of one physical representative; it is distinct from the **degenerate** class-probability sum targeted by Paper A. Its certified cost bounds are relevant to min-plus benchmarking and to a possible hybrid certificate-plus-exact-oracle architecture, but the paper does not establish a reusable exact selector-parametric degeneracy-partition compiler. Neither result should be described as directly dominating the other without a common benchmark and objective. This reference was added in the 2026-11-19 literature refresh.
+
 ### 8.3 Probabilistic knowledge compilation
 
 Arithmetic-circuit compilation of probabilistic inference is established. Work by Darwiche, Chavira and Darwiche, and later probabilistic knowledge-compilation research shows that variable-elimination structure can be compiled once and reused under different evidence assignments. Algebraic model counting extends compiled inference to general semiring settings.
@@ -745,6 +747,7 @@ The main value of the construction is structural. It cleanly separates code-depe
 9. A. Darwiche, “A Differential Approach to Inference in Bayesian Networks,” *Journal of the ACM* 50(3) (2003).
 10. M. Chavira and A. Darwiche, “Compiling Bayesian Networks Using Variable Elimination,” *IJCAI* (2007).
 11. A. Kimmig, G. Van den Broeck, and L. De Raedt, “Algebraic model counting,” *Journal of Applied Logic* 22, 46–62 (2017).
+12. M. Banfi, M. Ferrari, A. Favano, A. Tarable, and L. Barletta, “Certified Non-Degenerate Maximum-Likelihood Benchmarking of Quantum LDPC Decoders,” arXiv:2610.28008 (2026).
 
 ## Submission-blocking items
 
