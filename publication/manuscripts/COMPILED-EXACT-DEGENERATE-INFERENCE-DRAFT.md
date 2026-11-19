@@ -595,7 +595,7 @@ This finite validation is implementation-conformance evidence. The all-selector 
 
 Quantum decoding has long been connected to tensor-network contraction. Ferris and Poulin established the formal relationship between tensor networks and quantum error correction. Bravyi, Suchara and Vargo developed maximum-likelihood surface-code decoding based on related contraction ideas. Chubb generalized tensor-network decoding for two-dimensional Pauli codes, and Piveteau, Chubb and Renes developed tensor-network decoding beyond two dimensions and for noisy-syndrome settings.
 
-Our work does not claim priority over these formulations.
+Piveteau, Chubb and Renes explicitly distinguish generator-picture and detector-picture tensor networks. Their generator picture fixes a syndrome/logical representative and sums over stabilizer generators to obtain the logical-coset probability; this directly precedes the fixed-class factorization used here. Our work does not claim priority over this construction, or over exact/approximate tensor-network class inference.
 
 ### 8.2 qLDPC decoding
 
@@ -615,7 +615,7 @@ A complementary subsequent development is Banfi, Ferrari, Favano, Tarable and Ba
 
 ### 8.3 Probabilistic knowledge compilation
 
-Arithmetic-circuit compilation of probabilistic inference is established. Work by Darwiche, Chavira and Darwiche, and later probabilistic knowledge-compilation research shows that variable-elimination structure can be compiled once and reused under different evidence assignments. Algebraic model counting extends compiled inference to general semiring settings.
+Arithmetic-circuit compilation of probabilistic inference is established. Work by Darwiche, Chavira and Darwiche, and later probabilistic knowledge-compilation research shows that variable-elimination structure can be compiled once and reused under different evidence assignments. Chavira and Darwiche (IJCAI 2007, pp. 2443–2448) specifically compile variable elimination with algebraic decision diagrams for answering repeated evidence queries. Algebraic model counting extends compiled inference to general semiring settings.
 
 Our contribution is consequently not the abstract fact that compilation and later specialization can commute. The theorem in Section 5 instantiates that known principle for the particular selector/stabilizer structure required by degenerate CSS decoding, including the quantum logical-class and tie/correction semantics that the implementation must preserve.
 
