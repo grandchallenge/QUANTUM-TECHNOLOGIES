@@ -33,7 +33,7 @@ Z_all_checks = 2^(36 - 30) * Z_independent_basis
              = 64 * Z_independent_basis
 ```
 
-This identity follows from the linear map from check coefficients onto the rank-30 rowspace, with a kernel of dimension 6. It applies only if all check configurations are included and each physical error contributes the same weight in both formulations. The positive constant does not change logical-class orderings; it **does** change raw partition-function values. If numerical semirings differ, normalizations and conversions must be declared explicitly. The relationship is a mathematical correspondence, not a new execution result.
+This identity follows from the linear map from check coefficients onto the rank-30 rowspace, with a kernel of dimension 6. It applies only if all check configurations are included and each physical error contributes the same weight in both formulations. For ordinary **sum-product** partition functions, this positive constant does not change logical-class orderings; it **does** change raw partition-function values. The factor of 64 is **not** a correction factor for min-plus optima: repeating each term does not change a minimum. If numerical semirings differ, normalizations and conversions must be declared explicitly. The relationship is a mathematical correspondence, not a new execution result.
 
 ## Replication protocol: common C72
 
