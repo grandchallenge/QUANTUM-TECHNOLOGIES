@@ -261,3 +261,9 @@ python reference/qec_circuit_002.py --output /tmp/qec-circuit-002-full.json
 - Wang et al., *Demonstration of low-overhead quantum error correction codes*, arXiv:2505.09684.
 
 These sources motivate or define the bounded programme lanes. They do not discharge theorem-level source comparison, certification, novelty review, hardware validation, or downstream authorization for future claims.
+
+## License
+
+**MIT is the default license for original Grand Challenge Labs work in this repository**, unless a specific artifact or later authorized decision states otherwise. See [LICENSE](LICENSE), copyright © 2026 Grand Challenge Labs.
+
+This default covers GCL-authored software, associated documentation, and original research materials distributed here to the extent GCL holds the rights to license them. Third-party materials and independently licensed contributions retain their own rights and notices; their inclusion does not relicense them. A license grants reuse permission, not certification of any scientific claim.
