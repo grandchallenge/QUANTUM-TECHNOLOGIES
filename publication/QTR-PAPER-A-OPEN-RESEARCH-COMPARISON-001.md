@@ -35,6 +35,12 @@ Z_all_checks = 2^(36 - 30) * Z_independent_basis
 
 This identity follows from the linear map from check coefficients onto the rank-30 rowspace, with a kernel of dimension 6. It applies only if all check configurations are included and each physical error contributes the same weight in both formulations. For ordinary **sum-product** partition functions, this positive constant does not change logical-class orderings; it **does** change raw partition-function values. The factor of 64 is **not** a correction factor for min-plus optima: repeating each term does not change a minimum. If numerical semirings differ, normalizations and conversions must be declared explicitly. The relationship is a mathematical correspondence, not a new execution result.
 
+## Completed source-locked common-primal-graph cell (2026-11-19)
+
+QTR PR #131 admitted a controlled structural reconstruction based on the same protected C72 36-row X-check matrix. A common qubit-factor and primal-graph definition, with one min-fill policy (fewest missing edges, then degree, then index), yields width 23 for all 36 check variables and width 18 for 30 independent stabilizers. The graphs have 216 and 151 primal edges. Its exact code, five tests and complete report are in publication/research/qtr_c72_common_graph_001.py, publication/tests/test_qtr_c72_common_graph_001.py and publication/research/QTR-C72-COMMON-GRAPH-001-report.json (canonical SHA-256 8f09c69b0c86c797b988173f9fedd124e9a1b30cc5bcac61c4d5fb5f2bc6746f).
+
+This is a common **mathematical graph** comparison, not an execution of the other team's source or a common-host runtime benchmark. Their approximately-23 reported width is a consistency observation only; exact preprocessing, ordering and numerical outputs still need an independent source comparison.
+
 ## Replication protocol: common C72
 
 This protocol is proposed for a *separately authorized* comparison; it does not execute or authorize a new experiment.
@@ -49,7 +55,7 @@ This protocol is proposed for a *separately authorized* comparison; it does not 
 
 ## C90 boundary
 
-The [[90,8,10]] exact campaign remains independent of Paper A. The original conventional per-input comparison artifact is currently unavailable from its pinned GitHub Actions artifact endpoint. Four surviving exact compile/validation artifacts approach their announced retention expiry (2026-12-15). Any restored archive must match its original digest, and the external scientific run must reproduce the frozen contract. No C90 quality, performance, novelty or admission claim follows from this document.
+The [[90,8,10]] exact campaign remains independent of Paper A. The original August conventional ZIP is unavailable, but the frozen per-input conventional outcome vectors were recovered by exact canonical-content equivalence from authenticated October replay artifacts, preserving their true replay identities. All four surviving original compilation and validation ZIPs are SHA-256 verified and preserved on CHAD. A quality-blind exact C90 Colab pilot is in progress; the complete 266,496-cell campaign is unfinished and provenance-aware comparison intake remains a draft PR #129. No C90 quality, performance, novelty or admission claim follows.
 
 ## Collegial exchange proposal (draft only; not sent)
 
