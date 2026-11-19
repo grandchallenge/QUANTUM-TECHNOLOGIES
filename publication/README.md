@@ -10,6 +10,9 @@ This directory extracts publication candidates from the governed QTR scientific 
 - `QTR-C72-COSET-MRF-COMPARISON-PLAN-001.md` — explicit overlap map and controlled comparison plan against the 2026 coset-MRF construction.
 - `QTR-PAPER-A-OPEN-RESEARCH-COMPARISON-001.md` — mechanism-level common-C72 replication protocol, provenance boundaries, complementary-method research questions, and collegial exchange proposal.
 - `QTR-PAPER-A-EVIDENCE-MANIFEST-001.json` — protected C18/C72 table-to-evidence SHA bindings and explicit finite-sample claim limits.
+- `QTR-PAPER-A-BIBLIOGRAPHY-AUDIT-001.md` — verification of 12 source records, DOIs/identifiers and bounded comparison claims.
+- `figures/generate_paper_a_figures.py` — regenerate the C18/C72 evidence-derived figures and a selector-compilation schematic from protected report commitments.
+- `tests/test_paper_a_math_obligations.py` — six bounded positive/hostile checks of the full-kernel and tropical-semiring hypotheses (not a formal proof).
 - `QTR-PUBLICATION-SPEC-001-COMPILED-EXACT-INFERENCE.md` — method-paper specification.
 - `QTR-THEOREM-SELECTOR-PARAMETRIC-COMPILATION-001.md` — proof draft for the central compile/evaluate identity.
 - `QTR-PUBLICATION-SPEC-002-C90-EXACT-INFERENCE.md` — conditional C90 result-paper specification.
