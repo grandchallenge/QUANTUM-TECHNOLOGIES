@@ -1,0 +1,110 @@
+{
+  "record_type": "QTR_PAPER_A_TABLE_TO_PROTECTED_EVIDENCE_MAP/1",
+  "date_utc": "2026-11-19",
+  "status": "DOCUMENTARY_MAPPING_ONLY__NO_NEW_CLAIM_OR_CERTIFICATION",
+  "repository": "grandchallenge/QUANTUM-TECHNOLOGIES",
+  "protected_main_readback_head": "aa2b293545eb3248d1482728808526d247a81c29",
+  "manuscript": "publication/manuscripts/COMPILED-EXACT-DEGENERATE-INFERENCE-DRAFT.md",
+  "purpose": "Trace each reported C18/C72 numerical manuscript fact to exact protected evidence with explicit claim and sample boundaries.",
+  "evidence": [
+    {
+      "programme_cell": "C18 full-domain compiled equality",
+      "source_file": "evidence/TCM-QDEC-004-report.json",
+      "source_blob_sha1": "77b6a05ff245d0292036b7efa47a3fe775f845af",
+      "source_payload_sha256": "a5c7e59fa849ddc37c070d78d4a4dab8b07ae5ceccfecefeb5a20f4ae0dc83a7",
+      "source_report_status": "candidate_executable_not_promoted",
+      "selector_domain": 2048,
+      "exact_checks": {
+        "score_entries": 6144,
+        "class_mapping_entries": 2048,
+        "tie_set_entries": 384,
+        "decision_entries": 384
+      },
+      "equality": {
+        "scores": true,
+        "mapping": true,
+        "ties": true,
+        "decisions": true
+      },
+      "compiled_node_counts": {
+        "min_plus_hamming": 388,
+        "soft_tropical_base_2": 371,
+        "sum_product_bsc_p_0_1": 371
+      },
+      "compiled_nodes_total": 1130,
+      "canonical_serialized_bytes_total": 65506,
+      "frozen_success_totals": {
+        "min_plus_hamming": 226,
+        "soft_tropical_base_2": 262,
+        "sum_product_bsc_p_0_1": 263
+      },
+      "score_table_sha256": {
+        "min_plus_hamming": "178a357cd13b2b9bbab03bad09f08efafecf37f2b59080bb3a6107e552e3b524",
+        "soft_tropical_base_2": "00c4b4c7612b6d05847963c4f8d432160cb2d6ec06fa4813700220461102bad5",
+        "sum_product_bsc_p_0_1": "1b6bd71b9b05f169f57103ae71cd8b540f88e05dbe0302f2b4d9c2562a76a7be"
+      },
+      "tie_set_sha256": {
+        "min_plus_hamming": "1991fe00aaec2f8ce1163ca7b4192054002a2ef176d4839d6883c01f4e724007",
+        "soft_tropical_base_2": "bf4297273ca05b1506bde6f5305464e5affdf78ba31b40e20a0fada3e26dd982",
+        "sum_product_bsc_p_0_1": "3778c019c7e235d916fa27616f83a9f8251a8c2a0276e09e0ea6dc1a6125cd60"
+      },
+      "decision_table_sha256": {
+        "min_plus_hamming": "88a9a766b64c7e476ac5bb4da877a2b1f6d4e88cee88cde6ea7461cc74179f3f",
+        "soft_tropical_base_2": "ea2a96e3878758cd2daebd28673d943c27740a3e1c3579d8429a8a658e567393",
+        "sum_product_bsc_p_0_1": "05dd32573ee965ce96caf707de3541f8be74b49317ad46b7929ef7dcf3bf64fc"
+      },
+      "claim_limit": "Complete bounded C18 selector-domain equivalence only; no asymptotic, runtime or memory superiority."
+    },
+    {
+      "programme_cell": "C72 selector-parametric reference representation and fixed-oracle checks",
+      "source_file": "evidence/QLDPC-SCALE-001A-report.json",
+      "source_blob_sha1": "268a5bfa9ed35ad3cd5984031de20487835643d0",
+      "source_payload_sha256": "198bb28f47844aa98efa20d8c838c48870a8aef41ccfda266b16661677e363e1",
+      "source_report_status": "candidate_executable_not_promoted",
+      "physical_qubits": 72,
+      "hx_rank": 30,
+      "logical_qubits": 12,
+      "independent_stabilizer_rank": 30,
+      "selector_rank": 42,
+      "minimum_fill_induced_width": 18,
+      "precommitted_selector_count": 300,
+      "selector_set_sha256": "2eabc60f4ea2d64be6e4fea5ee33e527de46b115e727a8607b5332b19ba1e1bf",
+      "compiled_vs_independent_oracle_all_equal": true,
+      "canonical_validation_outputs_sha256": "b5e168d3c8f4b420c8f2c1129ea23a3a4c5d6be946053aac7f1650cc4dd79189",
+      "source_bound_distance_status": "SOURCE_REPORTED_DISTANCE",
+      "code_source_binding": {
+        "repository": "sbravyi/BivariateBicycleCodes",
+        "commit": "fa77e3333d3ec44c79d8f914dd24c040d1da471b",
+        "source_sha1": "7ec5a36732a2a6dd229ab74405dedf36139ccda4"
+      },
+      "claim_limit": "Only 300 fixed selector assignments were checked independently; this is not an exhaustive 2^42-selector implementation check, full 329-input decoder comparison, distance recertification or width optimum."
+    },
+    {
+      "programme_cell": "C72 frozen finite decoder interface",
+      "source_file": "evidence/TCM-C72-INTERFACE-001-report.json",
+      "source_blob_sha1": "929fdf77bb5ea2557e86658d22a0ab9627ce7313",
+      "source_report_status": "candidate_executable_not_promoted",
+      "activation_head": "299e74f762b745986d2c930a875606660065d5af",
+      "corpus_size": 329,
+      "corpus_sha256": "23b49e39eafd70c9619f8837dfcb0046e13a1600cd7176d42a6018814f518050",
+      "full_logical_domain_per_input": 4096,
+      "aggregate_artifact_sha256": "sha256:715e4ab49498eca87bded7b2ded7708ba53c8d842aca4886fddebbc583f1ad29",
+      "aggregate_payload_sha256": "b6caf79df378ac2a4b78e7bcdd360aa24548492d33e4e82189239372aac75de7",
+      "scored_rows_sha256": "d2a8f9fa8eb89e5db24d0db9e2cef66ccd91f58488f12f69f8d1767ecc928327",
+      "exact_success_finite_corpus": {
+        "soft_tropical_base_2": 167,
+        "sum_product_bsc_p_0_1": 166,
+        "min_plus_hamming": 152
+      },
+      "source_adjudication_outcome": "C72_TCM_SHARED_DECODER_INTERFACE_CERTIFIED",
+      "claim_limit": "Finite 329-input, three-method quality totals; not identical to the independent 300-selector compiler tests, and no family threshold or hardware/speed superiority."
+    }
+  ],
+  "boundaries": [
+    "Evidence report status is candidate_executable_not_promoted; do not turn CI or a protected evidence blob into publication certification.",
+    "Theorem candidate supplies a mathematical compile/specialize equivalence under the full-kernel and corrected semiring hypotheses; native implementation conformance is separately checked.",
+    "One QTR-C90-EXACT-DECODER-001 external 266,496-selector campaign remains open and is excluded from Paper A results.",
+    "The separate 2026 Krishnamoorthy et al. C72 experiment has different data and semantics; no direct performance claim is supported."
+  ],
+  "review_criterion": "A second reader can independently read each pinned protected evidence file and verify every numerical manuscript statement without relying on the drafting author."
+}
