@@ -1,0 +1,20 @@
+{
+  "contract_id": "GCL-CIR-001",
+  "version": "1.0.0",
+  "component_id": "qtr_c90_conventional_replay_intake",
+  "owner": "QTR exact-C90 conventional baseline provenance and fail-closed replay intake",
+  "paths": {
+    "exact": [
+      "scripts/qtr_c90_conventional_replay_intake_001.py",
+      "work_packages/QTR_C90_CONVENTIONAL_REPLAY_INTAKE_MAIN_001.md"
+    ],
+    "prefixes": [],
+    "test_prefixes": [
+      "tests/test_qtr_c90_replay_intake_"
+    ]
+  },
+  "depends_on": [],
+  "checks": [
+    "quantum-qtr-validation"
+  ]
+}
