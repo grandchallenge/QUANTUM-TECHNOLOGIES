@@ -81,10 +81,33 @@ The third original algebra `soft_tropical_base_2` remains a separate live qualit
 
 The public-main conventional *baseline evidence intake*, distinct from new exact decoder quality, is now admitted via [PR #135](https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES/pull/135), protected merge `4435955438ddd003e95a90657cf6259313dc524b`. The older [PR #129](https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES/pull/129) retains a future historical-scoring adapter and is not a prerequisite for verifying existing conventional data; scoring is still blocked until all C90 corrections have been fixed.
 
+## Completed six-process CPU scaling trial (2026-11-20)
+
+This is **source-bound engineering evidence**, not completion of the scientific C90 class surface. The existing original soft-tropical class-0 evaluator and independent off-path arithmetic comparison continued unchanged. We added **four separate processes using the original frozen C90 native evaluator** for logical classes 1–4, each evaluating exactly its first eight source-generated selectors. No other Colab session was allocated, and no experiment inputs or original scientific code changed.
+
+- Original source head: `675865123437c3d6c908c7a3af337fd4023c5d0b`; activation head: `0c1f5591a097adc285dec4cbfc320eeebd2c65d3`.
+- Frozen soft-tropical compiled graph SHA-256: `9647b3e7fb2ee7f6f87d7e3fe6ce6779bd756e100f86f3dc13e7dc5385b5df9a`; frozen evaluator executable SHA-256: `a062b8a1808313e160f5604398ac5962645b5000479a3b9e4fd648e1e53e6ec3`.
+- Exact existing Colab High-RAM CPU instance: `m-hm-euw4c0-3ehawiq2t82h9`; eight usable CPUs, no cgroup CPU quota, 50.99 GiB physical RAM.
+- With six live C90 evaluator processes, each used approximately 99.7–99.8% of one CPU. Observed load was 5.8–6.2 and **31.54 GiB remained available**. Colab's rate was unchanged at **0.26 compute units/hour**.
+- All **32/32** additional selector records were independently checked for frozen ordering, coordinates, algebra, row status, source hashes, semantic quality-blind flags, and immutable file digests.
+
+| Additional original-evaluator job | Selectors verified | Native elapsed time | Peak RSS |
+|---|---:|---:|---:|
+| Logical class 1 | 8 | 253.725 s | 6,112,156 KiB |
+| Logical class 2 | 8 | 273.217 s | 6,112,396 KiB |
+| Logical class 3 | 8 | 283.473 s | 6,112,200 KiB |
+| Logical class 4 | 8 | 260.374 s | 6,112,256 KiB |
+
+In a count-only sample of the two incumbent processes (08:05:38–08:06:41 UTC), **6 rows / 63 s = 0.09524 rows/s** were observed. A later, loaded 160-second sample with the four additions recorded **28 rows / 160 s = 0.17500 rows/s** across all processes, an **observed 1.84× aggregate increase**. These are not matched-selector or steady-state crossover samples: inputs differ, workers started at different times, and some completed during the window. Therefore **1.84× is an observed interval result, not a guaranteed six-worker campaign speedup or efficiency bound**.
+
+CHAD's independent receipt custodian unpacked and verified 19 files including the original short-batch selector inputs, quality-blind raw outputs, GNU-time reports, individual terminal states, source preflight and grouped manifest. Owner-local archival ZIP `~/.local/share/gcl-qtr-evidence/2026-11-20/c90-sixcore-throughput/C90_SIX_CORE_QUALITY_BLIND_2026-11-20.tar.gz` has SHA-256 `e28a21461787b40a795b8cb2cf00ba654bc278fb090e888b4b83a0731dd62d07`. Raw exact values are **not** published in this record. See [the original exact execution evidence in QTR #114](https://github.com/grandchallenge/QUANTUM-TECHNOLOGIES/issues/114#issuecomment-7034161867).
+
+**Consequence for subsequent bounded jobs:** The existing 7-GiB-per-process guard, 8-GiB host reserve, exact-head input verification and provider lease remain mandatory. On the observed shape, **four additional original evaluator workers alongside two incumbent workers** are mechanically viable without higher-RAM hardware. A fresh session may qualify up to six total workers only after checking available CPU, RAM, output custody, actual performance under its own workload and budget. The existing full 768-shard unbounded fanout is **not authorized** by this test. These eight-selector fragments do **not** count as completed 347-selector scientific shards.
+
 ## Mandatory next executable work
 
 1. Preserve all three exact native compile ZIPs and the validation ZIP beyond their announced December 15 expiration; on CHAD the three large original archives and the validation ZIP have already been SHA-256 verified locally. Off-host durable preservation remains open.
-2. Perform bounded quality-blind *cross-algebra* and *parallel-throughput* calibration using Colab as first substrate; report full resource/cost evidence and refuse unauthorized batch fan-out when it cannot fit quota/lease.
+2. Cross-algebra single-class timings and the bounded six-process original-evaluator utilization trial are now recorded above. For the next **actual complete-shard** batch, use a separate owner-bound, source-locked lease plan with four-to-six workers only after requalifying total memory, output custody, actual matched-task throughput and available compute-unit budget. Do not extrapolate the short-run 1.84× interval blindly.
 3. Requalify 768-shard host/runtime/lease/cost plan, including external compute if Colab's capacity is inadequate. Any future performance optimization must preserve frozen semiring exactness and undergo fresh source/head validation.
 4. The conventional **baseline evidence intake is completed on protected main** via PR #135, including six tests and the genuine October replay ZIP. A separately governed future scoring adapter on historical PR #129 still requires admissible execution integration after exact corrections are fixed. The original August ZIP has not been recovered.
 5. After **all 768** source-bound external class/algebra shards finish, fix all 347 corrections per algebra, then and only then independently score, complete all nine matched comparisons and consider C90 quality claims.
