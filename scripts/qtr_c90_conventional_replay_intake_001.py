@@ -148,9 +148,31 @@ def verify_archive(path: Path, protected_report: Path | None = None) -> dict[str
         if report.get("manifest", {}).get("payload_sha256") != MANIFEST_SHA:
             raise ValueError("protected compared-manifest identity drift")
         if protected_report is not None:
+            # The protected promoted main report is a narrower projection of
+            # the full replay report, with a *different* self-digest and an
+            # explicit "full_report_payload_sha256" pointer. It removes
+            # detailed benchmarking fields. Do not demand byte identity or
+            # silently replace either of these two source records.
             baseline = json.loads(protected_report.read_text(encoding="utf-8"))
-            if baseline != report:
-                raise ValueError("recovered report differs from current protected public report")
+            public_unsigned = dict(baseline)
+            public_claimed = public_unsigned.pop("payload_sha256", None)
+            if (public_claimed is None or canonical_sha(public_unsigned) != public_claimed
+                or baseline.get("full_report_payload_sha256") != REPORT_SHA):
+                raise ValueError("protected public report self-hash/full-report binding drift")
+            def projected_equal(public: Any, replay: Any) -> bool:
+                if isinstance(public, dict):
+                    return (isinstance(replay, dict) and
+                            all(k in replay and projected_equal(v, replay[k])
+                                for k, v in public.items()))
+                if isinstance(public, list):
+                    return (isinstance(replay, list) and len(public) == len(replay)
+                            and all(projected_equal(x, y) for x, y in zip(public, replay)))
+                return type(public) is type(replay) and public == replay
+            for key, value in baseline.items():
+                if key in ("payload_sha256", "full_report_payload_sha256"):
+                    continue
+                if key not in report or not projected_equal(value, report[key]):
+                    raise ValueError("protected public report projection mismatch: " + key)
 
         corpus = json.loads(z.read(only_one("/TCM-QDEC-COMPARE-001-C90-corpus.json")))
         if not isinstance(corpus, list) or len(corpus) != 347 or canonical_sha(corpus) != CORPUS_SHA:
