@@ -21,23 +21,46 @@ Prepare the exact frozen input list using the pinned activation's
 checkout is the execution source commit
 `675865123437c3d6c908c7a3af337fd4023c5d0b`, all scientific blobs match,
 the compiled graph has the digest specified by the frozen activation, and
-the evaluator was compiled from that source. Then:
+the evaluator was compiled from that source.
+
+Keep **two separate source checkouts**. The scientific source stays pinned to
+`675865123437c3d6c908c7a3af337fd4023c5d0b`; the transport program is
+read from a protected-main checkout that includes PR #139. Do not copy the
+new transport script into the frozen scientific source or move that source's
+HEAD.
 
 ```bash
-python3 scripts/qtr_c90_selector_batches.py plan selectors.txt class-17   --algebra soft_tropical_base_2 --logical-class 17 --size 16
+FROZEN_SOURCE=/path/to/frozen-execution-checkout
+QTR_MAIN=/path/to/protected-main-checkout
+ORIGINAL_NATIVE_EVAL=/path/to/original-frozen-evaluator
+FROZEN_GRAPH=/path/to/frozen-compiled-graph.qtrbin
+WORK=/path/to/provider-owned-work-unit
+mkdir -p "$WORK"
+
+test "$(git -C "$FROZEN_SOURCE" rev-parse HEAD)" = \
+  675865123437c3d6c908c7a3af337fd4023c5d0b
+test -f "$QTR_MAIN/scripts/qtr_c90_selector_batches.py"
+BATCH_TOOL="$QTR_MAIN/scripts/qtr_c90_selector_batches.py"
+cd "$FROZEN_SOURCE"  # frozen adapter verifies its own Git identity
+
+python3 "$FROZEN_SOURCE/reference/qtr_c90_exact_native_campaign_001.py" \
+  selectors --logical-class 17 --output "$WORK/selectors.txt"
+python3 "$BATCH_TOOL" plan "$WORK/selectors.txt" "$WORK/class-17" \
+  --algebra soft_tropical_base_2 --logical-class 17 --size 16
 ```
 
 Use the **original frozen** native executable for each batch:
 
 ```bash
-original-qtr-c90-native-eval --native frozen.qtrbin   --selectors class-17/batch-000.selectors.txt   > class-17/batch-000.rows.jsonl
-python3 scripts/qtr_c90_selector_batches.py verify class-17 0   --evaluator original-qtr-c90-native-eval --graph frozen.qtrbin
+"$ORIGINAL_NATIVE_EVAL" --native "$FROZEN_GRAPH" \
+  --selectors "$WORK/class-17/batch-000.selectors.txt" \
+  > "$WORK/class-17/batch-000.rows.jsonl"
+python3 "$BATCH_TOOL" verify "$WORK/class-17" 0 \
+  --evaluator "$ORIGINAL_NATIVE_EVAL" --graph "$FROZEN_GRAPH"
 ```
 
-This is an illustrative invocation; the evaluator filename resolves to the
-frozen original executable on the owned execution host. Repeat for batches
-001–021. Verify that the batch process exits zero and the batch's GNU-time
-receipt is retained; atomically transfer each verified batch's inputs, rows,
+Repeat for batches 001–021. Verify each process exits zero and preserve its
+GNU-time receipt; atomically return each verified batch's inputs, rows,
 receipt and resource log to CHAD, then independently rehash and inspect it.
 **Do not confuse a local receipt with independent external attestation.**
 
@@ -49,8 +72,10 @@ indices, wrong classes, corrupted metadata or altered scientific identities.
 Once all 22 batch receipts are present:
 
 ```bash
-python3 scripts/qtr_c90_selector_batches.py join   class-17 complete-class-17.jsonl
-python3 reference/qtr_c90_exact_native_campaign_001.py validate-shard   --algebra soft_tropical_base_2 --logical-class 17   --rows complete-class-17.jsonl --output class-17-semantic-receipt.json
+python3 "$BATCH_TOOL" join "$WORK/class-17" "$WORK/complete-class-17.jsonl"
+python3 "$FROZEN_SOURCE/reference/qtr_c90_exact_native_campaign_001.py" \
+  validate-shard --algebra soft_tropical_base_2 --logical-class 17 \
+  --rows "$WORK/complete-class-17.jsonl" --output "$WORK/class-17-semantic-receipt.json"
 ```
 
 The frozen **347-row semantic validator** is mandatory. A completed class
