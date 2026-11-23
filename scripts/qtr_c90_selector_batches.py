@@ -130,13 +130,83 @@ def verify(folder,batch,evaluator,graph):
     print('C90_NATIVE_BATCH_CUSTODY_VERIFIED',batch,e['count'],evidence['rows_sha256'])
 
 
+# Derived operating index only. GitHub admission evidence remains authoritative.
+ADMISSION_FILE = pathlib.Path(__file__).resolve().parents[1] / "evidence/QTR-C90-SOFT-CLASS0-ADMISSION-001.json"
+ADMISSION_FILE_SHA256 = "59140a9dd0f54bd83f1508c017cce75ea64bd330fe3ed2289b6f86ea5cecef04"
+PREVIOUS_ADMITTED = {
+    ("sum_product_bsc_p_0_1", 0): "170d2bd56ed19120ad4a58e9ae27cbcf671c2c1abdf013412c4a78c87737631c",
+    ("min_plus_hamming", 0): "d186b8392bbfb6aedf03ddb9cc1474486c7b4a4090da739a7e6f6e2c3b0250cc",
+}
+def campaign_plan(output, protected_head):
+    import re
+    assert re.fullmatch(r"[0-9a-f]{40}", protected_head)
+    assert ADMISSION_FILE.is_file() and h(ADMISSION_FILE)==ADMISSION_FILE_SHA256
+    admitted=json.loads(ADMISSION_FILE.read_text())
+    assert admitted['record_type']=="QTR_C90_SOFT_TROPICAL_CLASS0_ENGINEERING_ADMISSION/1"
+    assert admitted['source_head']==HEAD and admitted['activation_head']==ACTIVATION
+    assert admitted['engineering_shards_prior']==2 and admitted['engineering_shards_after_admission']==3
+    assert admitted['algebra']=="soft_tropical_base_2" and admitted['logical_class']==0
+    assert admitted['selectors']==347 and admitted['verified_batches']==22
+    assert admitted['semantic_validation_status']=="C90_ACTIVATED_SELECTOR_SHARD_EVALUATED"
+    assert admitted['rows_sha256']=="27e6c22ef819d6f92be45bfaf82b86d4763cb2ff34e9f370288a82d2292a3d09"
+    assert admitted['quality_exposed'] is False and admitted['certification'] is False
+    assert admitted['independent_scoring_performed'] is False
+    assert admitted['matched_comparison_performed'] is False
+    done={**PREVIOUS_ADMITTED, ("soft_tropical_base_2",0):admitted['rows_sha256']}
+    assert len(done)==3
+    remaining=[]
+    order=("sum_product_bsc_p_0_1","soft_tropical_base_2","min_plus_hamming")
+    for algebra in order:
+        for cls in range(256):
+            if (algebra,cls) in done:continue
+            remaining.append({
+                "work_unit_id":f"{algebra}/class-{cls:03d}",
+                "algebra":algebra,"logical_class":cls,
+                "native_graph_sha256":GRAPHS[algebra][1],
+                "selectors":347,"batch_size":16,"batch_count":22,
+                "last_batch_size":11,
+                "source_head":HEAD,"activation_head":ACTIVATION,
+                "status":"NOT_ADMITTED__EXECUTION_UNVERIFIED",
+                "quality_exposed":False
+            })
+    assert len(remaining)==765
+    assert len({x['work_unit_id'] for x in remaining})==765
+    result={
+        "record_type":"QTR_C90_REMAINING_NATIVE_BATCH_WORK_INDEX/1",
+        "governing_issue":"grandchallenge/QUANTUM-TECHNOLOGIES#114",
+        "record_authority":"DERIVED_INDEX_ONLY__NOT_AN_EXECUTION_LEASE_OR_ADMISSION",
+        "transport_protected_main_head":protected_head,
+        "frozen_scientific_head":HEAD,"activation_head":ACTIVATION,
+        "admission_evidence_relative_path":"evidence/QTR-C90-SOFT-CLASS0-ADMISSION-001.json",
+        "admission_evidence_sha256":ADMISSION_FILE_SHA256,
+        "previous_admissions":[
+          {"work_unit_id":f"{alg}/class-{cls:03d}","rows_sha256":digest}
+          for (alg,cls),digest in sorted(done.items())
+        ],
+        "admitted":3,"remaining":len(remaining),"total":768,
+        "total_remaining_selectors":765*347,
+        "total_remaining_batches":765*22,
+        "max_batch_size":16,"frozen_final_semantic_validation_required":True,
+        "provider_lease_established":False,"remote_execution_launched":False,
+        "independent_scoring_performed":False,"quality_exposed":False,
+        "scientific_promotion_authorized":False,
+        "execution_location_policy":"COLAB_HIGH_RAM_CPU_FIRST__GOVERNED_PROVIDER_FALLBACK",
+        "work_units":remaining
+    }
+    assert not output.exists(), "refuse overwrite or silent replacement"
+    commit(output,(json.dumps(result,sort_keys=True,indent=2)+"\n").encode())
+    print('C90_REMAINING_BATCH_WORK_INDEX_VERIFIED',len(remaining),'units',765*22,'batches',765*347,'selectors')
+
+
 if __name__=='__main__':
     a=argparse.ArgumentParser()
     sub=a.add_subparsers(dest='cmd',required=True)
     p=sub.add_parser('plan');p.add_argument('selector_file',type=pathlib.Path);p.add_argument('output_dir',type=pathlib.Path);p.add_argument('--size',type=int,default=16);p.add_argument('--logical-class',type=int,required=True);p.add_argument('--algebra',choices=list(GRAPHS),required=True)
     p=sub.add_parser('verify');p.add_argument('batch_dir',type=pathlib.Path);p.add_argument('batch',type=int);p.add_argument('--evaluator',type=pathlib.Path,required=True);p.add_argument('--graph',type=pathlib.Path,required=True)
     p=sub.add_parser('join');p.add_argument('batch_dir',type=pathlib.Path);p.add_argument('output_file',type=pathlib.Path)
+    p=sub.add_parser('campaign-plan');p.add_argument('output_file',type=pathlib.Path);p.add_argument('--protected-head',required=True)
     x=a.parse_args()
     if x.cmd=='plan':plan(x.selector_file,x.output_dir,x.size,x.logical_class,x.algebra)
     elif x.cmd=='verify':verify(x.batch_dir,x.batch,x.evaluator,x.graph)
-    else:join(x.batch_dir,x.output_file)
+    elif x.cmd=='join':join(x.batch_dir,x.output_file)
+    else:campaign_plan(x.output_file,x.protected_head)
