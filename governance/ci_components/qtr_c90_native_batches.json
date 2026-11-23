@@ -1,0 +1,21 @@
+{
+  "contract_id": "GCL-CIR-001",
+  "version": "1.0.0",
+  "component_id": "qtr_c90_native_batches",
+  "owner": "QTR C90 source-locked original-native batch custody, engineering admission, and regression verification",
+  "paths": {
+    "exact": [
+      "docs/QTR_C90_BATCHED_SELECTOR_CUSTODY.md",
+      "evidence/QTR-C90-SOFT-CLASS0-ADMISSION-001.json",
+      "scripts/qtr_c90_selector_batches.py"
+    ],
+    "prefixes": [],
+    "test_prefixes": [
+      "tests/test_qtr_c90_selector_"
+    ]
+  },
+  "depends_on": [],
+  "checks": [
+    "quantum-qtr-validation"
+  ]
+}
