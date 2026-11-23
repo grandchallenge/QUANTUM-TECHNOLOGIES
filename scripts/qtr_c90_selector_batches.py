@@ -4,6 +4,10 @@
 Full frozen 347-selector class validation remains external and mandatory.
 """
 import argparse, hashlib, json, pathlib, os
+
+# The source-locked custody predicates use asserts: optimized Python cannot bypass them.
+if not __debug__:
+    raise SystemExit("C90_BATCH_CUSTODY_FAIL_CLOSED_PYTHON_OPTIMIZATION")
 def sha(b):return hashlib.sha256(b).hexdigest()
 def h(p):
     o=hashlib.sha256()
