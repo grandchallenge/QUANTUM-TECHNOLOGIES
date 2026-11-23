@@ -111,3 +111,35 @@ digests, then resume only genuinely missing batches. Do not overwrite a
 partial or ambiguous batch without forensic examination. The fallback is
 the prior original full-347 evaluator invocation; remove the batching
 transport without changing any scientific input, frozen checksum or outcome.
+
+## Remaining-domain projection after class-0 admission
+
+Protected PR #139 admits class-0 original-native engineering shards for all
+three algebras: 3 of 768 units. The existing batch transport now provides
+a deterministic projection of the other 765 units, not a second queue,
+provider lease, scientific authority or scheduling daemon.
+
+In a protected-main transport checkout, after reconciling current GitHub
+admissions and before selecting provider work, run the existing
+scripts/qtr_c90_selector_batches.py campaign-plan command, with output
+WORK/remaining-c90-batches.json and --protected-head bound to the exact
+current transport checkout HEAD. Keep the frozen scientific checkout separate.
+
+The immutable projection checks the SHA256 of protected class-0 admission
+evidence and binds all three prior class-0 row identities. It enumerates
+765 pending work-unit IDs and their algebra, logical class, frozen graph,
+347-selector cardinality and 22-batch transport shape. Total pending
+computational work: 265,455 selectors across 16,830 batches.
+This derived index contains no outcome values and does not authorize execution,
+scoring, matched comparison, certification or scientific promotion.
+
+For any chosen unit, use the original-native plan, verify, join and frozen
+validate-shard sequence specified above. Before rerunning after new admission,
+reconcile current protected GitHub results, regenerate the derived index,
+and reject stale provider leases. The existing GCL external execution
+profile remains the governing provider/work-unit contract.
+
+No bulk work may start merely because this projection exists. Resource
+and lease preflight, external provider authorization, incremental
+custody transfer and independent readback remain mandatory. Colab
+high-RAM CPU is default per AGENTS.md; external fallback is governed.

@@ -128,5 +128,32 @@ class BatchTransportTests(unittest.TestCase):
                         mod.plan(inp, path / "wrong", 16, cls - 1, "soft_tropical_base_2")
 
 
+    def test_remaining_campaign_index_exact_765_and_fail_closed(self):
+        with tempfile.TemporaryDirectory() as td:
+            target=pathlib.Path(td)/"remaining.json"
+            mod.campaign_plan(target,"db3d693e62e2427de78a966cf948801b4afe4760")
+            obj=json.loads(target.read_text())
+            self.assertEqual((obj['admitted'],obj['remaining'],obj['total']),(3,765,768))
+            self.assertEqual((obj['total_remaining_batches'],obj['total_remaining_selectors']),(16830,265455))
+            ids={x['work_unit_id'] for x in obj['work_units']}
+            self.assertEqual(len(ids),765)
+            for alg in mod.GRAPHS:
+                self.assertNotIn(f"{alg}/class-000",ids)
+                self.assertIn(f"{alg}/class-001",ids)
+                self.assertIn(f"{alg}/class-255",ids)
+            self.assertTrue(all(x['batch_count']==22 and x['selectors']==347 and x['quality_exposed'] is False for x in obj['work_units']))
+            with self.assertRaises(AssertionError):
+                mod.campaign_plan(target,"db3d693e62e2427de78a966cf948801b4afe4760")
+            with self.assertRaises(AssertionError):
+                mod.campaign_plan(pathlib.Path(td)/"wrong.json","stale")
+            old=mod.ADMISSION_FILE_SHA256
+            try:
+                mod.ADMISSION_FILE_SHA256="0"*64
+                with self.assertRaises(AssertionError):
+                    mod.campaign_plan(pathlib.Path(td)/"forged.json","db3d693e62e2427de78a966cf948801b4afe4760")
+            finally:
+                mod.ADMISSION_FILE_SHA256=old
+
+
 if __name__ == "__main__":
     unittest.main()
