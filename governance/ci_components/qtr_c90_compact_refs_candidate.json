@@ -1,0 +1,22 @@
+{
+  "contract_id": "GCL-CIR-001",
+  "version": "1.0.0",
+  "component_id": "qtr_c90_compact_refs_candidate",
+  "owner": "QTR C90 bounded compact reference storage-refinement candidate and equivalence regression verification",
+  "paths": {
+    "exact": [
+      "docs/QTR_C90_COMPACT_EVALUATOR_EQUIVALENCE_CANDIDATE.md",
+      "evidence/QTR-C90-COMPACT-CLASS1-BATCH000-DIFFERENTIAL-001.json",
+      "reference/qtr_c90_native_eval_compact_refs_candidate.cpp",
+      "tests/test_qtr_c90_compact_refs_candidate.py"
+    ],
+    "prefixes": [],
+    "test_prefixes": []
+  },
+  "depends_on": [
+    "qtr_c90_native_batches"
+  ],
+  "checks": [
+    "quantum-qtr-validation"
+  ]
+}
