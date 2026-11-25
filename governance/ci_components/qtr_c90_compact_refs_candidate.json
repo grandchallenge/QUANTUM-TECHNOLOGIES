@@ -5,9 +5,13 @@
   "owner": "QTR C90 bounded compact reference storage-refinement candidate and equivalence regression verification",
   "paths": {
     "exact": [
+      "docs/QTR_C90_COMPACT_BATCH_ACTIVATION.md",
       "docs/QTR_C90_COMPACT_EVALUATOR_EQUIVALENCE_CANDIDATE.md",
       "evidence/QTR-C90-COMPACT-CLASS1-BATCH000-DIFFERENTIAL-001.json",
+      "execution/external/QTR-C90-EXACT-DECODER-001/COMPACT.json",
       "reference/qtr_c90_native_eval_compact_refs_candidate.cpp",
+      "scripts/qtr_c90_compact_batch.py",
+      "tests/test_qtr_c90_compact_batch.py",
       "tests/test_qtr_c90_compact_refs_candidate.py"
     ],
     "prefixes": [],
