@@ -1,0 +1,21 @@
+{
+  "record_type": "QTR_C90_COMPACT_STORAGE_ROUTE/1",
+  "governing_issue": "grandchallenge/QUANTUM-TECHNOLOGIES#114",
+  "qualification_protected_head": "9422215904e9efffbf9c1d6aed16480b91fc5d35",
+  "frozen_source_head": "675865123437c3d6c908c7a3af337fd4023c5d0b",
+  "activation_head": "0c1f5591a097adc285dec4cbfc320eeebd2c65d3",
+  "source_path": "reference/qtr_c90_native_eval_compact_refs_candidate.cpp",
+  "source_sha256": "696cfc28bb6ef56993d84c31465d04ea041460ac5c7886df1a5b7f758e939a68",
+  "binary_sha256": "e9c63b0d329e165cf96a1de37ee324f52ed35a95201dae347c4c6a4a3f35384c",
+  "differential_receipt_sha256": "6ff968f30d999cf8560ca1af42cc9f8b97360348fc63d66a1023b363ea8fa450",
+  "worker_ceiling_bytes": 3221225472,
+  "host_reserve_bytes": 8589934592,
+  "maximum_workers_per_provider_session": 1,
+  "external_parallelism_ceiling": 48,
+  "max_attempts_per_work_unit": 2,
+  "batch_size": 16,
+  "provider_policy": "COLAB_HIGH_RAM_CPU_FIRST__MEASURED_COMPACT_STANDARD_CPU_OR_GOVERNED_FALLBACK",
+  "quality_exposed": false,
+  "scientific_semantics_changed": false,
+  "campaign_admission": false
+}

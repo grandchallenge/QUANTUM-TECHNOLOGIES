@@ -88,6 +88,12 @@ def join(folder,output):
         assert claim['selectors_sha256']==e['selector_sha256'] and claim['rows_sha256']==sha(b''.join(rr))
         assert claim['quality_exposed'] is False and claim['status']=='NATIVE_BATCH_VERIFIED__NO_SCIENTIFIC_PROMOTION'
         assert isinstance(claim['evaluator_sha256'],str) and len(claim['evaluator_sha256'])==64
+        if claim['evaluator_sha256']=='e9c63b0d329e165cf96a1de37ee324f52ed35a95201dae347c4c6a4a3f35384c':
+            import qtr_c90_compact_batch as compact
+            binding=compact.custody_fields(folder,index,claim['compact_binding_sha256'],claim['compact_runtime_sha256'])
+            assert binding['algebra']==m['algebra'] and binding['logical_class']==m['logical_class']
+        else:
+            assert 'compact_binding_sha256' not in claim and 'compact_runtime_sha256' not in claim
         if engine_sha is None:engine_sha=claim['evaluator_sha256']
         assert engine_sha==claim['evaluator_sha256']
         allrows+=b''.join(rr)
@@ -95,7 +101,7 @@ def join(folder,output):
     assert pos==len(seen)==347 and sha(allsel)==m['input_sha256']
     commit(output,allrows)
     print('BATCH_REASSEMBLY_OK',pos,'ROWS_SHA256',sha(allrows))
-def verify(folder,batch,evaluator,graph):
+def verify(folder,batch,evaluator,graph,*,compact_binding_sha=None,compact_runtime_sha=None):
     m=json.loads((folder/'manifest.json').read_text())
     assert m['schema']=='C90_BATCH_TRANSPORT/1' and m['source_head']==HEAD and m['activation_head']==ACTIVATION
     assert m['selector_count']==347 and m['batch_size']==16 and len(m['entries'])==22
@@ -115,12 +121,23 @@ def verify(folder,batch,evaluator,graph):
         assert obj['selector_index']==i and obj['selector_coordinate']==c
         assert obj['algebra_id']==int(GRAPHS[m['algebra']][0])
         assert obj['status']=='C90_COMPACT_NATIVE_SELECTOR_EVALUATED' and obj['quality_exposed'] is False
+    engine=h(evaluator)
+    compact_engine='e9c63b0d329e165cf96a1de37ee324f52ed35a95201dae347c4c6a4a3f35384c'
+    compact_fields={}
+    if engine==compact_engine:
+        import qtr_c90_compact_batch as compact
+        assert compact_binding_sha is not None and compact_runtime_sha is not None, 'COMPACT_ROUTE_REQUIRES_GUARDED_CUSTODY'
+        binding=compact.custody_fields(folder,batch,compact_binding_sha,compact_runtime_sha)
+        assert binding['algebra']==m['algebra'] and binding['logical_class']==m['logical_class']
+        compact_fields={'compact_binding_sha256':compact_binding_sha,'compact_runtime_sha256':compact_runtime_sha}
+    else:
+        assert compact_binding_sha is None and compact_runtime_sha is None, 'COMPACT_BINARY_IDENTITY_DRIFT'
     evidence={'record_type':'QTR_C90_FROZEN_NATIVE_BATCH_CUSTODY/1',
         'source_head':HEAD,'activation_head':ACTIVATION,'algebra':m['algebra'],
         'logical_class':m['logical_class'],'batch':batch,'start':e['start'],'count':e['count'],
-        'native_graph_sha256':m['native_graph_sha256'],'evaluator_sha256':h(evaluator),
+        'native_graph_sha256':m['native_graph_sha256'],'evaluator_sha256':engine,
         'selectors_sha256':e['selector_sha256'],'rows_sha256':h(output),
-        'quality_exposed':False,'status':'NATIVE_BATCH_VERIFIED__NO_SCIENTIFIC_PROMOTION'}
+        'quality_exposed':False,'status':'NATIVE_BATCH_VERIFIED__NO_SCIENTIFIC_PROMOTION',**compact_fields}
     dest=folder/f"batch-{batch:03d}.verified.json"
     assert not dest.exists(), 'RECEIPT_EXISTS_RECONCILE_BEFORE_RETRY'
     tmp=dest.with_suffix('.partial')
