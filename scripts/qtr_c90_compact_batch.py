@@ -229,6 +229,22 @@ def peak_from_time(path):
     check(m is not None and re.search(r"^\s*Exit status: 0\s*$",t,re.M),"nonzero or missing time receipt")
     return int(m.group(1))*1024
 
+def check_memory_guard(output, binding_sha, phase, available_bytes, minimum, peak):
+    """Persist the actual violating sample before terminating; never a success receipt."""
+    violations=[]
+    if minimum<RESERVE:violations.append("HOST_RESERVE")
+    if peak>CAP:violations.append("WORKER_RSS")
+    if violations:
+        r={"record_type":"QTR_C90_COMPACT_GUARD_FAILURE/1","binding_sha256":binding_sha,
+           "phase":phase,"observed_epoch":int(time.time()),"violations":violations,
+           "available_bytes":available_bytes,"minimum_available_bytes":minimum,
+           "peak_rss_bytes":peak,"host_reserve_bytes":RESERVE,"worker_ceiling_bytes":CAP,
+           "quality_exposed":False,"campaign_admission":False}
+        # A flushed, quality-blind line survives loss of the provider filesystem.
+        print("COMPACT_GUARD_FAILURE "+json.dumps(r,sort_keys=True),flush=True)
+        write(output/"guard-failure.json",r)
+        raise ValueError("memory guard violated: "+",".join(violations))
+
 def run(binding, binding_sha, evaluator, graph, selectors, output):
     b=load_binding(binding,binding_sha)
     identity=[file_identity(x) for x in (evaluator,graph,selectors)]
@@ -250,7 +266,7 @@ def run(binding, binding_sha, evaluator, graph, selectors, output):
                 stdout=out,stderr=log,start_new_session=True,env={**os.environ,"LC_ALL":"C"})
             try:
                 while proc.poll() is None:
-                    minimum=min(minimum,available())
+                    current=available();minimum=min(minimum,current)
                     try: children=P(f"/proc/{proc.pid}/task/{proc.pid}/children").read_text().split()
                     except FileNotFoundError: children=[]
                     for pid in children:
@@ -258,11 +274,11 @@ def run(binding, binding_sha, evaluator, graph, selectors, output):
                         except FileNotFoundError: continue
                         m=re.search(r"^VmRSS:\s+(\d+)",status,re.M)
                         if m:peak=max(peak,int(m.group(1))*1024)
-                    check(minimum>=RESERVE and peak<=CAP,"sampled memory guard violated")
+                    check_memory_guard(output,binding_sha,"sampled",current,minimum,peak)
                     check(int(time.time())<b["lease"]["deadline_epoch"],"provider lease expired")
                     time.sleep(.25)
                 check(proc.returncode==0,"native evaluator failed")
-                minimum=min(minimum,available())
+                current=available();minimum=min(minimum,current)
             except BaseException:
                 try:os.killpg(proc.pid,signal.SIGTERM)
                 except ProcessLookupError:pass
@@ -272,7 +288,7 @@ def run(binding, binding_sha, evaluator, graph, selectors, output):
             out.flush();os.fsync(out.fileno())
         peak=max(peak,peak_from_time(timing))
         finished=int(time.time());check_time(b,started,finished)
-        check(peak<=CAP and minimum>=RESERVE,"terminal resource guard failed")
+        check_memory_guard(output,binding_sha,"terminal",current,minimum,peak)
         check(identity==[file_identity(x) for x in (evaluator,graph,selectors)],"staged artifact changed during execution")
         verify_rows(b,selectors,partial)
         finished=int(time.time());check_time(b,started,finished)

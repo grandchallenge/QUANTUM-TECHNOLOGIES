@@ -124,6 +124,29 @@ class CompactBatchTests(unittest.TestCase):
                 mod.run(self.bindfile,sha,self.engine,self.graph,self.folder/"batch-000.selectors.txt",self.returned)
         self.assertFalse(self.returned.exists())
 
+    def test_guard_failure_exact_samples(self):
+        # Test both distinct dimensions, simultaneous failure, strict bounds,
+        # and terminal failure without any scientific data or live provider.
+        for i,(phase,available,minimum,peak,expected) in enumerate((
+            ("sampled",mod.RESERVE-1,mod.RESERVE-1,mod.CAP,["HOST_RESERVE"]),
+            ("sampled",mod.RESERVE+1,mod.RESERVE,mod.CAP+1,["WORKER_RSS"]),
+            ("terminal",mod.RESERVE,mod.RESERVE-1,mod.CAP+1,["HOST_RESERVE","WORKER_RSS"]),
+        )):
+            folder=self.d/f"guard-{i}";folder.mkdir()
+            with self.subTest(phase=phase,expected=expected), self.assertRaisesRegex(ValueError,"memory guard violated"):
+                mod.check_memory_guard(folder,"a"*64,phase,available,minimum,peak)
+            record=mod.read(folder/"guard-failure.json")
+            self.assertEqual(record["violations"],expected)
+            self.assertEqual(record["phase"],phase)
+            self.assertEqual(record["available_bytes"],available)
+            self.assertEqual(record["minimum_available_bytes"],minimum)
+            self.assertEqual(record["peak_rss_bytes"],peak)
+            self.assertEqual(record["binding_sha256"],"a"*64)
+            self.assertFalse(record["campaign_admission"])
+            self.assertFalse((folder/"runtime.json").exists())
+        mod.check_memory_guard(self.d,"a"*64,"sampled",mod.RESERVE,mod.RESERVE,mod.CAP)
+        self.assertFalse((self.d/"guard-failure.json").exists())
+
     def test_wrong_provider_or_batch_rejected(self):
         for key,value in (("provider_execution_id","other-id"),("batch",1),("attempt",3),("workers_on_session",2)):
             l=dict(self.l);l[key]=value;self.lease.write_bytes(E.canonical_bytes(l))
