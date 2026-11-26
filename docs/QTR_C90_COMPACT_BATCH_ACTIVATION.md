@@ -26,3 +26,18 @@ Use `scripts/qtr_c90_compact_batch.py`:
 ## Authority and failure
 
 The controller, not a worker-generated digest, is the trust root for the lease and binding. The helper cannot authenticate a provider by reading local JSON alone; the existing supervisor must supply live authenticated readback. A protected merge enables the route but does not establish a provider lease, launch, or completed batch. Do not claim live activation without an actual provider session and guarded accepted return. Existing external full-coverage verification and frozen semantic/scoring gates are not relaxed. If the provider cannot meet the envelope, record the operational boundary; do not silently lower the reserve or bulk-run on CHAD.
+
+
+## Guard failure evidence
+
+Following the class-1 sum-product batch-000 attempt-1 interruption, the worker
+records the exact observed minimum host availability and peak worker RSS, the
+current host sample, the phase and the failing dimension(s) in a separate
+`guard-failure.json` and flushed quality-blind diagnostic line bound to the
+controller binding digest. The 3 GiB ceiling and 8 GiB reserve are unchanged.
+The controller must retrieve the failure record and diagnostic timing/stderr
+before releasing the owned session where available; incomplete scientific rows
+are not accepted or reused. If retrieval fails, retain the flushed diagnostic
+and record the missing artifact explicitly. A failure record never substitutes
+for a runtime success receipt. No change to selector arithmetic, input,
+provider authority, or retry budget.
