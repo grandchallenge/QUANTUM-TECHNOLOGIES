@@ -1,83 +1,79 @@
-# QTR-C90-SWARM-001 — bounded zero-context work preparation
+# QTR-C90-SWARM-001 — zero-context shard work
 
-**Status: staged candidate, not an activated queue, reservation, or provider lease.**
-Authority remains issue grandchallenge/QUANTUM-TECHNOLOGIES#114 and protected
-execution policy. Scientific head 675865123437c3d6c908c7a3af337fd4023c5d0b;
-transport snapshot cd35fd801dc6573a03f53e46f5b1ba02ea430f47. The class-001 controller is terminal; preserve its eight verified batches.
-Re-read current main and all custody before activation.
+**Staged candidate; not yet a live queue.** Authority: grandchallenge/QUANTUM-TECHNOLOGIES#114.
+Scientific head 675865123437c3d6c908c7a3af337fd4023c5d0b;
+transport snapshot cd35fd801dc6573a03f53e46f5b1ba02ea430f47.
 
-## Assignments
+## Worker contract
 
-The companion index is derived from the existing protected campaign-plan and
-all 768 external job envelopes. It contains 765 unadmitted classes, each
-exactly 347 selectors in 22 batches (21 x 16 and 1 x 11). The partially completed sum-product
-class-001 is held apart for custody reconciliation; 764 candidates remain (265108 selectors, 16808 batches).
-Three protected class-0 admissions are not new work. Soft-tropical class-0 raw
-custody recovery is a distinct reconstruction obligation, not a fourth
-admission. Reconcile actual custody before release of any candidate.
+Discover one available shard through the existing GCL queue; acquire exclusive
+custody; execute its immutable assignment in your own eligible execution
+environment; return artifacts and authenticated result; depart.
 
-Each computational worker receives **one** exact (algebra, logical_class)
-assignment, never a free choice of class or independent batch. One controller
-owns each class, and one evaluator owns each leased session. Cache the verified
-graph within a session when compatible with successive exclusive assignments.
-Never reset class attempt counts or count repeated rows as additional evidence.
+**External agents do not provision, connect to, or manage GCL Colab or CHAD.**
+They receive no GCL compute credentials. The GCL-side Colab controller remains
+an internal execution route only, not a swarm prerequisite.
 
-## Initial bounded preparation wave (not yet registered/claimed)
+Each candidate shard is one exact algebra/logical-class pair: 347 selectors,
+22 guarded batches (21 x 16 plus 11). The companion index binds 764 untouched
+candidate classes to the existing scientific identities. Three admitted class-0
+shards are excluded. Sum-product class-001 is separately held: 128/347 selectors
+verified, batch 008 launched without a verified return. Reconcile its attempt
+and custody before reassignment. Never reset retries or duplicate accepted work.
+Soft-tropical class-000 raw custody recovery is a separate obligation.
 
-| Assignment ID | Objective | Return acceptance |
-|---|---|---|
-| QTR-SWARM-PREP-01 | Read-only inspect current native Colab controller and specify minimal parameterization by exact job envelope for all three algebras | Exact source/driver digests, change boundary, required tests; no controller mutation or scientific launch |
-| QTR-SWARM-PREP-02 | Read-only inventory remaining raw artifacts, especially admitted soft-tropical class-0; propose private redundant custody path using existing approved storage | Hash match or explicit missing artifacts; no filesystem repair, outcome exposure or recomputation |
-| QTR-SWARM-PREP-03 | Read-only inspect authoritative queue discovery, CONTROL provider supervision and actual quotas; establish the minimal protected integration needed for QTR exclusive pickup and capacity reservation | Exact current policy and capability references, atomic reservation/lease requirements, explicit concurrency bound and missing authority; no provider provisioning or new queue |
+## Assignment packet and return
 
-A single coordinator integrates these returns; parallel agents do not edit the
-same controller. The first computational pilot candidates after activation are
-sum-product class-002, soft-tropical class-001 and min-plus class-001. They are
-not concurrently launchable merely because the index names them.
+The coordinator supplies a self-contained assignment: exact job ID, source and
+graph acquisition locations and hashes, qualified evaluator acquisition/build
+identity, frozen selector inputs, executable invocation, resource envelope,
+deadline, reservation/attempt binding, approved private artifact-return
+location, and acceptance checks. Agents need no prior conversations, scientific
+history, shared workstation, or persistent service.
 
-## Worker bootstrap (after actual governed activation)
+Use the exact qualified binary and graph. The compact guard remains 3 GiB
+worker peak RSS, 8 GiB host reserve, 11 GiB launch availability, one worker per
+eligible execution session. No arithmetic change, pruning, or scoring.
+Retain incremental complete batches. If the environment is insufficient or
+the assignment exceeds its time budget, return the exact blocker and retained
+complete evidence; do not request a cloud instance, fabricate a lease, or
+produce a speculative result.
 
-Authenticate. Read the exact assignment and bound protected policies. Acquire
-the existing queue reservation and exact provider lease; verify both before
-execution. If neither can be obtained, return the exact blocker without launch.
-Do not inspect other workers' scientific results. Run only the assigned
-immutable job with the protected compact helper, qualified binary and verified
-graph; use native Colab upload/exec/download, high-RAM CPU first. The active
-manifest permits one worker; the profile ceiling of 48 is not an allocation.
-Never exceed either actual reserved capacity or the applicable manifest limit.
-Worker cap 3 GiB; host reserve 8 GiB; preflight 11 GiB; one worker per session.
-No paid allocation or prolonged CHAD evaluator work without separate authority.
-The supervisor must bind source, graph, selector plan, exact provider and
-attempt, and independently accept each returned batch before proceeding.
-Checkpoint incrementally; never blindly relaunch an ambiguous job. If time or
-resources run out, preserve verified custody and the precise next batch.
-Return exactly one authenticated contribution under the active queue contract,
-with assigned work-unit ID, reservation/lease, source and manifest identities,
-verified batch IDs, artifact paths/sizes/SHA-256, runtime and guard evidence,
-terminal or resumable disposition and unresolved obligations. The computation
-receipt remains the existing external execution receipt, not a substitute
-for the queue return or admission. Do not expose rows, decoder quality, score,
-or promotion claims in the public return. No worker merge or certification.
+Return one authenticated contribution under the active queue contract: work
+unit, reservation, exact input/binding identities, complete batch IDs,
+artifact paths/sizes/SHA-256, runtime and guard evidence, terminal/resumable
+disposition, and outstanding obligations. Raw scientific outputs go only
+through approved private custody; public returns contain no values or quality
+measures. The coordinator verifies and admits evidence. The worker does not
+merge, certify or wait for admission; queue release follows the governing
+custody procedure.
 
-## Activation boundary
+## Minimal activation work (coordinator, not worker)
 
-Current organization worker discovery at
-grandchallenge/MATHSOLVE:.well-known/gcl-worker-queue.json does not name
-QUANTUM-TECHNOLOGIES in repository_pickup_modes. A direct /claim on QTR#114
-or an AVAILABLE label alone would not establish custody. Adopt the existing
-reservation-controlled mechanism through its protected integration path; do
-not masquerade as editorial work or create a second broker. Bind Project #2
-discovery, exact task registry, exclusive class ownership, provider capacity
-and authenticated result intake. The preceding class-001 controller is terminal: 128/347 selectors verified,
-batches 000–007 intact, batch 008 launched but no verified return, exact Colab
-session absent. Its cause of provider disappearance is unverified.
-Reconcile its attempt-2 custody before further scientific launch; never reset
-the retry budget or duplicate accepted work. Re-read protected main and live custody;
-then regenerate candidates and select a bounded pilot from real capacity.
-Scale only after actual launch/return/accept/release of the pilot verifies.
-Do not create hundreds of issues or GitHub scientific CI jobs.
+1. Reuse the existing reservation-controlled GCL discovery and result intake.
+   QTR is not currently registered in MATHSOLVE's repository_pickup_modes.
+   Do not substitute an editorial label or unconfirmed /claim.
+2. Provide a portable, content-addressed packet and authenticated private
+   artifact return. Reuse protected compact evaluator, binding and verification
+   rather than reproduce arithmetic or invent a second queue.
+3. Resolve provider authority **before** external pickup: current materialized
+   manifest is Colab hosted_session, ceiling 1; it is historical/internal,
+   not an external-agent reservation. The protected profile allows governed
+   external provider classes and a ceiling of 48; the compact lease checker
+   explicitly rejects local_batch and requires independently observed provider
+   identity/readback. Establish the minimal protected external-agent adapter
+   for already-available eligible worker environments; do not pretend that a
+   self-reported machine or fabricated receipt satisfies current policy.
+   Keep the internal Colab-first rule for GCL's own compute. No agent-side
+   provisioning, paid allocation, or shared provider credentials.
+4. Run one bounded real pilot using an agent's existing environment, exact
+   reservation and authenticated return. Verify custody and release; then
+   expose further candidates within actual approved capacity. If typical
+   agent time budgets require smaller tasks, a 16-selector batch is a natural
+   packet (11 at the tail); introduce governed batch-subassignment ownership
+   under the class controller before advertising such tasks. Do not silently
+   change the protected class work-unit or homogeneous join contract.
 
-Completion means all 22 homogeneous guarded batch receipts, joined 347-row
-frozen semantic validation, required protected engineering admission and
-readback, and release of custody. The campaign remains quality-blind until all
-required classes and corrections are fixed.
+Completion of a class still requires 22 verified homogeneous batch receipts,
+347-row frozen semantic validation and protected engineering admission.
+No scientific scoring until complete frozen campaign coverage.
