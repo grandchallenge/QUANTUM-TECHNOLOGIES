@@ -3,15 +3,15 @@
 **Status: staged candidate, not an activated queue, reservation, or provider lease.**
 Authority remains issue grandchallenge/QUANTUM-TECHNOLOGIES#114 and protected
 execution policy. Scientific head 675865123437c3d6c908c7a3af337fd4023c5d0b;
-transport snapshot cd35fd801dc6573a03f53e46f5b1ba02ea430f47. Do not modify
-protected main while the exact-head class-001 controller is live.
+transport snapshot cd35fd801dc6573a03f53e46f5b1ba02ea430f47. The class-001 controller is terminal; preserve its eight verified batches.
+Re-read current main and all custody before activation.
 
 ## Assignments
 
 The companion index is derived from the existing protected campaign-plan and
 all 768 external job envelopes. It contains 765 unadmitted classes, each
-exactly 347 selectors in 22 batches (21 x 16 and 1 x 11). The live sum-product
-class-001 is excluded; 764 candidates remain (265108 selectors, 16808 batches).
+exactly 347 selectors in 22 batches (21 x 16 and 1 x 11). The partially completed sum-product
+class-001 is held apart for custody reconciliation; 764 candidates remain (265108 selectors, 16808 batches).
 Three protected class-0 admissions are not new work. Soft-tropical class-0 raw
 custody recovery is a distinct reconstruction obligation, not a fourth
 admission. Reconcile actual custody before release of any candidate.
@@ -68,9 +68,11 @@ or an AVAILABLE label alone would not establish custody. Adopt the existing
 reservation-controlled mechanism through its protected integration path; do
 not masquerade as editorial work or create a second broker. Bind Project #2
 discovery, exact task registry, exclusive class ownership, provider capacity
-and authenticated result intake. Before changing protected transport, let
-the live class-001 controller reach terminal reconciliation or explicitly
-drain it through the existing policy. Re-read protected main and live custody;
+and authenticated result intake. The preceding class-001 controller is terminal: 128/347 selectors verified,
+batches 000–007 intact, batch 008 launched but no verified return, exact Colab
+session absent. Its cause of provider disappearance is unverified.
+Reconcile its attempt-2 custody before further scientific launch; never reset
+the retry budget or duplicate accepted work. Re-read protected main and live custody;
 then regenerate candidates and select a bounded pilot from real capacity.
 Scale only after actual launch/return/accept/release of the pilot verifies.
 Do not create hundreds of issues or GitHub scientific CI jobs.

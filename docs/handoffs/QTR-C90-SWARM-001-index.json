@@ -3,11 +3,12 @@
   "candidate_batches": 16808,
   "candidate_selectors": 265108,
   "candidate_work_units": 764,
-  "excluded_live_work_unit": "sum_product_bsc_p_0_1/class-001",
+  "excluded_partial_work_unit": "sum_product_bsc_p_0_1/class-001",
   "frozen_scientific_head": "675865123437c3d6c908c7a3af337fd4023c5d0b",
   "governing_issue": "grandchallenge/QUANTUM-TECHNOLOGIES#114",
   "original_external_manifest_sha256": "2e1b1d62c82b14455b1723ed3577048389e901ac1a81f051af0c1ea567c7d4dc",
   "original_manifest_parallelism": 1,
+  "partial_terminal_receipt_sha256": "4344f6165b74b5e819fdb6c4acb2b521e381d0870d4b23e8a2acb8462954935c",
   "prior_admission_count": 3,
   "prior_admissions": [
     {
@@ -32,11 +33,14 @@
     {
       "algebra": "sum_product_bsc_p_0_1",
       "batch_count": 22,
-      "disposition": "LIVE_CONTROLLER_EXCLUDED",
+      "disposition": "PARTIAL_CLASS_CUSTODY_HELD__RECONCILE_BEFORE_REDISPATCH",
       "existing_job_sha256": "4870757c4a47883d8ae4f9eda7c74c8a6fba3ecb339cfe55654b5cc536e5fa35",
       "graph_sha256": "2efe52e17c6d66920b23738987818184657caf479c60c78712dff6db4a306bde",
       "logical_class": 1,
+      "next_pending_batch": 8,
       "selectors": 347,
+      "verified_batches": 8,
+      "verified_selectors": 128,
       "work_unit_id": "sum_product_bsc_p_0_1/class-001"
     },
     {
