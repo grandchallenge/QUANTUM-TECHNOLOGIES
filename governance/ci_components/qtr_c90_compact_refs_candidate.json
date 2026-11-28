@@ -12,7 +12,9 @@
       "reference/qtr_c90_native_eval_compact_refs_candidate.cpp",
       "scripts/qtr_c90_compact_batch.py",
       "tests/test_qtr_c90_compact_batch.py",
-      "tests/test_qtr_c90_compact_refs_candidate.py"
+      "tests/test_qtr_c90_compact_refs_candidate.py",
+      "scripts/qtr_c90_local_candidate.py",
+      "tests/test_qtr_c90_local_candidate.py"
     ],
     "prefixes": [],
     "test_prefixes": []
