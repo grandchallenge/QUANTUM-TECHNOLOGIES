@@ -41,3 +41,28 @@ are not accepted or reused. If retrieval fails, retain the flushed diagnostic
 and record the missing artifact explicitly. A failure record never substitutes
 for a runtime success receipt. No change to selector arithmetic, input,
 provider authority, or retry budget.
+
+## Bounded CHAD SSD candidate exception (six batches only)
+
+Human Steward direction in docket #114, comment 7238964763, authorizes the
+six existing wave-two assignments MATHSOLVE #1347–1352 as local candidate
+computations on CHAD. This exception requires the exact protected Solve
+queue hold and live issue readback; no active or unresolved worker claim
+or return may be displaced. The frozen 96 selectors, qualified compact
+binary, graph identities, 3 GiB RSS ceiling, 8 GiB host reserve and
+two-attempt limit are unchanged. Run one worker, with an exact ext4 SSD
+volume check and physical C: free-space reserve. Reuse retained verified
+compile archives; no provider creation, scientific scoring, or additional
+batches. Local receipts are CHAD_LOCAL_OS_ONLY, never provider leases,
+external worker returns, or independently attested execution. The existing
+external custody and admission path is unchanged. Local evidence must
+remain separate pending an explicit validated admission route.
+
+Use scripts/qtr_c90_local_candidate.py from protected main, with the
+protected Solve repository, exact frozen scientific checkout, immutable
+packets, retained archives, and dedicated SSD workspace. Each invocation
+runs one issue, retains an immutable binding and GNU time, checks memory
+throughout execution, independently checks row identities and records
+only a quality-blind candidate receipt. Do not automatically retry an
+interruption or overwrite partial artifacts; reconcile first. No automatic
+queue release or scientific admission. Existing Lean jobs remain protected.
